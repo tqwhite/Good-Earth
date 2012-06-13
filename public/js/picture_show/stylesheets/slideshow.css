@@ -1,0 +1,8 @@
+/*depends on slider.min.css*/
+.slider.transition-right .slide-image{opacity:1;filter:alpha(opacity=100);right:-100%;}
+.slider.transition-right .slide-image.current{right:0;}
+.slider.transition-right .slide-image.current~.slide-image{right:100%;}
+
+body{
+background:#777;
+}

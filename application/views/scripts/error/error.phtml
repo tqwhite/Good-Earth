@@ -1,0 +1,59 @@
+<?/*php require_once($_SERVER['DOCUMENT_ROOT'].'/tools/mailNotificationInclude.php');*/?>
+<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
+   'http://www.w3.org/TR/html4/strict.dtd'>
+<html>
+<head>
+<title>Generic White: Error "<?php echo $this->message ?>"</title>
+
+<script type='text/javascript' src='http://code.jquery.com/jquery-1.6.1.min.js'></script>
+<!--link rel='stylesheet' type='text/css' href='css/main.css' /-->
+
+<style type='text/css'>
+
+	body {color:orange;font-family:sans-serif;}
+	
+</style>
+
+</head>
+<body>
+
+
+<img src='/media/index/splash_b.png' style='border:3pt solid #D5584F;'>
+
+<div style='font-size:8pt;color:gray;'>
+  <h1>An error occurred</h1>
+  <h2><?php echo $this->message ?></h2>
+
+  <?php if (isset($this->exception)): ?>
+  
+  <h3>Exception information:</h3>
+  <p>
+      <b>Message:</b> <?php echo $this->exception->getMessage() ?>
+  </p>
+
+  <h3>Stack trace:</h3>
+  <pre><?php echo $this->exception->getTraceAsString() ?>
+  </pre>
+
+  <h3>Request Parameters:</h3>
+  <pre><?php echo $this->escape(var_export($this->request->getParams(), true)) ?>
+  </pre>
+
+  <?php endif ?>
+</div>
+	
+</body>
+
+<script type='text/javascript'>
+/* <![CDATA[ */
+$(document).ready(function(){
+
+
+	$('body').append("<div style='z-index:200;position:absolute;left:100px;top:150px;'><?php echo $this->message ?><br/><?php echo $this->exception->getMessage() ?></div>");
+
+
+});
+/* ]]> */
+</script>
+
+</html>

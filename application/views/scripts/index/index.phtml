@@ -1,0 +1,35 @@
+<?php
+
+if (file_exists(DOCROOT_DIRECTORY_PATH.'/media/index/siteSpecificSplash.png')){
+	$picPath='/media/index/siteSpecificSplash.png';
+	$outString="<img src='$picPath'>";
+}
+elseif (file_exists(DOCROOT_DIRECTORY_PATH.'/media/index/defaultSplash.png')){
+	$picPath='/media/index/defaultSplash.png';
+	$outString="<img src='$picPath'>";
+}
+else{
+	$outString="<div style='margin:72px 0 0 72px;font-size:48pt;color:#ff7200;'>This is a private website.</div>";
+}
+
+
+?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><?php echo $_SERVER['HTTP_HOST']." presented by TQ White II";?></title>
+
+        <style type="text/css">
+        <!--
+        html, body, #tbl_wrap { height: 100%; width: 100%; padding: 0; margin: 0; }
+        #td_wrap { vertical-align: middle; text-align: center; }
+        -->
+        </style>
+    </head>
+
+    <body>
+        <table id="tbl_wrap"><tbody><tr><td id="td_wrap">
+        <?php echo $outString;?>
+        </td></tr></tbody></table>
+    </body>
+</html>
