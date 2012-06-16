@@ -21,15 +21,39 @@ class TestController extends Zend_Controller_Action
 			'password' => '',
 			'dbname'   => 'test1'
 		));
-		
+
 		$stmt = $db->query('select * from example');
-		
+
 		print_r($stmt->fetch());
 		echo Zend_Version::VERSION ;
     }
 
+    public function doctrineAction()
+    {
+		$message=$this->_getParam('m');
+
+		if (!$message){$message='default';}
+    	$this->view->message=$message;
+
+/*
+		$this->doctrineContainer=Zend_Registry::get('doctrine');
+		$u=new GE\Entity\User();
+		$u->firstname='tq';
+		$u->lastname='white';
+
+		$em=$this->doctrineContainer->getEntityManager();
+		$em->persist($u);
+		$em->flush();
+*/
+
+    //    $u=new GE\Entity\User();
+     //   var_dump($u);
+    }
+
 
 }
+
+
 
 
 

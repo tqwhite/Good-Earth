@@ -1,6 +1,6 @@
 <?php
 
-class IndexControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
+class IndexControllerTest extends ControllerTestCase
 {
 
     public function setUp()
@@ -9,6 +9,9 @@ class IndexControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
         parent::setUp();
     }
 
-
+	public function testCanDoUnitTest(){
+		$this->assertTrue(true);
+	}
+//this is definitely being found and executed by phpunit
 }
 

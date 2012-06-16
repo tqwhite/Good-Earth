@@ -1,17 +1,29 @@
-<phpunit bootstrap="./bootstrap.php">
+<phpunit bootstrap="application/bootstrap.php" colors="true">
+
     <testsuite name="Application Test Suite">
         <directory>./application</directory>
     </testsuite>
+
     <testsuite name="Library Test Suite">
         <directory>./library</directory>
     </testsuite>
-    
+
     <filter>
-        <!-- If Zend Framework is inside your project's library, uncomment this filter -->
-        <!-- 
         <whitelist>
-            <directory suffix=".php">../../library/Zend</directory>
+            <!--directory suffix=".php">../application/models</directory-->
+            <directory suffix=".php">../application</directory>
+            <exclude>
+            	<directory suffix=".phtml">../application</directory>
+            	<file>../application/Bootstrap.php</file>
+            </exclude>
         </whitelist>
-        -->
     </filter>
+
+    <!--Problem goes away when whitelist directory above is set to models directory with no exit; statements-->
+    <!--logging>
+    	<log type="coverage-html" target="./log/report" charset="UTF-8"
+    	yui="true" highlight="true" lowUpperBound="50" highLowerBound="80" />
+    	<log type="testdox" target="./log/testdox.html" />
+    </logging-->
+
 </phpunit>
