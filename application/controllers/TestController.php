@@ -50,8 +50,16 @@ class TestController extends Zend_Controller_Action
      //   var_dump($u);
     }
 
+    public function sqliteAction()
+    {
+    $db = new SQLite3('mysqlitedb.db');
+        print_r($db);
+    }
+
 
 }
+
+
 
 
 

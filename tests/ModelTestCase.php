@@ -11,8 +11,8 @@ class ModelTestCase extends Zend_Test_PHPUnit_ControllerTestCase
     public function setUp()
     {
         global $application;
+        $this->application=$application;
         $application->bootstrap();
-
         $this->doctrineContainer=Zend_Registry::get('doctrine');
 
         $tool=new \Doctrine\ORM\Tools\SchemaTool($this->doctrineContainer->getEntityManager());
@@ -24,7 +24,10 @@ class ModelTestCase extends Zend_Test_PHPUnit_ControllerTestCase
     }
 
 	public function tearDown(){
-		parent::tearDown();
+
+        self::dropSchema($this->doctrineContainer->getConnection()->getParams());
+        parent::tearDown();
+
 	}
 
 
@@ -38,9 +41,14 @@ class ModelTestCase extends Zend_Test_PHPUnit_ControllerTestCase
 				}
 			}
 		}
-
 		return $metas;
 	}
+
+    public static function dropSchema($params)
+    {
+        if (file_exists($params['path']))
+            unlink ($params['path']);
+    }
 
 
 }
