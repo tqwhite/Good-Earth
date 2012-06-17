@@ -41,34 +41,14 @@ class ModelTestCase extends PHPUnit_Framework_TestCase
         parent::tearDown();
 
 	}
-   public function getTestUser($name = "John", $last='smith')
+   public function getTestUser($first = "John", $last='smith', $refId='')
     {
         $user = new GE\Entity\User();
-        $user->firstname = $name;
-        $user->lastname = $last;
+        $user->firstName = $first;
+        $user->lastName = $last;
+        $user->userName = $first.$last;
+        $user->refId = $refId?$refId:uniqid();
         return $user;
-    }
-    public function getApple()
-    {
-        $apple = new GE\Entity\Product();
-        $apple->name = "Apples";
-        $apple->amount = 2.45;
-        $this->doctrineContainer->getEntityManager()->persist($apple);
-        return $apple;
-    }
-    public function getOrange()
-    {
-        $orange = new GE\Entity\Product();
-        $orange->name = "Oranges";
-        $orange->amount = 2.99;
-        $this->doctrineContainer->getEntityManager()->persist($orange);
-        return $orange;
-    }
-    public function getPurchase()
-    {
-        $purchase = new GE\Entity\Purchase();
-        $purchase->storeName = "My Store";
-        return $purchase;
     }
 
 

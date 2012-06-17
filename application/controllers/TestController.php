@@ -33,15 +33,22 @@ class TestController extends Zend_Controller_Action {
 		$this->view->message = $message;
 
 
-//		$this->doctrineContainer=Zend_Registry::get('doctrine');
-//		$u=new GE\Entity\User();
-//		$u->firstname='tq';
-//		$u->lastname='white';
-//
-//		$em=$this->doctrineContainer->getEntityManager();
-//		$em->persist($u);
-//		$em->flush();
+		$this->doctrineContainer=Zend_Registry::get('doctrine');
+		$u=new GE\Entity\User();
+		$u->firstName='tq';
+		$u->lastName='white';
+		$u->userName='tq'.  uniqid();
 
+		$em=$this->doctrineContainer->getEntityManager();
+		$em->persist($u);
+		$em->flush();
+		$em->clear();
+
+
+		$users=$em->createQuery('select u from GE\Entity\User u')->execute();
+		foreach ($users as $user){
+		    echo 'refId='.$user->refId.'<br/>';
+		}
 
 //		    $u=new GE\Entity\User();
 //		   var_dump($u);

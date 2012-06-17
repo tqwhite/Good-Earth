@@ -16,35 +16,25 @@ class UserTest extends \ModelTestCase
 
 		$users=$em->createQuery('select u from GE\Entity\User u')->execute();
 		$this->assertEquals(1, count($users));
-		$this->assertEquals('tq', $users[0]->firstname);
-		$this->assertEquals('white', $users[0]->lastname);
+		$this->assertEquals('tq', $users[0]->firstName);
+		$this->assertEquals('white', $users[0]->lastName);
 	}
 
-	public function testCanAddPurchasesToUser(){
-		$u=$this->getTestUser();
+	public function XXtestDuplicateRefIdCrash(){
 
-		$purchase1=new Purchase();
-		$purchase1->amount=12.99;
-		$purchase1->storeName='Store A';
+		$u=$this->getTestUser('tq', 'white', '1234');
+		$u2=$this->getTestUser('tq2', 'white', '1234');
 
-		$purchase2=new Purchase();
-		$purchase2->amount=5.99;
-		$secondProd='Store A';
-		$purchase2->storeName=$secondProd;
-
-		$u->purchases=array($purchase1, $purchase2);
 		$em=$this->doctrineContainer->getEntityManager();
 		$em->persist($u);
+		$em->persist($u2);
 		$em->flush();
 
 		$users=$em->createQuery('select u from GE\Entity\User u')->execute();
-		$this->assertEquals(1, count($users));
-
-		$this->assertEquals(2, count($users[0]->purchases));
-
-		$this->assertEquals($secondProd,$users[0]->purchases[1]->storeName);
-
-	//	var_dump($users[0]->purchases->toArray());
+		$this->assertEquals(2, count($users));
+		$this->assertEquals('tq', $users[0]->firstName);
+		$this->assertEquals('white', $users[0]->lastName);
 	}
+
 
 }

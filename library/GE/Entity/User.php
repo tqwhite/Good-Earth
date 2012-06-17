@@ -10,38 +10,41 @@ namespace GE\Entity;
 **/
 class User{
 	/**
-	* @var integer $id
-	* @column(name="id", type="integer", nullable=false)
+	* @var string $id
+	* @column(name="refId", type="string", length=36, nullable=false, unique="true")
 	* @Id
-	* @GeneratedValue(strategy="IDENTITY")
 	**/
-	private $id;
+	private $refId;
 
 	/**
 	 * @column(type="string", length=60, nullable=false)
 	 * @var string
 	 **/
-	private $firstname;
+	private $firstName;
 
 	/**
 	 * @column(type="string", length=60, nullable=true)
 	 * @var string
 	 **/
-	private $phone;
+	private $emailAdr;
 
 	/**
 	 * @column(type="string", length=60, nullable=false)
 	 * @var string
 	 **/
 
-	private $lastname;
+	private $lastName;
 
 	/**
-	 * @param \Doctrine\Common\Collections\Collection $property
-	 * @OneToMany(targetEntity="Purchase", mappedBy="user", cascade={"persist", "remove"});
+	 * @column(type="string", length=60, nullable=false, unique="true")
+	 * @var string
 	 **/
 
-	private $purchases;
+	private $userName;
+
+public function __construct(){
+	$this->refId=  uniqid();
+}
 
 public function __get($property){
 	return $this->$property;
