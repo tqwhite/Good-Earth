@@ -26,4 +26,8 @@ class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase {
 		$this->application->bootstrap();
 	}
 
+	public function tearDown(){
+		parent::tearDown();
+	}
+
 } //end of class

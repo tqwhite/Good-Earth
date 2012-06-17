@@ -1,12 +1,16 @@
 <?php
 
-class ModelTestCase extends Zend_Test_PHPUnit_ControllerTestCase
+class ModelTestCase extends PHPUnit_Framework_TestCase
 {
 
 	/**
 	* @var \Bisna\Application\Container\DoctrineContainer
 	**/
 	protected $doctrineContainer;
+	/**
+	 * @var Zend_Application
+	 **/
+	protected $application;
 
     public function setUp()
     {
@@ -15,9 +19,13 @@ class ModelTestCase extends Zend_Test_PHPUnit_ControllerTestCase
         $application->bootstrap();
         $this->doctrineContainer=Zend_Registry::get('doctrine');
 
-        $tool=new \Doctrine\ORM\Tools\SchemaTool($this->doctrineContainer->getEntityManager());
+		$em=$this->doctrineContainer->getEntityManager();
 
-		$metas=$this->getClassMetas(APPLICATION_PATH.'/../library/GE/Entity/', 'GE\Entity\\');
+        $tool=new \Doctrine\ORM\Tools\SchemaTool($em);
+
+		$metas=$em->getMetadataFactory()->getAllMetadata();
+
+
         $tool->createSchema($metas);
 
         parent::setUp();
@@ -25,30 +33,44 @@ class ModelTestCase extends Zend_Test_PHPUnit_ControllerTestCase
 
 	public function tearDown(){
 
-        self::dropSchema($this->doctrineContainer->getConnection()->getParams());
+			$this->doctrineContainer->getConnection()->close();
+			$em=$this->doctrineContainer->getEntityManager();
+			$tool=new \Doctrine\ORM\Tools\SchemaTool($em);
+			$tool->dropDatabase();
+
         parent::tearDown();
 
 	}
-
-
-	public  function getClassMetas($path, $namespace){ //from video approx minute 35
-		$metas=array();
-		if ($handle =opendir($path)){
-			while (false!== ($file=readdir($handle))){
-				if (strstr($file, '.php')){
-					list($class)=explode('.', $file);
-					$metas[]=$this->doctrineContainer->getEntityManager()->getClassMetadata($namespace.$class);
-				}
-			}
-		}
-		return $metas;
-	}
-
-    public static function dropSchema($params)
+   public function getTestUser($name = "John", $last='smith')
     {
-        if (file_exists($params['path']))
-            unlink ($params['path']);
+        $user = new GE\Entity\User();
+        $user->firstname = $name;
+        $user->lastname = $last;
+        return $user;
     }
+    public function getApple()
+    {
+        $apple = new GE\Entity\Product();
+        $apple->name = "Apples";
+        $apple->amount = 2.45;
+        $this->doctrineContainer->getEntityManager()->persist($apple);
+        return $apple;
+    }
+    public function getOrange()
+    {
+        $orange = new GE\Entity\Product();
+        $orange->name = "Oranges";
+        $orange->amount = 2.99;
+        $this->doctrineContainer->getEntityManager()->persist($orange);
+        return $orange;
+    }
+    public function getPurchase()
+    {
+        $purchase = new GE\Entity\Purchase();
+        $purchase->storeName = "My Store";
+        return $purchase;
+    }
+
 
 
 }
