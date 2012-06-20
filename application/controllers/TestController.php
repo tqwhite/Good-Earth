@@ -11,12 +11,27 @@ class TestController extends Zend_Controller_Action {
 	}
 
 	public function databaseAction() {
-		$db = new Zend_Db_Adapter_Pdo_Mysql(array(
-			'host'     => '127.0.0.1',
-			'username' => 'tq',
-			'password' => '',
-			'dbname'   => 'test1'
-		));
+		$locale=$this->getRequest()->getParam('locale');
+
+	switch ($locale){
+		case 'qDev':
+			$db = new Zend_Db_Adapter_Pdo_Mysql(array(
+				'host'     => '127.0.0.1',
+				'username' => 'tq',
+				'password' => '',
+				'dbname'   => 'test1'
+			));
+		break;
+		case 'demo':
+			$db = new Zend_Db_Adapter_Pdo_Mysql(array(
+				'host'     => 'localhost',
+				'username' => 'goodearthsite',
+				'password' => 'glory*snacks',
+				'dbname'   => 'goodEarthDemoData'
+			));
+		break;
+
+		}
 
 		$stmt = $db->query('select * from example');
 
