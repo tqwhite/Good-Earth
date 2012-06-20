@@ -36,7 +36,7 @@ class TestController extends Zend_Controller_Action {
 		$stmt = $db->query('select * from example');
 
 		print_r($stmt->fetch());
-		echo Zend_Version::VERSION;
+		echo '<p/>'.Zend_Version::VERSION;
 	}
 
 	public function doctrineAction() {

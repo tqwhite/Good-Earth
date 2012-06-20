@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
+
 define('DOCROOT_DIRECTORY_PATH', realpath(dirname(__FILE__)).'/'); //needed for AJAX apps
 
 // Define path to application directory
