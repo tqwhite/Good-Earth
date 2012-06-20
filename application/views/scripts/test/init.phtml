@@ -1,0 +1,15 @@
+<?php
+$sqlString='';
+if ($this->sqlList){
+	foreach ($this->sqlList as $sqlItem){
+		$sqlString.='<p/>----------<p/>';
+		$sqlString.=str_replace(',', ',<p/>', $sqlItem);
+	}
+}
+
+?>
+<br /><br />
+<div id="view-content">
+	<p><?=$this->message;?></p>
+	<?=$sqlString; ?>
+</div>
