@@ -1,16 +1,20 @@
 <?php
 
-class TestController extends Zend_Controller_Action {
+class TestController extends Zend_Controller_Action
+{
 
-	public function init() {
+    public function init()
+    {
 		/* Initialize action controller here */
-	}
+    }
 
-	public function indexAction() {
+    public function indexAction()
+    {
 		// action body
-	}
+    }
 
-	public function databaseAction() {
+    public function databaseAction()
+    {
 		$locale=$this->getRequest()->getParam('locale');
 
 	switch ($locale){
@@ -37,18 +41,17 @@ class TestController extends Zend_Controller_Action {
 
 		print_r($stmt->fetch());
 		echo '<p/>'.Zend_Version::VERSION;
-	}
+    }
 
-	public function doctrineAction() {
-		$message = $this->_getParam('m');
-
-		if (!$message) {
-			$message = 'default';
-		}
-		$this->view->message = $message;
-
+    public function doctrineAction()
+    {
+	//	$this->view->message = $message;
 
 		$this->doctrineContainer=Zend_Registry::get('doctrine');
+
+		$initSchema=$this->getRequest()->getParam('initSchema');
+
+
 		$u=new GE\Entity\User();
 		$u->firstName='tq';
 		$u->lastName='white';
@@ -67,15 +70,42 @@ class TestController extends Zend_Controller_Action {
 
 //		    $u=new GE\Entity\User();
 //		   var_dump($u);
-	}
+    }
 
-	public function sqliteAction() {
+    public function sqliteAction()
+    {
 		$db = new SQLite3('mysqlitedb.db');
 		print_r($db);
-	}
+    }
+
+    public function initAction()
+    {
+		$this->view->message = "<b>Initializing Things</b><p/>";
+
+		$initSchema=$this->getRequest()->getParam('initSchema');
+
+		$this->doctrineContainer=Zend_Registry::get('doctrine');
+			$em=$this->doctrineContainer->getEntityManager();
+
+		if ($initSchema=='pleaseKillMyData'){
+			$tool=new \Doctrine\ORM\Tools\SchemaTool($em);
+
+			$tool->dropDatabase();
+			$this->view->message .= "dropped database - bye bye Data!<br/>";
+
+			$metas=$em->getMetadataFactory()->getAllMetadata();
+			$tool->createSchema($metas);
+			$this->view->message .= "initializing database<br/>";
+
+
+			$this->view->sqlList=$tool->getCreateSchemaSql($metas);
+        }
+    }
 
 
 }
+
+
 
 
 

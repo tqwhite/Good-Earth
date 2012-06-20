@@ -60,6 +60,9 @@
           <viewControllerScriptsDirectory forControllerName="Test">
             <viewScriptFile forActionName="doctrine"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="test">
+            <viewScriptFile forActionName="init"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
