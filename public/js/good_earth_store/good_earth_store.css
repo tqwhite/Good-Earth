@@ -1,0 +1,114 @@
+body {
+	font-family:Lucida Sans,Lucida Grande,Arial,sans-serif;
+	margin:-1px 0px 0px -1px;
+}
+
+
+
+.basicButton{
+  	font-weight:bold;
+	border-top:1pt solid gray;
+	cursor:pointer;
+	border-left:1pt solid gray;
+	border-right:1pt solid black;
+	border-bottom:1pt solid black;
+	text-align:center;
+	padding-left:2px;
+	padding-right:2px;
+	width:120px;
+	height:30px;
+	margin-right:10px;
+	float:left;
+  -moz-border-radius: 4px; /* Firefox */
+  -webkit-border-radius: 4px; /* Safari, Chrome */
+  border-radius: 4px; /* CSS3 */
+}
+
+.basicReady{
+	background:#D2E6D2;
+	color:black;
+  -moz-border-radius: 4px; /* Firefox */
+  -webkit-border-radius: 4px; /* Safari, Chrome */
+  border-radius: 4px; /* CSS3 */
+}
+
+.basicHover{
+	background:none;
+	color:red;
+  -moz-border-radius: 4px; /* Firefox */
+  -webkit-border-radius: 4px; /* Safari, Chrome */
+  border-radius: 4px; /* CSS3 */
+}
+
+.basicActive{ /*clicked*/
+	background:#ddd;
+	color:red;
+  -moz-border-radius: 4px; /* Firefox */
+  -webkit-border-radius: 4px; /* Safari, Chrome */
+  border-radius: 4px; /* CSS3 */
+}
+
+.basicUnavailable{
+	background:#aaa;
+	color:#ddd;
+  -moz-border-radius: 0px; /* Firefox */
+  -webkit-border-radius: 0px; /* Safari, Chrome */
+  border-radius: 0px; /* CSS3 */
+}
+
+
+
+
+.smallButton{
+  	font-weight:normal;
+	border-top:1pt solid gray;
+	cursor:pointer;
+	border-left:1pt solid gray;
+	border-right:1pt solid black;
+	border-bottom:1pt solid black;
+	text-align:center;
+	padding-left:2px;
+	padding-right:2px;
+	width:90px;
+	height:15px;
+	margin-right:10px;
+	float:left;
+  -moz-border-radius: 2px; /* Firefox */
+  -webkit-border-radius: 2px; /* Safari, Chrome */
+  border-radius: 2px; /* CSS3 */
+  font-size:8pt;
+}
+
+.smallReady{
+	background:#D2E6D2;
+	color:black;
+  -moz-border-radius: 2px; /* Firefox */
+  -webkit-border-radius: 2px; /* Safari, Chrome */
+  border-radius: 2px; /* CSS3 */
+}
+
+.smallHover{
+	background:none;
+	color:red;
+  -moz-border-radius: 2px; /* Firefox */
+  -webkit-border-radius: 2px; /* Safari, Chrome */
+  border-radius: 2px; /* CSS3 */
+}
+
+.smallActive{ /*clicked*/
+	background:#ddd;
+	color:red;
+  -moz-border-radius: 2px; /* Firefox */
+  -webkit-border-radius: 2px; /* Safari, Chrome */
+  border-radius: 2px; /* CSS3 */
+}
+
+.smallUnavailable{
+	background:#aaa;
+	color:#ddd;
+  -moz-border-radius: 0px; /* Firefox */
+  -webkit-border-radius: 0px; /* Safari, Chrome */
+  border-radius: 0px; /* CSS3 */
+}
+
+

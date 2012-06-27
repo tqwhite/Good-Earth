@@ -1,0 +1,36 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'}
+	],
+ source:'session.register.mainPanel' });
+
+qtools.validateProperties({
+	targetObject:displayParameters,
+	propList:[
+		{name:'saveButton'},
+		{name:'loginButton'},
+		{name:'status'},
+	],
+ source:'session.register.mainPanel' });
+
+var today=qtools.dateToday();
+
+%>
+<div style='margin:50px 0px 0px 200px;padding-left:50px;height:320px;width:300px;border:1pt solid gray;'>
+
+<div class='basicButtonXXX' style='margin-top:25px;height:30px;width:100%' id='<%==displayParameters.status.divId%>'>Welcome!</div>
+
+<table style='border:none;font-size:10pt;'>
+	<tr><td style='width:100px;'>User Name:</td><td><input name='userName'></td></tr>
+	<tr><td>Password:</td><td><input name='password'></td></tr>
+	<tr><td>Email Address:</td><td><input name='emailAdr'></td></tr>
+	<tr><td>Confirm Email:</td><td><input name='confirmEmail'></td></tr>
+	<tr><td>Phone:</td><td><input name='phone'></td></tr>
+</table>
+<div class='basicButton' style='margin-left:136px;margin-top:20px;' id='<%==displayParameters.saveButton.divId%>'></div>
+
+<div class='smallButton' style='margin-left:165px;margin-top:20px;' id='<%==displayParameters.loginButton.divId%>'></div>
+</div>
