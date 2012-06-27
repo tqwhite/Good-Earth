@@ -24,6 +24,12 @@
           <actionMethod actionName="database"/>
           <actionMethod actionName="doctrine"/>
         </controllerFile>
+        <controllerFile controllerName="Session">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="login"/>
+          <actionMethod actionName="start"/>
+          <actionMethod actionName="logout"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
       <layoutsDirectory>
@@ -35,6 +41,7 @@
         <modelFile modelName="Base"/>
         <modelFile modelName="File"/>
         <modelFile modelName="Picture"/>
+        <modelFile modelName="User"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>
@@ -62,6 +69,18 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="test">
             <viewScriptFile forActionName="init"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Session">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Session">
+            <viewScriptFile forActionName="login"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Session">
+            <viewScriptFile forActionName="start"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Session">
+            <viewScriptFile forActionName="logout"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
@@ -100,6 +119,12 @@
       <testApplicationDirectory>
         <testApplicationControllerDirectory>
           <testApplicationControllerFile forControllerName="Index"/>
+          <testApplicationControllerFile forControllerName="Session">
+            <testApplicationActionMethod forActionName="index"/>
+            <testApplicationActionMethod forActionName="login"/>
+            <testApplicationActionMethod forActionName="start"/>
+            <testApplicationActionMethod forActionName="logout"/>
+          </testApplicationControllerFile>
         </testApplicationControllerDirectory>
       </testApplicationDirectory>
       <testLibraryDirectory/>

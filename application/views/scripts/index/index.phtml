@@ -12,24 +12,7 @@ else{
 	$outString="<div style='margin:72px 0 0 72px;font-size:48pt;color:#ff7200;'>This is a private website.</div>";
 }
 
+$outString="<div style='margin:50px 0px 0px 200px;color:gray;'>Welcome to the Good Earth School Lunch Program.</div>";
 
 ?>
-<!DOCTYPE html>
-<html>
-    <head>
-        <title><?php echo $_SERVER['HTTP_HOST']." presented by TQ White II";?></title>
-
-        <style type="text/css">
-        <!--
-        html, body, #tbl_wrap { height: 100%; width: 100%; padding: 0; margin: 0; }
-        #td_wrap { vertical-align: middle; text-align: center; }
-        -->
-        </style>
-    </head>
-
-    <body>
-        <table id="tbl_wrap"><tbody><tr><td id="td_wrap">
-        <?php echo $outString;?>
-        </td></tr></tbody></table>
-    </body>
-</html>
+<?php echo $outString;?>

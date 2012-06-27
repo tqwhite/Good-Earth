@@ -1,9 +1,0 @@
-from dana - Lenny..just spoke to CenturyLink (the old Qwest).   He said they would talk to you if you had the site control user name and password.   The url for site control is the following
-https://sitecontrol.qwestbusiness.net
-user
-kora208
-pw
-dane25nm
-There is web site info on there as well as email and such.   Go in and have a look to see if what you need is there already and accessible to you
-if not call:
-tech support:  877-211-5980

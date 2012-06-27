@@ -15,6 +15,8 @@ class TestController extends Zend_Controller_Action
 
     public function databaseAction()
     {
+
+    echo "DATABASE\n";
 		$locale=$this->getRequest()->getParam('locale');
 
 	switch ($locale){
@@ -45,31 +47,43 @@ class TestController extends Zend_Controller_Action
 
     public function doctrineAction()
     {
-	//	$this->view->message = $message;
 
 		$this->doctrineContainer=Zend_Registry::get('doctrine');
-
 		$initSchema=$this->getRequest()->getParam('initSchema');
-
 
 		$u=new GE\Entity\User();
 		$u->firstName='tq';
 		$u->lastName='white';
 		$u->userName='tq'.  uniqid();
+		$u->password='12345';
+	//	$u->userName='tqwhite';
 
 		$em=$this->doctrineContainer->getEntityManager();
 		$em->persist($u);
 		$em->flush();
 		$em->clear();
 
+		$users=$em
+			->createQuery('select u from GE\Entity\User u')
+			->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
-		$users=$em->createQuery('select u from GE\Entity\User u')->execute();
+/*
 		foreach ($users as $user){
 		    echo 'refId='.$user->refId.'<br/>';
 		}
+*/
+		$this->_helper->layout()->disableLayout();
+		$this->_helper->viewRenderer->setNoRender(false);
 
-//		    $u=new GE\Entity\User();
-//		   var_dump($u);
+
+
+		$this->_helper->json(array(
+			status=>1,
+			data=>$users
+		));
+
+
+
     }
 
     public function sqliteAction()

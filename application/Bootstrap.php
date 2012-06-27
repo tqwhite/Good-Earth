@@ -3,6 +3,15 @@
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 
+public function _initSession(){
+	Zend_Session::start();
+
+	$front = Zend_Controller_Front::getInstance();
+//	$front->registerPlugin(new Q\Plugin\Authorize\Check());
+
+
+
+}
 public function _initRouting(){
 
 	$front = Zend_Controller_Front::getInstance();

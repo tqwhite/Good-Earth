@@ -8,7 +8,7 @@ namespace GE\Entity;
 *
 *
 **/
-class User{
+class User extends Base{
 	/**
 	* @var string $id
 	* @column(name="refId", type="string", length=36, nullable=false, unique="true")
@@ -41,6 +41,13 @@ class User{
 	 **/
 
 	private $userName;
+
+	/**
+	 * @column(type="string", length=60, nullable=false, unique="true")
+	 * @var string
+	 **/
+
+	private $password;
 
 public function __construct(){
 	$this->refId=  uniqid();
