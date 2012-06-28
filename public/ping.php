@@ -11,14 +11,14 @@
 <style type='text/css'>
 
 	body {color:orange;}
-	
+
 </style>
 
 </head>
 <body>
 
 	Hello World
-	
+
 </body>
 
 <script type='text/javascript'>

@@ -8,7 +8,7 @@ namespace GE\Entity;
 *
 *
 **/
-class User extends Base{
+class User /*extends Base*/{
 	/**
 	* @var string $id
 	* @column(name="refId", type="string", length=36, nullable=false, unique="true")

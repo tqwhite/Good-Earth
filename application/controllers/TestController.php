@@ -56,7 +56,7 @@ class TestController extends Zend_Controller_Action
 		$u->lastName='white';
 		$u->userName='tq'.  uniqid();
 		$u->password='12345';
-	//	$u->userName='tqwhite';
+		$u->userName='tqwhite';
 
 		$em=$this->doctrineContainer->getEntityManager();
 		$em->persist($u);

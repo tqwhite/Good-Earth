@@ -24,7 +24,7 @@ public function authenticate(){
 	$userObj=new \Application_Model_User();
 	$user=$userObj->getUserByUserId($this->_userName);
 
-	if ($this->_password==$user[0]->password){
+	if ($user && $this->_password==$user[0]->password){
 		return (new \Zend_Auth_Result(
 				\Zend_Auth_Result::SUCCESS,
 				$user
@@ -34,7 +34,6 @@ public function authenticate(){
 	{
 		return (new \Zend_Auth_Result(
 				\Zend_Auth_Result::FAILURE,
-				'',
 				'Password and User ID were not correct'
 			));
 	}
