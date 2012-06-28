@@ -85,7 +85,7 @@ saveButtonHandler:function(control, parameter){
 	switch(control){
 		case 'click':
 
-		GoodEarthStore.Models.Session.login(this.element.formParams(), this.callback('resetAfterSave'));
+		GoodEarthStore.Models.User.register(this.element.formParams(), this.callback('resetAfterSave'));
 
 		break;
 		case 'setAccessFunction':
@@ -99,10 +99,10 @@ saveButtonHandler:function(control, parameter){
 
 resetAfterSave:function(inData){
 	if (inData.status<1){
-		$('#'+this.displayParameters.status.divId).html("<span style='color:red;'>Invalid User Name/Password</span>");
+		$('#'+this.displayParameters.status.divId).html("<span style='color:red;'>Error: "+inData.message+"</span>");
 	}
 	else{
-		$('#'+this.displayParameters.status.divId).html("<span style='color:green;'>Welcome back, "+inData.data.identity.firstName+"</span>");
+		$('#'+this.displayParameters.status.divId).html("<span style='color:green;'>Welcome, "+inData.data.identity.firstName+"</span>");
 	}
 },
 
@@ -111,8 +111,8 @@ loginButtonHandler:function(control, parameter){
 	switch(control){
 		case 'click':
 
-		this.assertModalScreen(this.element, 'SAVING...');
-		portal.models.reports.save(this.formatOutSaveObj(this.element.formParams()), this.callback('resetAfterSave'));
+
+		this.element.good_earth_store_session_register();
 
 		break;
 		case 'setAccessFunction':

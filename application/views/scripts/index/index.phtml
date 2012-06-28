@@ -1,16 +1,6 @@
 <?php
 
-if (file_exists(DOCROOT_DIRECTORY_PATH.'/media/index/siteSpecificSplash.png')){
-	$picPath='/media/index/siteSpecificSplash.png';
-	$outString="<img src='$picPath'>";
-}
-elseif (file_exists(DOCROOT_DIRECTORY_PATH.'/media/index/defaultSplash.png')){
-	$picPath='/media/index/defaultSplash.png';
-	$outString="<img src='$picPath'>";
-}
-else{
-	$outString="<div style='margin:72px 0 0 72px;font-size:48pt;color:#ff7200;'>This is a private website.</div>";
-}
+
 
 $outString="<div style='margin:50px 0px 0px 200px;color:gray;'>Welcome to the Good Earth School Lunch Program.</div>";
 

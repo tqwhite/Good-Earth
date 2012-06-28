@@ -43,7 +43,7 @@ class User /*extends Base*/{
 	private $userName;
 
 	/**
-	 * @column(type="string", length=60, nullable=false, unique="true")
+	 * @column(type="string", length=60, nullable=false)
 	 * @var string
 	 **/
 
