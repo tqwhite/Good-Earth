@@ -100,7 +100,7 @@ function dump($data, $name = false, $html = null, $echo_out = true) {
 
 	// HTML
 	if ($html) {
-		echo '<pre style="text-align: left;font-size:14pt;background:#aaaaaa;">';
+		echo '<pre style="text-align: left;font-size:14pt;border-top:1pt solid gray;border-bottom:1pt solid gray; border-left:1pt dashed gray;margin-left:15px;padding-left:5px;">';
 	}
 	else{
 		echo "\n\n----------\n\n";

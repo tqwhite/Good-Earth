@@ -49,6 +49,33 @@ class User /*extends Base*/{
 
 	private $password;
 
+	/**
+	 * @column(type="integer", nullable=true)
+	 * @var string
+	 **/
+
+	private $emailStatus;
+
+	/**
+	 * @column(type="string", length=60)
+	 * @var string
+	 **/
+
+	private $confirmationCode; //has md5(refId) if email is NOT confirmed
+
+
+
+
+	/**
+	 *
+	 * @ManyToOne(targetEntity="School", cascade={"all"}, fetch="EAGER")
+	 * @JoinColumn(name="schoolRefId", referencedColumnName="refId")
+	 *
+	 **/
+	private $school;
+
+
+
 public function __construct(){
 	$this->refId=  uniqid();
 }
