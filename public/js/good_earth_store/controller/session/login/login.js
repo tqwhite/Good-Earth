@@ -17,9 +17,15 @@ init: function(el, options) {
 	this.initControlProperties();
 	this.initDisplayProperties();
 
+	options=options?options:{};
+	if (options.initialStatusMessage){this.initialStatusMessage=options.initialStatusMessage;}
 
 	this.initDisplay();
 
+},
+
+update:function(){
+	this.init();
 },
 
 initDisplayProperties:function(){
@@ -45,7 +51,10 @@ initDisplay:function(inData){
 	var html=$.View('//good_earth_store/controller/session/login/views/init.ejs',
 		$.extend(inData, {
 			displayParameters:this.displayParameters,
-			viewHelper:this.viewHelper
+			viewHelper:this.viewHelper,
+			formData:{
+				userName:GoodEarthStore.Models.LocalStorage.getCookieData(GoodEarthStore.Models.LocalStorage.getConstant('loginCookieName')).data
+			}
 		})
 		);
 	this.element.html(html);
@@ -84,8 +93,12 @@ initDomElements:function(){
 				unavailable:{classs:'smallUnavailable'},
 				accessFunction:this.displayParameters.forgotButton.handler,
 				initialControl:'setToReady', //initialControl:'setUnavailable'
-				label:"<div '>Forgot Password</div>"
+				label:"<div style='text-decoration:line-through;'>Forgot Password</div>"
 			});
+
+			if (this.initialStatusMessage){
+				$('#'+this.displayParameters.status.divId).html(this.initialStatusMessage).removeClass('bad').addClass('good');
+			}
 
 },
 
@@ -96,9 +109,7 @@ saveButtonHandler:function(control, parameter){
 	var componentName='saveButton';
 	switch(control){
 		case 'click':
-
-		GoodEarthStore.Models.Session.login(this.element.formParams(), this.callback('resetAfterSave'));
-
+			GoodEarthStore.Models.Session.login(this.element.formParams(), this.callback('resetAfterSave'));
 		break;
 		case 'setAccessFunction':
 			if (!this[componentName]){this[componentName]={};}
@@ -111,10 +122,11 @@ saveButtonHandler:function(control, parameter){
 
 resetAfterSave:function(inData){
 	if (inData.status<1){
-		$('#'+this.displayParameters.status.divId).html("<span style='color:red;'>Invalid User Name/Password</span>");
+		$('#'+this.displayParameters.status.divId).html("Invalid User Name/Password").removeClass('good').addClass('bad');
 	}
 	else{
-		$('#'+this.displayParameters.status.divId).html("<span style='color:green;'>Welcome back, "+inData.data.identity.firstName+"</span>");
+		$('#'+this.displayParameters.status.divId).html("Welcome back, "+inData.data.identity.firstName+" <span style=color:gray;font-size:6pt'>("+inData.data.identity.school+")</span>").removeClass('bad').addClass('good');
+		GoodEarthStore.Models.LocalStorage.setCookie(GoodEarthStore.Models.LocalStorage.getConstant('loginCookieName'), inData.data.identity.userName);
 	}
 },
 

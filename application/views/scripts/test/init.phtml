@@ -8,8 +8,10 @@ if ($this->sqlList){
 }
 
 ?>
+	<?php echo $this->serverComm; ?>
 <br /><br />
 <div id="view-content">
 	<p><?php echo $this->message;?></p>
 	<?php echo $sqlString; ?>
+	<?php Q\Utils::dumpWeb($this->schoolList);?>);
 </div>

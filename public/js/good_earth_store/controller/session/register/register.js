@@ -1,5 +1,5 @@
 steal( 'jquery/controller','jquery/view/ejs' )
-	.then( './views/init.ejs', function($){
+	.then( './views/form.ejs', function($){
 
 /**
  * @class GoodEarthStore.Controller.Session.Register
@@ -18,8 +18,12 @@ init: function(el, options) {
 	this.initDisplayProperties();
 
 
-	this.initDisplay();
+	this.getReferenceData(this.callback('initDisplay'));
 
+},
+
+update:function(){
+	this.init();
 },
 
 initDisplayProperties:function(){
@@ -41,10 +45,11 @@ initControlProperties:function(){
 
 initDisplay:function(inData){
 
-	var html=$.View('//good_earth_store/controller/session/register/views/init.ejs',
+	var html=$.View('//good_earth_store/controller/session/register/views/form.ejs',
 		$.extend(inData, {
 			displayParameters:this.displayParameters,
-			viewHelper:this.viewHelper
+			viewHelper:this.viewHelper,
+			schoolList:this.schoolList
 		})
 		);
 	this.element.html(html);
@@ -98,11 +103,12 @@ saveButtonHandler:function(control, parameter){
 },
 
 resetAfterSave:function(inData){
+	var errorString=this.listMessages(inData.messages);
 	if (inData.status<1){
-		$('#'+this.displayParameters.status.divId).html("<span style='color:red;'>Error: "+inData.message+"</span>");
+		$('#'+this.displayParameters.status.divId).html(errorString).removeClass('good').addClass('bad');
 	}
 	else{
-		$('#'+this.displayParameters.status.divId).html("<span style='color:green;'>Welcome, "+inData.data.identity.firstName+"</span>");
+		$('#'+this.displayParameters.status.divId).html("Welcome, "+inData.data.identity.firstName).removeClass('bad').addClass('good');
 	}
 },
 
@@ -110,10 +116,7 @@ loginButtonHandler:function(control, parameter){
 	var componentName='loginButton';
 	switch(control){
 		case 'click':
-
-
-		this.element.good_earth_store_session_register();
-
+			this.element.good_earth_store_session_login();
 		break;
 		case 'setAccessFunction':
 			if (!this[componentName]){this[componentName]={};}
@@ -164,8 +167,32 @@ lastFieldHandler:function(eventObj){
 			firstFieldObj.focus();
 		}, 100);
 	}
-}
+},
 
+getReferenceData:function(callback){
+
+
+		var controlObj={
+			calls:{
+				schools:{
+					ajaxFunction:GoodEarthStore.Models.School.getList,
+					argData:{}
+				}
+			},
+			success:this.callback('referenceCallback', callback),
+			error:function(){alert('the server broke down');},
+			stripWrappers:true
+
+		};
+		qtools.multiAjax(controlObj);
+
+},
+
+referenceCallback:function(callback, inData){
+
+		this.schoolList=inData.schools
+		callback();
+}
 
 
 })

@@ -1,6 +1,6 @@
 <?php
 
-class UserControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
+class SchoolControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
 {
 
     public function setUp()
@@ -11,7 +11,7 @@ class UserControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
 
     public function testIndexAction()
     {
-        $params = array('action' => 'index', 'controller' => 'User', 'module' => 'default');
+        $params = array('action' => 'index', 'controller' => 'School', 'module' => 'default');
         $urlParams = $this->urlizeOptions($params);
         $url = $this->url($urlParams);
         $this->dispatch($url);
@@ -26,26 +26,9 @@ class UserControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
             );
     }
 
-    public function testRegisterAction()
+    public function testListAction()
     {
-        $params = array('action' => 'register', 'controller' => 'User', 'module' => 'default');
-        $urlParams = $this->urlizeOptions($params);
-        $url = $this->url($urlParams);
-        $this->dispatch($url);
-        
-        // assertions
-        $this->assertModule($urlParams['module']);
-        $this->assertController($urlParams['controller']);
-        $this->assertAction($urlParams['action']);
-        $this->assertQueryContentContains(
-            'div#view-content p',
-            'View script for controller <b>' . $params['controller'] . '</b> and script/action name <b>' . $params['action'] . '</b>'
-            );
-    }
-
-    public function testConfirmEmailAction()
-    {
-        $params = array('action' => 'confirmEmail', 'controller' => 'User', 'module' => 'default');
+        $params = array('action' => 'list', 'controller' => 'School', 'module' => 'default');
         $urlParams = $this->urlizeOptions($params);
         $url = $this->url($urlParams);
         $this->dispatch($url);
@@ -62,8 +45,6 @@ class UserControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
 
 
 }
-
-
 
 
 

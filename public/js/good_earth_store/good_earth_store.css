@@ -56,9 +56,6 @@ body {
   border-radius: 0px; /* CSS3 */
 }
 
-
-
-
 .smallButton{
   	font-weight:normal;
 	border-top:1pt solid gray;
@@ -109,6 +106,18 @@ body {
   -moz-border-radius: 0px; /* Firefox */
   -webkit-border-radius: 0px; /* Safari, Chrome */
   border-radius: 0px; /* CSS3 */
+}
+
+.entryPanelErrorList{
+font-size:10pt;
+}
+
+.bad{
+	color:red;
+}
+
+.good{
+	color:green;
 }
 
 

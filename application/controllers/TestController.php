@@ -49,7 +49,6 @@ class TestController extends Zend_Controller_Action
     {
 
 		$this->doctrineContainer=Zend_Registry::get('doctrine');
-		$initSchema=$this->getRequest()->getParam('initSchema');
 
 		$u=new GE\Entity\User();
 		$u->firstName='tq';
@@ -111,9 +110,52 @@ class TestController extends Zend_Controller_Action
 			$tool->createSchema($metas);
 			$this->view->message .= "initializing database<br/>";
 
-
 			$this->view->sqlList=$tool->getCreateSchemaSql($metas);
+
+			$this->view->message .= "initializing school data<br/>";
+			$this->_initSchools();
+
+			$schoolObj=new \Application_Model_School();
+			$schoolList=$schoolObj->getSchoolList($inData);
+
+			$this->view->schoolList=$schoolList;
+
+		$serverComm=array();
+			$serverComm[]=array("fieldName"=>"user_confirm_message", "value"=>$message);
+			$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'none');
+
+		$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
+
         }
+    }
+
+    private function _initSchools(){
+
+
+		$this->doctrineContainer=Zend_Registry::get('doctrine');
+		$em=$this->doctrineContainer->getEntityManager();
+
+		$u=new GE\Entity\School();
+		$u->name='Horace Mann';
+		$u->testField='xxx';
+		$em->persist($u);
+		$em->flush();
+
+		$u=new GE\Entity\School();
+		$u->name='Ben Franklin';
+		$u->testField='xxx';
+		$em->persist($u);
+		$em->flush();
+
+		$u=new GE\Entity\School();
+		$u->name='George Washington';
+		$u->testField='xxx';
+		$em->persist($u);
+		$em->flush();
+
+
+		$em->clear();
+
     }
 
 

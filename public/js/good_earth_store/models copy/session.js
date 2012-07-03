@@ -21,7 +21,7 @@ $.Model('GoodEarthStore.Models.Session',
 		error=error?error:function(){alert('error');};
 
 		$.ajax({
-				url: '/session/start',
+				url: 'session/start',
 				type: 'post',
 				dataType: 'json',
 				data: {data:{hello:'hello from UI'}},
@@ -37,7 +37,7 @@ $.Model('GoodEarthStore.Models.Session',
 		error=error?error:function(){alert('error');};
 
 		$.ajax({
-				url: '/session/login',
+				url: 'session/login',
 				type: 'post',
 				dataType: 'json',
 				data: {data:data},

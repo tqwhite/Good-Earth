@@ -27,13 +27,13 @@ public function _initRouting(){
 	$router->addRoute('test', $route);
 
 	$route = new Zend_Controller_Router_Route(
-		'x',
+		'confirm/:confirmcode',
 		array(
-			'controller' => 'bookmarks',
-			'action'     => 'index'
+			'controller' => 'user',
+			'action'     => 'confirm'
 		)
 	);
-	$router->addRoute('x', $route);
+	$router->addRoute('confirm', $route);
 }
 
 }

@@ -18,7 +18,7 @@ $.Model('GoodEarthStore.Models.User',
 	register:function(data, success, error){
 
 		success=success?success:function(){alert('success');};
-		error=error?error:function(){console.log('errror');};
+		error=error?error:function(){alert('error');};
 
 		var errors=this.validate(data);
 		if (errors.length>0){
@@ -27,7 +27,7 @@ $.Model('GoodEarthStore.Models.User',
 		}
 
 		$.ajax({
-				url: '/user/register',
+				url: 'user/register',
 				type: 'post',
 				dataType: 'json',
 				data: {data:data},
@@ -39,7 +39,6 @@ $.Model('GoodEarthStore.Models.User',
 },
 
 validate:function(inData){
-return [];
 	var name, datum,
 		errors=[];
 	name='userName';

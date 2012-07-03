@@ -79,6 +79,20 @@ setAcceptClicks:function(){
 
 isAcceptingClicks:function(){
 	return this.acceptClicks;
+},
+
+listMessages:function(messageArray, separator, itemIndex){
+	separator=separator?separator:'<br/>';
+	itemIndex=itemIndex?itemIndex:1;
+	var outString='';
+
+	if (messageArray){
+		for (var i=0, len=messageArray.length; i<len; i++){
+			outString+=messageArray[i][itemIndex]+separator;
+		}
+	}
+
+	return outString;
 }
 
 })

@@ -13,12 +13,6 @@
           <actionMethod actionName="database"/>
         </controllerFile>
         <controllerFile controllerName="Error"/>
-        <controllerFile controllerName="Pictures">
-          <actionMethod actionName="index"/>
-        </controllerFile>
-        <controllerFile controllerName="Bookmarks">
-          <actionMethod actionName="index"/>
-        </controllerFile>
         <controllerFile controllerName="Test">
           <actionMethod actionName="index"/>
           <actionMethod actionName="database"/>
@@ -33,6 +27,11 @@
         <controllerFile controllerName="User">
           <actionMethod actionName="index"/>
           <actionMethod actionName="register"/>
+          <actionMethod actionName="confirm"/>
+        </controllerFile>
+        <controllerFile controllerName="School">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="list"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
@@ -44,8 +43,8 @@
       <modelsDirectory>
         <modelFile modelName="Base"/>
         <modelFile modelName="File"/>
-        <modelFile modelName="Picture"/>
         <modelFile modelName="User"/>
+        <modelFile modelName="School"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>
@@ -55,12 +54,6 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Error">
             <viewScriptFile forActionName="error"/>
-          </viewControllerScriptsDirectory>
-          <viewControllerScriptsDirectory forControllerName="Pictures">
-            <viewScriptFile forActionName="index"/>
-          </viewControllerScriptsDirectory>
-          <viewControllerScriptsDirectory forControllerName="Bookmarks">
-            <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Test">
             <viewScriptFile forActionName="index"/>
@@ -91,6 +84,15 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="User">
             <viewScriptFile forActionName="register"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="User">
+            <viewScriptFile forActionName="confirm"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="School">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="School">
+            <viewScriptFile forActionName="list"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
@@ -138,6 +140,11 @@
           <testApplicationControllerFile forControllerName="User">
             <testApplicationActionMethod forActionName="index"/>
             <testApplicationActionMethod forActionName="register"/>
+            <testApplicationActionMethod forActionName="confirm"/>
+          </testApplicationControllerFile>
+          <testApplicationControllerFile forControllerName="School">
+            <testApplicationActionMethod forActionName="index"/>
+            <testApplicationActionMethod forActionName="list"/>
           </testApplicationControllerFile>
         </testApplicationControllerDirectory>
       </testApplicationDirectory>

@@ -35,9 +35,6 @@ class SessionController extends Zend_Controller_Action
 				"name"=>$namespace->name
 				)
 		));
-
-
-
     }
 
     public function loginAction()
@@ -66,7 +63,8 @@ class SessionController extends Zend_Controller_Action
 					'firstName'=>$identity->firstName,
 					'lastName'=>$identity->lastName,
 					'emailAdr'=>$identity->emailAdr,
-					'userName'=>$identity->userName
+					'userName'=>$identity->userName,
+					'school'=>$identity->school->name
 				)
 				)
 		));

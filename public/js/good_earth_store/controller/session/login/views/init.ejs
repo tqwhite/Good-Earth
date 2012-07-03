@@ -3,7 +3,8 @@ qtools.validateProperties({
 	targetObject:this,
 	propList:[
 		{name:'displayParameters'},
-		{name:'viewHelper'}
+		{name:'viewHelper'},
+		{name:'formData'}
 	],
  source:'session.login.mainPanel' });
 
@@ -18,15 +19,13 @@ qtools.validateProperties({
 	],
  source:'session.login.mainPanel' });
 
-var today=qtools.dateToday();
-
 %>
 <div style='margin:50px 0px 0px 200px;padding-left:50px;height:250px;width:300px;border:1pt solid gray;'>
 
 <div class='basicButtonXXX' style='margin-top:25px;height:30px;width:100%' id='<%==displayParameters.status.divId%>'></div>
 
 <table style='border:none;font-size:10pt;'>
-	<tr><td style='width:100px;'>User Name:</td><td><input name='userName'></td></tr>
+	<tr><td style='width:100px;'>User Name:</td><td><input name='userName' value='<%==formData['userName']%>'></td></tr>
 	<tr><td>Password:</td><td><input name='password'></td></tr>
 </table>
 <div class='basicButton' style='margin-left:136px;margin-top:20px;' id='<%==displayParameters.saveButton.divId%>'></div>

@@ -16,14 +16,46 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 /** @Prototype */
 {
 	init : function(){
-
+	//	this.session.saveReferenceLocation();
+		this.getServerData();
 		GoodEarthStore.Models.Session.start([], this.callback('receiveSessionStartup'));
+
+		if (window.location.hash){
+			this.startingHash=window.location.hash.replace('#', '');
+		}
+	},
+
+	getServerData:function(){
+		var serverDataDomObj=$('#serverData'), //'#serverData' is defined in Q_Controller_Action_Helper_WriteServerCommDiv()
+			formParams;
+
+			if (serverDataDomObj.length>0){
+				formParams=serverDataDomObj.formParams();
+				this.serverDataDomObj=serverDataDomObj;
+			}
+			else{
+				formParams={};
+			}
+
+			if (formParams.user_confirm_message){this.userConfirmMessage=formParams.user_confirm_message;}
+			if (formParams.assert_initial_controller){this.initialController=formParams.assert_initial_controller;}
 
 	},
 
 	receiveSessionStartup:function(inData){
 		if (inData.status<1){
-			this.element.good_earth_store_session_login('show login');
+			switch (this.startingHash || this.initialController){
+				default:
+				case 'register':
+					this.element.good_earth_store_session_register({initialStatusMessage:this.userConfirmMessage});
+					break;
+				case 'login':
+					this.element.good_earth_store_session_login({initialStatusMessage:this.userConfirmMessage});
+					break;
+				case 'none':
+					this.serverDataDomObj.html('<div style="color:white;background:#cc9999;">aborting store app</div>').show();
+					break;
+			}
 		}
 		else{
 			this.element.html("dispatch.js says, Show the correct control for "+inData.data.identity.firstName);
