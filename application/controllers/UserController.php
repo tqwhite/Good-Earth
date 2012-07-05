@@ -78,10 +78,11 @@ class UserController extends Zend_Controller_Action
 }
     private function sendEmailConfirmation($userObj)
     {
+    
 		$mail = new Zend_Mail();
 		$tr=new Zend_Mail_Transport_Sendmail();
 
-		$mail->setBodyHtml("<div style='color:blue;font-size:14pt;margin:20px 0px 20px 10px;'><A href='http://goodearth.local/confirm/".$userObj->emailStatus."'>http://goodearth.local/confirm/".$userObj->emailStatus."</a></div>");
+		$mail->setBodyHtml("<div style='color:blue;font-size:14pt;margin:20px 0px 20px 10px;'><A href='http://goodearth.local/confirm/".$userObj->confirmationCode."'>http://goodearth.local/confirm/".$userObj->confirmationCode."</a></div>");
 		$mail->setFrom('tq@justkidding.com', "Good Earth Lunch Program");
 		$mail->setSubject("Good Earth: Lunch Program Email Address Confirmation ".$userObj->userName);
 
