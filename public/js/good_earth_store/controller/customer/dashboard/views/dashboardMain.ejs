@@ -1,0 +1,30 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'},
+		{name:'formData'}
+	],
+ source:'session.dashboard.dashboardMain' });
+
+qtools.validateProperties({
+	targetObject:displayParameters,
+	propList:[
+		{name:'myId'},
+		{name:'accountSpace'},
+		{name:'kidSpace'},
+		{name:'purchaseSpace'},
+		{name:'lunchButton'}
+
+	],
+ source:'session.dashboard.dashboardMain' });
+
+%><div class='mainContainer' id='<%= displayParameters.myId.divId %>'>
+
+	<div class='accountSpace' id='<%= displayParameters.accountSpace.divId %>'></div>
+	<div class='kidSpace' id='<%= displayParameters.kidSpace.divId %>'>
+	</div>
+	<div class='purchaseSpace' id='<%= displayParameters.purchaseSpace.divId %>'></div>
+
+</div>

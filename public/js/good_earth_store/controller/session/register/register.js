@@ -80,6 +80,8 @@ initDomElements:function(){
 				label:"<div '>Login Instead</div>"
 			});
 
+	$($('.schoolIdClassString').find('option')[1]).attr('selected', 'selected'); //for debugg only, see form.ejs
+
 },
 
 //BUTTON HANDLERS =========================================================================================================

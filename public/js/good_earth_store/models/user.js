@@ -39,7 +39,6 @@ $.Model('GoodEarthStore.Models.User',
 },
 
 validate:function(inData){
-return [];
 	var name, datum,
 		errors=[];
 	name='userName';
@@ -55,6 +54,13 @@ return [];
 	var emailRegexTest = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/; //thanks: http://www.marketingtechblog.com/javascript-regex-emailaddress/
 	if (!datum || !emailRegexTest.test(datum))
 	{errors.push([name, "Invalid email address"]);}
+	
+	
+	name='schoolRefId';
+	datum=inData[name];
+	if (!datum)
+	{errors.push([name, "Please choose a school"]);}
+	
 
 	return errors;
 }

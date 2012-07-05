@@ -1,0 +1,29 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'},
+		{name:'formData'}
+	],
+ source:'session.dashboard.dashboardMain' });
+
+qtools.validateProperties({
+	targetObject:displayParameters,
+	propList:[
+		{name:'myId'},
+		{name:'childNameSpace'},
+		{name:'offeringSpace'},
+		{name:'selectedSpace'},
+		{name:'doneButton'}
+
+	],
+ source:'session.dashboard.dashboardMain' });
+
+%><div class='mainContainer' id='<%= displayParameters.myId.divId %>'>
+	<div class='childNameSpace' id='<%= displayParameters.childNameSpace.divId %>'></div>
+	<div class='offeringSpace' id='<%= displayParameters.offeringSpace.divId %>'></div>
+	<div class='selectedSpace' id='<%= displayParameters.selectedSpace.divId %>'>
+	</div>
+
+</div>

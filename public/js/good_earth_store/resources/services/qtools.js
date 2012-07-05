@@ -856,22 +856,20 @@ validateProperties:function(args){
 		propList=args.propList,
 		source=args.source,
 		importance=args.importance,
-		templateToLog=args.templateToLog,
-		templateString='';
+		showAlertFlag=false, //should be pointing to a global but I don't have one today
+		targetScope=args.targetScope?args.targetScope:'';
 
-	source=source?source+' (via qtools.checkProperties) ':'qtools.checkProperties ';
-
-	
-	if (templateToLog  && GLOBALS.config.messageLevel == CONSTANTS.allowDebugMessages){
-		for (var i=0, len=propList.length; i<len; i++){
-			templateString+=propList[i].name+':placeholder,\r';
-		}
-		templateString=templateString.replace(/,\r$/, '\r');
-		qtools.consoleMessage('{'+templateString+'}');
-		return;
+	if (typeof(qtools)=='undefined' && showAlertFlag){
+		alert("qtools.validateProperties did not get a source object");
+		console.trace();
 	}
 	
+	if (qtools.toType(targetScope)!='object'){
+		targetScope=false;
+	}
 	
+	source=source?source+' (via qtools.checkProperties) ':'qtools.checkProperties ';
+
 	for (var i=0, len=propList.length; i<len; i++){
 		name=propList[i].name;
 		importance=propList[i].importance;
@@ -889,14 +887,18 @@ validateProperties:function(args){
 			outList.push(source+' says, '+name+' cannot be empty');
 		}
 		
+		if (targetScope){
+			targetScope[name]=inObj[name];
+		}
 	}
 	
 	for (var i=0, len=outList.length; i<len; i++){
 		outMessage+=outList[i]+'\n';
 	}
-	if (GLOBALS.config.messageLevel == CONSTANTS.allowDebugMessages && outMessage){
+	if (showAlertFlag && outMessage){
 		alert(outMessage);
 	}
+
 },
 
 dumpActivities:function(inObj){

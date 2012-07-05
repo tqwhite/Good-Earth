@@ -23,6 +23,11 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 		if (window.location.hash){
 			this.startingHash=window.location.hash.replace('#', '');
 		}
+		
+		if (console){
+			console.log('debugg items exist');
+			console.dir(window.GoodEarthStore);
+		}
 	},
 
 	getServerData:function(){
@@ -58,7 +63,8 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 			}
 		}
 		else{
-			this.element.html("dispatch.js says, Show the correct control for "+inData.data.identity.firstName);
+			this.element.html('');
+			this.element.good_earth_store_customer_dashboard();
 		}
 	}
 

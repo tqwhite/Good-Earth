@@ -1,0 +1,23 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'},
+		{name:'formData'}
+	],
+ source:'session.dashboard.dashboardMain' });
+
+qtools.validateProperties({
+	targetObject:displayParameters,
+	propList:[
+	],
+ source:'session.dashboard.dashboardMain' });
+
+%>
+<table class='schedule'>
+<tr style='color:gray;'><td></td><td>Mon</td><td>Mon</td><td>Mon</td><td>Mon</td><td>Mon</td></tr>
+<tr><td>John</td><td>-</td><td>Mon</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>John</td><td>-</td><td>Mon</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>John</td><td>-</td><td>Mon</td><td>-</td><td>-</td><td>-</td></tr>
+</table>

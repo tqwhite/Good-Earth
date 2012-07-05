@@ -1,0 +1,20 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'},
+		{name:'formData'}
+	],
+ source:'session.dashboard.dashboardMain' });
+
+qtools.validateProperties({
+	targetObject:displayParameters,
+	propList:[
+		{name:'doneButton'}
+
+	],
+ source:'session.dashboard.dashboardMain' });
+
+%>
+<div class='nameString'>Jimmie</div><div class='smallButton' style='float:right;' id='<%= displayParameters.doneButton.divId %>'></div>

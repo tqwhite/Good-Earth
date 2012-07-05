@@ -18,7 +18,6 @@ body {
 	width:120px;
 	height:30px;
 	margin-right:10px;
-	float:left;
   -moz-border-radius: 4px; /* Firefox */
   -webkit-border-radius: 4px; /* Safari, Chrome */
   border-radius: 4px; /* CSS3 */
@@ -69,7 +68,6 @@ body {
 	width:90px;
 	height:15px;
 	margin-right:10px;
-	float:left;
   -moz-border-radius: 2px; /* Firefox */
   -webkit-border-radius: 2px; /* Safari, Chrome */
   border-radius: 2px; /* CSS3 */
@@ -120,4 +118,82 @@ font-size:10pt;
 	color:green;
 }
 
+.mainContainer{
+	background:#a0f4f7;
+	margin:20px 0px 0px 50px;
+	height:400px;
+	width:700px;
+	border-right:4pt solid #c9b67e;
+	border-bottom:4pt solid #c9b67e;
+	border-top:2pt solid #fcf7e8;
+	border-left:2pt solid #fcf7e8;
+}
+
+.accountSpace{
+	width:630px;
+	height:20px;
+	margin-left:25px;
+	padding:10px 0px 10px 20px;
+	color:#426134;
+	border-bottom:2pt solid gray;
+}
+
+.accountSpace .subTitle{
+	font-size:70%;
+	color:gray;
+}
+
+.kidSpace{
+	min-height:200px;
+	width:630px;
+	margin-left:25px;
+	padding:10px 0px 10px 20px;
+	color:#426134;
+	border-bottom:2pt solid gray;
+}
+
+.kidSpace .schedule td{
+	width: 70px;
+	height:25px;
+	text-align:center;
+}
+
+.purchaseSpace{
+	min-height:200px;
+	width:630px;
+	margin-left:25px;
+	padding:10px 0px 10px 20px;
+	color:#426134;
+}
+
+.childNameSpace{
+	width:630px;
+	height:20px;
+	margin-left:25px;
+	padding:10px 0px 10px 20px;
+	color:#426134;
+	border-bottom:2pt solid gray;
+	clear:both;
+}
+
+.childNameSpace .nameString{
+	float:left;
+}
+
+.offeringSpace{
+	float:left;
+	width:300px;
+	min-height:200px;
+	background:#c7f8f9;
+	margin-left:25px;
+	padding:10px 0px 10px 20px;
+}
+.selectedSpace{
+	float:left;
+	width:300px;
+	min-height:200px;
+	background:#c7f8f9;
+	padding:10px 0px 10px 20px;
+	margin-left:10px;
+}
 
