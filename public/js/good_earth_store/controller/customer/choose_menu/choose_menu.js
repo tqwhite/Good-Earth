@@ -22,11 +22,13 @@ init: function(el, options) {
 		targetScope: this, //will add listed items to targetScope
 		propList:[
 			{name:'returnClassName'},
-			{name:'returnClassOptions'}
+			{name:'returnClassOptions'},
+			{name:'account'},
+			{name:'studentRefId'}
 		],
-		source:this.constructor._fullName 
+		source:this.constructor._fullName
  	});
-	
+
 	this.initControlProperties();
 	this.initDisplayProperties();
 
@@ -44,7 +46,7 @@ update:function(options){
 initDisplayProperties:function(){
 
 	nameArray=[];
-		
+
 	name='myId'; nameArray.push({name:name});
 	name='childNameSpace'; nameArray.push({name:name});
 	name='offeringSpace'; nameArray.push({name:name});
@@ -56,6 +58,8 @@ initDisplayProperties:function(){
 
 initControlProperties:function(){
 	this.viewHelper=new viewHelper2();
+
+	this.student=qtools.getByProperty(this.account.students, 'refId', this.studentRefId);
 },
 
 initDisplay:function(inData){
@@ -78,12 +82,13 @@ initDomElements:function(){
 	this.displayParameters.childNameSpace.domObj=$('#'+this.displayParameters.childNameSpace.divId);
 	this.displayParameters.offeringSpace.domObj=$('#'+this.displayParameters.offeringSpace.divId);
 	this.displayParameters.selectedSpace.domObj=$('#'+this.displayParameters.selectedSpace.divId);
-	
+
 	this.displayParameters.childNameSpace.domObj.good_earth_store_customer_child({
-		doneButtonHandler:this.callback('doneButtonHandler')
+		doneButtonHandler:this.callback('doneButtonHandler'),
+		student:this.student
 	});
-	
-	
+
+
 	this.displayParameters.offeringSpace.domObj.good_earth_store_customer_offerings({});
 	this.displayParameters.selectedSpace.domObj.good_earth_store_customer_choices({});
 
@@ -94,8 +99,7 @@ doneButtonHandler:function(control, parameter){
 	var componentName='doneButton';
 	switch(control){
 		case 'click':
-		
-			this.element.html('');
+
 			this.element[this.returnClassName](this.returnClassOptions);
 		break;
 		case 'setAccessFunction':

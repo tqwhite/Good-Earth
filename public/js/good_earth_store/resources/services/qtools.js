@@ -51,7 +51,7 @@ for (i=0; i<standardsGroup.length; i++){
 	if (standardsGroup[i].activities){
 		outString+=this.displayActivities(indentLevel+1, standardsGroup[i].activities);
 	}
-	
+
 	if (standardsGroup[i].standards){
 		outString+=this.displayStandards(indentLevel+1, standardsGroup[i].standards);
 	}
@@ -112,7 +112,7 @@ sizeOf: function(incoming) {
             return incoming.length
         }
     },
-    
+
 exists:function(arg) { return typeof(arg)!='undefined';},
 
 isEmpty: function(arg) {
@@ -128,12 +128,12 @@ if (typeof(arg)=='undefined'){
 
 if (typeof(arg)=='object'){
 	objectEmptyFlag=true; //assume it's empty until further notice
-	for(var item in arg){ 
+	for(var item in arg){
 		objectEmptyFlag=false; //found one
 		}
 }
 else{
-	objectEmptyFlag=false; //can't be full if it's not an object	
+	objectEmptyFlag=false; //can't be full if it's not an object
 }
 
 	return (objectEmptyFlag || arg=='' || arg.length==0)
@@ -171,7 +171,7 @@ timeoutProxy: function(func, milliseconds, scope, args) {
 var timeoutId;
 if ($.browser.msie == true) {
 		timeoutId=setTimeout(function() {
-		func(scope, args) 
+		func(scope, args)
 		}, milliseconds);
 	}
 	else {
@@ -179,7 +179,7 @@ if ($.browser.msie == true) {
 	}
 return timeoutId;
 },
-    
+
 tmpRep:function(template, replaceObject){
     return this.templateReplace({template:template, replaceObject:replaceObject});
     },
@@ -199,11 +199,11 @@ templateReplace:function(args){
 		replaceObject=args.replaceObject,
 		leaveUnmatchedTagsIntact=args.leaveUnmatchedTagsIntact,
 		transformations=args.transformations,
-		
-		outString='', 
+
+		outString='',
 		localReplaceObject={};
-		
-		
+
+
 	$.extend(this, {localReplaceObject:qtools.passByValue(replaceObject)}, args); //clones replaceObject
 	this.localReplaceObject['leaveUnmatchedTagsIntact']=leaveUnmatchedTagsIntact?leaveUnmatchedTagsIntact:false;
 	this.localReplaceObject['indexNumber']=args.indexNumber?args.indexNumber:0;
@@ -215,16 +215,16 @@ templateReplace:function(args){
 	}
 
 	outString=template.replace(/<!([a-zA-Z0-9]+)!>/g, this.evaluatorFunction);
-	
+
 //	outString='ttt'+outString+'qqq';
 	return outString;
 },
 
 evaluatorFunction:function(matchedString, propertyName){
 	/*
-	* This works as a callback from replace() in this.templateReplace. Looks up the 
+	* This works as a callback from replace() in this.templateReplace. Looks up the
 	* appropriate property in an object and returns it to replace a tag.
-	* 
+	*
 	* Tags are the form <!replaceName!>.
 	* */
 	var outString;
@@ -281,7 +281,7 @@ showLog:function(){
 	logObj.bind("dblclick", function(){
 		$(this).hide();
 	});
-	
+
 	var b={
 		overflow:'scroll'
 		};
@@ -309,7 +309,7 @@ $('#log').css(a);
 newGuid:function() {
 	//thanks 'broofa': http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
 	 return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-		/[xy]/g, 
+		/[xy]/g,
 		function(c) {
 			var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
 			return v.toString(16);
@@ -328,9 +328,9 @@ consoleMessage:function(message){
 				opera.postError(message);
 			}
 		}
-		
+
 	},
-	
+
 applyAttributesFromList:function(divObj, list){
 		if (qtools.isNotEmpty(list)) {
 			for (var key in list) {
@@ -372,26 +372,26 @@ applyStylesFromList:function(divObj, list){
 
 repeateableGuid:function(inString){
 	var md5, outString, start, len, end;
-	
+
 	md5=$.md5(inString);
 	outString='';
 	end=0;
-	
+
 	start=end; len=8; end=start+len;
 	outString+=md5.substring(start, end)+'-';
-	
+
 	start=end; len=4; end=start+len;
 	outString+=md5.substring(start, end)+'-';
-	
+
 	start=end; len=4; end=start+len;
 	outString+=md5.substring(start, end)+'-';
-	
+
 	start=end; len=4; end=start+len;
 	outString+=md5.substring(start, end)+'-';
-	
+
 	start=end; len=12; end=start+len;
 	outString+=md5.substring(start, end);
-	
+
 	return outString.toLowerCase();
 
 },
@@ -418,9 +418,9 @@ getByProperty:function(inArray, propertyName, propertyValue){
 notifyRestore:function(message, domObj, delay){
 	delay=delay?delay:5000;
 	var oldMessage=domObj.html();
-	
+
 	domObj.html(message);
-	
+
 	qtools.timeoutProxy(
 			function(scope, args){
 				args.domObj.hide();
@@ -437,12 +437,12 @@ notifyRestore:function(message, domObj, delay){
 byObjectProperty:function(fieldName, transformer){
 		//called: resultArray=someArray.sort(qtools.byObjectProperty('somePropertyName'));
 		//based on closure of fieldName
-		return fullNameSort=function(a,b){	
+		return fullNameSort=function(a,b){
 			var localFieldName=fieldName, //for debug
 				localTransformer=transformer; //for debug
 			var aa=qtools.getDottedPath(a, fieldName),
 				bb=qtools.getDottedPath(b, fieldName);
-			
+
 			if (typeof(transformer)=='function'){
 				aa=transformer(aa);
 				bb=transformer(bb);
@@ -458,11 +458,11 @@ byObjectProperty:function(fieldName, transformer){
 						break;
 				}
 			}
-		
+
 			if (!bb && !aa){ return 0;}
 			if (!bb){ return -1;}
 			if (!aa){ return 1;}
-			
+
 			if (aa>bb){ return 1;}
 			if (aa<bb){ return -1;}
 			return 0;
@@ -480,7 +480,7 @@ bindScope:function(scope, functionName, args){
 		else{
 			scope[functionName].apply(scope, effectiveArgs);
 		}
-	
+
 	};
 },
 
@@ -501,34 +501,34 @@ multiAjax:function(params){
 			success:this.callback('receiveSupportData'),
 			error:function(){alert('the server broke down');},
 			stripWrappers:true
-			
+
 		};*/
 	var calls=params.calls,
 		count={},
 		outObj={};
-	
+
 	this.success=function(name, inData){
 		outObj[name]=params.stripWrappers?inData.data:inData;
 		delete count[name];
 		if (qtools.length(count)<1){
 			params.success(outObj);
 		}
-	
+
 	};
-	
+
 	this.error=function(name, inData){
 		if (typeof(params.error)=='function'){
 			params.error(name);
 		}
 		else{
-			alert('qtools.multiAjax says, The server stopped working. The call was in regards to '+name+'. Please tell tech support. Trying again is good, too.');
+			qtools.consoleMessage('qtools.multiAjax says, The server stopped working. The call was in regards to '+name+'. Please tell tech support. Trying again is good, too.');
 		}
 	};
 
 	for (var i in calls){
 		count[i]=true;
 	}
-	
+
 	for (var i in calls){
 		calls[i].ajaxFunction(calls[i].argData, qtools.bindScope(this, 'success', i), qtools.bindScope(this, 'error', i));
 	};
@@ -538,12 +538,12 @@ multiAjax:function(params){
 indexObjFromPath:function(inObj, fieldName){
 	var outObj={},
 	value='';
-	
+
 	if (typeof(inObj)!='undefined' && inObj && inObj[fieldName]){
 		outObj[inObj[fieldName]]=inObj;
 		return outObj;
 	}
-	
+
 	for (var i in inObj){
 		value=this.getDottedPath(inObj[i], fieldName);
 		outObj[value]=inObj[i];
@@ -555,11 +555,11 @@ getDottedPath:function(baseObj, subPathString){
 	var target=baseObj,
 		elements;
 		this.getDottedPathLastProgressiveString='';
-	
+
 	var elements=subPathString.split('.');
-	
+
 	if (!subPathString){ return baseObj;}
-	
+
 	if (elements.length<2){
 		return baseObj[subPathString];
 	}
@@ -572,7 +572,7 @@ getDottedPath:function(baseObj, subPathString){
 				if (typeof(target)=='undefined'){
 					qtools.consoleMessage('bad path='+this.getDottedPathLastProgressiveString);
 					return null;
-				}	
+				}
 			}
 		}
 	}
@@ -596,9 +596,9 @@ addBranch:function(inObj, subPathString, propertyData){
 	//notice that this function overwrites properties that are named in subPathString and are not objects
 	var elements,
 		target=inObj;
-		
+
 	elements=subPathString.split('.');
-	
+
 	if (elements.length<2){
 		if (!inObj[subPathString]){inObj[subPathString]={}; }
 		inObj[subPathString]=propertyData;
@@ -608,9 +608,9 @@ addBranch:function(inObj, subPathString, propertyData){
 			if (!target[elements[i]] || typeof(target[elements[i]])!='object'){target[elements[i]]={}; }
 			target=target[elements[i]];
 		}
-		
+
 		target[elements[len-1]]=propertyData;
-		
+
 	}
 },
 
@@ -623,47 +623,47 @@ explodeToIndexObj:function(args, parentObjectList){
 		newParentList,
 		currObj,
 		keepNonDbObjects=args.keepNonDbObjects?args.keepNonDbObjects:false;;
-		
-		
-	
+
+
+
 	for (var i in inObj){
 		if (inObj[i] && typeof(inObj[i])=='object'){ //turns out that typeof(null)=='object'
 			currObj=inObj[i];
-			
+
 			if (!parentObjectList || typeof(parentObjectList.length)=='undefined'){
 				parentObjectList=[{node:inObj, index:inObj[fieldName]?inObj[fieldName]:'root'}];
 			}
-			
-			
+
+
 				newParentList=$.extend([], parentObjectList);
-				
+
 				newParentList.push({node:currObj, index:i});
 
-	
+
 			var desiredProperty=(!indexablePropertyString || indexablePropertyString.match(i) || !isNaN(i)),
 				validProperty=(currObj[inclusionFieldName] || inclusionFieldName=='includeAll'),
 				isArray=currObj.length,
 				includeThis=(desiredProperty && (validProperty || isArray)),
 				inx;
 
-	
+
 
 			if (includeThis){
-			
+
 				qtools.arrayInx=qtools.arrayInx?qtools.arrayInx:0;
 				if (keepNonDbObjects && !currObj[fieldName]){ inx='_missingIndexProperty_'+qtools.arrayInx; qtools.arrayInx++; }
 				else {inx=currObj[fieldName];}
-				
+
 				outObj[inx]={}
 					outObj[inx].target=currObj;
 					outObj[inx].parentObjectList=parentObjectList;
 					outObj[inx].finalIndex=i;
 				outObj=$.extend(outObj, this.explodeToIndexObj($.extend(args, {sourceObj:currObj}), newParentList));
 			}
-			
-			
+
+
 		}
-		
+
 	}
 	if (!keepNonDbObjects) {delete outObj['undefined'];} //array elements don't have indexableProperty and get stuffed into 'undefined'
 	return outObj;
@@ -673,20 +673,20 @@ getParentOfIndexObj:function(indexEntry){
 		var pathString='',
 			parentList=indexEntry.parentObjectList,
 			retrievedObject;
-		
+
 		for (var i in parentList){
 			if (parentList[i].index!='root'){
 				pathString+=parentList[i].index+".";
 			}
 		}
-		
+
 		//fyi, this points to the target: pathString+='.'+indexEntry.finalIndex;
 		retrievedObject=qtools.getDottedPath(indexEntry.parentObjectList[0].node, pathString);
 		return retrievedObject;
 },
 
 debugExplodedIndexList:function(counter){
-	
+
 	//This routine is used from the command line only.
 	//it calculates the dotted path from the root
 	//down to the indexed object and displays it.
@@ -696,41 +696,41 @@ debugExplodedIndexList:function(counter){
 	//is an array. In that case its index is prefaced with
 	// _missingIndexProperty_.
 	//Here's the anomaly. It creates an entry for each legitimately
-	//indexable element inside the array and THE DOTTED PATH 
-	//points to that indexable object. 
+	//indexable element inside the array and THE DOTTED PATH
+	//points to that indexable object.
 	//This doesn't matter since the array has no index and isn't used
 	//but it's confusing. It was too hard to program around it.
-	
+
 	console.clear();
-	
+
 	counter=counter?counter:10;
-	
+
 	for (var inx in A_editItemIndex){ //yes, it's a global, but this function is probably never going to be used again
 		var outString='',
 			indexEntry=A_editItemIndex[inx],
 			parentList=indexEntry.parentObjectList;
-		
+
 		if (inx.match('_non')){ continue; }
-		
+
 		console.log('Index='+inx);
-		
+
 		for (var i in parentList){
 			if (parentList[i].index!='root'){
 				outString+=parentList[i].index+".";
 			}
 		}
 		outString+='.'+A_editItemIndex[inx].finalIndex;
-	
-		
+
+
 		var retrievedObject=qtools.getDottedPath(indexEntry.parentObjectList[0].node, outString);
 		if (outString){console.log(outString);}
 		else{console.log('empty path');}
-		
+
 		if (retrievedObject){console.dir(retrievedObject);}
 		else{console.log('no object');}
-		
+
 		if (true){console.dir(indexEntry);}
-		
+
 		console.log('=======================');
 			if (counter==0){
 				break;
@@ -770,10 +770,10 @@ pruneMixedTree:function(inObj, args){ //by mixed, I mean it has both array and o
 	args=args?args:{};
 	if (qtools.toType(args.decider)=='string'){
 		switch(args.decider){
-			case simpleDeleteFlag: 
+			case simpleDeleteFlag:
 				decider=simpleDelete;
 				break;
-			
+
 			default:
 				alert('qtools.pruneMixedTree says, There is no decider named '+args.decider);
 				break;
@@ -785,8 +785,8 @@ pruneMixedTree:function(inObj, args){ //by mixed, I mean it has both array and o
 	else{
 		decider=simpleDelete;
 	}
-	
-	
+
+
 	if (qtools.toType(inObj)=='array'){
 		for (var i=0, len=inObj.length; i<len; i++){
 			if (qtools.toType(inObj)!='null'&& decider(inObj[i])){
@@ -796,7 +796,7 @@ pruneMixedTree:function(inObj, args){ //by mixed, I mean it has both array and o
 			}
 		}
 		qtools.consolidateArray(inObj);
-		
+
 		for (var i=0, len=inObj.length; i<len; i++){
 			if (qtools.toType(inObj)!='null' ){
 				qtools.pruneMixedTree(inObj[i], args);
@@ -806,27 +806,27 @@ pruneMixedTree:function(inObj, args){ //by mixed, I mean it has both array and o
 	}
 	else if (qtools.toType(inObj)=='object'){
 		for (var i in inObj){
-		
+
 			if (qtools.toType(inObj)!='null' && decider(inObj[i])){
 //AAA.push({deleted:inObj[i]});
 //qtools.consoleMessage('pruneMixedTree says, deleted '+i+' '+qtools.toType(inObj));
 				delete inObj[i];
 			}
 		}
-		
-		
+
+
 		for (var i in inObj){
-			
+
 			if (qtools.toType(inObj)!='null' && typeof(inObj[i])=='object'){ //want either array and object
 				qtools.pruneMixedTree(inObj[i], args);
 			}
 		}
-	
+
 	}
 	else{
 		return; //can't do anything with other data types
 	}
-	
+
 
 
 },
@@ -834,13 +834,13 @@ pruneMixedTree:function(inObj, args){ //by mixed, I mean it has both array and o
 consolidateArray:function(inArray){
 	var notNullItems=[], inx=0;
 	if (qtools.toType(inArray)!='array'){ return;}
-	
+
 	for (var i=0, len=inArray.length; i<len; i++){
 		if (qtools.toType(inArray[i])!='undefined'){
 			notNullItems.push(inArray[i]);
 		}
 	}
-	
+
 	for (var i=0, len=notNullItems.length; i<len; i++){
 		inArray[inx]=notNullItems[i];
 		inx++;
@@ -863,11 +863,11 @@ validateProperties:function(args){
 		alert("qtools.validateProperties did not get a source object");
 		console.trace();
 	}
-	
+
 	if (qtools.toType(targetScope)!='object'){
 		targetScope=false;
 	}
-	
+
 	source=source?source+' (via qtools.checkProperties) ':'qtools.checkProperties ';
 
 	for (var i=0, len=propList.length; i<len; i++){
@@ -876,7 +876,7 @@ validateProperties:function(args){
 		requiredType=propList[i].requiredType;
 		assertNotEmptyFlag=propList[i].assertNotEmptyFlag;
 		element=inObj[name];
-		
+
 		if (importance!='optional' && typeof(element)=='undefined'){
 			outList.push(source+' says, '+name+' is missing');
 		}
@@ -886,12 +886,12 @@ validateProperties:function(args){
 		if (assertNotEmptyFlag && qtools.isEmpty(element)){
 			outList.push(source+' says, '+name+' cannot be empty');
 		}
-		
+
 		if (targetScope){
 			targetScope[name]=inObj[name];
 		}
 	}
-	
+
 	for (var i=0, len=outList.length; i<len; i++){
 		outMessage+=outList[i]+'\n';
 	}
@@ -919,14 +919,14 @@ assembleDisplayParameters:function(args){
 		propList:[
 			{name:'nameArray'},
 			{name:'scope', importance:'optional'}
-			
+
 		], source:this.moduleName, templateToLog:false });
-		
+
 	var nameArray=args.nameArray,
 		scope=args.scope?args.scope:this,
 		componentDivIds={}
 		divPrefix=scope.divPrefix?scope.divPrefix:this.divPrefix('assembleDisplayParameters');
-		
+
 	for (var i=0, len=nameArray.length; i<len; i++){
 		if (typeof(nameArray[i])=='string'){
 			componentDivIds[nameArray[i]]=divPrefix+nameArray[i];
@@ -934,10 +934,10 @@ assembleDisplayParameters:function(args){
 		else{
 			componentDivIds[nameArray[i].name]={
 				name:nameArray[i].name,
-				divId:divPrefix+nameArray[i].name, 
+				divId:divPrefix+nameArray[i].name,
 				handler:scope.callback(nameArray[i].handlerName)
 			};
-			
+
 			if (nameArray[i].targetDivId){
 				componentDivIds[nameArray[i].name].targetDivId=divPrefix+nameArray[i].targetDivId;
 			}
@@ -948,22 +948,22 @@ assembleDisplayParameters:function(args){
 
 divPrefix:function(inString, nonRandom){
     var outString, tmpArray, tmpString;
-	
+
     tmpArray=inString.split('_');
     tmpString=tmpArray[tmpArray.length-2]+'_'+tmpArray[tmpArray.length-1];
-    
+
    	outString=inString.replace(tmpString, '')
    		.replace(/(_\w)([a-zA-Z0-9]*)/g, '$1')
     	.replace(/^([a-zA-Z0-9])([a-zA-Z0-9]*_)(.*)/, '$1_$3')
     	.replace(/_/g, '')+'_'+tmpString+'_';
-    	
+
     	if (!nonRandom){
     		tmpString=Math.floor(Math.random()*9999999);
     		outString=outString+tmpString+'_';
     	}
-    
+
     return outString;
-    
+
 },
 
 dateToday:function(format){

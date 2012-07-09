@@ -2,15 +2,16 @@ steal( 'jquery/controller','jquery/view/ejs' )
 	.then( './views/init.ejs', function($){
 
 /**
- * @class GoodEarthStore.Controller.Customer.Parent
+ * @class GoodEarthStore.Controller.Customer.Schedule.AddStudent
  */
-GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Customer.Parent',
+GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Customer.Schedule.AddStudent',
 /** @Static */
 {
 	defaults : {}
 },
 /** @Prototype */
 {
+//GoodEarthStore.Controller.Base.extend()
 
 init: function(el, options) {
 	this.baseInits();
@@ -19,7 +20,8 @@ init: function(el, options) {
 		targetObject:options,
 		targetScope: this, //will add listed items to targetScope
 		propList:[
-			{name:'loginUser'}
+			{name:'account'},
+			{name:'redrawSchedule'}
 		],
 		source:this.constructor._fullName
  	});
@@ -43,7 +45,7 @@ initDisplayProperties:function(){
 	nameArray=[];
 
 	name='status'; nameArray.push({name:name});
-	name='logoutButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+	name='saveButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -55,12 +57,12 @@ initControlProperties:function(){
 
 initDisplay:function(inData){
 
-	var html=$.View('//good_earth_store/controller/customer/parent/views/init.ejs',
+	var html=$.View('//good_earth_store/controller/customer/schedule/add_student/views/init.ejs',
 		$.extend(inData, {
 			displayParameters:this.displayParameters,
 			viewHelper:this.viewHelper,
 			formData:{
-				user:this.loginUser
+				account:this.account
 			}
 		})
 		);
@@ -70,26 +72,25 @@ initDisplay:function(inData){
 
 initDomElements:function(){
 
-	this.displayParameters.logoutButton.domObj=$('#'+this.displayParameters.logoutButton.divId);
+	this.displayParameters.saveButton.domObj=$('#'+this.displayParameters.saveButton.divId);
 
-	this.displayParameters.logoutButton.domObj.good_earth_store_tools_ui_button2({
+	this.displayParameters.saveButton.domObj.good_earth_store_tools_ui_button2({
 		ready:{classs:'basicReady'},
 		hover:{classs:'basicHover'},
 		clicked:{classs:'basicActive'},
 		unavailable:{classs:'basicUnavailable'},
-		accessFunction:this.displayParameters.logoutButton.handler,
+		accessFunction:this.displayParameters.saveButton.handler,
 		initialControl:'setToReady', //initialControl:'setUnavailable'
-		label:"Log Out"
+		label:"Save"
 	});
 
 },
 
-
-logoutButtonHandler:function(control, parameter){
-	var componentName='logoutButton';
+saveButtonHandler:function(control, parameter){
+	var componentName='saveButton';
 	switch(control){
 		case 'click':
-			GoodEarthStore.Models.Session.logout({}, this.callback('catchLogout'));
+			this.saveStudent();
 		break;
 		case 'setAccessFunction':
 			if (!this[componentName]){this[componentName]={};}
@@ -100,9 +101,23 @@ logoutButtonHandler:function(control, parameter){
 	//focusin focusout keydown keyup keypress select
 },
 
-catchLogout:function(){
-	window.location.reload()
+saveStudent:function(){
+	this.formParams=this.element.formParams();
+	GoodEarthStore.Models.Student.add(this.formParams, this.callback('catchSave'));
+},
+
+catchSave:function(inData){
+	var errorString=this.listMessages(inData.messages);
+	if (inData.status<1){
+		this.element.prepend(errorString).removeClass('good').addClass('bad').fade(5000);
+	}
+	else{
+		this.account.students.push(this.formParams);
+			this.redrawSchedule();
+	}
 }
+
+
 
 })
 

@@ -41,15 +41,6 @@ class ModelTestCase extends PHPUnit_Framework_TestCase
         parent::tearDown();
 
 	}
-   public function getTestUser($first = "John", $last='smith', $refId='')
-    {
-        $user = new GE\Entity\User();
-        $user->firstName = $first;
-        $user->lastName = $last;
-        $user->userName = $first.$last;
-        $user->refId = $refId?$refId:uniqid();
-        return $user;
-    }
 
 
 

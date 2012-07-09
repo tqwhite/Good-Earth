@@ -9,6 +9,28 @@ steal('jquery/model', function(){
 $.Model('GoodEarthStore.Models.Base',
 /* @Static */
 {
+
+defaultError:function(){
+	var modelName=this._fullName
+	return function(){
+		console.log('Model Error ('+modelName+')');
+	}
+},
+
+getStorage:function(){
+	var self=qtools.getDottedPath(window, this.fullName);
+	if (!self.storage){self.storage={};}
+	return self.storage;
+},
+
+keep:function(name, inData){
+	this.getStorage()[name]=inData;
+},
+
+get:function(name){
+	return this.getStorage()[name];
+},
+
 wrapDataForReturn:function(args, passByReference){
 	var outObj, fieldName;
 
@@ -42,7 +64,7 @@ wrapDataForReturn:function(args, passByReference){
 			outObj[fieldName]=args[fieldName];
 		}
 	return outObj;
-	}
+}
 },
 /* @Prototype */
 {});

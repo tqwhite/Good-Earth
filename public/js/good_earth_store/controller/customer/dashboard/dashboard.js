@@ -15,17 +15,17 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Customer.Dashbo
 
 init: function(el, options) {
 	this.baseInits();
-	
+
 	qtools.validateProperties({
 		targetObject:this,
 		propList:[],
-		source:'session.dashboard.dashboardMain' 
+		source:'session.dashboard.dashboardMain'
  	});
  	this.startupOptions=options?options:{};
- 
+
 	this.initControlProperties();
 	this.initDisplayProperties();
-	this.initDisplay();
+	this.getReferenceData(this.callback('initDisplay'));
 
 },
 
@@ -49,6 +49,7 @@ initDisplayProperties:function(){
 
 initControlProperties:function(){
 	this.viewHelper=new viewHelper2();
+	this.loginUser=GoodEarthStore.Models.Session.get('user');
 },
 
 initDisplay:function(inData){
@@ -62,22 +63,27 @@ initDisplay:function(inData){
 			}
 		})
 		);
-	this.element.append(html);
+	this.element.html(html);
 	this.initDomElements();
 },
 
 initDomElements:function(){
 
 	this.displayParameters.myId.domObj=$('#'+this.displayParameters.myId.divId);
-	
+
 	this.displayParameters.accountSpace.domObj=$('#'+this.displayParameters.accountSpace.divId);
 	this.displayParameters.kidSpace.domObj=$('#'+this.displayParameters.kidSpace.divId);
 	this.displayParameters.purchaseSpace.domObj=$('#'+this.displayParameters.purchaseSpace.divId);
 
-	this.displayParameters.accountSpace.domObj.good_earth_store_customer_parent();
-	this.displayParameters.kidSpace.domObj.good_earth_store_customer_schedule({});
-	this.displayParameters.purchaseSpace.domObj.good_earth_store_customer_purchases({
+	this.displayParameters.accountSpace.domObj.good_earth_store_customer_parent({
+		'loginUser':this.loginUser
+		});
+	this.displayParameters.kidSpace.domObj.good_earth_store_customer_schedule({
+		account:this.account,
 		lunchButtonHandler:this.callback('lunchButtonHandler')
+		});
+	this.displayParameters.purchaseSpace.domObj.good_earth_store_customer_purchases({
+		account:this.account
 	});
 
 },
@@ -87,10 +93,13 @@ lunchButtonHandler:function(control, parameter){
 	var componentName='lunchButton';
 	switch(control){
 		case 'click':
+			var studentRefId=parameter.thisDomObj.attr('refId');
 			this.element.html('');
 			this.element.good_earth_store_customer_choose_menu({
 				returnClassName:this.constructor._fullName,
-				returnClassOptions:this.startupOptions
+				returnClassOptions:this.startupOptions,
+				studentRefId:studentRefId,
+				account:this.account
 			});
 		break;
 		case 'setAccessFunction':
@@ -100,6 +109,31 @@ lunchButtonHandler:function(control, parameter){
 	}
 	//change dblclick mousedown mouseover mouseout dblclick
 	//focusin focusout keydown keyup keypress select
+},
+
+
+getReferenceData:function(callback){
+
+
+		var controlObj={
+			calls:{
+				account:{
+					ajaxFunction:GoodEarthStore.Models.Account.find,
+					argData:{refId:this.loginUser.account.refId}
+				}
+			},
+			success:this.callback('referenceCallback', callback),
+			stripWrappers:true
+
+		};
+		qtools.multiAjax(controlObj);
+
+},
+
+referenceCallback:function(callback, inData){
+
+		this.account=inData.account;
+		callback();
 }
 
 

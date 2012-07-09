@@ -3,7 +3,7 @@
 class SessionController extends Zend_Controller_Action
 {
 
-    public function init()
+    public function indexAction()
     {
         /* Initialize action controller here */
     }
@@ -58,17 +58,8 @@ class SessionController extends Zend_Controller_Action
 
 		$this->_helper->json(array(
 			status=>$status,
-			data=>array(
-				"identity"=>array(
-					'firstName'=>$identity->firstName,
-					'lastName'=>$identity->lastName,
-					'emailAdr'=>$identity->emailAdr,
-					'userName'=>$identity->userName,
-					'school'=>$identity->school->name
-				)
-				)
+			data=>\Application_Model_User::formatOutput($identity)
 		));
-
     }
 
     public function startAction()
@@ -88,14 +79,7 @@ class SessionController extends Zend_Controller_Action
 
 		$this->_helper->json(array(
 			status=>$status,
-			data=>array(
-				"identity"=>array(
-					'firstName'=>$identity->firstName,
-					'lastName'=>$identity->lastName,
-					'emailAdr'=>$identity->emailAdr,
-					'userName'=>$identity->userName
-				)
-				)
+			data=>\Application_Model_User::formatOutput($identity)
 		));
 
     }

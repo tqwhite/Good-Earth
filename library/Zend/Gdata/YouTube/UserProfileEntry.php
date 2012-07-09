@@ -883,7 +883,7 @@ class Zend_Gdata_YouTube_UserProfileEntry extends Zend_Gdata_Entry
      *
      * @return Zend_Gdata_YouTube_Extension_School  The school
      */
-    public function getSchool()
+    public function getByRefId()
     {
         return $this->_school;
     }

@@ -6,7 +6,7 @@ steal('jquery/model', function(){
  * @inherits jQuery.Model
  * Wraps backend session services.
  */
-$.Model('GoodEarthStore.Models.Session',
+GoodEarthStore.Models.Base.extend('GoodEarthStore.Models.Session',
 /* @Static */
 {
 	findAll: "/sessions.json",
@@ -38,6 +38,22 @@ $.Model('GoodEarthStore.Models.Session',
 
 		$.ajax({
 				url: '/session/login',
+				type: 'post',
+				dataType: 'json',
+				data: {data:data},
+				success: success,
+				error: error,
+				fixture: false
+			});
+	},
+
+	logout:function(data, success, error){
+
+		success=success?success:function(){alert('success');};
+		error=error?error:function(){alert('error');};
+
+		$.ajax({
+				url: '/session/logout',
 				type: 'post',
 				dataType: 'json',
 				data: {data:data},

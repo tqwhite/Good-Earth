@@ -6,7 +6,7 @@ steal('jquery/model', function(){
  * @inherits jQuery.Model
  * Wraps backend session services.
  */
-$.Model('GoodEarthStore.Models.User',
+GoodEarthStore.Models.Base.extend('GoodEarthStore.Models.User',
 /* @Static */
 {
 	findAll: "/sessions.json",
@@ -27,7 +27,7 @@ $.Model('GoodEarthStore.Models.User',
 		}
 
 		$.ajax({
-				url: '/user/register',
+				url: '/account/register',
 				type: 'post',
 				dataType: 'json',
 				data: {data:data},
@@ -54,13 +54,13 @@ validate:function(inData){
 	var emailRegexTest = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/; //thanks: http://www.marketingtechblog.com/javascript-regex-emailaddress/
 	if (!datum || !emailRegexTest.test(datum))
 	{errors.push([name, "Invalid email address"]);}
-	
-	
+
+
 	name='schoolRefId';
 	datum=inData[name];
 	if (!datum)
 	{errors.push([name, "Please choose a school"]);}
-	
+
 
 	return errors;
 }

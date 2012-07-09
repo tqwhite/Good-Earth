@@ -7,11 +7,19 @@ class UserTest extends \ModelTestCase
 	}
 
 	public function testCanSaveFirstAndLastAndRetrieveThem(){
+		$first='tq';
+		$last='white';
 
-		$u=$this->getTestUser('tq', 'white');
+        $user = new User();
+        $user->firstName = $first;
+        $user->lastName = $last;
+        $user->userName = $first.$last;
+        $user->password = $first.$last;
+        $user->confirmationCode = $first.$last;
+        $user->refId = uniqid();
 
 		$em=$this->doctrineContainer->getEntityManager();
-		$em->persist($u);
+		$em->persist($user);
 		$em->flush();
 
 		$users=$em->createQuery('select u from GE\Entity\User u')->execute();
@@ -20,10 +28,29 @@ class UserTest extends \ModelTestCase
 		$this->assertEquals('white', $users[0]->lastName);
 	}
 
-	public function XXtestDuplicateRefIdCrash(){
+	public function testDuplicateRefIdCrash(){
+		$first='tq';
+		$last='white';
+		$refId=uniqid();
 
-		$u=$this->getTestUser('tq', 'white', '1234');
-		$u2=$this->getTestUser('tq2', 'white', '1234');
+        $user = new User();
+        $user->firstName = $first;
+        $user->lastName = $last;
+        $user->userName = $first.$last;
+        $user->password = $first.$last;
+        $user->confirmationCode = $first.$last;
+        $user->refId = $refId;
+        $u=$user;
+
+		$refId=uniqid();
+        $user = new User();
+        $user->firstName = $first;
+        $user->lastName = $last;
+        $user->userName = $first.$last.$refId;
+        $user->password = $first.$last;
+        $user->confirmationCode = $first.$last;
+        $user->refId = $refId;
+        $u2=$user;
 
 		$em=$this->doctrineContainer->getEntityManager();
 		$em->persist($u);

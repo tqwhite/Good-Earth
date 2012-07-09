@@ -125,8 +125,11 @@ resetAfterSave:function(inData){
 		$('#'+this.displayParameters.status.divId).html("Invalid User Name/Password").removeClass('good').addClass('bad');
 	}
 	else{
+		GoodEarthStore.Models.Session.keep('user', inData.data.identity);
 		$('#'+this.displayParameters.status.divId).html("Welcome back, "+inData.data.identity.firstName+" <span style=color:gray;font-size:6pt'>("+inData.data.identity.school+")</span>").removeClass('bad').addClass('good');
 		GoodEarthStore.Models.LocalStorage.setCookie(GoodEarthStore.Models.LocalStorage.getConstant('loginCookieName'), inData.data.identity.userName);
+		this.element.html('').good_earth_store_customer_dashboard();
+
 	}
 },
 

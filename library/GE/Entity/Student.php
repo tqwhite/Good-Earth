@@ -3,12 +3,12 @@ namespace GE\Entity;
 /**
 *
 * @Entity
-* @Table(name="users")
+* @Table(name="students")
 * @author tqii
 *
 *
 **/
-class User /*extends Base*/{
+class Student /*extends Base*/{
 	/**
 	* @var string $id
 	* @column(name="refId", type="string", length=36, nullable=false, unique="true")
@@ -23,56 +23,11 @@ class User /*extends Base*/{
 	private $firstName;
 
 	/**
-	 * @column(type="string", length=60, nullable=true)
-	 * @var string
-	 **/
-	private $emailAdr;
-
-	/**
 	 * @column(type="string", length=60, nullable=false)
 	 * @var string
 	 **/
 
 	private $lastName;
-
-	/**
-	 * @column(type="string", length=60, nullable=false, unique="true")
-	 * @var string
-	 **/
-
-	private $userName;
-
-	/**
-	 * @column(type="string", length=60, nullable=false)
-	 * @var string
-	 **/
-
-	private $password;
-
-	/**
-	 * @column(type="integer", nullable=true)
-	 * @var string
-	 **/
-
-	private $emailStatus;
-
-	/**
-	 * @column(type="string", length=60)
-	 * @var string
-	 **/
-
-	private $confirmationCode; //has md5(refId) if email is NOT confirmed
-
-
-
-
-	/**
-	 *
-	 * @ManyToOne(targetEntity="School", cascade={"all"}, fetch="EAGER")
-	 * @JoinColumn(name="schoolRefId", referencedColumnName="refId")
-	 *
-	 **/
-	private $school;
 
 	/**
 	 *

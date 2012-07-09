@@ -23,9 +23,10 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 		if (window.location.hash){
 			this.startingHash=window.location.hash.replace('#', '');
 		}
-		
+
+
 		if (console){
-			console.log('debugg items exist');
+			console.log('dispatch.js says, debugg items exist');
 			console.dir(window.GoodEarthStore);
 		}
 	},
@@ -48,7 +49,11 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 	},
 
 	receiveSessionStartup:function(inData){
-		if (inData.status<1){
+		var userIdCookie=GoodEarthStore.Models.LocalStorage.getCookieData(GoodEarthStore.Models.LocalStorage.getConstant('loginCookieName')).data;
+
+
+		if (inData.status<1 || this.initialController=='none'){
+			if (!this.initialController && !this.startingHash && userIdCookie){this.initialController='login';}
 			switch (this.startingHash || this.initialController){
 				default:
 				case 'register':
@@ -63,6 +68,7 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 			}
 		}
 		else{
+			GoodEarthStore.Models.Session.keep('user', inData.data.identity);
 			this.element.html('');
 			this.element.good_earth_store_customer_dashboard();
 		}

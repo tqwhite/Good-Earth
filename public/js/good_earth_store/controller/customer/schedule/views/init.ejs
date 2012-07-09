@@ -9,15 +9,33 @@ qtools.validateProperties({
  source:'session.dashboard.dashboardMain' });
 
 qtools.validateProperties({
-	targetObject:displayParameters,
+	targetObject:this.displayParameters,
 	propList:[
 	],
  source:'session.dashboard.dashboardMain' });
 
+qtools.validateProperties({
+	targetObject:this.formData,
+	propList:[
+		{name:'account'},
+		{name:'newButton'},
+		{name:'lunchButton'}
+	],
+ source:'session.dashboard.dashboardMain' });
+
+var students=this.formData.account.students;
+var rowString='';
+for (var i=0, len=students.length; i<len; i++){
+	rowString+="<tr><td>"+students[i].firstName+"</td><td>-</td><td>Mon</td><td>-</td><td>-</td><td>-</td><td class='smallButton "+this.displayParameters.lunchButton.divId+"' style='font-size:8pt;color:gray;' refId='"+students[i].refId+"'>"+students[i].refId+"</td></tr>";
+}
+
+var headings=[{name:''}, {name:'Mon'}, {name:'Tues'}, {name:'Weds'}, {name:'Thurs'}, {name:'Fri'}, {name:''}];
+var headingTemplate="<td><!name!></td>";
+var headingString=qtools.templateReplaceArray({replaceArray:headings, template:headingTemplate});
+
 %>
 <table class='schedule'>
-<tr style='color:gray;'><td></td><td>Mon</td><td>Mon</td><td>Mon</td><td>Mon</td><td>Mon</td></tr>
-<tr><td>John</td><td>-</td><td>Mon</td><td>-</td><td>-</td><td>-</td></tr>
-<tr><td>John</td><td>-</td><td>Mon</td><td>-</td><td>-</td><td>-</td></tr>
-<tr><td>John</td><td>-</td><td>Mon</td><td>-</td><td>-</td><td>-</td></tr>
+<tr style='color:gray;'><%==headingString%></tr>
+<%==rowString%>
+<tr><td colspan='<%=headings.length%>' style='text-align:left;'><div class='smallButton' id='<%=this.displayParameters.newButton.divId%>'>hello</div></td></tr>
 </table>

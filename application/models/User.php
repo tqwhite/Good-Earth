@@ -11,8 +11,8 @@ class Application_Model_User
 
 	public function __construct(){
 
-	$this->doctrineContainer=\Zend_Registry::get('doctrine');
-	$this->_entityManager=$this->doctrineContainer->getEntityManager();
+		$this->doctrineContainer=\Zend_Registry::get('doctrine');
+		$this->_entityManager=$this->doctrineContainer->getEntityManager();
 	}
 
 	public function confirmEmail($confirmationCode){
@@ -83,6 +83,27 @@ class Application_Model_User
 		}
 */
 		return $errorList;
+	}
+
+	static function formatOutput($identity){
+
+	return array(
+				"identity"=>array(
+					'firstName'=>$identity->firstName,
+					'lastName'=>$identity->lastName,
+					'emailAdr'=>$identity->emailAdr,
+					'userName'=>$identity->userName,
+					'school'=>array(
+						'name'=>$identity->school->name,
+						'refId'=>$identity->school->refId
+						),
+					'account'=>array(
+						'familyName'=>$identity->account->familyName,
+						'refId'=>$identity->account->refId
+						)
+				)
+				);
+
 	}
 
 }

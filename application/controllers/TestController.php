@@ -49,6 +49,25 @@ class TestController extends Zend_Controller_Action
     {
 
 		$this->doctrineContainer=Zend_Registry::get('doctrine');
+    	$firstName='Jimmie';
+		$lastName='Doe';
+
+		$accountObj=new GE\Entity\Account();
+		$accountObj->familyName='Does';
+
+        $testObj = new GE\Entity\Student();
+        $testObj->firstName = $firstName;
+        $testObj->lastName = $lastName;
+        $testObj->account=$accountObj;
+
+		$em=$this->doctrineContainer->getEntityManager();
+		$em->persist($testObj);
+		$em->flush();
+
+
+/*
+this works
+		$this->doctrineContainer=Zend_Registry::get('doctrine');
 
 		$u=new GE\Entity\User();
 		$u->firstName='tq';
@@ -65,21 +84,18 @@ class TestController extends Zend_Controller_Action
 		$users=$em
 			->createQuery('select u from GE\Entity\User u')
 			->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
-
+*/
 /*
 		foreach ($users as $user){
 		    echo 'refId='.$user->refId.'<br/>';
 		}
 */
-		$this->_helper->layout()->disableLayout();
-		$this->_helper->viewRenderer->setNoRender(false);
+		$serverComm=array();
+			$serverComm[]=array("fieldName"=>"user_confirm_message", "value"=>'test complete');
+			$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'none');
 
+		$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
 
-
-		$this->_helper->json(array(
-			status=>1,
-			data=>$users
-		));
 
 
 
@@ -116,7 +132,7 @@ class TestController extends Zend_Controller_Action
 			$this->_initSchools();
 
 			$schoolObj=new \Application_Model_School();
-			$schoolList=$schoolObj->getSchoolList($inData);
+			$schoolList=$schoolObj->getByRefIdList($inData);
 
 			$this->view->schoolList=$schoolList;
 

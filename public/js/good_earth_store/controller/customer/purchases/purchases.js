@@ -14,15 +14,16 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Customer.Purcha
 
 init: function(el, options) {
 	this.baseInits();
-	
+
 	qtools.validateProperties({
 		targetObject:options,
 		targetScope: this, //will add listed items to targetScope
 		propList:[
-			{name:'lunchButtonHandler'}],
-		source:this.constructor._fullName 
+			{name:'account'}
+		],
+		source:this.constructor._fullName
  	});
-	
+
 	this.initControlProperties();
 	this.initDisplayProperties();
 
@@ -40,9 +41,7 @@ update:function(){
 initDisplayProperties:function(){
 
 	nameArray=[];
-
-	name='lunchButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
-
+//	name='lunchButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
 },
@@ -68,20 +67,9 @@ initDisplay:function(inData){
 
 initDomElements:function(){
 
+}
 
 
-	this.displayParameters.lunchButton.domObj=$('#'+this.displayParameters.lunchButton.divId);
-
-	this.displayParameters.lunchButton.domObj.good_earth_store_tools_ui_button2({
-		ready:{classs:'basicReady'},
-		hover:{classs:'basicHover'},
-		clicked:{classs:'basicActive'},
-		unavailable:{classs:'basicUnavailable'},
-		accessFunction:this.displayParameters.lunchButton.handler, //NOTE: this handler is passed from the parent controller (dashboard)
-		initialControl:'setToReady', //initialControl:'setUnavailable'
-		label:"Select Lunches"
-	});
-
-}})
+})
 
 });

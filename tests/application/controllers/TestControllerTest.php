@@ -9,24 +9,35 @@ class TestControllerTest extends ControllerTestCase
         parent::setUp();
     }
 
-	public function testCanTouchDoctrinePage(){
-		$this->dispatch("/test/doctrine");
+	public function testCanTouchWebPage(){
+		$this->dispatch("/test/index");
 
 		//echo $this->getResponse()->getBody();
 
 		$this->assertController('test');
-		$this->assertAction('doctrine');
+		$this->assertAction('index');
 		$this->assertResponseCode(200);
 
 	}
 
-	public function testCanGetDefaultIndexPage(){
+    public function testInitAction()
+    {
+		$this->dispatch("/test/init");
+
+		//echo $this->getResponse()->getBody();
+
+		$this->assertController('test');
+		$this->assertAction('init');
+		$this->assertResponseCode(200);
+    }
+/*
+	public function XXXtestCanGetDefaultIndexPage(){
 
 		$this->dispatch("/test/doctrine");
 		$this->assertXpathContentContains("id('message')", "default");
 	}
 
-	public function testCanSetMessageIndexPage(){
+	public function XXXtestCanSetMessageIndexPage(){
 		$testMessage='hello from testMessage';
 		$this->getRequest()
 			->setMethod('GET')
@@ -36,5 +47,6 @@ class TestControllerTest extends ControllerTestCase
 		$this->assertXpathContentContains("id('message')", $testMessage);
 	}
 //this is definitely being found and executed by phpunit
+*/
 }
 

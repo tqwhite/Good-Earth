@@ -11,7 +11,7 @@ class Application_Model_School
 	}
 
 
-	public function getSchoolList(){
+	public function getByRefIdList(){
 
 		$query = $this->_entityManager->createQuery('SELECT u from GE\Entity\School u');
 
@@ -20,7 +20,7 @@ class Application_Model_School
 
 	}
 
-	public function getSchool($refId){
+	public function getByRefId($refId){
 
 		$query = $this->_entityManager->createQuery('SELECT u from GE\Entity\School u WHERE u.refId = :refId');
 		$query->setParameters(array(

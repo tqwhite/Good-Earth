@@ -17,7 +17,7 @@ class SchoolController extends Zend_Controller_Action
     {
 
 		$schoolObj=new \Application_Model_School();
-		$schoolList=$schoolObj->getSchoolList();
+		$schoolList=$schoolObj->getByRefIdList();
 
 		if (count($schoolList)>0){ $status=1; }
 		else {$status=-1; $messageList=array(array('school/list', 'school database is empty!'));}

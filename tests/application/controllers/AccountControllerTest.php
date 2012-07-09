@@ -1,6 +1,6 @@
 <?php
 
-class BaseControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
+class AccountControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
 {
 
     public function setUp()
@@ -11,7 +11,21 @@ class BaseControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
 
     public function testIndexAction()
     {
-        $params = array('action' => 'index', 'controller' => 'Base', 'module' => 'default');
+        $params = array('action' => 'index', 'controller' => 'Account', 'module' => 'default');
+
+		$this->dispatch("/Account/index");
+
+		//echo $this->getResponse()->getBody();
+
+		$this->assertController('Account');
+		$this->assertAction('index');
+		$this->assertResponseCode(200);
+
+    }
+
+    public function testGetAction()
+    {
+        $params = array('action' => 'get', 'controller' => 'Account', 'module' => 'default');
         $urlParams = $this->urlizeOptions($params);
         $url = $this->url($urlParams);
         $this->dispatch($url);
@@ -28,6 +42,8 @@ class BaseControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
 
 
 }
+
+
 
 
 

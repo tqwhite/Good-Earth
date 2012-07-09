@@ -14,15 +14,18 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Customer.Child'
 
 init: function(el, options) {
 	this.baseInits();
-	
+
 	qtools.validateProperties({
 		targetObject:options,
 		targetScope: this, //will add listed items to targetScope
 		propList:[
-			{name:'doneButtonHandler'}],
-		source:this.constructor._fullName 
+			{name:'doneButtonHandler'},
+			{name:'account'},
+			{name:'student'}
+		],
+		source:this.constructor._fullName
  	});
-	
+
 	this.initControlProperties();
 	this.initDisplayProperties();
 
@@ -58,7 +61,7 @@ initDisplay:function(inData){
 			displayParameters:this.displayParameters,
 			viewHelper:this.viewHelper,
 			formData:{
-				userName:GoodEarthStore.Models.LocalStorage.getCookieData(GoodEarthStore.Models.LocalStorage.getConstant('loginCookieName')).data
+				student:this.student
 			}
 		})
 		);

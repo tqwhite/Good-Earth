@@ -1,0 +1,35 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'},
+		{name:'formData'}
+	],
+ source:'session.dashboard.dashboardMain' });
+
+qtools.validateProperties({
+	targetObject:this.displayParameters,
+	propList:[
+	],
+ source:'session.dashboard.dashboardMain' });
+
+qtools.validateProperties({
+	targetObject:this.formData,
+	propList:[
+		{name:'account'},
+		{name:'saveButton'}
+	],
+ source:'session.dashboard.dashboardMain' });
+
+%>
+
+<div style='font-size:8pt;'>
+<input type='hidden' name='accountRefId' value='<%=this.formData.account.refId%>'>
+<input type='hidden' name='refId' value='<%=qtools.newGuid()%>'>
+First Name: <input name='firstName' style='font-size:8pt;width:60px;' value=''>
+Last Name: <input name='lastName' style='font-size:8pt;width:60px;' value='<%=this.formData.account.familyName%>'>
+School: <select style='font-size:8pt;width:60px;' name='schoolRefId'><option  value='asdfdaf'>hello</option></select>
+Grade level: <select style='font-size:8pt;width:60px;' name='gradeLevelRefId'><option value='trert' selected>goodbye</option></select>
+<span class='smallButton' style='margin-left:20px;' id='<%=this.displayParameters.saveButton.divId%>'></span>
+</div>

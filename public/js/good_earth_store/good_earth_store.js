@@ -15,13 +15,14 @@ steal(
 	'./controller/session/register/register.js',
 	'./controller/session/dispatch/dispatch.js',
 	'./controller/session/login/login.js',
-	
+
 	'./controller/customer/dashboard/dashboard.js',
 	'./controller/customer/choose_menu/choose_menu.js',
 	'./controller/customer/parent/parent.js',
 	'./controller/customer/schedule/schedule.js',
+	'./controller/customer/schedule/add_student/add_student.js',
 	'./controller/customer/purchases/purchases.js',
-	
+
 	'./controller/customer/child/child.js',
 	'./controller/customer/offerings/offerings.js',
 	'./controller/customer/choices/choices.js',

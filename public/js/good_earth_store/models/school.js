@@ -6,7 +6,7 @@ steal('jquery/model', function(){
  * @inherits jQuery.Model
  * Wraps backend school services.
  */
-$.Model('GoodEarthStore.Models.School',
+GoodEarthStore.Models.Base.extend('GoodEarthStore.Models.School',
 /* @Static */
 {
 

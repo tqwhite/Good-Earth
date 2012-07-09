@@ -33,6 +33,14 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="list"/>
         </controllerFile>
+        <controllerFile controllerName="Account">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="get"/>
+        </controllerFile>
+        <controllerFile controllerName="Student">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="add"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
       <layoutsDirectory>
@@ -45,6 +53,7 @@
         <modelFile modelName="File"/>
         <modelFile modelName="User"/>
         <modelFile modelName="School"/>
+        <modelFile modelName="Account"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>
@@ -93,6 +102,18 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="School">
             <viewScriptFile forActionName="list"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Account">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Account">
+            <viewScriptFile forActionName="get"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Student">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Student">
+            <viewScriptFile forActionName="add"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
@@ -145,6 +166,14 @@
           <testApplicationControllerFile forControllerName="School">
             <testApplicationActionMethod forActionName="index"/>
             <testApplicationActionMethod forActionName="list"/>
+          </testApplicationControllerFile>
+          <testApplicationControllerFile forControllerName="Account">
+            <testApplicationActionMethod forActionName="index"/>
+            <testApplicationActionMethod forActionName="get"/>
+          </testApplicationControllerFile>
+          <testApplicationControllerFile forControllerName="Student">
+            <testApplicationActionMethod forActionName="index"/>
+            <testApplicationActionMethod forActionName="add"/>
           </testApplicationControllerFile>
         </testApplicationControllerDirectory>
       </testApplicationDirectory>

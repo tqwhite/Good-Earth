@@ -11,36 +11,24 @@ class SchoolControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
 
     public function testIndexAction()
     {
-        $params = array('action' => 'index', 'controller' => 'School', 'module' => 'default');
-        $urlParams = $this->urlizeOptions($params);
-        $url = $this->url($urlParams);
-        $this->dispatch($url);
-        
-        // assertions
-        $this->assertModule($urlParams['module']);
-        $this->assertController($urlParams['controller']);
-        $this->assertAction($urlParams['action']);
-        $this->assertQueryContentContains(
-            'div#view-content p',
-            'View script for controller <b>' . $params['controller'] . '</b> and script/action name <b>' . $params['action'] . '</b>'
-            );
+		$this->dispatch("/School/index");
+
+		//echo $this->getResponse()->getBody();
+
+		$this->assertController('School');
+		$this->assertAction('index');
+		$this->assertResponseCode(200);
     }
 
-    public function testListAction()
+    public function XXtestListAction()
     {
-        $params = array('action' => 'list', 'controller' => 'School', 'module' => 'default');
-        $urlParams = $this->urlizeOptions($params);
-        $url = $this->url($urlParams);
-        $this->dispatch($url);
-        
-        // assertions
-        $this->assertModule($urlParams['module']);
-        $this->assertController($urlParams['controller']);
-        $this->assertAction($urlParams['action']);
-        $this->assertQueryContentContains(
-            'div#view-content p',
-            'View script for controller <b>' . $params['controller'] . '</b> and script/action name <b>' . $params['action'] . '</b>'
-            );
+		$this->dispatch("/School/list");
+
+		//echo $this->getResponse()->getBody();
+
+		$this->assertController('test');
+		$this->assertAction('index');
+		$this->assertResponseCode(200);
     }
 
 
