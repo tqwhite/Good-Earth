@@ -321,7 +321,7 @@ consoleMessage:function(message){
 //var code=arguments.callee.caller.toString(); //gets the source code of the calling item
 //var code=arguments.callee.caller.name; //gets teh name of the calling function, sadly, null if object method
 		message='** '+message;
-		if(GLOBALS.config.messageLevel == CONSTANTS.allowDebugMessages){
+		if(true || GLOBALS.config.messageLevel == CONSTANTS.allowDebugMessages){
 			if ( window.console && console.log ) {
 				console.log(message);
 			} else if ( window.opera && window.opera.postError ) {
@@ -897,6 +897,9 @@ validateProperties:function(args){
 	}
 	if (showAlertFlag && outMessage){
 		alert(outMessage);
+	}
+	else if(outMessage){
+		qtools.consoleMessage(outMessage);
 	}
 
 },

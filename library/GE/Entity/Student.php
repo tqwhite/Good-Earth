@@ -38,6 +38,15 @@ class Student /*extends Base*/{
 	private $account;
 
 
+	/**
+	 *
+	 * @ManyToOne(targetEntity="School", cascade={"all"}, fetch="EAGER")
+	 * @JoinColumn(name="schoolRefId", referencedColumnName="refId")
+	 *
+	 **/
+	private $school;
+
+
 
 public function __construct(){
 	if (!$this->refId){$this->refId =  uniqid();}

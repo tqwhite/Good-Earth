@@ -81,7 +81,7 @@ initDomElements:function(){
 			});
 
 	$($('.schoolIdClassString').find('option')[1]).attr('selected', 'selected'); //for debugg only, see form.ejs
-
+	this.element.find('input').qprompt();
 },
 
 //BUTTON HANDLERS =========================================================================================================

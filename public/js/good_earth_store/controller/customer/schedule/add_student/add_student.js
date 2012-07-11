@@ -21,7 +21,9 @@ init: function(el, options) {
 		targetScope: this, //will add listed items to targetScope
 		propList:[
 			{name:'account'},
-			{name:'redrawSchedule'}
+			{name:'schools'},
+			{name:'redrawSchedule'},
+			{name:'studentRefId', optional:true}
 		],
 		source:this.constructor._fullName
  	});
@@ -46,6 +48,7 @@ initDisplayProperties:function(){
 
 	name='status'; nameArray.push({name:name});
 	name='saveButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+	name='cancelButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -53,6 +56,20 @@ initDisplayProperties:function(){
 
 initControlProperties:function(){
 	this.viewHelper=new viewHelper2();
+	if (this.studentRefId){
+		this.student=qtools.getByProperty(this.account.students, 'refId', this.studentRefId);
+		this.isNew=false;
+	}
+	else{
+		this.student={refId:qtools.newGuid()};
+		this.isNew=true;
+	}
+
+	if (!this.student){
+		this.student={};
+		this.student.refId=this.studentRefId;
+		this.student.lastName=this.account.familyName;
+	}
 },
 
 initDisplay:function(inData){
@@ -62,7 +79,9 @@ initDisplay:function(inData){
 			displayParameters:this.displayParameters,
 			viewHelper:this.viewHelper,
 			formData:{
-				account:this.account
+				account:this.account,
+				student:this.student,
+				schools:this.schools
 			}
 		})
 		);
@@ -84,6 +103,20 @@ initDomElements:function(){
 		label:"Save"
 	});
 
+	this.displayParameters.cancelButton.domObj=$('#'+this.displayParameters.cancelButton.divId);
+
+	this.displayParameters.cancelButton.domObj.good_earth_store_tools_ui_button2({
+		ready:{classs:'basicReady'},
+		hover:{classs:'basicHover'},
+		clicked:{classs:'basicActive'},
+		unavailable:{classs:'basicUnavailable'},
+		accessFunction:this.displayParameters.cancelButton.handler,
+		initialControl:'setToReady', //initialControl:'setUnavailable'
+		label:"X"
+	});
+
+	this.element.find('input').qprompt();
+
 },
 
 saveButtonHandler:function(control, parameter){
@@ -91,6 +124,21 @@ saveButtonHandler:function(control, parameter){
 	switch(control){
 		case 'click':
 			this.saveStudent();
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
+},
+
+cancelButtonHandler:function(control, parameter){
+	var componentName='cancelButton';
+	switch(control){
+		case 'click':
+			this.redrawSchedule();
 		break;
 		case 'setAccessFunction':
 			if (!this[componentName]){this[componentName]={};}
@@ -109,11 +157,17 @@ saveStudent:function(){
 catchSave:function(inData){
 	var errorString=this.listMessages(inData.messages);
 	if (inData.status<1){
-		this.element.prepend(errorString).removeClass('good').addClass('bad').fade(5000);
+		this.element.find('.errorMsg').remove();
+		this.element.prepend("<div class='errorMsg'>"+errorString+"</div>").removeClass('good').addClass('bad').fade(5000);
 	}
 	else{
-		this.account.students.push(this.formParams);
-			this.redrawSchedule();
+		if (this.isNew) {this.account.students.push(this.formParams);}
+		else{
+			for (var i in this.student){
+				this.student[i]=this.formParams[i];
+			}
+		}
+		this.redrawSchedule();
 	}
 }
 

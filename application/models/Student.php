@@ -44,14 +44,14 @@ class Application_Model_Student
 		if (!$datum){
 			$errorList[]=array($name, "School is required");
 		}
-
+/*
 		$errorList=array();
 		$name='gradeLevelRefId';
 		$datum=$inData[$name];
 		if (!$datum){
 			$errorList[]=array($name, "Grade Level is required");
 		}
-/*
+
 		$name='emailAdr';
 		$datum=$inData[$name];
 		$pattern='/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/';
@@ -65,18 +65,11 @@ class Application_Model_Student
 	static function formatOutput($identity){
 
 	return array(
-				"identity"=>array(
 					'firstName'=>$identity->firstName,
 					'lastName'=>$identity->lastName,
-	/*				'school'=>array(
-						'name'=>$identity->school->name,
-						'refId'=>$identity->school->refId
-						),
-	*/				'account'=>array(
-						'familyName'=>$identity->account->familyName,
-						'refId'=>$identity->account->refId
-						)
-				)
+					'refId'=>$identity->refId,
+					'schoolRefId'=>$identity->school->refId,
+					'accountRefId'=>$identity->account->refId
 				);
 
 	}

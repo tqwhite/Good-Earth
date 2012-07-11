@@ -18,29 +18,37 @@ this.makeSelectTag=function(args){
 			{name:'selectClassName', importance:'optional'},
 			{name:'optionClassName', importance:'optional'},
 			{name:'firstItemLabel', importance:'optional'},
-			{name:'firstItemValue', importance:'optional'}
-			
+			{name:'firstItemValue', importance:'optional'},
+			{name:'selectedValue', importance:'optional'}
+
 		], source:this.moduleName, templateToLog:false });
-		
+
 	var classString='',
 		optionClassString='',
 		firstItemString='',
-		sourceObj=args.sourceObj;
-		
+		sourceObj=args.sourceObj,
+		selectedAttrString;
+
 	if (args.selectClassName){ classString=" class='"+args.selectClassName+"'"; }
 	if (args.optionClassName){ optionClassString=" class='"+args.optionClassName+"'"; }
-	
-	if (args.firstItemLabel){ 
+
+	if (args.firstItemLabel){
 		if (typeof(args.firstItemValue)=='undefined'){args.firstItemValue='';}
 		firstItemString="<option value="+args.firstItemValue+">"+args.firstItemLabel+"</option>";
 	}
-	
+
 	var userString="<select name='"+args.selectVarName+"'"+classString+">"+firstItemString;
 	for (var i=0, len=sourceObj.length; i<len; i++){
-		userString+="<option "+optionClassString+" value='"+sourceObj[i][args.valuePropertyName]+"'>"+sourceObj[i][args.labelPropertyName]+"</option>";
+		if (args.selectedValue && args.selectedValue==sourceObj[i][args.valuePropertyName]){
+			selectedAttrString='selected';
+		}
+		else{
+			selectedAttrString='';
+		}
+		userString+="<option "+optionClassString+" value='"+sourceObj[i][args.valuePropertyName]+"' "+selectedAttrString+">"+sourceObj[i][args.labelPropertyName]+"</option>";
 	}
 	userString+="</select>";
-	
+
 	return userString;
 };
 

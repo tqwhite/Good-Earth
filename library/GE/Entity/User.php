@@ -68,14 +68,6 @@ class User /*extends Base*/{
 
 	/**
 	 *
-	 * @ManyToOne(targetEntity="School", cascade={"all"}, fetch="EAGER")
-	 * @JoinColumn(name="schoolRefId", referencedColumnName="refId")
-	 *
-	 **/
-	private $school;
-
-	/**
-	 *
 	 * @ManyToOne(targetEntity="Account", cascade={"all"}, fetch="EAGER")
 	 * @JoinColumn(name="accountRefId", referencedColumnName="refId")
 	 *

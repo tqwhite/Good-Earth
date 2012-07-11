@@ -53,8 +53,11 @@ class Application_Model_Account
 	static function formatOutput($inData){
 
 	$users=Q\Utils::buildArray($inData->users, 'firstName lastName');
-	$students=Q\Utils::buildArray($inData->students, 'firstName lastName refId');
+	$students=array();
 
+	foreach ($inData->students as $data){
+		$students[]=\Application_Model_Student::formatOutput($data);
+	}
 	return array(
 					'refId'=>$inData->refId,
 					'familyName'=>$inData->familyName,

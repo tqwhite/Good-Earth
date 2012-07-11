@@ -33,8 +33,6 @@ class AccountController extends Zend_Controller_Action
 		$account=new GE\Entity\Account();
 		$account->familyName=$inData['lastName'];
 
-		$schoolObj=new \Application_Model_School();
-		$school=$schoolObj->getByRefId($inData['schoolRefId']);
 
 			$u=new GE\Entity\User();
 				$u->firstName=$inData['firstName'];
@@ -43,7 +41,6 @@ class AccountController extends Zend_Controller_Action
 				$u->password=$inData['password'];
 				$u->emailAdr=$inData['emailAdr'];
 				$u->confirmationCode=md5($u->refId);
-				$u->school=$school[0];
 				$u->account=$account;
 
 

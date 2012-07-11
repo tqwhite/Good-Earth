@@ -36,19 +36,27 @@ class StudentController extends Zend_Controller_Action
 		$schoolObj=new \Application_Model_School();
 		$school=$schoolObj->getByRefId($inData['schoolRefId']);
 
-			$u=new GE\Entity\Student();
-				$u->firstName=$inData['firstName'];
-				$u->lastName=$inData['lastName'];
-				$u->refId=$inData['refId'];
-		//		$u->school=$school[0];
-				$u->account=$account;
+		$studentObj=new \Application_Model_Student();
+		$student=$studentObj->getByRefId($inData['refId']);
+
+		if (!$student){
+			$student=new GE\Entity\Student();
+		}
+		else{
+			$student=$student[0];
+		}
+				$student->firstName=$inData['firstName'];
+				$student->lastName=$inData['lastName'];
+				$student->refId=$inData['refId'];
+				$student->school=$school[0];
+				$student->account=$account;
 
 
 			$status=1; //unless error
 			try{
 				$this->doctrineContainer=Zend_Registry::get('doctrine');
 				$em=$this->doctrineContainer->getEntityManager();
-				$em->persist($u);
+				$em->persist($student);
 				$em->flush();
 				$em->clear();
 			}

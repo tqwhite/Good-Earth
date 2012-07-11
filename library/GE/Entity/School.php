@@ -33,10 +33,10 @@ class School /*extends Base*/{
 	/**
 	 *
 	 * @param \Doctrine\Common\Collections\Collection $property
-	 * @OneToMany(targetEntity="User", mappedBy="school", cascade={"persist", "remove"});
+	 * @OneToMany(targetEntity="Student", mappedBy="school", cascade={"persist", "remove"});
 	 **/
 
-	private $users;
+	private $students;
 
 
 

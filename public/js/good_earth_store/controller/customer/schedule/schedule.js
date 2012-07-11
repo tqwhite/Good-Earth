@@ -20,6 +20,7 @@ init: function(el, options) {
 		targetScope: this, //will add listed items to targetScope
 		propList:[
 			{name:'account'},
+			{name:'schools'},
 			{name:'lunchButtonHandler'}
 		],
 		source:this.constructor._fullName
@@ -46,6 +47,7 @@ initDisplayProperties:function(){
 
 	name='newButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 	name='lunchButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+	name='editButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -83,6 +85,18 @@ initDomElements:function(){
 		label:"Add Student"
 	});
 
+	this.displayParameters.editButton.domObj=$('.'+this.displayParameters.editButton.divId);
+
+	this.displayParameters.editButton.domObj.good_earth_store_tools_ui_button2({
+		ready:{classs:'textReady'},
+		hover:{classs:'textHover'},
+		clicked:{classs:'textActive'},
+		unavailable:{classs:'textUnavailable'},
+		accessFunction:this.displayParameters.editButton.handler, //NOTE: this handler is passed from the parent controller (dashboard)
+		initialControl:'setToReady', //initialControl:'setUnavailable'
+		label:"nolabel"
+	});
+
 
 
 	$('.'+this.displayParameters.lunchButton.divId).good_earth_store_tools_ui_button2({
@@ -104,7 +118,34 @@ newButtonHandler:function(control, parameter){
 
 			$($('#'+this.displayParameters.newButton.divId).parent()).good_earth_store_customer_schedule_add_student({
 				'account':this.account,
-				'redrawSchedule':this.callback('update')
+				'redrawSchedule':this.callback('update'),
+				schools:this.schools
+				//studentRefId empty signals new in add_student()
+			});
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
+},
+
+
+editButtonHandler:function(control, parameter){
+	var componentName='newButton';
+	switch(control){
+		case 'click':
+			var studentRefId=parameter.thisDomObj.attr('refId');
+
+			$(parameter.thisDomObj.parent()).html("<td colspan=7 id='editLine'>tmp</td>");
+
+			$('#editLine').good_earth_store_customer_schedule_add_student({
+				'account':this.account,
+				'redrawSchedule':this.callback('update'),
+				studentRefId:studentRefId,
+				schools:this.schools
 			});
 		break;
 		case 'setAccessFunction':

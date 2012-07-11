@@ -17,13 +17,11 @@ qtools.validateProperties({
 	],
  source:'session.register.mainPanel' });
 
-var today=qtools.dateToday();
-
 var optionString;
 
 optionString=viewHelper.makeSelectTag({
 	selectVarName:'schoolRefId',
-	sourceObj:schoolList,
+	sourceObj:this.schoolList,
 	valuePropertyName:'refId',
 	labelPropertyName:'name',
 	firstItemLabel:'Select School',
@@ -34,18 +32,18 @@ optionString=viewHelper.makeSelectTag({
 
 var password='tqwhite'+Math.floor((Math.random()*1000)+1);
 %>
-<div style='margin:50px 0px 0px 200px;padding-left:50px;height:370px;width:300px;border:1pt solid gray;'>
+<div class='entryBox' style='height:370px;width:300px;'>
 
 <div class='entryPanelErrorList' style='margin-top:25px;height:30px;width:100%' id='<%==displayParameters.status.divId%>'>Welcome!</div>
 
 <table style='border:none;font-size:10pt;'>
-	<tr><td style='width:100px;'>First Name:</td><td><input name='firstName' value='TQ'></td></tr>
-	<tr><td style='width:100px;'>Last Name:</td><td><input name='lastName' value='White II'></td></tr>
-	<tr><td style='width:100px;'>User Name:</td><td><input name='userName' value='<%=password%>'></td></tr>
-	<tr><td>Password:</td><td><input name='password' value='123456'></td></tr>
-	<tr><td>Email Address:</td><td><input name='emailAdr' value='tq@justkidding.com'></td></tr>
-	<tr><td>Confirm Email:</td><td><input name='confirmEmail' value='tq@justkidding.com'></td></tr>
-	<tr><td>Phone:</td><td><input name='phone'  value='000-000-0000'></td></tr>
+	<tr><td style='width:100px;'>First Name:</td><td><input prompt='required' name='firstName' value='TQ'></td></tr>
+	<tr><td style='width:100px;'>Last Name:</td><td><input prompt='required' name='lastName' value='White II'></td></tr>
+	<tr><td style='width:100px;'>User Name:</td><td><input prompt='required' name='userName' value='<%=password%>'></td></tr>
+	<tr><td>Password:</td><td><input prompt='6+ characters' name='password' value='123456'></td></tr>
+	<tr><td>Email Address:</td><td><input prompt='required' name='emailAdr' value='tq@justkidding.com'></td></tr>
+	<tr><td>Confirm Email:</td><td><input prompt='required' name='confirmEmail' value='tq@justkidding.com'></td></tr>
+	<tr><td>Phone:</td><td><input prompt='required' name='phone'  value='000-000-0000'></td></tr>
 	<tr><td>School:</td><td><%== optionString %></td></tr>
 </table>
 <div class='basicButton' style='margin-left:136px;margin-top:20px;' id='<%==displayParameters.saveButton.divId%>'></div>

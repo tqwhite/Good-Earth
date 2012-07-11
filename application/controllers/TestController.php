@@ -132,7 +132,7 @@ this works
 			$this->_initSchools();
 
 			$schoolObj=new \Application_Model_School();
-			$schoolList=$schoolObj->getByRefIdList($inData);
+			$schoolList=$schoolObj->getList($inData);
 
 			$this->view->schoolList=$schoolList;
 

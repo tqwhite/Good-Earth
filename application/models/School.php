@@ -11,7 +11,7 @@ class Application_Model_School
 	}
 
 
-	public function getByRefIdList(){
+	public function getList(){
 
 		$query = $this->_entityManager->createQuery('SELECT u from GE\Entity\School u');
 

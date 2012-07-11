@@ -6,6 +6,7 @@ steal(
 	'./resources/jqueryPlugins/jquery.rc4.js',
 	'./resources/jqueryPlugins/jquery.cookie.js',
 	'./resources/jqueryPlugins/jquery.md5.js',
+	'./resources/jqueryPlugins/jquery.qprompt.js',
 
 	'./good_earth_store.css', 			// application CSS file
 	'./models/models.js',		// steals all your models
