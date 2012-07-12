@@ -48,8 +48,7 @@ initDisplay:function(inData){
 	var html=$.View('//good_earth_store/controller/session/register/views/form.ejs',
 		$.extend(inData, {
 			displayParameters:this.displayParameters,
-			viewHelper:this.viewHelper,
-			schoolList:this.schoolList
+			viewHelper:this.viewHelper
 		})
 		);
 	this.element.html(html);

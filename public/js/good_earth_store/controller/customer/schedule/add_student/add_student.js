@@ -22,6 +22,7 @@ init: function(el, options) {
 		propList:[
 			{name:'account'},
 			{name:'schools'},
+			{name:'gradeLevels'},
 			{name:'redrawSchedule'},
 			{name:'studentRefId', optional:true}
 		],
@@ -47,6 +48,8 @@ initDisplayProperties:function(){
 	nameArray=[];
 
 	name='status'; nameArray.push({name:name});
+	name='gradeLevelSelect'; nameArray.push({name:name});
+	name='schoolSelect'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 	name='saveButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 	name='cancelButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 
@@ -65,6 +68,23 @@ initControlProperties:function(){
 		this.isNew=true;
 	}
 
+
+	if (this.student.gradeLevelRefId){
+		this.gradeLevel=qtools.getByProperty(this.gradeLevels, 'refId', this.student.gradeLevelRefId);
+	}
+	else{
+		this.gradeLevel={};
+	}
+
+
+	if (this.student.schoolRefId){
+		this.school=qtools.getByProperty(this.schools, 'refId', this.student.schoolRefId);
+	}
+	else{
+		this.school={};
+	}
+
+
 	if (!this.student){
 		this.student={};
 		this.student.refId=this.studentRefId;
@@ -81,6 +101,8 @@ initDisplay:function(inData){
 			formData:{
 				account:this.account,
 				student:this.student,
+				gradeLevel:this.gradeLevel,
+				school:this.school,
 				schools:this.schools
 			}
 		})
@@ -117,6 +139,30 @@ initDomElements:function(){
 
 	this.element.find('input').qprompt();
 
+	this.displayParameters.schoolSelect.domObj=$('#'+this.displayParameters.schoolSelect.divId);
+	this.displayParameters.schoolSelect.domObj.change(this.callback('schoolSelectHandler'));
+
+},
+
+schoolSelectHandler:function(){ //this is a jquery type of event handler, not jmvc
+
+	var schoolRefId=this.displayParameters.schoolSelect.domObj.val();
+	if (!schoolRefId){return;}
+	else{
+		var school=qtools.getByProperty(this.schools, 'refId', schoolRefId);
+
+		var gradeLevelSelectString=this.viewHelper.makeSelectTag({
+			selectedValue:'',
+			selectVarName:'gradeLevelRefId',
+			sourceObj:school.gradeLevels,
+			valuePropertyName:'refId',
+			labelPropertyName:'title',
+			firstItemLabel:'Select Grade Level',
+			firstItemValue:''
+		});
+
+	$('#'+this.displayParameters.gradeLevelSelect.divId).html(gradeLevelSelectString);
+	}
 },
 
 saveButtonHandler:function(control, parameter){

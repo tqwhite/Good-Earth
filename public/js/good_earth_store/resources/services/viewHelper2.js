@@ -19,16 +19,19 @@ this.makeSelectTag=function(args){
 			{name:'optionClassName', importance:'optional'},
 			{name:'firstItemLabel', importance:'optional'},
 			{name:'firstItemValue', importance:'optional'},
-			{name:'selectedValue', importance:'optional'}
+			{name:'selectedValue', importance:'optional'},
+			{name:'divId', importance:'optional'}
 
 		], source:this.moduleName, templateToLog:false });
 
 	var classString='',
 		optionClassString='',
 		firstItemString='',
+		divIdString='',
 		sourceObj=args.sourceObj,
 		selectedAttrString;
 
+	if (args.divId){ divIdString=" id='"+args.divId+"'"; }
 	if (args.selectClassName){ classString=" class='"+args.selectClassName+"'"; }
 	if (args.optionClassName){ optionClassString=" class='"+args.optionClassName+"'"; }
 
@@ -37,7 +40,7 @@ this.makeSelectTag=function(args){
 		firstItemString="<option value="+args.firstItemValue+">"+args.firstItemLabel+"</option>";
 	}
 
-	var userString="<select name='"+args.selectVarName+"'"+classString+">"+firstItemString;
+	var userString="<select "+divIdString+" name='"+args.selectVarName+"'"+classString+">"+firstItemString;
 	for (var i=0, len=sourceObj.length; i<len; i++){
 		if (args.selectedValue && args.selectedValue==sourceObj[i][args.valuePropertyName]){
 			selectedAttrString='selected';

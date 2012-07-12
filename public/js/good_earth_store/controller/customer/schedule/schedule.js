@@ -21,6 +21,7 @@ init: function(el, options) {
 		propList:[
 			{name:'account'},
 			{name:'schools'},
+			{name:'gradeLevels'},
 			{name:'lunchButtonHandler'}
 		],
 		source:this.constructor._fullName
@@ -119,7 +120,8 @@ newButtonHandler:function(control, parameter){
 			$($('#'+this.displayParameters.newButton.divId).parent()).good_earth_store_customer_schedule_add_student({
 				'account':this.account,
 				'redrawSchedule':this.callback('update'),
-				schools:this.schools
+				schools:this.schools,
+				gradeLevels:this.gradeLevels
 				//studentRefId empty signals new in add_student()
 			});
 		break;
@@ -145,7 +147,8 @@ editButtonHandler:function(control, parameter){
 				'account':this.account,
 				'redrawSchedule':this.callback('update'),
 				studentRefId:studentRefId,
-				schools:this.schools
+				schools:this.schools,
+				gradeLevels:this.gradeLevels
 			});
 		break;
 		case 'setAccessFunction':

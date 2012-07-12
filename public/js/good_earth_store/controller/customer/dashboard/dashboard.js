@@ -81,6 +81,7 @@ initDomElements:function(){
 	this.displayParameters.kidSpace.domObj.good_earth_store_customer_schedule({
 		account:this.account,
 		schools:this.schools,
+		gradeLevels:this.gradeLevels,
 		lunchButtonHandler:this.callback('lunchButtonHandler')
 		});
 	this.displayParameters.purchaseSpace.domObj.good_earth_store_customer_purchases({
@@ -125,6 +126,10 @@ getReferenceData:function(callback){
 				schools:{
 					ajaxFunction:GoodEarthStore.Models.School.getList,
 					argData:{}
+				},
+				gradeLevels:{
+					ajaxFunction:GoodEarthStore.Models.GradeLevel.getList,
+					argData:{}
 				}
 			},
 			success:this.callback('referenceCallback', callback),
@@ -139,6 +144,7 @@ referenceCallback:function(callback, inData){
 
 		this.account=inData.account;
 		this.schools=inData.schools;
+		this.gradeLevels=inData.gradeLevels;
 		callback();
 }
 

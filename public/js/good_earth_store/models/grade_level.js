@@ -1,12 +1,12 @@
 steal('jquery/model', function(){
 
 /**
- * @class GoodEarthStore.Models.School
+ * @class GoodEarthStore.Models.GradeLevel
  * @parent index
  * @inherits jQuery.Model
- * Wraps backend school services.
+ * Wraps backend grade_level services.
  */
-GoodEarthStore.Models.Base.extend('GoodEarthStore.Models.School',
+$.Model('GoodEarthStore.Models.GradeLevel',
 /* @Static */
 {
 
@@ -18,7 +18,7 @@ GoodEarthStore.Models.Base.extend('GoodEarthStore.Models.School',
 
 
 		$.ajax({
-				url: '/school/list',
+				url: '/gradelevel/list',
 				type: 'post',
 				dataType: 'json',
 				data: {data:data},

@@ -56,11 +56,6 @@ validate:function(inData){
 	{errors.push([name, "Invalid email address"]);}
 
 
-	name='schoolRefId';
-	datum=inData[name];
-	if (!datum)
-	{errors.push([name, "Please choose a school"]);}
-
 
 	return errors;
 }

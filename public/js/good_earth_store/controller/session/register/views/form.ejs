@@ -3,8 +3,7 @@ qtools.validateProperties({
 	targetObject:this,
 	propList:[
 		{name:'displayParameters'},
-		{name:'viewHelper'},
-		{name:'schoolList'}
+		{name:'viewHelper'}
 	],
  source:'session.register.mainPanel' });
 
@@ -17,18 +16,6 @@ qtools.validateProperties({
 	],
  source:'session.register.mainPanel' });
 
-var optionString;
-
-optionString=viewHelper.makeSelectTag({
-	selectVarName:'schoolRefId',
-	sourceObj:this.schoolList,
-	valuePropertyName:'refId',
-	labelPropertyName:'name',
-	firstItemLabel:'Select School',
-	firstItemValue:'',
-	selectClassName:'schoolIdClassString' //this is for debug purposes only, see register.initDomObjects()
-
-});
 
 var password='tqwhite'+Math.floor((Math.random()*1000)+1);
 %>
@@ -44,7 +31,6 @@ var password='tqwhite'+Math.floor((Math.random()*1000)+1);
 	<tr><td>Email Address:</td><td><input prompt='required' name='emailAdr' value='tq@justkidding.com'></td></tr>
 	<tr><td>Confirm Email:</td><td><input prompt='required' name='confirmEmail' value='tq@justkidding.com'></td></tr>
 	<tr><td>Phone:</td><td><input prompt='required' name='phone'  value='000-000-0000'></td></tr>
-	<tr><td>School:</td><td><%== optionString %></td></tr>
 </table>
 <div class='basicButton' style='margin-left:136px;margin-top:20px;' id='<%==displayParameters.saveButton.divId%>'></div>
 

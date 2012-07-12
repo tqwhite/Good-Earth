@@ -49,6 +49,10 @@ validate:function(inData){
 	datum=inData[name];
 	if (!datum)
 	{errors.push([name, "School Choice is required"]);}
+	name='gradeLevelRefId';
+	datum=inData[name];
+	if (!datum)
+	{errors.push([name, "Grade Level is required"]);}
 
 	return errors;
 }

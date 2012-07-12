@@ -13,6 +13,8 @@ qtools.validateProperties({
 	propList:[
 		{name:'saveButton'},
 		{name:'cancelButton'},
+		{name:'schoolSelect'},
+		{name:'gradeLevelSelect'},
 	],
  source:'session.dashboard.dashboardMain' });
 
@@ -21,13 +23,16 @@ qtools.validateProperties({
 	propList:[
 		{name:'account'},
 		{name:'student'},
+		{name:'gradeLevel'},
+		{name:'school'},
 		{name:'schools'}
 	],
  source:'session.dashboard.dashboardMain' });
 
  var lastName=this.formData.student.lastName?this.formData.student.lastName:this.formData.account.familyName;
 
-var schoolString=viewHelper.makeSelectTag({
+var schoolString=this.viewHelper.makeSelectTag({
+		divId:this.displayParameters.schoolSelect.divId,
 		selectedValue:this.formData.student.schoolRefId,
 		selectVarName:'schoolRefId',
 		sourceObj:this.formData.schools,
@@ -38,6 +43,22 @@ var schoolString=viewHelper.makeSelectTag({
 		selectClassName:'schoolIdClassString' //this is for debug purposes only, see register.initDomObjects()
 
 	});
+
+if (this.formData.gradeLevel && this.formData.gradeLevel.refId){
+var gradeLevelSelectString=this.viewHelper.makeSelectTag({
+	selectedValue:this.formData.gradeLevel.refId,
+	selectVarName:'gradeLevelRefId',
+	sourceObj:this.formData.school.gradeLevels,
+	valuePropertyName:'refId',
+	labelPropertyName:'title',
+	firstItemLabel:'Select Grade Level',
+	firstItemValue:''
+});
+}
+else{
+gradeLevelSelectString='- - - - - - - - ';
+
+}
 %>
 
 <div style='font-size:8pt;'>
@@ -45,8 +66,8 @@ var schoolString=viewHelper.makeSelectTag({
 <input type='hidden' name='refId' value='<%=this.formData.student.refId%>'>
 <input prompt='First Name' name='firstName' style='font-size:8pt;width:60px;' value='<%=this.formData.student.firstName%>'>
 <input prompt='Last Name' name='lastName' style='font-size:8pt;width:60px;' value='<%=lastName%>'>
-School: <%==schoolString%>
-Grade level: <select style='font-size:8pt;width:60px;' name='gradeLeveRefId'><option  value='asdfdaf'>hello</option></select>
+<%==schoolString%>
+<span id='<%=this.displayParameters.gradeLevelSelect.divId%>'><%==gradeLevelSelectString%></span>
 <span class='smallButton' style='margin-left:10px;' id='<%=this.displayParameters.saveButton.divId%>'></span>
 <span title='Cancel' class='smallButton' style='margin-left:10px;' id='<%=this.displayParameters.cancelButton.divId%>'></span>
 </div>
