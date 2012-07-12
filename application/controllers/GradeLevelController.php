@@ -1,6 +1,6 @@
 <?php
 
-class SchoolController extends Zend_Controller_Action
+class GradeLevelController extends Zend_Controller_Action
 {
 
     public function init()
@@ -13,18 +13,23 @@ class SchoolController extends Zend_Controller_Action
         // action body
     }
 
+    public function getAction()
+    {
+        // action body
+    }
+
     public function listAction()
     {
 
-		$schoolObj=new \Application_Model_School();
-		$schoolList=$schoolObj->getList('record');
+		$accessObj=new \Application_Model_GradeLevel();
+		$list=$accessObj->getList('record');
 
-		$schoolOutList=\Application_Model_School::formatOutput($schoolList);
+		$outList=\Application_Model_GradeLevel::formatOutput($list);
 
 		$this->_helper->json(array(
 			status=>$status,
 			messages=>$messageList,
-			data=>$schoolOutList
+			data=>$outList
 			)
 		);
 
@@ -32,6 +37,8 @@ class SchoolController extends Zend_Controller_Action
 
 
 }
+
+
 
 
 

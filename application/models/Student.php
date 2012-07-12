@@ -69,7 +69,8 @@ class Application_Model_Student
 					'lastName'=>$identity->lastName,
 					'refId'=>$identity->refId,
 					'schoolRefId'=>$identity->school->refId,
-					'accountRefId'=>$identity->account->refId
+					'accountRefId'=>$identity->account->refId,
+					'gradeLevelRefId'=>$identity->gradeLevel->refId,
 				);
 
 	}

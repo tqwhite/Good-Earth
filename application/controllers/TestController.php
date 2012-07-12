@@ -136,6 +136,11 @@ this works
 
 			$this->view->schoolList=$schoolList;
 
+			$gradeLevelObj=new \Application_Model_GradeLevel();
+			$gradeLevelList=$gradeLevelObj->getList($inData);
+
+			$this->view->gradeLevelList=$gradeLevelList;
+
 		$serverComm=array();
 			$serverComm[]=array("fieldName"=>"user_confirm_message", "value"=>$message);
 			$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'none');
@@ -152,27 +157,170 @@ this works
 		$em=$this->doctrineContainer->getEntityManager();
 
 		$u=new GE\Entity\School();
-		$u->name='Horace Mann';
-		$u->testField='xxx';
+				$u->name='Saint Marks';
+				$em->persist($u);
+				$em->flush();
+
+
+		$u=new GE\Entity\School();
+				$u->name='Lycee Français';
+				$em->persist($u);
+				$em->flush();
+
+
+		$u=new GE\Entity\School();
+				$u->name='Neil Cummins';
+				$em->persist($u);
+				$em->flush();
+
+
+		$u=new GE\Entity\School();
+				$u->name='Cascade Canyon';
+				$em->persist($u);
+				$em->flush();
+
+
+		$u=new GE\Entity\School();
+				$u->name='Marin Horizon';
+				$em->persist($u);
+				$em->flush();
+
+
+		$u=new GE\Entity\School();
+				$u->name='St Anselm';
+				$em->persist($u);
+				$em->flush();
+
+
+		$u=new GE\Entity\School();
+				$u->name='Hall Middle School';
+				$em->persist($u);
+				$em->flush();
+
+
+		$u=new GE\Entity\School();
+				$u->name='Sonoma Academy ';
+				$em->persist($u);
+				$em->flush();
+
+
+		$u=new GE\Entity\School();
+				$u->name='Good Shepherd';
+				$em->persist($u);
+				$em->flush();
+
+
+		$u=new GE\Entity\School();
+				$u->name='Marin Christian Academy';
+				$em->persist($u);
+				$em->flush();
+
+
+
+
+
+		$u=new GE\Entity\GradeLevel();
+		$u->title='Kindergarten';
 		$em->persist($u);
 		$em->flush();
 
-		$u=new GE\Entity\School();
-		$u->name='Ben Franklin';
-		$u->testField='xxx';
+		$u=new GE\Entity\GradeLevel();
+		$u->title='First';
 		$em->persist($u);
 		$em->flush();
 
-		$u=new GE\Entity\School();
-		$u->name='George Washington';
-		$u->testField='xxx';
+		$u=new GE\Entity\GradeLevel();
+		$u->title='Second';
+		$em->persist($u);
+		$em->flush();
+
+		$u=new GE\Entity\GradeLevel();
+		$u->title='Third';
+		$em->persist($u);
+		$em->flush();
+
+		$u=new GE\Entity\GradeLevel();
+		$u->title='Fourth';
+		$em->persist($u);
+		$em->flush();
+
+		$u=new GE\Entity\GradeLevel();
+		$u->title='Fifth';
+		$em->persist($u);
+		$em->flush();
+
+		$u=new GE\Entity\GradeLevel();
+		$u->title='Sixth';
 		$em->persist($u);
 		$em->flush();
 
 
 		$em->clear();
 
+		$this->_initSchoolGradeLevels();
+
     }
+
+private function _initSchoolGradeLevels(){
+
+		$this->doctrineContainer=Zend_Registry::get('doctrine');
+		$em=$this->doctrineContainer->getEntityManager();
+
+
+		$schoolObj=new \Application_Model_School();
+		$schoolList=$schoolObj->getList('record');
+
+		$gradeLevelObj=new \Application_Model_GradeLevel();
+		$gradeLevelList=$gradeLevelObj->getList('record');
+
+		foreach ($schoolList as $school){
+
+			foreach ($gradeLevelList as $gradeLevel){
+
+
+				$node=new GE\Entity\GradeSchoolNode();
+				$node->school=$school;
+				$node->gradeLevel=$gradeLevel;
+				$node->descriptor=$school->name.'/'.$gradeLevel->title;
+				$em->persist($node);
+				$em->flush();
+
+
+
+			}
+
+
+		}
+
+
+
+		/*=======================================
+
+	for ($i=0, $len=count($schoolList); $i<$len; $i++){
+		$school=$schoolList[$i];
+
+echo 'name='.$school->name."</br>";
+
+	for ($j=0, $len2=count($gradeLevelList); $j<$len2; $j++){
+		$gradLevel=$gradeLevelList[$j];
+
+
+
+				$node=new GE\Entity\GradeSchoolNode();
+				$node->school=$school;
+				$node->gradeLevel=$gradLevel;
+				$em->persist($u);
+				$em->flush();
+
+
+
+			}
+
+
+		}
+*/
+
+}
 
 
 }

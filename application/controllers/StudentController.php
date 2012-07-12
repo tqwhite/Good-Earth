@@ -36,6 +36,9 @@ class StudentController extends Zend_Controller_Action
 		$schoolObj=new \Application_Model_School();
 		$school=$schoolObj->getByRefId($inData['schoolRefId']);
 
+		$gradeLevelObj=new \Application_Model_GradeLevel();
+		$gradeLevel=$gradeLevelObj->getByRefId($inData['gradeLevelRefId']);
+
 		$studentObj=new \Application_Model_Student();
 		$student=$studentObj->getByRefId($inData['refId']);
 
@@ -49,6 +52,7 @@ class StudentController extends Zend_Controller_Action
 				$student->lastName=$inData['lastName'];
 				$student->refId=$inData['refId'];
 				$student->school=$school[0];
+				$student->gradeLevel=$gradeLevel[0];
 				$student->account=$account;
 
 

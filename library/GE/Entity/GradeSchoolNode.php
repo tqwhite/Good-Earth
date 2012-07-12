@@ -3,12 +3,12 @@ namespace GE\Entity;
 /**
 *
 * @Entity
-* @Table(name="students")
+* @Table(name="gradeSchoolNode")
 * @author tqii
 *
 *
 **/
-class Student /*extends Base*/{
+class GradeSchoolNode /*extends Base*/{
 	/**
 	* @var string $id
 	* @column(name="refId", type="string", length=36, nullable=false, unique="true")
@@ -20,22 +20,7 @@ class Student /*extends Base*/{
 	 * @column(type="string", length=60, nullable=false)
 	 * @var string
 	 **/
-	private $firstName;
-
-	/**
-	 * @column(type="string", length=60, nullable=false)
-	 * @var string
-	 **/
-
-	private $lastName;
-
-	/**
-	 *
-	 * @ManyToOne(targetEntity="Account", cascade={"all"}, fetch="EAGER")
-	 * @JoinColumn(name="accountRefId", referencedColumnName="refId")
-	 *
-	 **/
-	private $account;
+	private $descriptor;
 
 
 	/**
@@ -46,15 +31,14 @@ class Student /*extends Base*/{
 	 **/
 	private $school;
 
+
 	/**
 	 *
-	 * @OneToOne(targetEntity="GradeLevel", cascade={"all"}, fetch="EAGER")
+	 * @ManyToOne(targetEntity="GradeLevel", cascade={"all"}, fetch="EAGER")
 	 * @JoinColumn(name="gradeLevelRefId", referencedColumnName="refId")
 	 *
 	 **/
 	private $gradeLevel;
-
-
 
 public function __construct(){
 	if (!$this->refId){$this->refId =  uniqid();}

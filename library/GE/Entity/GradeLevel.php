@@ -3,12 +3,12 @@ namespace GE\Entity;
 /**
 *
 * @Entity
-* @Table(name="schools")
+* @Table(name="gradeLevels")
 * @author tqii
 *
 *
 **/
-class School /*extends Base*/{
+class GradeLevel /*extends Base*/{
 	/**
 	* @var string $id
 	* @column(name="refId", type="string", length=36, nullable=false, unique="true")
@@ -20,38 +20,20 @@ class School /*extends Base*/{
 	 * @column(type="string", length=60, nullable=false)
 	 * @var string
 	 **/
-	private $name;
-
-	/**
-	 * @column(type="string", length=60, nullable=true)
-	 * @var string
-	 **/
-	private $testField;
+	private $title;
 
 
 
-	/**
-	 *
+    /**
 	 * @param \Doctrine\Common\Collections\Collection $property
-	 * @OneToMany(targetEntity="Student", mappedBy="school", cascade={"persist", "remove"});
-	 **/
-
-	private $students;
-
-
-	/**
-	 *
-	 * @param \Doctrine\Common\Collections\Collection $property
-	 * @OneToMany(targetEntity="GradeSchoolNode", mappedBy="school", cascade={"persist", "remove"});
-	 **/
-
-	private $gradeLevelNodes;
+	 * @OneToMany(targetEntity="GradeSchoolNode", mappedBy="gradeLevel", cascade={"persist", "remove"});
+     */
+    private $schoolNodes;
 
 
 
 public function __construct(){
 	if (!$this->refId){$this->refId =  uniqid();}
-	$this->users=new \Doctrine\Common\Collections\ArrayCollection();
 }
 
 public function __get($property){

@@ -41,6 +41,13 @@ class ErrorController extends Zend_Controller_Action
         }
 
         $this->view->request   = $errors->request;
+
+		$serverComm=array();
+		$serverComm[]=array("fieldName"=>"user_confirm_message", "value"=>$message);
+		$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'none');
+
+		$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
+
     }
 
     public function getLog()

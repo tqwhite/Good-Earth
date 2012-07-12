@@ -11,12 +11,21 @@ class Application_Model_School
 	}
 
 
-	public function getList(){
+	public function getList($hydrationMode){
 
 		$query = $this->_entityManager->createQuery('SELECT u from GE\Entity\School u');
 
-		$schoolList = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
-		return $schoolList;
+		switch ($hydrationMode){
+			default:
+			case 'array':
+				$list = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+				break;
+			case 'record':
+				$list = $query->getResult();
+				break;
+		}
+
+		return $list;
 
 	}
 
@@ -29,6 +38,30 @@ class Application_Model_School
 		$schoolList = $query->getResult();
 		return $schoolList;
 
+	}
+
+	static function formatOutput($identity){
+		if (count($identity)<2){
+			return self::formatScalar($identity);
+		}
+		else{
+
+			$list=$identity;
+			$outList=array();
+			for ($i=0, $len=count($list); $i<$len; $i++){
+				$outList[]=self::formatScalar($list[$i]);
+			}
+			return $outList;
+		}
+
+	}
+
+	static function formatScalar($inData){
+	return array(
+					'name'=>$inData->name,
+					'refId'=>$inData->refId,
+					'gradeLevels'=>\Application_Model_GradeLevel::formatOutput($inData->gradeLevelNodes)
+				);
 	}
 
 }
