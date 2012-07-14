@@ -18,10 +18,10 @@ class StudentController extends Zend_Controller_Action
 		$inData=$this->getRequest()->getPost('data');
 		$messages=array();
 
-		$modelObj=new \Application_Model_Student();
-		$errorList=$modelObj->validate($inData);
 
-		if ($errorList){
+		$errorList=\Application_Model_Student::validate($inData);
+
+		if (count($errorList)>0){
 			$this->_helper->json(array(
 				status=>-1,
 				messages=>$errorList,
@@ -39,34 +39,28 @@ class StudentController extends Zend_Controller_Action
 		$gradeLevelObj=new \Application_Model_GradeLevel();
 		$gradeLevel=$gradeLevelObj->getByRefId($inData['gradeLevelRefId']);
 
+
+		$inData['school']=$school[0];
+		$inData['gradeLevel']=$gradeLevel[0];
+		$inData['account']=$account;
+
 		$studentObj=new \Application_Model_Student();
 		$student=$studentObj->getByRefId($inData['refId']);
 
-		if (!$student){
-			$student=new GE\Entity\Student();
-		}
-		else{
-			$student=$student[0];
-		}
-				$student->firstName=$inData['firstName'];
-				$student->lastName=$inData['lastName'];
-				$student->refId=$inData['refId'];
-				$student->school=$school[0];
-				$student->gradeLevel=$gradeLevel[0];
-				$student->account=$account;
-
-
 			$status=1; //unless error
 			try{
-				$this->doctrineContainer=Zend_Registry::get('doctrine');
-				$em=$this->doctrineContainer->getEntityManager();
-				$em->persist($student);
-				$em->flush();
-				$em->clear();
+
+				if (count($student)==0){
+					$studentObj->newFromArrayList(array($inData));
+				}
+				else{
+
+					$studentObj->updateFromArray($student[0], $inData);
+				}
 			}
 			catch(Exception $e){
 				$status=-1;
-				$messages[]=array('server_error', $e);
+				$messages[]=array('server_error', $e->errorInfo);
 			}
 
 			$this->_helper->json(array(

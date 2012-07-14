@@ -12,6 +12,16 @@ if ($this->sqlList){
 <div id="view-content">
 	<p><?php echo $this->message;?></p>
 	<?php echo $sqlString; ?>
-	<?php Q\Utils::dumpWeb($this->schoolList);?>);
-	<?php Q\Utils::dumpWeb($this->gradeLevelList);?>);
+	<?php
+		echo "<div style='margin:20px 0px 20px 0px;padding:20px;border-bottom:2pt solid red;;border-top:2pt solid red;'>";
+		if (count($this->listingArrays)>0){
+			foreach ($this->listingArrays as $label=>$proofList){
+				Q\Utils::dumpWeb($proofList);
+			}
+		}
+		else{
+			echo "No Listings";
+		}
+		echo "</div>";
+	?>
 </div>

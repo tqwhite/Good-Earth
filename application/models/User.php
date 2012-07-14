@@ -1,18 +1,58 @@
 <?php
 
-class Application_Model_User
+class Application_Model_User extends Application_Model_Base
 {
+
+	const entityName="Student";
+
 	const	badConfirmationCode=-1;
 	const	alreadyConfirmed=1;
 	const	confirmationSuccessful=2;
 
-	private $_doctrineContainer;
-	private $_entityManager;
-
 	public function __construct(){
+		parent::__construct();
+	}
 
-		$this->doctrineContainer=\Zend_Registry::get('doctrine');
-		$this->_entityManager=$this->doctrineContainer->getEntityManager();
+	static function validate($inData){
+
+		$errorList=array();
+
+		$name='userName';
+		$datum=$inData[$name];
+		if (strlen($datum)<6){
+			$errorList[]=array($name, "User Name too short");
+		}
+
+		$name='password';
+		$datum=$inData[$name];
+		if (strlen($datum)<6){
+			$errorList[]=array($name, "Password too short");
+		}
+
+		return $errorList;
+	}
+
+	static function formatScalar($inData, $originsArray){
+		return array(
+			'firstName'=>$inData->firstName,
+			'lastName'=>$inData->lastName,
+			'emailAdr'=>$inData->emailAdr,
+			'userName'=>$inData->userName,
+			'account'=>\Application_Model_Account::formatOutput($inData->account)
+
+
+		);
+
+	}
+
+
+	public function getUserByUserId($userName){
+		$query = $this->entityManager->createQuery('SELECT u from GE\Entity\User u WHERE u.userName = :name');
+		$query->setParameters(array(
+			'name' => $userName
+		));
+		$users = $query->getResult();
+		return $users;
 	}
 
 	public function confirmEmail($confirmationCode){
@@ -27,7 +67,7 @@ class Application_Model_User
 	}
 
 	public function setEmailStatusConfirmed($confirmationCode){
-		$query = $this->_entityManager->createQuery('UPDATE GE\Entity\User u Set u.emailStatus=1 WHERE u.confirmationCode = :confirmationCode');
+		$query = $this->entityManager->createQuery('UPDATE GE\Entity\User u Set u.emailStatus=1 WHERE u.confirmationCode = :confirmationCode');
 		$query->setParameters(array(
 			'confirmationCode' => $confirmationCode
 		));
@@ -36,74 +76,12 @@ class Application_Model_User
 	}
 
 	public function getUserByConfirmationCode($confirmationCode){
-		$query = $this->_entityManager->createQuery('SELECT u from GE\Entity\User u WHERE u.confirmationCode = :confirmationCode');
+		$query = $this->entityManager->createQuery('SELECT u from GE\Entity\User u WHERE u.confirmationCode = :confirmationCode');
 		$query->setParameters(array(
 			'confirmationCode' => $confirmationCode
 		));
 		$users = $query->getResult();
 		return $users;
-
-		/*
-
-		$users=$em
-			->createQuery('select u from GE\Entity\User u')
-			->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
-		*/
-	}
-
-	public function getUserByUserId($userName){
-		$query = $this->_entityManager->createQuery('SELECT u from GE\Entity\User u WHERE u.userName = :name');
-		$query->setParameters(array(
-			'name' => $userName
-		));
-		$users = $query->getResult();
-		return $users;
-	}
-
-	public function validate($inData){
-
-		$errorList=array();
-		$name='userName';
-		$datum=$inData[$name];
-		if (strlen($datum)<6){
-			$errorList[]=array($name, "User Name too short");
-		}
-
-		$name='password';
-		$datum=$inData[$name];
-		if (strlen($datum)<6){
-			$errorList[]=array($name, "Password too short");
-		}
-/*
-		$name='emailAdr';
-		$datum=$inData[$name];
-		$pattern='/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/';
-		if (!ereg($pattern, $datum)){
-			$errorList[]=array($name, "Invalid email address");
-		}
-*/
-		return $errorList;
-	}
-
-	static function formatOutput($identity){
-
-	return array(
-				"identity"=>array(
-					'firstName'=>$identity->firstName,
-					'lastName'=>$identity->lastName,
-					'emailAdr'=>$identity->emailAdr,
-					'userName'=>$identity->userName,
-					'school'=>array(
-						'name'=>$identity->school->name,
-						'refId'=>$identity->school->refId
-						),
-					'account'=>array(
-						'familyName'=>$identity->account->familyName,
-						'refId'=>$identity->account->refId
-						)
-				)
-				);
-
 	}
 
 }

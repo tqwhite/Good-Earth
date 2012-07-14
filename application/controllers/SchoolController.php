@@ -16,15 +16,16 @@ class SchoolController extends Zend_Controller_Action
     public function listAction()
     {
 
-		$schoolObj=new \Application_Model_School();
-		$schoolList=$schoolObj->getList('record');
+		$accessObj=new \Application_Model_School();
+		$list=$accessObj->getList('record');
 
-		$schoolOutList=\Application_Model_School::formatOutput($schoolList);
+		if (count($list)){$status=1;}
+		else {$status=-1;}
 
 		$this->_helper->json(array(
 			status=>$status,
 			messages=>$messageList,
-			data=>$schoolOutList
+			data=>\Application_Model_School::formatOutput($list)
 			)
 		);
 

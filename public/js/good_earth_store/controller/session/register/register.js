@@ -109,7 +109,7 @@ resetAfterSave:function(inData){
 		$('#'+this.displayParameters.status.divId).html(errorString).removeClass('good').addClass('bad');
 	}
 	else{
-		$('#'+this.displayParameters.status.divId).html("Welcome, "+inData.data.identity.firstName).removeClass('bad').addClass('good');
+		$('#'+this.displayParameters.status.divId).html("Welcome, "+inData.data.firstName).removeClass('bad').addClass('good');
 	}
 },
 

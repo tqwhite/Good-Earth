@@ -54,11 +54,11 @@
         </layoutScriptsDirectory>
       </layoutsDirectory>
       <modelsDirectory>
-        <modelFile modelName="Base"/>
         <modelFile modelName="File"/>
         <modelFile modelName="User"/>
         <modelFile modelName="School"/>
         <modelFile modelName="Account"/>
+        <modelFile modelName="Base"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>

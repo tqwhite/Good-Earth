@@ -10,24 +10,17 @@ class SessionController extends Zend_Controller_Action
 
     public function checkAction()
     {
-
 		$hello=$this->getRequest()->getPost('data');
 //Q\Utils::dumpCli($_POST);
-
 		$namespace = new Zend_Session_Namespace('sessionData'); // default namespace
 		$namespace->setExpirationSeconds(60);
-
 		if (isset($namespace->count)) {
 			$namespace->count=$namespace->count+1;
 		}
 		else{
 			$namespace->count=1;
 		}
-
-
 		$namespace->name="You say, '{$hello['hello']}' and I say, 'I love you' {$namespace->count} times.";
-
-
 		$this->_helper->json(array(
 			status=>1,
 			data=>array(
@@ -87,7 +80,6 @@ class SessionController extends Zend_Controller_Action
     public function logoutAction()
     {
         \Zend_Auth::getInstance()->clearIdentity();
-
 
         $status=1;
 		$this->_helper->json(array(

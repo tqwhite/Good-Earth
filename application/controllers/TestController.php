@@ -2,10 +2,13 @@
 
 class TestController extends Zend_Controller_Action
 {
+	private $doctrineContainer;
+	private $em;
 
     public function init()
     {
-		/* Initialize action controller here */
+		$this->doctrineContainer=Zend_Registry::get('doctrine');
+		$this->em=$this->doctrineContainer->getEntityManager();
     }
 
     public function indexAction()
@@ -64,32 +67,6 @@ class TestController extends Zend_Controller_Action
 		$em->persist($testObj);
 		$em->flush();
 
-
-/*
-this works
-		$this->doctrineContainer=Zend_Registry::get('doctrine');
-
-		$u=new GE\Entity\User();
-		$u->firstName='tq';
-		$u->lastName='white';
-		$u->userName='tq'.  uniqid();
-		$u->password='12345';
-		$u->userName='tqwhite';
-
-		$em=$this->doctrineContainer->getEntityManager();
-		$em->persist($u);
-		$em->flush();
-		$em->clear();
-
-		$users=$em
-			->createQuery('select u from GE\Entity\User u')
-			->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
-*/
-/*
-		foreach ($users as $user){
-		    echo 'refId='.$user->refId.'<br/>';
-		}
-*/
 		$serverComm=array();
 			$serverComm[]=array("fieldName"=>"user_confirm_message", "value"=>'test complete');
 			$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'none');
@@ -109,37 +86,46 @@ this works
 
     public function initAction()
     {
+    	$this->view->listingArrays=array();
+
 		$this->view->message = "<b>Initializing Things</b><p/>";
 
 		$initSchema=$this->getRequest()->getParam('initSchema');
 
-		$this->doctrineContainer=Zend_Registry::get('doctrine');
-			$em=$this->doctrineContainer->getEntityManager();
+			$em=$this->em;
 
 		if ($initSchema=='pleaseKillMyData'){
-			$tool=new \Doctrine\ORM\Tools\SchemaTool($em);
 
-			$tool->dropDatabase();
-			$this->view->message .= "dropped database - bye bye Data!<br/>";
+			$this->view->message .= "initializing database schema<br/>";
+			$this->view->sqlList=$this->initializeDatabaseSchema();
+			$this->view->message .= "database initialization complete<p/>";
 
-			$metas=$em->getMetadataFactory()->getAllMetadata();
-			$tool->createSchema($metas);
-			$this->view->message .= "initializing database<br/>";
 
-			$this->view->sqlList=$tool->getCreateSchemaSql($metas);
+			$this->view->message .= "initializing data<br/>";
+			$modelObj=$this->_initDays();
+				$list=$modelObj->getList($inData);
+				$this->view->message .= "-----verified ".count($list)." days<br/>";
+				$this->view->listingArrays[]=$list;
 
-			$this->view->message .= "initializing school data<br/>";
-			$this->_initSchools();
+			$this->view->message .= $this->_initSchools();
+
 
 			$schoolObj=new \Application_Model_School();
-			$schoolList=$schoolObj->getList($inData);
+				$schoolList=$schoolObj->getList($inData);
+				$this->view->message .= "-----verified ".count($schoolList)." schools<br/>";
+	//			$this->view->listingArrays[]=$schoolList;
 
-			$this->view->schoolList=$schoolList;
 
-			$gradeLevelObj=new \Application_Model_GradeLevel();
-			$gradeLevelList=$gradeLevelObj->getList($inData);
+			$this->_initGradesLevels();
+				$gradeLevelObj=new \Application_Model_GradeLevel();
+				$gradeLevelList=$gradeLevelObj->getList($inData);
+				$this->view->message .= "-----verified ".count($gradeLevelList)." grade levels<br/>";
+	//			$this->view->listingArrays[]=$gradeLevelList;
 
-			$this->view->gradeLevelList=$gradeLevelList;
+			$this->_initSchoolGradeLevels();
+			$this->view->message .= "-----gradeLevelSchools were initialized<br/>";
+
+
 
 		$serverComm=array();
 			$serverComm[]=array("fieldName"=>"user_confirm_message", "value"=>$message);
@@ -150,175 +136,96 @@ this works
         }
     }
 
+    private function initializeDatabaseSchema(){
+
+			$tool=new \Doctrine\ORM\Tools\SchemaTool($this->em);
+
+			$tool->dropDatabase();
+			$this->view->message .= "-----dropped database - bye bye Data!<br/>";
+
+			$metas=$this->em->getMetadataFactory()->getAllMetadata();
+			$tool->createSchema($metas);
+			$this->view->message .= "-----initializing schema<br/>";
+
+			return $tool->getCreateSchemaSql($metas);
+	}
+
     private function _initSchools(){
 
+	$source=array(
+		array('name'=>'Saint Marks'),
+		array('name'=>'Lycee Français'),
+		array('name'=>'Neil Cummins'),
+		array('name'=>'Cascade Canyon'),
+		array('name'=>'Marin Horizon'),
+		array('name'=>'St Anselm'),
+		array('name'=>'Hall Middle School'),
+		array('name'=>'Sonoma Academy '),
+		array('name'=>'Good Shepherd'),
+		array('name'=>'Marin Christian Academy')
+	);
 
-		$this->doctrineContainer=Zend_Registry::get('doctrine');
-		$em=$this->doctrineContainer->getEntityManager();
-
-		$u=new GE\Entity\School();
-				$u->name='Saint Marks';
-				$em->persist($u);
-				$em->flush();
-
-
-		$u=new GE\Entity\School();
-				$u->name='Lycee Français';
-				$em->persist($u);
-				$em->flush();
-
-
-		$u=new GE\Entity\School();
-				$u->name='Neil Cummins';
-				$em->persist($u);
-				$em->flush();
-
-
-		$u=new GE\Entity\School();
-				$u->name='Cascade Canyon';
-				$em->persist($u);
-				$em->flush();
-
-
-		$u=new GE\Entity\School();
-				$u->name='Marin Horizon';
-				$em->persist($u);
-				$em->flush();
-
-
-		$u=new GE\Entity\School();
-				$u->name='St Anselm';
-				$em->persist($u);
-				$em->flush();
-
-
-		$u=new GE\Entity\School();
-				$u->name='Hall Middle School';
-				$em->persist($u);
-				$em->flush();
-
-
-		$u=new GE\Entity\School();
-				$u->name='Sonoma Academy ';
-				$em->persist($u);
-				$em->flush();
-
-
-		$u=new GE\Entity\School();
-				$u->name='Good Shepherd';
-				$em->persist($u);
-				$em->flush();
-
-
-		$u=new GE\Entity\School();
-				$u->name='Marin Christian Academy';
-				$em->persist($u);
-				$em->flush();
-
-
-
-
-
-		$u=new GE\Entity\GradeLevel();
-		$u->title='Kindergarten';
-		$em->persist($u);
-		$em->flush();
-
-		$u=new GE\Entity\GradeLevel();
-		$u->title='First';
-		$em->persist($u);
-		$em->flush();
-
-		$u=new GE\Entity\GradeLevel();
-		$u->title='Second';
-		$em->persist($u);
-		$em->flush();
-
-		$u=new GE\Entity\GradeLevel();
-		$u->title='Third';
-		$em->persist($u);
-		$em->flush();
-
-		$u=new GE\Entity\GradeLevel();
-		$u->title='Fourth';
-		$em->persist($u);
-		$em->flush();
-
-		$u=new GE\Entity\GradeLevel();
-		$u->title='Fifth';
-		$em->persist($u);
-		$em->flush();
-
-		$u=new GE\Entity\GradeLevel();
-		$u->title='Sixth';
-		$em->persist($u);
-		$em->flush();
-
-
-		$em->clear();
-
-		$this->_initSchoolGradeLevels();
+	$newObj=new \Application_Model_School();
+	$newObj->newFromArrayList($source);
+	return $newObj;
 
     }
 
+private function _initGradesLevels(){
+	$source=array(
+		array('title'=>'Kindergarten'),
+		array('title'=>'First'),
+		array('title'=>'Second'),
+		array('title'=>'Third'),
+		array('title'=>'Fourth'),
+		array('title'=>'Fifth'),
+		array('title'=>'Sixth')
+	);
+
+	$newObj=new \Application_Model_GradeLevel();
+	$newObj->newFromArrayList($source);
+	return $newObj;
+}
+
 private function _initSchoolGradeLevels(){
+	//until I can figure out how to make Doctrine do ManyToMany, there will
+	//be these stupid join table entities. I'm not making models for them because
+	//they should not exist.
 
-		$this->doctrineContainer=Zend_Registry::get('doctrine');
-		$em=$this->doctrineContainer->getEntityManager();
+	$schoolObj=new \Application_Model_School();
+	$schoolList=$schoolObj->getList('record');
 
+	$gradeLevelObj=new \Application_Model_GradeLevel();
+	$gradeLevelList=$gradeLevelObj->getList('record');
 
-		$schoolObj=new \Application_Model_School();
-		$schoolList=$schoolObj->getList('record');
+	foreach ($schoolList as $school){
 
-		$gradeLevelObj=new \Application_Model_GradeLevel();
-		$gradeLevelList=$gradeLevelObj->getList('record');
+		foreach ($gradeLevelList as $gradeLevel){
 
-		foreach ($schoolList as $school){
-
-			foreach ($gradeLevelList as $gradeLevel){
-
-
-				$node=new GE\Entity\GradeSchoolNode();
-				$node->school=$school;
-				$node->gradeLevel=$gradeLevel;
-				$node->descriptor=$school->name.'/'.$gradeLevel->title;
-				$em->persist($node);
-				$em->flush();
-
-
-
-			}
-
-
+			$node=new GE\Entity\GradeSchoolNode();
+			$node->school=$school;
+			$node->gradeLevel=$gradeLevel;
+			$node->descriptor=$school->name.'/'.$gradeLevel->title;
+			$this->em->persist($node);
+			$this->em->flush();
 		}
+	}
+}
 
+private function _initDays(){
+	$source=array(
+		array(title=>'Sun'),
+		array(title=>'Mon'),
+		array(title=>'Tues'),
+		array(title=>'Weds'),
+		array(title=>'Thurs'),
+		array(title=>'Fri'),
+		array(title=>'Sat'),
+	);
 
-
-		/*=======================================
-
-	for ($i=0, $len=count($schoolList); $i<$len; $i++){
-		$school=$schoolList[$i];
-
-echo 'name='.$school->name."</br>";
-
-	for ($j=0, $len2=count($gradeLevelList); $j<$len2; $j++){
-		$gradLevel=$gradeLevelList[$j];
-
-
-
-				$node=new GE\Entity\GradeSchoolNode();
-				$node->school=$school;
-				$node->gradeLevel=$gradLevel;
-				$em->persist($u);
-				$em->flush();
-
-
-
-			}
-
-
-		}
-*/
+	$newObj=new \Application_Model_Day();
+	$newObj->newFromArrayList($source);
+	return $newObj;
 
 }
 

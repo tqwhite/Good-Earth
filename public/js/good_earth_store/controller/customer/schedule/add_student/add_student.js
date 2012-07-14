@@ -24,7 +24,7 @@ init: function(el, options) {
 			{name:'schools'},
 			{name:'gradeLevels'},
 			{name:'redrawSchedule'},
-			{name:'studentRefId', optional:true}
+			{name:'studentRefId', importance:'optional'}
 		],
 		source:this.constructor._fullName
  	});
@@ -204,7 +204,7 @@ catchSave:function(inData){
 	var errorString=this.listMessages(inData.messages);
 	if (inData.status<1){
 		this.element.find('.errorMsg').remove();
-		this.element.prepend("<div class='errorMsg'>"+errorString+"</div>").removeClass('good').addClass('bad').fade(5000);
+		this.element.prepend("<div class='errorMsg'>"+errorString+"</div>").removeClass('good').addClass('bad');
 	}
 	else{
 		if (this.isNew) {this.account.students.push(this.formParams);}

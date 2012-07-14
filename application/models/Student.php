@@ -1,57 +1,45 @@
 <?php
 
-class Application_Model_Student
+class Application_Model_Student extends Application_Model_Base
 {
 
-	private $_doctrineContainer;
-	private $_entityManager;
+	const entityName="Student";
 
 	public function __construct(){
-
-		$this->doctrineContainer=\Zend_Registry::get('doctrine');
-		$this->_entityManager=$this->doctrineContainer->getEntityManager();
+		parent::__construct();
 	}
 
-
-	public function getByRefId($refId){
-		$query = $this->_entityManager->createQuery('SELECT u from GE\Entity\Student u WHERE u.refId = :refId');
-		$query->setParameters(array(
-			'refId' => $refId
-		));
-		$result = $query->getResult();
-		return $result;
-	}
-
-	public function validate($inData){
+	static function validate($inData){
 
 		$errorList=array();
+
 		$name='firstName';
 		$datum=$inData[$name];
 		if (!$datum){
 			$errorList[]=array($name, "First name is required");
 		}
 
-		$errorList=array();
+
 		$name='lastName';
 		$datum=$inData[$name];
 		if (!$datum){
 			$errorList[]=array($name, "Last name is required");
 		}
 
-		$errorList=array();
+
 		$name='schoolRefId';
 		$datum=$inData[$name];
 		if (!$datum){
 			$errorList[]=array($name, "School is required");
 		}
-/*
-		$errorList=array();
+
+
 		$name='gradeLevelRefId';
 		$datum=$inData[$name];
 		if (!$datum){
 			$errorList[]=array($name, "Grade Level is required");
 		}
-
+/*
 		$name='emailAdr';
 		$datum=$inData[$name];
 		$pattern='/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/';
@@ -62,16 +50,43 @@ class Application_Model_Student
 		return $errorList;
 	}
 
-	static function formatOutput($identity){
+	static function formatScalar($inData, $originsArray){
+		return array(
+			'firstName'=>$inData->firstName,
+			'lastName'=>$inData->lastName,
+			'refId'=>$inData->refId,
+			'schoolRefId'=>$inData->school->refId,
+			'accountRefId'=>$inData->account->refId,
+			'gradeLevelRefId'=>$inData->gradeLevel->refId,
+		);
+	}
 
-	return array(
-					'firstName'=>$identity->firstName,
-					'lastName'=>$identity->lastName,
-					'refId'=>$identity->refId,
-					'schoolRefId'=>$identity->school->refId,
-					'accountRefId'=>$identity->account->refId,
-					'gradeLevelRefId'=>$identity->gradeLevel->refId,
-				);
+	public function getList($hydrationMode){
+
+		$query = $this->entityManager->createQuery("SELECT u from GE\\Entity\\{$this->entityName} u");
+
+		switch ($hydrationMode){
+			default:
+			case 'array':
+				$list = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+				break;
+			case 'record':
+				$list = $query->getResult();
+				break;
+		}
+
+		return $list;
+
+	}
+
+	public function getByRefId($refId){
+
+		$query = $this->entityManager->createQuery("SELECT u from GE\\Entity\\{$this->entityName} u WHERE u.refId = :refId");
+		$query->setParameters(array(
+			'refId' => $refId
+		));
+		$schoolList = $query->getResult();
+		return $schoolList;
 
 	}
 

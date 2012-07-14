@@ -19,7 +19,7 @@ class AccountController extends Zend_Controller_Action
 		$messages=array();
 
 		$userObj=new \Application_Model_User();
-		$errorList=$userObj->validate($inData);
+		$errorList=\Application_Model_User::validate($inData);
 
 		if ($errorList){
 			$this->_helper->json(array(
@@ -51,7 +51,6 @@ class AccountController extends Zend_Controller_Action
 				$em=$this->doctrineContainer->getEntityManager();
 				$em->persist($u);
 				$em->flush();
-				$em->clear();
 			}
 			catch(Exception $e){
 				$status=-1;
@@ -68,13 +67,11 @@ class AccountController extends Zend_Controller_Action
 				status=>$status,
 				messages=>$messages,
 				data=>array(
-					"identity"=>array(
 						'firstName'=>$inData['firstName'],
 						'lastName'=>$inData['lastName'],
 						'emailAdr'=>$inData['emailAdr'],
 						'userName'=>$inData['userName']
 					)
-				)
 			));
 
 
@@ -139,6 +136,9 @@ class AccountController extends Zend_Controller_Action
 
 		$accessObj=new \Application_Model_Account();
 		$result=$accessObj->getByRefId($inData['refId']);
+
+		if (count($result)){$status=1;}
+		else {$status=-1;}
 
 		$this->_helper->json(array(
 			status=>$status,

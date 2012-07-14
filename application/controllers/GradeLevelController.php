@@ -24,12 +24,13 @@ class GradeLevelController extends Zend_Controller_Action
 		$accessObj=new \Application_Model_GradeLevel();
 		$list=$accessObj->getList('record');
 
-		$outList=\Application_Model_GradeLevel::formatOutput($list);
+		if (count($list)){$status=1;}
+		else {$status=-1;}
 
 		$this->_helper->json(array(
 			status=>$status,
 			messages=>$messageList,
-			data=>$outList
+			data=>\Application_Model_GradeLevel::formatOutput($list)
 			)
 		);
 
