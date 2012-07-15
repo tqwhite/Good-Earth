@@ -51,6 +51,71 @@ class TestController extends Zend_Controller_Action
     public function doctrineAction()
     {
 
+
+
+		$this->doctrineContainer=Zend_Registry::get('doctrine');
+		$em=$this->doctrineContainer->getEntityManager();
+
+
+// 		$mealEntity=new GE\Entity\Meal();
+// 			$mealEntity->name='Pizza Galore';
+// 			$mealEntity->shortName='test shortName';
+// 			$mealEntity->description='test description';
+// 			$mealEntity->suggestedPrice=222;
+//  		$em->persist($mealEntity);
+// echo 'Meal='.$mealEntity->name."<br/>";
+
+
+		$mealObj=new \Application_Model_Meal();
+ 		$mealList=$mealObj->getByRefId('50025aa9da897');
+ 		$mealEntity=$mealList[0];
+echo 'meal='.$mealEntity->name."<br/>";
+
+		$offeringEntity=new GE\Entity\Offering();
+			$offeringEntity->comment='test comment';
+			$offeringEntity->suggestedPrice=100;
+			$offeringEntity->name='testOfferingName'.uniqid();
+			$offeringEntity->meal=$mealEntity;
+ 		$em->persist($offeringEntity);
+echo 'Offering='.$offeringEntity->name."<br/>";
+
+//===============
+
+		$dayObj=new \Application_Model_Day();
+		$dayList=$dayObj->getByRefId('500255f75d92b');
+		$dayEntity=$dayList[0];
+echo 'Day='.$dayEntity->title."<br/>";
+
+		$offeringDayNodeEntity=new GE\Entity\OfferingDayNode();
+			$offeringDayNodeEntity->day=$dayEntity;
+			$offeringDayNodeEntity->offering=$offeringEntity;
+ 			$em->persist($offeringDayNodeEntity);
+
+		$schoolObj=new \Application_Model_School();
+		$schoolList=$schoolObj->getByRefId('500255f765a50');
+		$schoolEntity=$schoolList[0];
+echo 'School='.$schoolEntity->name."<br/>";
+
+		$offeringSchoolNodeEntity=new GE\Entity\OfferingSchoolNode();
+			$offeringSchoolNodeEntity->school=$schoolEntity;
+			$offeringSchoolNodeEntity->offering=$offeringEntity;
+ 			$em->persist($offeringSchoolNodeEntity);
+
+		$gradeLevelObj=new \Application_Model_GradeLevel();
+		$gradeLevelList=$gradeLevelObj->getByRefId('500255f776e95');
+		$gradeLevelEntity=$gradeLevelList[0];
+echo 'GradeLevel='.$gradeLevelEntity->title."<br/>";
+
+		$offeringGradeLevelNodeEntity=new GE\Entity\OfferingGradeLevelNode();
+			$offeringGradeLevelNodeEntity->gradeLevel=$gradeLevelEntity;
+			$offeringGradeLevelNodeEntity->offering=$offeringEntity;
+ 			$em->persist($offeringGradeLevelNodeEntity);
+
+
+ 		$em->flush();
+
+
+/*
 		$this->doctrineContainer=Zend_Registry::get('doctrine');
     	$firstName='Jimmie';
 		$lastName='Doe';
@@ -66,7 +131,7 @@ class TestController extends Zend_Controller_Action
 		$em=$this->doctrineContainer->getEntityManager();
 		$em->persist($testObj);
 		$em->flush();
-
+*/
 		$serverComm=array();
 			$serverComm[]=array("fieldName"=>"user_confirm_message", "value"=>'test complete');
 			$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'none');

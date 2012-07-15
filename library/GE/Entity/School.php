@@ -48,10 +48,23 @@ class School /*extends Base*/{
 	private $gradeLevelNodes;
 
 
+    /**
+	 * @param \Doctrine\Common\Collections\Collection $property
+	 * @OneToMany(targetEntity="OfferingSchoolNode", mappedBy="school", cascade={"persist", "remove"});
+     */
+    private $offeringSchoolNodes;
+
+
+	/**
+	 * @column(type="datetime", nullable=false)
+	 * @var datetime
+	 **/
+
+	private $created;
 
 public function __construct(){
 	if (!$this->refId){$this->refId =  uniqid();}
-	$this->users=new \Doctrine\Common\Collections\ArrayCollection();
+	$this->created=new \DateTime(date("Y-m-d H:i:s"));
 }
 
 public function __get($property){

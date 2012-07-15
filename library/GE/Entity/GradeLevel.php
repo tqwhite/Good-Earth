@@ -32,8 +32,25 @@ class GradeLevel /*extends Base*/{
 
 
 
+
+    /**
+	 * @param \Doctrine\Common\Collections\Collection $property
+	 * @OneToMany(targetEntity="OfferingGradeLevelNode", mappedBy="days", cascade={"persist", "remove"});
+     */
+    private $offeringGradeLevelNodes;
+
+
+
+	/**
+	 * @column(type="datetime", nullable=false)
+	 * @var datetime
+	 **/
+
+	private $created;
+
 public function __construct(){
 	if (!$this->refId){$this->refId =  uniqid();}
+	$this->created=new \DateTime(date("Y-m-d H:i:s"));
 }
 
 public function __get($property){

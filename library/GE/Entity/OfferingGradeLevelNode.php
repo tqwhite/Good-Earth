@@ -3,12 +3,12 @@ namespace GE\Entity;
 /**
 *
 * @Entity
-* @Table(name="days")
+* @Table(name="offeringGradeLevelNodes")
 * @author tqii
 *
 *
 **/
-class Day /*extends Base*/{
+class OfferingGradeLevelNode /*extends Base*/{
 	/**
 	* @var string $id
 	* @column(name="refId", type="string", length=36, nullable=false, unique="true")
@@ -16,12 +16,23 @@ class Day /*extends Base*/{
 	**/
 	private $refId;
 
-	/**
-	 * @column(type="string", length=60, nullable=false)
-	 * @var string
-	 **/
-	private $title;
 
+	/**
+	 *
+	 * @ManyToOne(targetEntity="Offering", cascade={"all"}, fetch="EAGER")
+	 * @JoinColumn(name="offeringRefId", referencedColumnName="refId")
+	 *
+	 **/
+	private $offering;
+
+
+	/**
+	 *
+	 * @ManyToOne(targetEntity="GradeLevel", cascade={"all"}, fetch="EAGER")
+	 * @JoinColumn(name="gradeLevelRefId", referencedColumnName="refId")
+	 *
+	 **/
+	private $gradeLevel;
 
 	/**
 	 * @column(type="datetime", nullable=false)
@@ -29,14 +40,6 @@ class Day /*extends Base*/{
 	 **/
 
 	private $created;
-
-
-    /**
-	 * @param \Doctrine\Common\Collections\Collection $property
-	 * @OneToMany(targetEntity="OfferingDayNode", mappedBy="days", cascade={"persist", "remove"});
-     */
-    private $offeringDayNodes;
-
 
 public function __construct(){
 	if (!$this->refId){$this->refId =  uniqid();}

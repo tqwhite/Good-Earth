@@ -56,8 +56,16 @@ class Student /*extends Base*/{
 
 
 
+	/**
+	 * @column(type="datetime", nullable=false)
+	 * @var datetime
+	 **/
+
+	private $created;
+
 public function __construct(){
 	if (!$this->refId){$this->refId =  uniqid();}
+	$this->created=new \DateTime(date("Y-m-d H:i:s"));
 }
 
 public function __get($property){

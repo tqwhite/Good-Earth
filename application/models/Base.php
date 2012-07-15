@@ -5,6 +5,7 @@ class Application_Model_Base
 	protected $doctrineContainer;
 	protected $entityManager;
 	protected $entityName;
+	protected $entity;
 
 	public function __construct(){
 		$this->entityName=static::entityName;
@@ -13,9 +14,18 @@ class Application_Model_Base
 		$this->entityManager=$this->doctrineContainer->getEntityManager();
 	}
 
+	public function __get($property){
+		return $this->$property;
+	}
+
+	public function __set($property, $value){
+		$this->$property=$value;
+	}
+
 	public function generate(){
-		$entityClassName="\\GE\\Entity\\{$this->entityName}";
-		return new $entityClassName();
+		$entityClassName="GE\\Entity\\{$this->entityName}";
+		$this->entity=new $entityClassName();
+		return $this->entity;
 	}
 
 	public function getList($hydrationMode){
@@ -43,6 +53,7 @@ class Application_Model_Base
 			'refId' => $refId
 		));
 		$list = $query->getResult();
+		$this->entity=$list[0];
 		return $list;
 
 	}

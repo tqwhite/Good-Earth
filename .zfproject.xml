@@ -59,6 +59,8 @@
         <modelFile modelName="School"/>
         <modelFile modelName="Account"/>
         <modelFile modelName="Base"/>
+        <modelFile modelName="Offering"/>
+        <modelFile modelName="Meal"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>

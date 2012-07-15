@@ -3,7 +3,7 @@ namespace GE\Entity;
 /**
 *
 * @Entity
-* @Table(name="gradeSchoolNode")
+* @Table(name="gradeSchoolNodes")
 * @author tqii
 *
 *
@@ -40,8 +40,16 @@ class GradeSchoolNode /*extends Base*/{
 	 **/
 	private $gradeLevel;
 
+	/**
+	 * @column(type="datetime", nullable=false)
+	 * @var datetime
+	 **/
+
+	private $created;
+
 public function __construct(){
 	if (!$this->refId){$this->refId =  uniqid();}
+	$this->created=new \DateTime(date("Y-m-d H:i:s"));
 }
 
 public function __get($property){

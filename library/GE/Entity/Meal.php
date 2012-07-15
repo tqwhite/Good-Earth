@@ -17,14 +17,52 @@ class Meal /*extends Base*/{
 	private $refId;
 
 	/**
-	 * @column(type="string", length=60, nullable=false)
+	 * @column(type="string", length=200, nullable=false)
 	 * @var string
 	 **/
 	private $name;
 
+	/**
+	 * @column(type="string", length=60, nullable=false)
+	 * @var string
+	 **/
+	private $shortName;
+
+	/**
+	 * @column(type="text", nullable=false)
+	 * @var string
+	 **/
+	private $description;
+
+	/**
+	 *
+	 * @column(name="suggestedPrice", type="integer", nullable=false)
+	 **/
+
+	 private $suggestedPrice;
+
+
+
+	/**
+	 * @column(type="datetime", nullable=false)
+	 * @var datetime
+	 **/
+
+	private $created;
+
+
+	/**
+	 *
+	 * @param \Doctrine\Common\Collections\Collection $property
+	 * @OneToMany(targetEntity="Offering", mappedBy="meal", cascade={"persist", "remove"});
+	 **/
+
+	private $offerings;
+
 
 public function __construct(){
 	if (!$this->refId){$this->refId =  uniqid();}
+	$this->created=new \DateTime(date("Y-m-d H:i:s"));
 }
 
 public function __get($property){

@@ -45,10 +45,16 @@ class Account /*extends Base*/{
 	private $students;
 
 
+	/**
+	 * @column(type="datetime", nullable=false)
+	 * @var datetime
+	 **/
+
+	private $created;
+
 public function __construct(){
 	if (!$this->refId){$this->refId =  uniqid();}
-     $this->users = new \Doctrine\Common\Collections\ArrayCollection();
-     $this->students = new \Doctrine\Common\Collections\ArrayCollection();
+	$this->created=new \DateTime(date("Y-m-d H:i:s"));
 }
 
 public function __get($property){
