@@ -55,10 +55,10 @@ class TestController extends Zend_Controller_Action
 		$offeringArray=$this->genOfferingArray(3);
 
 			$mealObj=new \Application_Model_Meal();
-			$mealEntityList=$mealObj->newFromArrayList($mealArray);
+			$mealEntityList=$mealObj->newFromArrayList($mealArray, false);
 
 		$offeringObj=new \Application_Model_Offering();
-		$offeringEntityList=$offeringObj->newFromArrayList($offeringArray);
+		$offeringEntityList=$offeringObj->newFromArrayList($offeringArray, false);
 */
 
 		$offeringObj=new \Application_Model_Account();
@@ -78,7 +78,7 @@ exit;
 			gradeLevel=>'First'
 		));
 		$offeringObj=new \Application_Model_Offering();
-		$offeringEntityList=$offeringObj->newFromArrayList($offeringSourceArrayList);
+		$offeringEntityList=$offeringObj->newFromArrayList($offeringSourceArrayList, false);
 		$offeringEntity=$offeringEntityList[0]; //newFromArrayList() produces an array, even if only one
  echo 'Offering='.$offeringEntity->name."<br/>";
 
@@ -101,7 +101,7 @@ exit;
 			suggestedPrice=>222
 		));
 		$mealObj=new \Application_Model_Meal();
-		$mealEntityList=$mealObj->newFromArrayList($mealSourceArrayList);
+		$mealEntityList=$mealObj->newFromArrayList($mealSourceArrayList, false);
 		$mealEntity=$mealEntityList[0]; //newFromArrayList() produces an array, even if only one
 echo 'Meal='.$mealEntity->name."<br/>";
 
@@ -135,7 +135,7 @@ echo 'GradeLevel='.$gradeLevelEntity->title."<br/>";
 			gradeLevel=>'First'
 		));
 		$offeringObj=new \Application_Model_Offering();
-		$offeringEntityList=$offeringObj->newFromArrayList($offeringSourceArrayList);
+		$offeringEntityList=$offeringObj->newFromArrayList($offeringSourceArrayList, false);
 		$offeringEntity=$offeringEntityList[0]; //newFromArrayList() produces an array, even if only one
  echo 'Offering='.$offeringEntity->name."<br/>";
 
@@ -202,11 +202,11 @@ echo 'GradeLevel='.$gradeLevelEntity->title."<br/>";
 		$offeringArray=$this->genOfferingArray(8);
 
 			$mealObj=new \Application_Model_Meal();
-			$mealEntityList=$mealObj->newFromArrayList($mealArray);
+			$mealEntityList=$mealObj->newFromArrayList($mealArray, false);
 			$this->view->message .= "-----created ".count($mealEntityList)." meals<br/>";
 
 		$offeringObj=new \Application_Model_Offering();
-		$offeringEntityList=$offeringObj->newFromArrayList($offeringArray);
+		$offeringEntityList=$offeringObj->newFromArrayList($offeringArray, false);
 			$this->view->message .= "-----created ".count($offeringEntityList)." offerings<br/>";
 
 		$serverComm=array();
@@ -248,7 +248,7 @@ echo 'GradeLevel='.$gradeLevelEntity->title."<br/>";
 	);
 
 	$newObj=new \Application_Model_School();
-	$newObj->newFromArrayList($source);
+	$newObj->newFromArrayList($source, false);
 	return $newObj;
 
     }
@@ -268,7 +268,7 @@ echo 'GradeLevel='.$gradeLevelEntity->title."<br/>";
 		);
 
 		$newObj=new \Application_Model_GradeLevel();
-		$newObj->newFromArrayList($source);
+		$newObj->newFromArrayList($source, false);
 		return $newObj;
 	}
 
@@ -307,7 +307,7 @@ echo 'GradeLevel='.$gradeLevelEntity->title."<br/>";
 		);
 
 		$newObj=new \Application_Model_Day();
-		$newObj->newFromArrayList($source);
+		$newObj->newFromArrayList($source, false);
 		return $newObj;
 
 	}

@@ -52,7 +52,7 @@ class StudentController extends Zend_Controller_Action
 			try{
 
 				if (count($student)==0){
-					$studentObj->newFromArrayList(array($inData));
+					$studentObj->newFromArrayList(array($inData), false);
 				}
 				else{
 
