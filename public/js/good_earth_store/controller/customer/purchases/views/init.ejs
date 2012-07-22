@@ -6,13 +6,31 @@ qtools.validateProperties({
 		{name:'viewHelper'},
 		{name:'formData'}
 	],
- source:'session.dashboard.dashboardMain' });
+ source:'customer/purchases/views/init.ejs' });
 
 qtools.validateProperties({
-	targetObject:displayParameters,
+	targetObject:formData,
 	propList:[
+	{
+		name:'purchases'
+	}
 	],
- source:'session.dashboard.dashboardMain' });
+ source:'customer/purchases/views/init.ejs' });
 
+ var purchases=this.formData.purchases.unpaid,
+ outString='';
+
+ for (var i=0, len=purchases.length; i<len; i++){
+ 	outString+="<tr><td><b>";
+ 	outString+=purchases[i].offering.name;
+ 	outString+="</b></td><td>";
+ 	outString+=purchases[i].day.title;
+ 	outString+="</td><td style='width:100px;text-align:right;'>";
+ 	outString+='$'+purchases[i].offering.price;
+ 	outString+="</td></tr>";
+
+ }
+	outString="<table style='font-size:8pt;'>"+outString+"</table>";
 %>
-Purchases <!--span class='smallButton' style='margin-left:20px;' id='asdsfdfa'></span-->
+Purchases
+<%==outString%>

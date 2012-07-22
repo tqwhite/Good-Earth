@@ -32,16 +32,16 @@ class Offering /*extends Base*/{
 
 
 	/**
-	 * @column(type="text", nullable=false)
+	 * @column(type="text", nullable=true)
 	 * @var string
 	 **/
 	private $comment;
 	/**
 	 *
-	 * @column(name="suggestedPrice", type="integer", nullable=false)
+	 * @column(type="integer", nullable=false)
 	 **/
 
-	 private $suggestedPrice;
+	 private $price;
 
 	/**
 	 *
@@ -49,7 +49,7 @@ class Offering /*extends Base*/{
 	 * @OneToMany(targetEntity="OfferingSchoolNode", mappedBy="offering", cascade={"persist", "remove"});
 	 **/
 
-	private $offeringSchoolNodes;
+	private $schoolNodes;
 
 	/**
 	 *
@@ -57,7 +57,7 @@ class Offering /*extends Base*/{
 	 * @OneToMany(targetEntity="OfferingDayNode", mappedBy="offering", cascade={"persist", "remove"});
 	 **/
 
-	private $offeringDayNodes;
+	private $dayNodes;
 
 	/**
 	 *
@@ -65,7 +65,7 @@ class Offering /*extends Base*/{
 	 * @OneToMany(targetEntity="OfferingGradeLevelNode", mappedBy="offering", cascade={"persist", "remove"});
 	 **/
 
-	private $offeringGradeLevelNodes;
+	private $gradeLevelNodes;
 
 
 	/**
@@ -76,8 +76,10 @@ class Offering /*extends Base*/{
 	 **/
 	private $meal;
 
+
+
 public function __construct(){
-	if (!$this->refId){$this->refId =  uniqid();}
+	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
 	$this->created=new \DateTime(date("Y-m-d H:i:s"));
 }
 

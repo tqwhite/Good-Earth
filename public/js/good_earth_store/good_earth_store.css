@@ -236,3 +236,67 @@ margin:50px 0px 0px 200px;padding-left:50px;border:1pt solid gray;
 
 .schoolIdClassString{
 }
+
+.offeringTitle{
+	font-size:8pt;
+	font-weight:bold;
+}
+
+.purchaseTitle{
+	font-size:8pt;
+	margin-top:4px;
+	font-weight:bold;
+}
+
+.tinyButton{
+  	font-weight:normal;
+	border-top:1pt solid gray;
+	cursor:pointer;
+	border-left:1pt solid gray;
+	border-right:1pt solid black;
+	border-bottom:1pt solid black;
+	text-align:center;
+	padding-left:2px;
+	padding-right:2px;
+	height:15px;
+	margin-right:10px;
+  -moz-border-radius: 2px; /* Firefox */
+  -webkit-border-radius: 2px; /* Safari, Chrome */
+  border-radius: 2px; /* CSS3 */
+  font-size:8pt;
+	-webkit-box-shadow:1px 2px 4px rgba(0, 0, 0, .5);
+	   -moz-box-shadow:1px 2px 4px rgba(0, 0, 0, .5);
+	        box-shadow:1px 2px 4px rgba(0, 0, 0, .5);
+}
+
+.tinyReady{
+	background:#D2E6D2;
+	color:black;
+  -moz-border-radius: 2px; /* Firefox */
+  -webkit-border-radius: 2px; /* Safari, Chrome */
+  border-radius: 2px; /* CSS3 */
+}
+
+.tinyHover{
+	background:none;
+	color:red;
+  -moz-border-radius: 2px; /* Firefox */
+  -webkit-border-radius: 2px; /* Safari, Chrome */
+  border-radius: 2px; /* CSS3 */
+}
+
+.tinyActive{ /*clicked*/
+	background:#ddd;
+	color:red;
+  -moz-border-radius: 2px; /* Firefox */
+  -webkit-border-radius: 2px; /* Safari, Chrome */
+  border-radius: 2px; /* CSS3 */
+}
+
+.tinyUnavailable{
+	background:#aaa;
+	color:#ddd;
+  -moz-border-radius: 0px; /* Firefox */
+  -webkit-border-radius: 0px; /* Safari, Chrome */
+  border-radius: 0px; /* CSS3 */px; /* CSS3 */
+}

@@ -14,14 +14,18 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Customer.Offeri
 
 init: function(el, options) {
 	this.baseInits();
-	
+
 	qtools.validateProperties({
 		targetObject:options,
 		targetScope: this, //will add listed items to targetScope
-		propList:[],
-		source:this.constructor._fullName 
+		propList:[
+			{name:'offerings'},
+			{name:'parentAccessFunction'},
+			{name:'student'}
+		],
+		source:this.constructor._fullName
  	});
-	
+
 	this.initControlProperties();
 	this.initDisplayProperties();
 
@@ -41,7 +45,7 @@ initDisplayProperties:function(){
 	nameArray=[];
 
 	name='status'; nameArray.push({name:name});
-//	name='saveButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+	name='chooseOfferingButtonClassId'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -58,7 +62,8 @@ initDisplay:function(inData){
 			displayParameters:this.displayParameters,
 			viewHelper:this.viewHelper,
 			formData:{
-				userName:GoodEarthStore.Models.LocalStorage.getCookieData(GoodEarthStore.Models.LocalStorage.getConstant('loginCookieName')).data
+				offerings:this.offerings,
+				student:this.student
 			}
 		})
 		);
@@ -67,19 +72,46 @@ initDisplay:function(inData){
 },
 
 initDomElements:function(){
-/*
-	this.displayParameters.saveButton.domObj=$('#'+this.displayParameters.saveButton.divId);
 
-	this.displayParameters.saveButton.domObj.good_earth_store_tools_ui_button2({
+	this.displayParameters.chooseOfferingButtonClassId.domObj=$('.'+this.displayParameters.chooseOfferingButtonClassId.divId);
+
+	this.displayParameters.chooseOfferingButtonClassId.domObj.good_earth_store_tools_ui_button2({
 		ready:{classs:'basicReady'},
 		hover:{classs:'basicHover'},
 		clicked:{classs:'basicActive'},
 		unavailable:{classs:'basicUnavailable'},
-		accessFunction:this.displayParameters.saveButton.handler,
+		accessFunction:this.displayParameters.chooseOfferingButtonClassId.handler,
 		initialControl:'setToReady', //initialControl:'setUnavailable'
-		label:"<div style='margin-top:5px;'>Login</div>"
+		label:'nolabel'
 	});
-*/
-}})
+
+},
+
+
+chooseOfferingButtonClassIdHandler:function(control, parameter){
+	var componentName='chooseOfferingButtonClassId';
+	switch(control){
+		case 'click':
+			var dayRefId=parameter.thisDomObj.attr('dayRefId'),
+				offeringRefId=parameter.thisDomObj.attr('offeringRefId');
+				this.parentAccessFunction('sendPurchase', {
+					dayRefId:dayRefId,
+					offeringRefId:offeringRefId,
+					offeringButtonAccessFunction:parameter.buttonAccessFunction
+				});
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
+},
+
+
+
+
+})
 
 });

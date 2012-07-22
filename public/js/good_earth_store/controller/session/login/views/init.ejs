@@ -9,6 +9,14 @@ qtools.validateProperties({
  source:'session.login.mainPanel' });
 
 qtools.validateProperties({
+	targetObject:formData,
+	propList:[
+		{name:'userName', importance:'optional'},
+		{name:'newUsername', importance:'optional'}
+	],
+ source:'session.login.mainPanel' });
+
+qtools.validateProperties({
 	targetObject:displayParameters,
 	propList:[
 		{name:'saveButton'},
@@ -19,17 +27,19 @@ qtools.validateProperties({
 	],
  source:'session.login.mainPanel' });
 
+$userName=this.formData['newUsername']?this.formData['newUsername']:this.formData['userName'];
+
 %>
 <div class='entryBox' style='height:250px;width:300px;'>
 
-<div class='basicButtonXXX' style='margin-top:25px;height:30px;width:100%' id='<%==displayParameters.status.divId%>'></div>
+<div style='margin-top:25px;height:30px;width:100%' id='<%==this.displayParameters.status.divId%>'></div>
 
 <table style='border:none;font-size:10pt;'>
-	<tr><td style='width:100px;'>User Name:</td><td><input name='userName' value='<%==formData['userName']%>'></td></tr>
+	<tr><td style='width:100px;'>User Name:</td><td><input name='userName' value='<%==$userName%>'></td></tr>
 	<tr><td>Password:</td><td><input name='password' value='123456'></td></tr><!--debugg-->
 </table>
-<div class='basicButton' style='margin-left:136px;margin-top:20px;' id='<%==displayParameters.saveButton.divId%>'></div>
+<div class='basicButton' style='margin-left:136px;margin-top:20px;' id='<%==this.displayParameters.saveButton.divId%>'></div>
 
-<div class='smallButton' style='margin-left:165px;margin-top:20px;' id='<%==displayParameters.registerButton.divId%>'></div>
-<div class='smallButton' style='margin-left:165px;margin-top:10px;' id='<%==displayParameters.forgotButton.divId%>'></div>
+<div class='smallButton' style='margin-left:165px;margin-top:20px;' id='<%==this.displayParameters.registerButton.divId%>'></div>
+<div class='smallButton' style='margin-left:165px;margin-top:10px;' id='<%==this.displayParameters.forgotButton.divId%>'></div>
 </div>

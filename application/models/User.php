@@ -32,16 +32,23 @@ class Application_Model_User extends Application_Model_Base
 		return $errorList;
 	}
 
-	static function formatScalar($inData, $originsArray){
-		return array(
+	static function formatDetail($inData, $outputType){
+	if ($inData->refId){
+		$outArray=array(
 			'firstName'=>$inData->firstName,
 			'lastName'=>$inData->lastName,
 			'emailAdr'=>$inData->emailAdr,
 			'userName'=>$inData->userName,
-			'account'=>\Application_Model_Account::formatOutput($inData->account)
+			'account'=>\Application_Model_Account::formatOutput($inData->account, $outputType)
+			);
+	}
+	else{
+		$outArray=array();
+	}
 
 
-		);
+		return $outArray;
+
 
 	}
 
@@ -52,18 +59,26 @@ class Application_Model_User extends Application_Model_Base
 			'name' => $userName
 		));
 		$users = $query->getResult();
-		return $users;
+		return $users[0];
 	}
 
 	public function confirmEmail($confirmationCode){
 		$user=$this->getUserByConfirmationCode($confirmationCode);
 		if ($user){
 			$result=$this->setEmailStatusConfirmed($confirmationCode);
-			return $result?self::confirmationSuccessful:self::alreadyConfirmed;
+			$status=$result?self::confirmationSuccessful:self::alreadyConfirmed;
+			$resultArray=array(
+				status=>$status,
+				user=>$user
+			);
 		}
 		else{
-			return self::badConfirmationCode;
+			$resultArray=array(
+				status=>self::badConfirmationCode
+			);
 		}
+
+		return $resultArray;
 	}
 
 	public function setEmailStatusConfirmed($confirmationCode){

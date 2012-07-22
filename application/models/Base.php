@@ -54,7 +54,7 @@ class Application_Model_Base
 		));
 		$list = $query->getResult();
 		$this->entity=$list[0];
-		return $list;
+		return $this->entity;
 
 	}
 
@@ -66,19 +66,19 @@ class Application_Model_Base
 
 		foreach ($source as $objArray){
 
-			$newObj=$this->generate();
+			$this->generate();
 
 			foreach ($objArray as $label=>$data){
-				$newObj->$label=$data;
+				$this->entity->$label=$data;
 			}
 
-			$this->entityManager->persist($newObj);
+			$this->entityManager->persist($this->entity);
 
 			if (!$suppressFlush){
 				$this->entityManager->flush();
 			}
 
-			$outArray[]=$u;
+			$outArray[]=$this->entity;
 		}
 		return $outArray;
 	}
@@ -96,21 +96,39 @@ class Application_Model_Base
 		}
 	}
 
-	static function formatOutput($inData){
+	static function formatOutput($inData, $outputType){
 		if (count($inData)<2){
-			return static::formatScalar($inData);
+			return static::formatScalar($inData, $outputType);
 		}
 		else{
 
 			$list=$inData;
 			$outList=array();
 			for ($i=0, $len=count($list); $i<$len; $i++){
-				$outList[]=static::formatScalar($list[$i]);
+				$outList[]=static::formatScalar($list[$i], $outputType);
 			}
 			return $outList;
 		}
 
 	}
 
+	static function formatScalar($inData, $outputType){
+
+		foreach ($inData as $label=>$data){
+			$hasZeroProperty=true;
+		}
+
+		if ($hasZeroProperty){
+			$inData=$inData[0];
+		}
+		$outArray=static::formatDetail($inData, $outputType);
+		if ($hasZeroProperty){
+			return array($outArray);
+		}
+		else{
+			return $outArray;
+		}
+
+	}
 }
 

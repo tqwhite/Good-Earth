@@ -19,7 +19,8 @@ init: function(el, options) {
 		targetObject:options,
 		targetScope: this, //will add listed items to targetScope
 		propList:[
-			{name:'account'}
+			{name:'account'},
+			{name:'purchases'}
 		],
 		source:this.constructor._fullName
  	});
@@ -57,7 +58,7 @@ initDisplay:function(inData){
 			displayParameters:this.displayParameters,
 			viewHelper:this.viewHelper,
 			formData:{
-				userName:GoodEarthStore.Models.LocalStorage.getCookieData(GoodEarthStore.Models.LocalStorage.getConstant('loginCookieName')).data
+				purchases:this.purchases
 			}
 		})
 		);

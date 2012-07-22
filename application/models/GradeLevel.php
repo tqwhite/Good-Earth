@@ -9,22 +9,35 @@ class Application_Model_GradeLevel extends Application_Model_Base
 		parent::__construct();
 	}
 
-	static function formatScalar($inData, $originsArray){
 
-		if ($inData->gradeLevel){ //if it comes via School, it uses GradeLevelNode
-			$title=$inData->gradeLevel->title;
-			$refId=$inData->gradeLevel->refId;
-		}
-		else{
+
+	static function formatDetail($inData, $outputType){
+			if ($inData->gradeLevel){ $inData=$inData->gradeLevel;}
 			$title=$inData->title;
 			$refId=$inData->refId;
-		}
 
-		return array(
-			'descriptor'=>$inData->descriptor,
-			'title'=>$title,
-			'refId'=>$refId
-		);
+			$outArray=array(
+				'descriptor'=>$inData->descriptor,
+				'title'=>$title,
+				'refId'=>$refId
+			);
+
+			return $outArray;
+	}
+
+
+
+
+	public function getByRefId($refId){
+
+		$query = $this->entityManager->createQuery("SELECT u from GE\\Entity\\{$this->entityName} u WHERE u.refId = :refId");
+		$query->setParameters(array(
+			'refId' => $refId
+		));
+		$list = $query->getResult();
+		$this->entity=$list[0];
+		return $this->entity;
+
 	}
 
 }

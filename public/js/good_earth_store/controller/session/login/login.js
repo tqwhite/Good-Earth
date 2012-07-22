@@ -19,6 +19,7 @@ init: function(el, options) {
 
 	options=options?options:{};
 	if (options.initialStatusMessage){this.initialStatusMessage=options.initialStatusMessage;}
+	if (options.newUsername){this.newUsername=options.newUsername;}
 
 	this.initDisplay();
 
@@ -53,6 +54,7 @@ initDisplay:function(inData){
 			displayParameters:this.displayParameters,
 			viewHelper:this.viewHelper,
 			formData:{
+				newUsername:this.newUsername,
 				userName:GoodEarthStore.Models.LocalStorage.getCookieData(GoodEarthStore.Models.LocalStorage.getConstant('loginCookieName')).data
 			}
 		})
@@ -121,15 +123,32 @@ saveButtonHandler:function(control, parameter){
 },
 
 resetAfterSave:function(inData){
-	if (inData.status<1){
-		$('#'+this.displayParameters.status.divId).html("Invalid User Name/Password").removeClass('good').addClass('bad');
-	}
-	else{
+
+	if (inData.status>0){
 		GoodEarthStore.Models.Session.keep('user', inData.data);
 		$('#'+this.displayParameters.status.divId).html("Welcome back, "+inData.data.firstName+" <span style=color:gray;font-size:6pt'>("+inData.data.school+")</span>").removeClass('bad').addClass('good');
 		GoodEarthStore.Models.LocalStorage.setCookie(GoodEarthStore.Models.LocalStorage.getConstant('loginCookieName'), inData.data.userName);
 		this.element.html('').good_earth_store_customer_dashboard();
 
+	}
+	else{
+		switch (inData.status.toString()){
+			case '-2':
+
+					var outMessage='';
+					for (var i=0, len=inData.messages.length; i<len; i++){
+						outMessage+=inData.messages[i]+'<br/>';
+					}
+				$('#'+this.displayParameters.status.divId).html(outMessage).removeClass('good').addClass('bad');
+
+				break;
+			default:
+				$('#'+this.displayParameters.status.divId).html("Invalid User Name/Password").removeClass('good').addClass('bad');
+
+				break;
+
+
+		}
 	}
 },
 

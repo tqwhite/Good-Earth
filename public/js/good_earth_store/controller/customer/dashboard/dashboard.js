@@ -50,6 +50,8 @@ initDisplayProperties:function(){
 initControlProperties:function(){
 	this.viewHelper=new viewHelper2();
 	this.loginUser=GoodEarthStore.Models.Session.get('user');
+	this.purchases=this.newPurchaseObj();
+AAA_purchases=this.purchases;
 },
 
 initDisplay:function(inData){
@@ -85,7 +87,8 @@ initDomElements:function(){
 		lunchButtonHandler:this.callback('lunchButtonHandler')
 		});
 	this.displayParameters.purchaseSpace.domObj.good_earth_store_customer_purchases({
-		account:this.account
+		account:this.account,
+		purchases:this.purchases
 	});
 
 },
@@ -101,7 +104,9 @@ lunchButtonHandler:function(control, parameter){
 				returnClassName:this.constructor._fullName,
 				returnClassOptions:this.startupOptions,
 				studentRefId:studentRefId,
-				account:this.account
+				account:this.account,
+				offerings:this.offerings,
+				purchases:this.purchases
 			});
 		break;
 		case 'setAccessFunction':
@@ -130,6 +135,10 @@ getReferenceData:function(callback){
 				gradeLevels:{
 					ajaxFunction:GoodEarthStore.Models.GradeLevel.getList,
 					argData:{}
+				},
+				offerings:{
+					ajaxFunction:GoodEarthStore.Models.Offering.getList,
+					argData:{}
 				}
 			},
 			success:this.callback('referenceCallback', callback),
@@ -145,7 +154,22 @@ referenceCallback:function(callback, inData){
 		this.account=inData.account;
 		this.schools=inData.schools;
 		this.gradeLevels=inData.gradeLevels;
-		callback();
+		this.offerings=inData.offerings;
+		callback(); //initDisplay()
+},
+
+newPurchaseObj:function(){
+
+	var purchaseObj=GoodEarthStore.Models.Session.get('purchases');
+	if (!purchaseObj){
+		purchaseObj={
+			unpaid:[]
+		};
+
+	}
+
+	GoodEarthStore.Models.Session.keep('purchases', purchaseObj);
+	return purchaseObj;
 }
 
 

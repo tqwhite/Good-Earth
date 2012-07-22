@@ -45,6 +45,7 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 
 			if (formParams.user_confirm_message){this.userConfirmMessage=formParams.user_confirm_message;}
 			if (formParams.assert_initial_controller){this.initialController=formParams.assert_initial_controller;}
+			if (formParams.new_username){this.newUsername=formParams.new_username;}
 
 	},
 
@@ -60,7 +61,7 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 					this.element.good_earth_store_session_register({initialStatusMessage:this.userConfirmMessage});
 					break;
 				case 'login':
-					this.element.good_earth_store_session_login({initialStatusMessage:this.userConfirmMessage});
+					this.element.good_earth_store_session_login({initialStatusMessage:this.userConfirmMessage, newUsername:this.newUsername});
 					break;
 				case 'none':
 					this.serverDataDomObj.html('<div style="color:white;background:#cc9999;">aborting store app</div>').show();

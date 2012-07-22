@@ -50,15 +50,24 @@ class Application_Model_Student extends Application_Model_Base
 		return $errorList;
 	}
 
-	static function formatScalar($inData, $originsArray){
-		return array(
-			'firstName'=>$inData->firstName,
-			'lastName'=>$inData->lastName,
-			'refId'=>$inData->refId,
-			'schoolRefId'=>$inData->school->refId,
-			'accountRefId'=>$inData->account->refId,
-			'gradeLevelRefId'=>$inData->gradeLevel->refId,
-		);
+	static function formatDetail($inData, $originsArray){
+
+		if ($inData->refId){
+			$outArray=array(
+				'firstName'=>$inData->firstName,
+				'lastName'=>$inData->lastName,
+				'refId'=>$inData->refId,
+				'schoolRefId'=>$inData->school->refId,
+				'accountRefId'=>$inData->account->refId,
+				'gradeLevelRefId'=>$inData->gradeLevel->refId,
+			);
+		}
+		else{
+			$outArray=array();
+		}
+
+		return $outArray;
+
 	}
 
 	public function getList($hydrationMode){
@@ -76,17 +85,6 @@ class Application_Model_Student extends Application_Model_Base
 		}
 
 		return $list;
-
-	}
-
-	public function getByRefId($refId){
-
-		$query = $this->entityManager->createQuery("SELECT u from GE\\Entity\\{$this->entityName} u WHERE u.refId = :refId");
-		$query->setParameters(array(
-			'refId' => $refId
-		));
-		$schoolList = $query->getResult();
-		return $schoolList;
 
 	}
 

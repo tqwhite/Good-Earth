@@ -39,9 +39,10 @@ class StudentController extends Zend_Controller_Action
 		$gradeLevelObj=new \Application_Model_GradeLevel();
 		$gradeLevel=$gradeLevelObj->getByRefId($inData['gradeLevelRefId']);
 
+		//NOTE: $inData has properties named 'schoolRefId'. I demonstrated that Doctrine ignores them.
 
-		$inData['school']=$school[0];
-		$inData['gradeLevel']=$gradeLevel[0];
+		$inData['school']=$school;
+		$inData['gradeLevel']=$gradeLevel;
 		$inData['account']=$account;
 
 		$studentObj=new \Application_Model_Student();
@@ -55,7 +56,7 @@ class StudentController extends Zend_Controller_Action
 				}
 				else{
 
-					$studentObj->updateFromArray($student[0], $inData);
+					$studentObj->updateFromArray($student, $inData);
 				}
 			}
 			catch(Exception $e){

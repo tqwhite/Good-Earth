@@ -6,7 +6,7 @@ qtools.validateProperties({
 		{name:'viewHelper'},
 		{name:'formData'}
 	],
- source:'session.dashboard.dashboardMain' });
+ source:'customer.chooseMenu.ejs' });
 
 qtools.validateProperties({
 	targetObject:displayParameters,
@@ -14,11 +14,10 @@ qtools.validateProperties({
 		{name:'myId'},
 		{name:'childNameSpace'},
 		{name:'offeringSpace'},
-		{name:'selectedSpace'},
-		{name:'doneButton'}
+		{name:'selectedSpace'}
 
 	],
- source:'session.dashboard.dashboardMain' });
+ source:'customer.chooseMenu.ejs' });
 
 %><div class='mainContainer' id='<%= displayParameters.myId.divId %>'>
 	<div class='childNameSpace' id='<%= displayParameters.childNameSpace.divId %>'></div>

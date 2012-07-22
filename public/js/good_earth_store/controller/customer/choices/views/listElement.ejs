@@ -1,0 +1,27 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'purchase'},
+		{name:'deleteId'}
+	],
+ source:'customer.choices.view.listElement.ejs' });
+console.dir(this);
+qtools.validateProperties({
+	targetObject:this.purchase,
+	propList:[
+		{name:'day'},
+		{name:'offering'},
+		{name:'refId'}
+	],
+ source:'customer.choices.view.listElement.ejs' });
+
+%>
+<div id='<%==this.purchase.offering.refId%>' class='purchaseTitle' style='height:30px;margin-top:4px;border-bottom:1pt solid gray;'>
+<div style='float:left;width:60%;'>
+	<%==this.purchase.offering.name%>: <%==this.purchase.day.title%> <span style='color:gray;'>($<%=this.purchase.offering.price%>)</span>
+</div>
+<div style=float:right;'>
+	<div class='tinyButton' id='<%==this.deleteId%>' refId='<%==this.purchase.refId%>' style='float:right;margin-right:10px;'>X</div>
+</div>
+</div>

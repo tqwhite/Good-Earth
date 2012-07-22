@@ -24,7 +24,9 @@ init: function(el, options) {
 			{name:'returnClassName'},
 			{name:'returnClassOptions'},
 			{name:'account'},
-			{name:'studentRefId'}
+			{name:'studentRefId'},
+			{name:'offerings'},
+			{name:'purchases'}
 		],
 		source:this.constructor._fullName
  	});
@@ -49,8 +51,9 @@ initDisplayProperties:function(){
 
 	name='myId'; nameArray.push({name:name});
 	name='childNameSpace'; nameArray.push({name:name});
-	name='offeringSpace'; nameArray.push({name:name});
-	name='selectedSpace'; nameArray.push({name:name});
+
+	name='offeringSpace'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+	name='selectedSpace'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -58,7 +61,6 @@ initDisplayProperties:function(){
 
 initControlProperties:function(){
 	this.viewHelper=new viewHelper2();
-
 	this.student=qtools.getByProperty(this.account.students, 'refId', this.studentRefId);
 },
 
@@ -85,12 +87,24 @@ initDomElements:function(){
 
 	this.displayParameters.childNameSpace.domObj.good_earth_store_customer_child({
 		doneButtonHandler:this.callback('doneButtonHandler'),
-		student:this.student
+		student:this.student,
+		account:this.account,
+		purchases:this.purchases
 	});
 
 
-	this.displayParameters.offeringSpace.domObj.good_earth_store_customer_offerings({});
-	this.displayParameters.selectedSpace.domObj.good_earth_store_customer_choices({});
+	this.displayParameters.offeringSpace.domObj.good_earth_store_customer_offerings({
+		offerings:this.offerings,
+		parentAccessFunction:this.displayParameters.offeringSpace.handler,
+		student:this.student
+	});
+
+	this.displayParameters.selectedSpace.domObj.good_earth_store_customer_choices({
+		offerings:this.offerings,
+		parentAccessFunction:this.displayParameters.selectedSpace.handler,
+		student:this.student,
+		purchases:this.purchases
+	});
 
 },
 
@@ -102,6 +116,33 @@ doneButtonHandler:function(control, parameter){
 
 			this.element[this.returnClassName](this.returnClassOptions);
 		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
+},
+
+offeringSpaceHandler:function(control, parameter){
+	var componentName='offeringSpace';
+	switch(control){
+		case 'sendPurchase':
+			this.selectedSpace.accessFunction('sendPurchase', parameter);
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
+},
+
+selectedSpaceHandler:function(control, parameter){
+	var componentName='selectedSpace';
+	switch(control){
 		case 'setAccessFunction':
 			if (!this[componentName]){this[componentName]={};}
 			this[componentName].accessFunction=parameter;

@@ -16,7 +16,12 @@ public function __construct(){
 }
 
 public function routeStartup($request){
+/*
 
+	UNUSED PRESENTLY, MADE IT WORK BUT DIDN"T implementation
+	SHOULD BE DONE IN models.XX.validate() FOR SECURITY
+
+*/
 	$auth = \Zend_Auth::getInstance();
 
 	$adapter=new Adapter('tqwhite', 'passwordxxxd');

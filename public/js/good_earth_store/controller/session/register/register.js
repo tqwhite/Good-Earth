@@ -16,6 +16,7 @@ init: function(el, options) {
 	this.baseInits();
 	this.initControlProperties();
 	this.initDisplayProperties();
+	if (options && options.initialStatusMessage){this.initialStatusMessage=options.initialStatusMessage;}
 
 
 	this.getReferenceData(this.callback('initDisplay'));
@@ -81,6 +82,10 @@ initDomElements:function(){
 
 	$($('.schoolIdClassString').find('option')[1]).attr('selected', 'selected'); //for debugg only, see form.ejs
 	this.element.find('input').qprompt();
+
+	if (this.initialStatusMessage){
+		$('#'+this.displayParameters.status.divId).html(this.initialStatusMessage).removeClass('bad').addClass('good');
+	}
 },
 
 //BUTTON HANDLERS =========================================================================================================
@@ -109,7 +114,13 @@ resetAfterSave:function(inData){
 		$('#'+this.displayParameters.status.divId).html(errorString).removeClass('good').addClass('bad');
 	}
 	else{
-		$('#'+this.displayParameters.status.divId).html("Welcome, "+inData.data.firstName).removeClass('bad').addClass('good');
+			var html=$.View('//good_earth_store/controller/session/register/views/confirmEmail.ejs',
+		$.extend(inData, {
+			displayParameters:this.displayParameters,
+			viewHelper:this.viewHelper
+		})
+		);
+	this.element.html(html);
 	}
 },
 

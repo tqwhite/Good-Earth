@@ -32,6 +32,7 @@ class SessionController extends Zend_Controller_Action
 
     public function loginAction()
     {
+    	$messageList=array();
 		$inData=$this->getRequest()->getPost('data');
 
         $check = new Q\Plugin\Authorize\Check();
@@ -41,8 +42,15 @@ class SessionController extends Zend_Controller_Action
 
         if ($auth->hasIdentity()){
         	$identity=$auth->getIdentity();
-        	$identity=$identity[0];
-        	$status=1;
+        	$identity=$identity;
+        	if($identity->emailStatus){
+        		$status=1;
+        	}
+        	else{
+        		$status=-2;
+        		$messageList[]='Email address has not been confirmed';
+     		   \Zend_Auth::getInstance()->clearIdentity(); //HACKERY:I do not have time to go back and make it so that auth accounts for email confirmation status and transmits status out to user
+        	}
         }
         else{
         	$status=-1;
@@ -51,6 +59,7 @@ class SessionController extends Zend_Controller_Action
 
 		$this->_helper->json(array(
 			status=>$status,
+			messages=>$messageList,
 			data=>\Application_Model_User::formatOutput($identity)
 		));
     }
@@ -61,7 +70,7 @@ class SessionController extends Zend_Controller_Action
 
         if ($auth->hasIdentity()){
         	$identity=$auth->getIdentity();
-        	$identity=$identity[0];
+        	$identity=$identity;
         	$status=1;
         }
         else{

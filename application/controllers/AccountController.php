@@ -59,9 +59,11 @@ class AccountController extends Zend_Controller_Action
 
 			$userObj=new \Application_Model_User();
 			$user=$userObj->getUserByUserId($inData['userName']);
-			$user->emailStatus=md5($user['refId']);
+			$user->emailStatus=md5($user->refId);
 
-			$this->sendEmailConfirmation($user[0]);
+			$mailStatus=$this->sendEmailConfirmation($user);
+
+			if ($mailStatus){$messages[]=array('registration', 'Confirmation email sent'); }
 
 			$this->_helper->json(array(
 				status=>$status,
@@ -84,49 +86,79 @@ class AccountController extends Zend_Controller_Action
 		$mail = new Zend_Mail();
 		$tr=new Zend_Mail_Transport_Sendmail();
 
-		$mail->setBodyHtml("<div style='color:blue;font-size:14pt;margin:20px 0px 20px 10px;'><A href='{$_SERVER['HTTP_REFERER']}confirm/".$userObj->confirmationCode."'>{$_SERVER['HTTP_REFERER']}confirm/".$userObj->confirmationCode."</a></div>");
-		$mail->setFrom('tq@justkidding.com', "Good Earth Lunch Program");
+		$emailMessage="<body style='background:#F5E4C6;'><div style='color:#385B2B;font-size:12pt;margin:20px 0px 20px 10px;'>
+			<div>Dear {$userObj->firstName},<p/>
+				Thank you for your interest in the Good Earth School Lunch Program.<p/>
+				Because it is so important that we be able to communicate with you, we ask
+				that you click on the link below to confirm that your email address is:
+				{$userObj->emailAdr}
+			<div style='margin-top:15px;'>Please click this link:</div>
+			<div style='margin:25px 0px 30px 50px;font-size:14pt;color:#E26437;'>
+			<A href='{$_SERVER['HTTP_REFERER']}account/confirm/{$userObj->confirmationCode}' style='color:#E26437;text-decoration:none;'>CONFIRM</a>
+			</div>
+			Or, copy and paste this link:
+			<div style='font-size:10pt;margin:20px 0px 30px 50px;color:#E26437;'>
+			<A href='{$_SERVER['HTTP_REFERER']}account/confirm/{$userObj->confirmationCode}' style='color:#E26437;text-decoration:none;'>{$_SERVER['HTTP_REFERER']}account/confirm/{$userObj->confirmationCode}</a>
+			</div>
+
+		Thank You,<br/>
+		Your Friends at Good Earth Natural Foods
+			<div style='font-size:10pt;color:#e2be83;margin-top:20px;'>PS, User ID: {$userObj->userName}</div>
+		</div></body>";
+
+		$mail->setBodyHtml($emailMessage);
+		$mail->setFrom('sherry@genatural.com', "Good Earth Lunch Program");
 		$mail->setSubject("Good Earth: Lunch Program Email Address Confirmation ".$userObj->userName);
 
-		$mail->addTo('tq@justkidding.com', 'TQ White II');
-	//		$mail->send();
+		$mail->addTo($userObj->emailAdr, $userObj->firstName.' '.$userObj->lastName);
+		$mail->send();
+
+		return true;
 	}
 
 	public function confirmAction()
 	{
+
+		$serverComm=array();
+
 		$requestUri=$_SERVER['REQUEST_URI'];
 		$elements=explode('/', $requestUri);
-		$confirmationCode=$elements['2'];
+		$confirmationCode=$elements['3'];
+		if (!$confirmationCode){
+			$confirmationCode=$elements['2'];
+		}
 
 		if (strlen($confirmationCode)==32){
 			$inData=$this->getRequest()->getParam();
 			$userObj=new \Application_Model_User();
 			$result=$userObj->confirmEmail($confirmationCode);
 
-			switch ($result){
+			switch ($result['status']){
 				case \Application_Model_User::confirmationSuccessful:
-						$message="Thanks! Confirmation Successful";
+						$message="Thanks, {$result['user'][0]->firstName}! Confirmation Successful.";
+						$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'login');
+						$serverComm[]=array("fieldName"=>"new_username", "value"=>$result['user'][0]->userName);
 					break;
 				case \Application_Model_User::alreadyConfirmed:
-						$message="Welcome Back, You are already confirmed";
+						$message="Welcome Back {$result['user'][0]->firstName}, You are already confirmed.";
+						$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'login');
+						$serverComm[]=array("fieldName"=>"new_username", "value"=>$result['user'][0]->userName);
 					break;
 				case \Application_Model_User::badConfirmationCode:
-						$message="Sorry, that code was not found";
-
+						$message="Sorry, that code was not found.";
+						$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'register');
 					break;
 
 			}
 		}
 		else{
 				$message="Sorry, your code is incorrect";
+				$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'register');
 		}
 
-		$serverComm=array();
 			$serverComm[]=array("fieldName"=>"user_confirm_message", "value"=>$message);
-			$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'login');
 
-		$this->view->message=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
-
+		$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
 
 	}
 

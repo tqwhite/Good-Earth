@@ -48,7 +48,7 @@ class GradeSchoolNode /*extends Base*/{
 	private $created;
 
 public function __construct(){
-	if (!$this->refId){$this->refId =  uniqid();}
+	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
 	$this->created=new \DateTime(date("Y-m-d H:i:s"));
 }
 

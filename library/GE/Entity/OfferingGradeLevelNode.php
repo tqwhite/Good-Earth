@@ -16,6 +16,12 @@ class OfferingGradeLevelNode /*extends Base*/{
 	**/
 	private $refId;
 
+	/**
+	 * @column(type="string", length=60, nullable=true)
+	 * @var string
+	 **/
+	private $temp;
+
 
 	/**
 	 *
@@ -42,7 +48,7 @@ class OfferingGradeLevelNode /*extends Base*/{
 	private $created;
 
 public function __construct(){
-	if (!$this->refId){$this->refId =  uniqid();}
+	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
 	$this->created=new \DateTime(date("Y-m-d H:i:s"));
 }
 

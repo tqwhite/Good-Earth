@@ -8,11 +8,11 @@ class Application_Model_Day extends Application_Model_Base
 		parent::__construct();
 	}
 
-	static function formatScalar($inData, $originsArray){
+	static function formatDetail($inData, $originsArray){
+
 	return array(
-					'name'=>$inData->name,
-					'refId'=>$inData->refId,
-					'gradeLevels'=>\Application_Model_GradeLevel::formatOutput($inData->gradeLevelNodes)
+					'title'=>$inData->day->title,
+					'refId'=>$inData->day->refId
 				);
 	}
 

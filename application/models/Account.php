@@ -9,16 +9,6 @@ class Application_Model_Account extends Application_Model_Base
 		parent::__construct();
 	}
 
-	public function getByRefId($refId){
-
-		$query = $this->entityManager->createQuery('SELECT u from GE\Entity\Account u WHERE u.refId = :refId');
-		$query->setParameters(array(
-			'refId' => $refId
-		));
-		$result = $query->getResult();
-		return $result[0];
-	}
-
 	static function validate($inData){
 
 		$errorList=array();
@@ -38,7 +28,7 @@ class Application_Model_Account extends Application_Model_Base
 		return $errorList;
 	}
 
-	static function formatOutput($inData){
+	static function formatOutput($inData, $outputType){
 
 		$users=Q\Utils::buildArray($inData->users, 'firstName lastName');
 		$students=array();
@@ -46,15 +36,33 @@ class Application_Model_Account extends Application_Model_Base
 		foreach ($inData->students as $data){
 			$students[]=\Application_Model_Student::formatOutput($data);
 		}
-		return array(
+
+		switch ($outputType){
+
+			case 'limited':
+				$outArray=array(
+						'refId'=>$inData->refId
+					);
+				break;
+			default:
+				$outArray=array(
 						'refId'=>$inData->refId,
 						'familyName'=>$inData->familyName,
-						'users'=>$users,
-						'students'=>$students
+						'users'=>\Application_Model_User::formatOutput($inData->users, 'limited'),
+						'students'=>\Application_Model_Student::formatOutput($inData->students, $outputType)
 					);
+				break;
+		}
+
+
+		return $outArray;
 
 	}
+/*
 
+						'users'=>\Application_Model_User::formatOutput($inData->users),
+						'students'=>\Application_Model_Student::formatOutput($inData->students)
+*/
 
 }
 

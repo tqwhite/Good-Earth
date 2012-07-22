@@ -46,6 +46,10 @@
           <actionMethod actionName="get"/>
           <actionMethod actionName="list"/>
         </controllerFile>
+        <controllerFile controllerName="Offering">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="list"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
       <layoutsDirectory>
@@ -131,6 +135,12 @@
           <viewControllerScriptsDirectory forControllerName="GradeLevel">
             <viewScriptFile forActionName="list"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Offering">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Offering">
+            <viewScriptFile forActionName="list"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
@@ -194,6 +204,10 @@
           <testApplicationControllerFile forControllerName="GradeLevel">
             <testApplicationActionMethod forActionName="index"/>
             <testApplicationActionMethod forActionName="get"/>
+            <testApplicationActionMethod forActionName="list"/>
+          </testApplicationControllerFile>
+          <testApplicationControllerFile forControllerName="Offering">
+            <testApplicationActionMethod forActionName="index"/>
             <testApplicationActionMethod forActionName="list"/>
           </testApplicationControllerFile>
         </testApplicationControllerDirectory>
