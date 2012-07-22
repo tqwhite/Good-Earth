@@ -156,6 +156,8 @@ echo 'GradeLevel='.$gradeLevelEntity->title."<br/>";
 
     public function initAction()
     {
+    	error_reporting(E_ERROR | E_WARNING | E_PARSE);
+
     	$this->view->listingArrays=array();
 
 		$this->view->message = "<b>Initializing Things</b><p/>";
