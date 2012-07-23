@@ -58,6 +58,17 @@ body {
   border-radius: 0px; /* CSS3 */
 }
 
+
+
+.basicUnavailableHidden{
+	display:none;
+	background:#aaa;
+	color:#ddd;
+  -moz-border-radius: 0px; /* Firefox */
+  -webkit-border-radius: 0px; /* Safari, Chrome */
+  border-radius: 0px; /* CSS3 */
+}
+
 .smallButton{
   	font-weight:normal;
 	border-top:1pt solid gray;
@@ -299,4 +310,9 @@ margin:50px 0px 0px 200px;padding-left:50px;border:1pt solid gray;
   -moz-border-radius: 0px; /* Firefox */
   -webkit-border-radius: 0px; /* Safari, Chrome */
   border-radius: 0px; /* CSS3 */px; /* CSS3 */
+}
+
+.checkoutTotal{
+	font-size:14pt;
+	font-weight:bold;
 }

@@ -48,7 +48,7 @@ class Student /*extends Base*/{
 
 	/**
 	 *
-	 * @OneToOne(targetEntity="GradeLevel", cascade={"all"}, fetch="EAGER")
+	 * @ManyToOne(targetEntity="GradeLevel", cascade={"all"}, fetch="EAGER")
 	 * @JoinColumn(name="gradeLevelRefId", referencedColumnName="refId")
 	 *
 	 **/

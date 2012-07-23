@@ -17,7 +17,7 @@ qtools.validateProperties({
  source:'customer.choices.view.listElement.ejs' });
 
 %>
-<div id='<%==this.purchase.offering.refId%>' class='purchaseTitle' style='height:30px;margin-top:4px;border-bottom:1pt solid gray;'>
+<div id='<%==this.purchase.refId%>' class='purchaseTitle' style='height:30px;margin-top:4px;border-bottom:1pt solid gray;'>
 <div style='float:left;width:60%;'>
 	<%==this.purchase.offering.name%>: <%==this.purchase.day.title%> <span style='color:gray;'>($<%=this.purchase.offering.price%>)</span>
 </div>

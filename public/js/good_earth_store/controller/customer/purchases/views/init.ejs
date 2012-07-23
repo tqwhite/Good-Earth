@@ -9,28 +9,41 @@ qtools.validateProperties({
  source:'customer/purchases/views/init.ejs' });
 
 qtools.validateProperties({
+	targetObject:displayParameters,
+	propList:[
+		{name:'checkoutButton'},
+		{name:'price'}
+	],
+ source:'customer/purchases/views/init.ejs' });
+
+qtools.validateProperties({
 	targetObject:formData,
 	propList:[
-	{
-		name:'purchases'
-	}
+	{name:'purchases'}
 	],
  source:'customer/purchases/views/init.ejs' });
 
  var purchases=this.formData.purchases.unpaid,
- outString='';
+ outString='',
+ total=0;
 
  for (var i=0, len=purchases.length; i<len; i++){
- 	outString+="<tr><td><b>";
+ 	outString+="<tr><td style='width:300px;'><b>";
+ 	outString+=purchases[i].student.firstName+": ";
  	outString+=purchases[i].offering.name;
  	outString+="</b></td><td>";
  	outString+=purchases[i].day.title;
  	outString+="</td><td style='width:100px;text-align:right;'>";
- 	outString+='$'+purchases[i].offering.price;
+ 	outString+='$'+purchases[i].offering.price.toFixed(2);
  	outString+="</td></tr>";
-
  }
-	outString="<table style='font-size:8pt;'>"+outString+"</table>";
+
+	outString="<table style='font-size:8pt;margin-top:10px;'>"+outString+"</table>";
 %>
-Purchases
-<%==outString%>
+<div>
+<div style='float:left;'>Purchases</div>
+<div style='float:left;width:550px;text-align:right;'>
+	<span  id='<%=this.displayParameters.price.divId%>'></span>
+	<span class='basicButton' id='<%=this.displayParameters.checkoutButton.divId%>' style='margin-left:15px;'></span>
+</div>
+<div style='clear:both;'><%==outString%></div>

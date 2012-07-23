@@ -23,6 +23,7 @@ steal(
 	'./controller/customer/schedule/schedule.js',
 	'./controller/customer/schedule/add_student/add_student.js',
 	'./controller/customer/purchases/purchases.js',
+	'./controller/customer/checkout/checkout.js',
 
 	'./controller/customer/child/child.js',
 	'./controller/customer/offerings/offerings.js',

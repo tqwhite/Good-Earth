@@ -72,9 +72,9 @@ initDisplay:function(inData){
 	this.element.html(html);
 	this.initDomElements();
 
-	for (var i=0, len=this.purchases.unpaid.length; i<len; i++){
-		if (this.student.refId!=this.purchases.unpaid[i].student.refId){ continue; }
-		this.updateDisplay({purchase:this.purchases.unpaid[i], deleteId:qtools.newGuid()});
+	var studentPurchases=this.filteredPurchaseList();
+	for (var i=0, len=studentPurchases.length; i<len; i++){
+		this.updateDisplay({purchase:studentPurchases[i], deleteId:qtools.newGuid()});
 	}
 },
 
@@ -134,7 +134,7 @@ updateDisplay:function(args){
 		});
 		this.element.append(html);
 
-
+	this.updateTotal();
 	var domObj=$('#'+args.deleteId);
 
 	domObj.good_earth_store_tools_ui_button2({
@@ -148,13 +148,24 @@ updateDisplay:function(args){
 	});
 },
 
+updateTotal:function(){
+
+	var list=this.purchases.unpaid,
+		total=0;
+	for (var i=0, len=list.length; i<len; i++){
+		var element=list[i];
+		total=total+element.offering.price;
+	}
+	$('#'+this.displayParameters.status.divId).html('$'+total.toFixed(2));
+},
+
 deleteButtonHandler:function(control, parameter){
 	var componentName='saveButton';
 	switch(control){
 		case 'click':
 			var purchaseRefId=parameter.thisDomObj.attr('refId');
 			this.deletePurchase(purchaseRefId);
-			parameter.thisDomObj.parent().remove();
+			$('#'+purchaseRefId).remove();
 			this.offeringButtonControls[purchaseRefId]('setToReady');
 		break;
 		case 'setAccessFunction':
@@ -176,6 +187,21 @@ deletePurchase:function(purchaseRefId){
 	}
 
 	this.purchases.unpaid.splice(deletableInx, 1);
+	this.updateTotal();
+},
+
+filteredPurchaseList:function(){
+	var outObj=[];
+
+	var list=this.purchases.unpaid;
+	for (var i=0, len=list.length; i<len; i++){
+		var element=list[i];
+		if (element.student.refId==this.student.refId){
+			outObj.push(element);
+		}
+	}
+
+	return outObj;
 }
 
 })

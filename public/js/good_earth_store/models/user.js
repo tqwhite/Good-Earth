@@ -18,7 +18,7 @@ GoodEarthStore.Models.Base.extend('GoodEarthStore.Models.User',
 	register:function(data, success, error){
 
 		success=success?success:function(){alert('success');};
-		error=error?error:function(){console.log('errror');};
+		error=error?error:this.defaultError;
 
 		var errors=this.validate(data);
 		if (errors.length>0){

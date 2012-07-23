@@ -87,6 +87,9 @@ initDomElements:function(){
 		lunchButtonHandler:this.callback('lunchButtonHandler')
 		});
 	this.displayParameters.purchaseSpace.domObj.good_earth_store_customer_purchases({
+		dashboardContainer:this.element,
+		returnClassName:this.constructor._fullName,
+		returnClassOptions:this.startupOptions,
 		account:this.account,
 		purchases:this.purchases
 	});
@@ -120,8 +123,6 @@ lunchButtonHandler:function(control, parameter){
 
 
 getReferenceData:function(callback){
-
-
 		var controlObj={
 			calls:{
 				account:{

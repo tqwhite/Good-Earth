@@ -113,7 +113,6 @@ doneButtonHandler:function(control, parameter){
 	var componentName='doneButton';
 	switch(control){
 		case 'click':
-
 			this.element[this.returnClassName](this.returnClassOptions);
 		break;
 		case 'setAccessFunction':

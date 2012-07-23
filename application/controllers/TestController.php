@@ -179,8 +179,8 @@ echo 'GradeLevel='.$gradeLevelEntity->title."<br/>";
 				$this->view->message .= "-----verified ".count($list)." days<br/>";
 	//			$this->view->listingArrays[]=$list;
 
-			$this->view->message .= $this->_initSchools();
-
+			$this->view->message .= 'initializing schools<br/>';
+			$this->_initSchools();
 
 			$schoolObj=new \Application_Model_School();
 				$schoolList=$schoolObj->getList($inData);

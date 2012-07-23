@@ -176,7 +176,7 @@ forgotButtonHandler:function(control, parameter){
 	switch(control){
 		case 'click':
 
-		console.log(componentName);
+		alert("Sorry, we've not had time to get this working. Please call us and we will help you out.");
 
 		break;
 		case 'setAccessFunction':

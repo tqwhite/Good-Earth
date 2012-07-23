@@ -19,6 +19,9 @@ init: function(el, options) {
 		targetObject:options,
 		targetScope: this, //will add listed items to targetScope
 		propList:[
+			{name:'dashboardContainer'},
+			{name:'returnClassName'},
+			{name:'returnClassOptions'},
 			{name:'account'},
 			{name:'purchases'}
 		],
@@ -42,7 +45,8 @@ update:function(){
 initDisplayProperties:function(){
 
 	nameArray=[];
-//	name='lunchButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+	name='price'; nameArray.push({name:name});
+	name='checkoutButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
 },
@@ -68,6 +72,51 @@ initDisplay:function(inData){
 
 initDomElements:function(){
 
+	$('#'+this.displayParameters.checkoutButton.divId).good_earth_store_tools_ui_button2({
+		ready:{classs:'basicReady'},
+		hover:{classs:'basicHover'},
+		clicked:{classs:'basicActive'},
+		unavailable:{classs:'basicUnavailableHidden'},
+		accessFunction:this.displayParameters.checkoutButton.handler,
+		initialControl:'setUnavailable', //initialControl:'setUnavailable'
+		label:"Checkout"
+	});
+	this.updateTotal();
+},
+
+updateTotal:function(){
+
+	var list=this.purchases.unpaid,
+		total=0;
+	for (var i=0, len=list.length; i<len; i++){
+		var element=list[i];
+		total=total+element.offering.price;
+	}
+	if (total){
+		$('#'+this.displayParameters.price.divId).html('$'+total.toFixed(2));
+		this.checkoutButton.accessFunction('setToReady');
+	}
+},
+
+checkoutButtonHandler:function(control, parameter){
+	var componentName='checkoutButton';
+	switch(control){
+		case 'click':
+			this.dashboardContainer.good_earth_store_customer_checkout({
+				dashboardContainer:this.dashboardContainer,
+				returnClassName:this.returnClassName,
+				returnClassOptions:this.returnClassOptions,
+				account:this.account,
+				purchases:this.purchases
+			});
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
 }
 
 

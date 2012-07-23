@@ -1,0 +1,81 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'},
+		{name:'formData'}
+	],
+ source:'customer.checkout.ejs' });
+
+qtools.validateProperties({
+	targetObject:formData,
+	propList:[
+		{name:'purchases'}
+	],
+ source:'customer.checkout.ejs' });
+
+qtools.validateProperties({
+	targetObject:displayParameters,
+	propList:[
+		{name:'myId'},
+		{name:'submitButton'},
+		{name:'cancelButton'},
+		{name:'status'}
+
+	],
+ source:'customer.checkout.ejs' });
+
+ var purchases=this.formData.purchases.unpaid,
+ 	outString='',
+ 	total=0;
+
+ for (var i=0, len=purchases.length; i<len; i++){
+ 	outString+="<tr style='border-bottom:1pt solid #aaa;'><td style='width:300px;border-bottom:1pt solid #aaa;vertical-align:top;'><b>";
+ 	outString+=purchases[i].student.firstName+": ";
+ 	outString+=purchases[i].offering.name;
+ 	outString+="</b></td><td style='border-bottom:1pt solid #aaa;vertical-align:top;'>";
+ 	outString+=purchases[i].day.title;
+ 	outString+="</td><td style='width:100px;text-align:right;border-bottom:1pt solid #aaa;vertical-align:top;'>";
+ 	outString+='$'+purchases[i].offering.price.toFixed(2);
+ 	outString+="</td></tr>";
+
+ 	total=total+purchases[i].offering.price;
+ }
+	total=total.toFixed(2);
+
+	var titleString='';
+ 	titleString+="<tr style='border-bottom:1pt solid #aaa;'><td colspan='3' style='font-size:12pt;width:100%;padding-left:5px;border-bottom:2pt solid #aaa;'><b>";
+ 	titleString+="Your Student Lunches"
+ 	titleString+="</b></td>";
+
+
+	outString="<table style='font-size:8pt;'>"+titleString+outString+"</table>";
+
+%><div class='mainContainer' style='color:#426134;' id='<%= displayParameters.myId.divId %>'>
+<div style='position:relative;height:360px;'>
+
+<div id='entryContainer' style='width:48%;height:350px;border:1pt solid gray;float:left;padding-top:2px;'>
+	<%==outString%>
+</div>
+
+<div id='entryContainer' style='width:48%;height:335px;border:1pt solid gray;float:right;padding-top:15px;'>
+	<table style='font-size:10pt;'>
+	<tr><td>Name on Card</td><td><input name='cardName'></td>
+	<tr><td>Billing Street Address</td><td><input name='billingStreet'></td>
+	<tr><td>City</td><td><input name='billingCity'></td>
+	<tr><td>State (two letters)</td><td><input name='billingState'></td>
+	<tr><td>Zip</td><td><input name='billingZip'></td>
+	<tr><td>Phone</td><td><input name='phoneNumber'></td>
+	<tr><td>Card Number</td><td><input name='cardNumber'></td>
+	<tr><td>Expiration Date</td><td><input name='expirationDate'></td>
+	<tr><td>Number on Back</td><td><input name='ccv'></td>
+	</table>
+<div id='<%=this.displayParameters.status.divId%>' style='font-size:10pt;'></div>
+</div>
+
+</div>
+<div class='basicButton' style='float:right;margin-right:40px;' id='<%= displayParameters.submitButton.divId %>'></div>
+<div class='smallButton' style='float:right;margin-right:40px;margin-top:7px;' id='<%= displayParameters.cancelButton.divId %>'></div>
+<div class='checkoutTotal' style='float:left;margin-left:20px;'>Amount to be charged: $<%=total%></div>
+</div>

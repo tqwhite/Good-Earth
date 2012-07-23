@@ -13,7 +13,7 @@ $.Model('GoodEarthStore.Models.Base',
 defaultError:function(){
 	var modelName=this._fullName
 	return function(){
-		console.log('Model Error ('+modelName+')');
+		if (console) {console.log('Model Error ('+modelName+')');}
 	}
 },
 

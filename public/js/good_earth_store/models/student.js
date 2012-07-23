@@ -13,7 +13,7 @@ GoodEarthStore.Models.Base.extend('GoodEarthStore.Models.Student',
 	add:function(data, success, error){
 
 		success=success?success:function(){alert('success');};
-		error=error?error:function(){console.log('error');};
+		error=error?error:this.defaultError;
 
 
 		var errors=this.validate(data);
