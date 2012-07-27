@@ -121,7 +121,7 @@ addToPurchases:function(args){
 		student:args.student,
 		refId:qtools.newGuid()
 	};
-	this.purchases.unpaid.push(purchase);
+	this.purchases.orders.push(purchase);
 	return purchase;
 
 },
@@ -150,7 +150,7 @@ updateDisplay:function(args){
 
 updateTotal:function(){
 
-	var list=this.purchases.unpaid,
+	var list=this.purchases.orders,
 		total=0;
 	for (var i=0, len=list.length; i<len; i++){
 		var element=list[i];
@@ -186,14 +186,14 @@ deletePurchase:function(purchaseRefId){
 		}
 	}
 
-	this.purchases.unpaid.splice(deletableInx, 1);
+	this.purchases.orders.splice(deletableInx, 1);
 	this.updateTotal();
 },
 
 filteredPurchaseList:function(){
 	var outObj=[];
 
-	var list=this.purchases.unpaid;
+	var list=this.purchases.orders;
 	for (var i=0, len=list.length; i<len; i++){
 		var element=list[i];
 		if (element.student.refId==this.student.refId){

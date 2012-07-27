@@ -3,53 +3,46 @@ namespace GE\Entity;
 /**
 *
 * @Entity
-* @Table(name="accounts")
+* @Table(name="purchases")
 * @author tqii
 *
 *
 **/
-class Account /*extends Base*/{
+class Purchase /*extends Base*/{
 	/**
 	* @var string $id
 	* @column(name="refId", type="string", length=36, nullable=false, unique="true")
 	* @Id
-	 *
 	**/
 	private $refId;
 
+
 	/**
-	 * @column(type="string", length=60, nullable=false)
+	 *
+	 * @column(name="amountTendered", type="integer", nullable=true)
+	 **/
+
+	 private $amountTendered;
+
+
+	/**
+	 * @column(type="string", length=200, nullable=false)
 	 * @var string
-	 *
 	 **/
-	private $familyName;
-
-
-	/**
-	 *
-	 * @param \Doctrine\Common\Collections\Collection $property
-	 * @OneToMany(targetEntity="User", mappedBy="account", cascade={"persist", "remove"});
-	 *
-	 **/
-
-	private $users;
-
-
-	/**
-	 *
-	 * @param \Doctrine\Common\Collections\Collection $property
-	 * @OneToMany(targetEntity="Student", mappedBy="account", cascade={"persist", "remove"});
-	 *
-	 **/
-
-	private $students;
+	private $transactionId;
 
 
     /**
 	 * @param \Doctrine\Common\Collections\Collection $property
-	 * @OneToMany(targetEntity="AccountPurchaseNode", mappedBy="account", cascade={"persist", "remove"});
+	 * @OneToMany(targetEntity="AccountPurchaseNode", mappedBy="purchase", cascade={"persist", "remove"});
      */
     private $accountPurchaseNodes;
+
+    /**
+	 * @param \Doctrine\Common\Collections\Collection $property
+	 * @OneToMany(targetEntity="PurchaseOrderNode", mappedBy="purchases", cascade={"persist", "remove"});
+     */
+    private $purchaseOrderNodes;
 
 
 	/**
@@ -69,6 +62,7 @@ public function __get($property){
 }
 
 public function __set($property, $value){
+echo "E/ $property=$value\n";
 	$this->$property=$value;
 }
 }

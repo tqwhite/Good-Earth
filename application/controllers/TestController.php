@@ -50,46 +50,59 @@ class TestController extends Zend_Controller_Action
 
     public function doctrineAction()
     {
-/*
-		$mealArray=$this->genMealArray();
-		$offeringArray=$this->genOfferingArray(3);
 
-			$mealObj=new \Application_Model_Meal();
-			$mealEntityList=$mealObj->newFromArrayList($mealArray, false);
+$cardNumber="4012000033330026";
+$expMonth="12";
+$expYear="12";
+$chargeTotal="120";
+$acctPassword="WS1001178130._.1:Gh8daJgG";
 
-		$offeringObj=new \Application_Model_Offering();
-		$offeringEntityList=$offeringObj->newFromArrayList($offeringArray, false);
-*/
+$ch =curl_init("https://ws.firstdataglobalgateway.com/fdggwsapi/services/order.wsdl");
+$pemPath="../library/Credentials/FDGGWS_Certificate_WS1001178130._.1/WS1001178130._.1.pem";
+$keyPath="../library/Credentials/FDGGWS_Certificate_WS1001178130._.1/WS1001178130._.1.key";
+$sslPw="ckp_1343424713";
 
-		$offeringObj=new \Application_Model_Account();
-echo "hello"."<br/>";
-		$result=$offeringObj->getByRefId('500379d605f7a');
-		print_r(\Application_Model_Account::formatOutput($result));
-		echo 'g'.$result->offeringGradeLevelNodes."<br/>";
+$body = "
+	<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">
+		<SOAP-ENV:Header />
+		<SOAP-ENV:Body>
+			<fdggwsapi:FDGGWSApiOrderRequest xmlns:fdggwsapi=\"http://secure.linkpt.net/fdggwsapi/schemas_us/fdggwsapi\">
+				<v1:Transaction xmlns:v1=\"http://secure.linkpt.net/fdggwsapi/schemas_us/v1\">
+					<v1:CreditCardTxType>
+						<v1:Type>sale</v1:Type>
+					</v1:CreditCardTxType>
+					<v1:CreditCardData>
+						<v1:CardNumber>$cardNumber</v1:CardNumber>
+						<v1:ExpMonth>$expMonth</v1:ExpMonth>
+						<v1:ExpYear>$expYear</v1:ExpYear>
+					</v1:CreditCardData>
+					<v1:Payment>
+						<v1:ChargeTotal>$chargeTotal</v1:ChargeTotal>
+					</v1:Payment>
+				</v1:Transaction>
+			</fdggwsapi:FDGGWSApiOrderRequest>
+		</SOAP-ENV:Body>
+	</SOAP-ENV:Envelope>
+";
+
+
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+curl_setopt($ch, CURLOPT_SSLCERT, $pemPath);
+curl_setopt($ch, CURLOPT_SSLKEY, $keyPath);
+curl_setopt($ch, CURLOPT_SSLKEYPASSWD, $sslPw);
+
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: text/xml"));
+curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+curl_setopt($ch, CURLOPT_USERPWD, $acctPassword);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+$result = curl_exec($ch);
+curl_close($ch);
+
+echo "result=$result";
 exit;
-/*
-		$offeringSourceArrayList=array(array(
-			comment=>'test comment',
-			suggestedPrice=>100,
-			name=>'testOfferingName'.\Q\Utils::newGuid(),
-			meal=>$mealEntity,
-			school=>'MarinHorizon',
-			day=>'3',
-			gradeLevel=>'First'
-		));
-		$offeringObj=new \Application_Model_Offering();
-		$offeringEntityList=$offeringObj->newFromArrayList($offeringSourceArrayList, false);
-		$offeringEntity=$offeringEntityList[0]; //newFromArrayList() produces an array, even if only one
- echo 'Offering='.$offeringEntity->name."<br/>";
-
- 		$this->em->flush();
-*/
-		$serverComm=array();
-			$serverComm[]=array("fieldName"=>"user_confirm_message", "value"=>'test complete');
-			$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'none');
-
-		$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
-	}
+    }
 
     public function offeringsDevelopmentMethod()
     {
@@ -574,6 +587,48 @@ echo 'GradeLevel='.$gradeLevelEntity->title."<br/>";
 }
 
 
+
+
+/*
+		$mealArray=$this->genMealArray();
+		$offeringArray=$this->genOfferingArray(3);
+
+			$mealObj=new \Application_Model_Meal();
+			$mealEntityList=$mealObj->newFromArrayList($mealArray, false);
+
+		$offeringObj=new \Application_Model_Offering();
+		$offeringEntityList=$offeringObj->newFromArrayList($offeringArray, false);
+
+
+		$offeringObj=new \Application_Model_Account();
+echo "hello"."<br/>";
+		$result=$offeringObj->getByRefId('500379d605f7a');
+		print_r(\Application_Model_Account::formatOutput($result));
+		echo 'g'.$result->offeringGradeLevelNodes."<br/>";
+exit;
+
+		$offeringSourceArrayList=array(array(
+			comment=>'test comment',
+			suggestedPrice=>100,
+			name=>'testOfferingName'.\Q\Utils::newGuid(),
+			meal=>$mealEntity,
+			school=>'MarinHorizon',
+			day=>'3',
+			gradeLevel=>'First'
+		));
+		$offeringObj=new \Application_Model_Offering();
+		$offeringEntityList=$offeringObj->newFromArrayList($offeringSourceArrayList, false);
+		$offeringEntity=$offeringEntityList[0]; //newFromArrayList() produces an array, even if only one
+ echo 'Offering='.$offeringEntity->name."<br/>";
+
+ 		$this->em->flush();
+
+		$serverComm=array();
+			$serverComm[]=array("fieldName"=>"user_confirm_message", "value"=>'test complete');
+			$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'none');
+
+		$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
+	*/
 
 
 

@@ -50,6 +50,10 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="list"/>
         </controllerFile>
+        <controllerFile controllerName="Purchase">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="pay"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
       <layoutsDirectory>
@@ -65,6 +69,8 @@
         <modelFile modelName="Base"/>
         <modelFile modelName="Offering"/>
         <modelFile modelName="Meal"/>
+        <modelFile modelName="Order"/>
+        <modelFile modelName="Purchase"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>
@@ -141,6 +147,12 @@
           <viewControllerScriptsDirectory forControllerName="Offering">
             <viewScriptFile forActionName="list"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Purchase">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Purchase">
+            <viewScriptFile forActionName="pay"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
@@ -209,6 +221,10 @@
           <testApplicationControllerFile forControllerName="Offering">
             <testApplicationActionMethod forActionName="index"/>
             <testApplicationActionMethod forActionName="list"/>
+          </testApplicationControllerFile>
+          <testApplicationControllerFile forControllerName="Purchase">
+            <testApplicationActionMethod forActionName="index"/>
+            <testApplicationActionMethod forActionName="pay"/>
           </testApplicationControllerFile>
         </testApplicationControllerDirectory>
       </testApplicationDirectory>

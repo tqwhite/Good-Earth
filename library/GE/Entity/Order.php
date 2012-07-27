@@ -3,53 +3,51 @@ namespace GE\Entity;
 /**
 *
 * @Entity
-* @Table(name="accounts")
+* @Table(name="orders")
 * @author tqii
 *
 *
 **/
-class Account /*extends Base*/{
+class Order /*extends Base*/{
 	/**
 	* @var string $id
 	* @column(name="refId", type="string", length=36, nullable=false, unique="true")
 	* @Id
-	 *
 	**/
 	private $refId;
 
 	/**
-	 * @column(type="string", length=60, nullable=false)
-	 * @var string
+	 *
+	 * @ManyToOne(targetEntity="Student", cascade={"all"}, fetch="EAGER")
+	 * @JoinColumn(name="studentRefId", referencedColumnName="refId")
 	 *
 	 **/
-	private $familyName;
-
+	private $student;
 
 	/**
 	 *
-	 * @param \Doctrine\Common\Collections\Collection $property
-	 * @OneToMany(targetEntity="User", mappedBy="account", cascade={"persist", "remove"});
+	 * @ManyToOne(targetEntity="Day", cascade={"all"}, fetch="EAGER")
+	 * @JoinColumn(name="dayRefId", referencedColumnName="refId")
 	 *
 	 **/
-
-	private $users;
-
+	private $day;
 
 	/**
 	 *
-	 * @param \Doctrine\Common\Collections\Collection $property
-	 * @OneToMany(targetEntity="Student", mappedBy="account", cascade={"persist", "remove"});
+	 * @ManyToOne(targetEntity="Offering", cascade={"all"}, fetch="EAGER")
+	 * @JoinColumn(name="offeringRefId", referencedColumnName="refId")
 	 *
 	 **/
+	private $offering;
 
-	private $students;
 
 
     /**
 	 * @param \Doctrine\Common\Collections\Collection $property
-	 * @OneToMany(targetEntity="AccountPurchaseNode", mappedBy="account", cascade={"persist", "remove"});
+	 * @OneToMany(targetEntity="PurchaseOrderNode", mappedBy="order", cascade={"persist", "remove"});
      */
-    private $accountPurchaseNodes;
+    private $purchaseOrderNodes;
+
 
 
 	/**

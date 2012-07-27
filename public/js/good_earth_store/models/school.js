@@ -10,6 +10,10 @@ GoodEarthStore.Models.Base.extend('GoodEarthStore.Models.School',
 /* @Static */
 {
 
+	getRetrievalFunction:function(data, success, error){
+		return this.getList;
+},
+
 	getList:function(data, success, error){
 		data={}; //no data for this listing
 

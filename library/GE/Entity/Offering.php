@@ -78,6 +78,13 @@ class Offering /*extends Base*/{
 
 
 
+    /**
+	 * @param \Doctrine\Common\Collections\Collection $property
+	 * @OneToMany(targetEntity="Order", mappedBy="offering", cascade={"persist", "remove"});
+     */
+    private $orders;
+
+
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
 	$this->created=new \DateTime(date("Y-m-d H:i:s"));

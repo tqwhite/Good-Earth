@@ -37,6 +37,12 @@ class Day /*extends Base*/{
      */
     private $offeringDayNodes;
 
+    /**
+	 * @param \Doctrine\Common\Collections\Collection $property
+	 * @OneToMany(targetEntity="Order", mappedBy="days", cascade={"persist", "remove"});
+     */
+    private $orders;
+
 
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}

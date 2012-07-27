@@ -21,13 +21,34 @@ $.Model('GoodEarthStore.Models.Purchase',
 			success({status:-1, messages:errors, data:{}});
 			return;
 		}
-success(this.wrapDataForReturn({status:1}));
-return;
+
+var outOrders=[];
+
+	var list=data.purchase.orders;
+	for (var i=0, len=list.length; i<len; i++){
+		var element=list[i];
+		outOrders.push({
+			day:{refId:element.day.refId},
+			offer:{refId:element.offering.refId},
+			student:{refId:element.student.refId},
+			refId:element.refId
+
+		});
+	}
+
+var outObj={};
+for (var i in data){
+	if (i=='purchase'){continue;} //skip this
+	outObj[i]=data[i];
+}
+
+outObj['orders']=outOrders;
+outObj['refId']=data.purchase.refId;
 		$.ajax({
-				url: '/student/add',
+				url: '/purchase/pay',
 				type: 'post',
 				dataType: 'json',
-				data: {data:data},
+				data: {data:outObj},
 				success: success,
 				error: error,
 				fixture: false

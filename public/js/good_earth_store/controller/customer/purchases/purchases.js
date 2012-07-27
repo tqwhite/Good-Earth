@@ -86,7 +86,7 @@ initDomElements:function(){
 
 updateTotal:function(){
 
-	var list=this.purchases.unpaid,
+	var list=this.purchases.orders,
 		total=0;
 	for (var i=0, len=list.length; i<len; i++){
 		var element=list[i];

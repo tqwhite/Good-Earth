@@ -27,11 +27,14 @@ qtools.validateProperties({
 var students=this.formData.account.students;
 var rowString='';
 for (var i=0, len=students.length; i<len; i++){
-	rowString+="<tr><td class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' title='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+"</td><td>-</td><td>Mon</td><td>-</td><td>-</td><td>-</td><td><div class='smallButton "+this.displayParameters.lunchButton.divId+"'  refId='"+students[i].refId+"'>"+students[i].refId+"</div></td></tr>";
+	rowString+="<tr style='background:#AAE6E7;'><td class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' title='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+"</td><td></td><td></td><td></td><td></td><td></td><td><div class='smallButton "+this.displayParameters.lunchButton.divId+"'  refId='"+students[i].refId+"'>"+students[i].refId+"</div></td></tr>";
 }
 
 var headings=[{name:''}, {name:'Mon'}, {name:'Tues'}, {name:'Weds'}, {name:'Thurs'}, {name:'Fri'}, {name:''}];
 var headingTemplate="<td><!name!></td>";
+
+var headingTemplate="<td>&nbsp;</td>"; //don't have the ability to show the kids' stuff yet
+
 var headingString=qtools.templateReplaceArray({replaceArray:headings, template:headingTemplate});
 
 %>

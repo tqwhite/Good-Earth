@@ -59,7 +59,7 @@ class Application_Model_Student extends Application_Model_Base
 				'refId'=>$inData->refId,
 				'schoolRefId'=>$inData->school->refId,
 				'accountRefId'=>$inData->account->refId,
-				'gradeLevelRefId'=>$inData->gradeLevel->refId,
+				'gradeLevelRefId'=>$inData->gradeLevel->refId
 			);
 		}
 		else{

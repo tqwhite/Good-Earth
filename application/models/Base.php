@@ -96,6 +96,11 @@ class Application_Model_Base
 		}
 	}
 
+	public function persistAndFlush(){
+		$this->entityManager->persist($this->entity);
+		$this->entityManager->flush();
+	}
+
 	static function formatOutput($inData, $outputType){
 		if (count($inData)<2){
 			return static::formatScalar($inData, $outputType);

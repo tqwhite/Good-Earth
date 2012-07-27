@@ -121,33 +121,44 @@ lunchButtonHandler:function(control, parameter){
 	//focusin focusout keydown keyup keypress select
 },
 
+queueReferenceLookup:function(controlObj, name, modelName, argData){
+		var data;
+
+		data=GoodEarthStore.Models.Session.get(name);
+
+		if (data){
+			this[name]=data;
+		}
+		else{
+			controlObj[name]={
+					ajaxFunction:GoodEarthStore.Models[modelName].getRetrievalFunction(),
+					argData:argData?argData:{}
+				};
+		}
+
+},
 
 getReferenceData:function(callback){
-		var controlObj={
-			calls:{
-				account:{
-					ajaxFunction:GoodEarthStore.Models.Account.find,
-					argData:{refId:this.loginUser.account.refId}
-				},
-				schools:{
-					ajaxFunction:GoodEarthStore.Models.School.getList,
-					argData:{}
-				},
-				gradeLevels:{
-					ajaxFunction:GoodEarthStore.Models.GradeLevel.getList,
-					argData:{}
-				},
-				offerings:{
-					ajaxFunction:GoodEarthStore.Models.Offering.getList,
-					argData:{}
-				}
-			},
-			success:this.callback('referenceCallback', callback),
-			stripWrappers:true
 
-		};
-		qtools.multiAjax(controlObj);
+		var controlObj={},
+			calls={};
 
+		this.queueReferenceLookup(calls, 'account', 'Account', {refId:this.loginUser.account.refId});
+		this.queueReferenceLookup(calls, 'schools', 'School');
+		this.queueReferenceLookup(calls, 'gradeLevels', 'GradeLevel');
+		this.queueReferenceLookup(calls, 'offerings', 'Offering');
+
+		if (qtools.isNotEmpty(calls)){
+
+			controlObj.calls=calls;
+			controlObj.success=this.callback('referenceCallback', callback);
+			controlObj.stripWrappers=true;
+
+			qtools.multiAjax(controlObj);
+		}
+		else{
+			callback();
+		}
 },
 
 referenceCallback:function(callback, inData){
@@ -156,6 +167,13 @@ referenceCallback:function(callback, inData){
 		this.schools=inData.schools;
 		this.gradeLevels=inData.gradeLevels;
 		this.offerings=inData.offerings;
+
+
+		GoodEarthStore.Models.Session.keep('account', this.account);
+		GoodEarthStore.Models.Session.keep('schools', this.schools);
+		GoodEarthStore.Models.Session.keep('gradeLevels', this.gradeLevels);
+		GoodEarthStore.Models.Session.keep('offerings', this.offerings);
+
 		callback(); //initDisplay()
 },
 
@@ -164,7 +182,8 @@ newPurchaseObj:function(){
 	var purchaseObj=GoodEarthStore.Models.Session.get('purchases');
 	if (!purchaseObj){
 		purchaseObj={
-			unpaid:[]
+			orders:[],
+			refId:qtools.newGuid()
 		};
 
 	}

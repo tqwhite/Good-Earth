@@ -56,6 +56,13 @@ class Student /*extends Base*/{
 
 
 
+    /**
+	 * @param \Doctrine\Common\Collections\Collection $property
+	 * @OneToMany(targetEntity="Order", mappedBy="students", cascade={"persist", "remove"});
+     */
+    private $orders;
+
+
 	/**
 	 * @column(type="datetime", nullable=false)
 	 * @var datetime

@@ -16,8 +16,15 @@ class IndexController extends Zend_Controller_Action
         // which does the real work.
     }
 
+    public function payAction()
+    {
+        // action body
+    }
+
 
 }
+
+
 
 
 

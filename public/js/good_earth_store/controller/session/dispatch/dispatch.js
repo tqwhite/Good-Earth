@@ -24,11 +24,6 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 			this.startingHash=window.location.hash.replace('#', '');
 		}
 
-
-		if (console){
-			console.log('dispatch.js says, debugg items exist');
-			console.dir(window.GoodEarthStore);
-		}
 	},
 
 	getServerData:function(){

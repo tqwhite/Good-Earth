@@ -3,12 +3,12 @@ namespace GE\Entity;
 /**
 *
 * @Entity
-* @Table(name="meals")
+* @Table(name="accountPurchaseNodes")
 * @author tqii
 *
 *
 **/
-class Meal /*extends Base*/{
+class AccountPurchaseNode /*extends Base*/{
 	/**
 	* @var string $id
 	* @column(name="refId", type="string", length=36, nullable=false, unique="true")
@@ -16,31 +16,22 @@ class Meal /*extends Base*/{
 	**/
 	private $refId;
 
-	/**
-	 * @column(type="string", length=200, nullable=false)
-	 * @var string
-	 **/
-	private $name;
-
-	/**
-	 * @column(type="string", length=60, nullable=false)
-	 * @var string
-	 **/
-	private $shortName;
-
-	/**
-	 * @column(type="text", nullable=false)
-	 * @var string
-	 **/
-	private $description;
 
 	/**
 	 *
-	 * @column(name="suggestedPrice", type="integer", nullable=true)
+	 * @ManyToOne(targetEntity="Purchase", cascade={"all"}, fetch="EAGER")
+	 * @JoinColumn(name="purchaseRefId", referencedColumnName="refId")
+	 *
 	 **/
+	private $purchase;
 
-	 private $suggestedPrice;
-
+	/**
+	 *
+	 * @ManyToOne(targetEntity="Account", cascade={"all"}, fetch="EAGER")
+	 * @JoinColumn(name="accountRefId", referencedColumnName="refId")
+	 *
+	 **/
+	private $account;
 
 
 	/**
@@ -49,16 +40,6 @@ class Meal /*extends Base*/{
 	 **/
 
 	private $created;
-
-
-	/**
-	 *
-	 * @param \Doctrine\Common\Collections\Collection $property
-	 * @OneToMany(targetEntity="Offering", mappedBy="meal", cascade={"persist", "remove"});
-	 **/
-
-	private $offerings;
-
 
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}

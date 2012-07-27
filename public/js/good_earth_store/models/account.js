@@ -9,11 +9,10 @@ steal('jquery/model', function(){
 GoodEarthStore.Models.Base.extend('GoodEarthStore.Models.Account',
 /* @Static */
 {
-	findAll: "/sessions.json",
-  	findOne : "/sessions/{id}.json",
-  	create : "/sessions.json",
- 	update : "/sessions/{id}.json",
-  	destroy : "/sessions/{id}.json",
+
+	getRetrievalFunction:function(data, success, error){
+		return this.find;
+},
 
 	find:function(data, success, error){
 
