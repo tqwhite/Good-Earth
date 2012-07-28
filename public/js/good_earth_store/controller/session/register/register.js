@@ -77,7 +77,7 @@ initDomElements:function(){
 				unavailable:{classs:'smallUnavailable'},
 				accessFunction:this.displayParameters.loginButton.handler,
 				initialControl:'setToReady', //initialControl:'setUnavailable'
-				label:"<div '>Login Instead</div>"
+				label:"<div>Login Instead</div>"
 			});
 
 	$($('.schoolIdClassString').find('option')[1]).attr('selected', 'selected'); //for debugg only, see form.ejs
