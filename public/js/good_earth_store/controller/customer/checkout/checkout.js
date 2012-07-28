@@ -99,6 +99,9 @@ initDomElements:function(){
 		label:"Cancel"
 	});
 
+
+	this.element.find('input').qprompt();
+
 },
 
 
@@ -144,7 +147,7 @@ catchProcessResult:function(inData){
 	var list=inData.messages;
 	for (var i=0, len=list.length; i<len; i++){
 		var element=list[i];
-		statusDomObj.append(element[1]+"<br/>");
+		statusDomObj.append("<div style=color:red;margin-left:4px;'>"+element[1]+"</div>");
 	}
 
 	}

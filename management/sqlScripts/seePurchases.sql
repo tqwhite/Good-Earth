@@ -1,4 +1,4 @@
-select s.firstName, s.lastName, of.name, d.title, p.amountTendered as 'amount', gl.title as 'grade level', o.* 
+select s.firstName, s.lastName, of.name, d.title, p.chargeTotal as 'amount', gl.title as 'grade level', o.* 
 from purchases as p
 left join purchaseOrderNodes as po on po.purchaseRefId=p.refId
 left join orders as o on o.refId=po.orderRefId

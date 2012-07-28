@@ -19,17 +19,10 @@ class Purchase /*extends Base*/{
 
 	/**
 	 *
-	 * @column(name="amountTendered", type="integer", nullable=true)
+	 * @column(name="chargeTotal", type="integer", nullable=false)
 	 **/
 
-	 private $amountTendered;
-
-
-	/**
-	 * @column(type="string", length=200, nullable=false)
-	 * @var string
-	 **/
-	private $transactionId;
+	 private $chargeTotal;
 
 
     /**
@@ -43,6 +36,68 @@ class Purchase /*extends Base*/{
 	 * @OneToMany(targetEntity="PurchaseOrderNode", mappedBy="purchases", cascade={"persist", "remove"});
      */
     private $purchaseOrderNodes;
+
+
+	/**
+	 * @column(type="string", length=200, nullable=true)
+	 * @var string
+	 **/
+	private $deferedPaymentPreference;
+
+	//======================================
+
+	/**
+	 * @column(type="string", length=200, nullable=true)
+	 * @var string
+	 **/
+	private $fdTransactionTime;
+
+
+	/**
+	 * @column(type="string", length=200, nullable=true)
+	 * @var string
+	 **/
+	private $fdProcessorReferenceNumber;
+
+
+	/**
+	 * @column(type="string", length=200, nullable=true)
+	 * @var string
+	 **/
+	private $fdProcessorResponseMessage;
+
+
+	/**
+	 * @column(type="string", length=200, nullable=true)
+	 * @var string
+	 **/
+	private $fdProcessorResponseCode;
+
+
+	/**
+	 * @column(type="string", length=200, nullable=true)
+	 * @var string
+	 **/
+	private $fdProcessorApprovalCode;
+
+
+	/**
+	 * @column(type="string", length=200, nullable=true)
+	 * @var string
+	 **/
+	private $fdErrorMessage;
+
+
+	/**
+	 * @column(type="string", length=200, nullable=true)
+	 * @var string
+	 **/
+	private $fdOrderId;
+	/**
+	 * @column(type="string", length=200, nullable=true)
+	 * @var string
+	 **/
+	private $fdApprovalCode;
 
 
 	/**
@@ -62,7 +117,6 @@ public function __get($property){
 }
 
 public function __set($property, $value){
-echo "E/ $property=$value\n";
 	$this->$property=$value;
 }
 }

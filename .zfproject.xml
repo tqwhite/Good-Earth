@@ -71,6 +71,7 @@
         <modelFile modelName="Meal"/>
         <modelFile modelName="Order"/>
         <modelFile modelName="Purchase"/>
+        <modelFile modelName="Payment"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>

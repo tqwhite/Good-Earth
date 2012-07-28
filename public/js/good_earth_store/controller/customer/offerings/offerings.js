@@ -107,7 +107,7 @@ chooseOfferingButtonClassIdHandler:function(control, parameter){
 	}
 	//change dblclick mousedown mouseover mouseout dblclick
 	//focusin focusout keydown keyup keypress select
-},
+}
 
 
 

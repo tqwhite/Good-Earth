@@ -2,6 +2,9 @@
 
 class Application_Model_Base
 {
+	const	yesFlush=true;
+	const	noFlush=false;
+
 	protected $doctrineContainer;
 	protected $entityManager;
 	protected $entityName;
@@ -96,9 +99,11 @@ class Application_Model_Base
 		}
 	}
 
-	public function persistAndFlush(){
+	public function persist($flushToo){
 		$this->entityManager->persist($this->entity);
-		$this->entityManager->flush();
+		if ($flushToo){
+			$this->entityManager->flush();
+		}
 	}
 
 	static function formatOutput($inData, $outputType){

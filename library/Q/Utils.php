@@ -104,6 +104,14 @@ function newGuid(){
     }
 }
 
+static function flattenToList($inArray){
+	$outArray=array();
+	foreach ($inArray as $label=>$data){
+		$outArray[]=array($label, $data);
+	}
+	return $outArray;
+}
+
 }//end of class
 
 

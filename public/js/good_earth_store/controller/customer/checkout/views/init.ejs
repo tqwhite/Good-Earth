@@ -59,17 +59,19 @@ qtools.validateProperties({
 	<%==outString%>
 </div>
 
+
+
 <div id='entryContainer' style='width:48%;height:335px;border:1pt solid gray;float:right;padding-top:15px;'>
 	<table style='font-size:10pt;'>
 	<tr><td>Name on Card</td><td><input name='cardName' value='TQ White II'></td>
 	<tr><td>Billing Street Address</td><td><input name='billingStreet' value='5004 Three Points Blvd'></td>
-	<tr><td>City</td><td><input name='billingCity' value='Mound'></td>
-	<tr><td>State (two letters)</td><td><input name='billingState' value='MN'></td>
-	<tr><td>Zip</td><td><input name='billingZip' value='55364'></td>
+	<tr><td>City</td><td><input style='width:30%;' name='billingCity' value='Fairfax'></td>
+	<tr><td>State (two letters)</td><td><input style='width:20%;' name='billingState' value='CA'></td>
+	<tr><td>Zip</td><td><input style='width:30%;' name='billingZip' value='55364'></td>
 	<tr><td>Phone</td><td><input name='phoneNumber' value='708-763-0100'></td>
-	<tr><td>Card Number</td><td><input name='cardNumber' value='4012888888881881'></td>
-	<tr><td>Expiration Date</td><td><input name='expirationDate' value='06/15'></td>
-	<tr><td>Number on Back</td><td><input name='ccv' value='666'></td>
+	<tr><td style='padding-top:5px;;'>Card Number</td><td><input name='cardNumber' value='4005 5500 0000 0019'></td>
+	<tr><td>Expiration Date</td><td><input style='width:20%;' name='expMonth' value='' prompt='MM'><input style='margin-left:5px;width:20%;' name='expYear' value='' prompt='YY'></td>
+	<input type='hidden' name='chargeTotal' value='<%=total%>'>
 	</table>
 <div id='<%=this.displayParameters.status.divId%>' style='font-size:10pt;'></div>
 </div>

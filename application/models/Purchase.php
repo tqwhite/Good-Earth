@@ -11,12 +11,34 @@ class Application_Model_Purchase extends Application_Model_Base
 
 	static function validate($inData){
 
+
 		$errorList=array();
 
-		$name='firstName';
-		$datum=$inData[$name];
+		$name='cardNumber';
+		$datum=$inData['cardData'][$name];
+		if (!$datum){
+			$errorList[]=array($name, "Credit card number required");
+		}
+		else if (strlen(preg_replace('/[^\S]/', '', $datum))!=16){
+			$errorList[]=array($name, "Credit card number is incorrect");
+		}
+
+		$name='expMonth';
+		$datum=$inData['cardData'][$name];
 		if (!$datum){
 			$errorList[]=array($name, "First name is required");
+		}
+		else if ($datum<1 || $datum>12){
+			$errorList[]=array($name, "Month is wrong");
+		}
+
+		$name='expYear';
+		$datum=$inData['cardData'][$name];
+		if (!$datum){
+			$errorList[]=array($name, "Year is required");
+		}
+		else if ($datum<12){
+			$errorList[]=array($name, "Year is wrong");
 		}
 
 		return $errorList;

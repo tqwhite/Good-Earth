@@ -55,6 +55,7 @@ outObj['refId']=data.purchase.refId;
 			});
 
 },
+
 validate:function(inData){
 	var name, datum,
 		errors=[];
@@ -86,14 +87,14 @@ validate:function(inData){
 	datum=inData[name];
 	if (!datum)
 	{errors.push([name, "Card Number is required"]);}
-	name='expirationDate';
+	name='expYear';
 	datum=inData[name];
 	if (!datum)
 	{errors.push([name, "Expiration Date is required"]);}
-	name='ccv';
+	name='expMonth';
 	datum=inData[name];
 	if (!datum)
-	{errors.push([name, "Security Code is required"]);}
+	{errors.push([name, "Expiration Month is required"]);}
 
 	return errors;
 }

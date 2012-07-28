@@ -51,10 +51,10 @@ class TestController extends Zend_Controller_Action
     public function doctrineAction()
     {
 
-$cardNumber="4012000033330026";
+$cardNumber="4005550000000019"; //only approve for one dollar even, remember to void transaction
 $expMonth="12";
-$expYear="12";
-$chargeTotal="120";
+$expYear="13";
+$chargeTotal="1";
 $acctPassword="WS1001178130._.1:Gh8daJgG";
 
 $ch =curl_init("https://ws.firstdataglobalgateway.com/fdggwsapi/services/order.wsdl");
@@ -100,7 +100,17 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 $result = curl_exec($ch);
 curl_close($ch);
 
-echo "result=$result";
+	$xml=xml_parser_create('');
+	$values=array();
+	$index=array();
+	xml_parse_into_struct($xml, $result, &$values, &$index);
+	$outList=array();
+	for ($i=0, $len=count($values); $i<$len; $i++){
+		$outList[$values[$i]['tag']]=$values[$i]['value'];
+	}
+Q\Utils::dumpWeb($outList);
+
+
 exit;
     }
 

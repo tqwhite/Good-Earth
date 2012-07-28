@@ -18,12 +18,21 @@ class PurchaseController extends Zend_Controller_Action
 		$inData=$this->getRequest()->getPost('data');
 		$messages=array();
 
+		$errorList=\Application_Model_Purchase::validate($inData);
 
+		if (count($errorList)==0){
+			$processResult=\Application_Model_Payment::process($inData);
+			if ($processResult['FDGGWSAPI:TRANSACTIONRESULT']!='APPROVED'){
+				if ($processResult['DETAIL']){
+					$errorList[]=array('transaction', preg_replace('/^.*: /', '', $processResult['DETAIL']));
+				}
+				else{
+					$errorList[]=array('transaction', preg_replace('/^.*: /', '', $processResult['FDGGWSAPI:ERRORMESSAGE']));
+				}
+			}
+		}
 
-
-	//	$errorList=\Application_Model_Student::validate($inData);
-
-		if (false && count($errorList)>0){
+		if (count($errorList)>0){
 			$this->_helper->json(array(
 				status=>-1,
 				messages=>$errorList,
@@ -31,6 +40,22 @@ class PurchaseController extends Zend_Controller_Action
 			));
 		}
 		else{
+				$status=1;
+
+				$messages=Q\Utils::flattenToList($processResult); //mainly for debugging ease, maybe should be removed later
+
+				$purchaseObj=new \Application_Model_Purchase();
+				$purchase=$purchaseObj->generate();
+				$purchase->chargeTotal=$inData['cardData']['chargeTotal'];
+
+				$purchase->fdTransactionTime=$processResult['FDGGWSAPI:TRANSACTIONTIME'];
+				$purchase->fdProcessorReferenceNumber=$processResult['FDGGWSAPI:PROCESSORREFERENCENUMBER'];
+				$purchase->fdProcessorResponseMessage=$processResult['FDGGWSAPI:PROCESSORRESPONSEMESSAGE'];
+				$purchase->fdProcessorResponseCode=$processResult['FDGGWSAPI:PROCESSORRESPONSECODE'];
+				$purchase->fdProcessorApprovalCode=$processResult['FDGGWSAPI:PROCESSORAPPROVALCODE'];
+				$purchase->fdErrorMessage=$processResult['FDGGWSAPI:ERRORMESSAGE'];
+				$purchase->fdOrderId=$processResult['FDGGWSAPI:ORDERID'];
+				$purchase->fdApprovalCode=$processResult['FDGGWSAPI:APPROVALCODE'];
 
 				$list=$inData['orders'];
 				$orderEntityList=array();
@@ -51,149 +76,22 @@ class PurchaseController extends Zend_Controller_Action
 					$order->student=$student;
 					$order->offering=$offering;
 					$order->day=$day;
-					$orderObj->persistAndFlush();
+					$orderObj->persist(Application_Model_Base::noFlush);
 
-					$orderEntityList[]=$order;
+					$purchaseObj->addOrder($order);
 				}
 
+				$purchaseObj->persist(Application_Model_Base::yesFlush);
 
-				$purchaseObj=new \Application_Model_Purchase();
-				$purchase=$purchaseObj->generate();
-				$purchase->transactionId='111';
-				$purchase->amountTendered='222';
-				$purchaseObj->addOrder($orderEntityList[0]);
-				$purchaseObj->addOrder($orderEntityList[1]);
-				$purchaseObj->persistAndFlush();
-
-			echo "count=".count($orderEntityList)."\n";
-			echo "=====================================\n\n";
-			exit;
-					$purchaseInitArray=array(
-						refId=>$inData['refId'],
-						transactionId=>'hello',
-						amountTendered=>'111',
-						purchaseOrderNodes=>$orderEntityList
-					);
-
-					$purchaseObj=new \Application_Model_Purchase();
-					$purchase=$purchaseObj->newFromArrayList(array($purchaseInitArray));
-
-			\Doctrine\Common\Util\Debug::dump($purchase);
-			exit;
-
-		}
-}
-
-    public function XXXpayAction()
-    {
-		$inData=$this->getRequest()->getPost('data');
-		$messages=array();
-
-
-	$list=$inData['orders'];
-	$orderEntityList=array();
-	for ($i=0, $len=count($list); $i<$len; $i++){
-		$element=$list[$i];
-
-		$studentObj=new \Application_Model_Student();
-		$student=$studentObj->getByRefId($element['student']['refId']);
-echo "student={$student->firstName}\n";
-		$offerObj=new \Application_Model_Offering();
-		$offer=$offerObj->getByRefId($element['offer']['refId']);
-echo "offer={$offer->name}\n";
-
-		$dayObj=new \Application_Model_Day();
-		$day=$dayObj->getByRefId($element['day']['refId']);
-echo "day={$day->title}\n";
-
-		$orderInitArray=array(
-			refId=>$element['refId'],
-			student=>$student,
-			offer=>$offer,
-			day=>$day
-		);
-
-		$orderObj=new \Application_Model_Order();
-		$order=$orderObj->newFromArrayList($orderInitArray);
-\Doctrine\Common\Util\Debug::dump($order);
-		$orderEntityList[]=$order;
-	}
-
-echo "count=".count($orderEntityList)."\n";
-echo "=====================================\n\n";
-exit;
-		$purchaseInitArray=array(
-			refId=>$inData['refId'],
-			transactionId=>'hello',
-			amountTendered=>'111',
-			purchaseOrderNodes=>$orderEntityList
-		);
-
-		$purchaseObj=new \Application_Model_Purchase();
-		$purchase=$purchaseObj->newFromArrayList(array($purchaseInitArray));
-
-\Doctrine\Common\Util\Debug::dump($purchase);
-exit;
-
-		$errorList=\Application_Model_Student::validate($inData);
-
-		if (count($errorList)>0){
-			$this->_helper->json(array(
-				status=>-1,
-				messages=>$errorList,
-				data=>array()
-			));
-		}
-		else{
-
-		$accountObj=new \Application_Model_Account();
-		$account=$accountObj->getByRefId($inData['accountRefId']);
-
-		$schoolObj=new \Application_Model_School();
-		$school=$schoolObj->getByRefId($inData['schoolRefId']);
-
-		$gradeLevelObj=new \Application_Model_GradeLevel();
-		$gradeLevel=$gradeLevelObj->getByRefId($inData['gradeLevelRefId']);
-
-		//NOTE: $inData has properties named 'schoolRefId'. I demonstrated that Doctrine ignores them.
-
-		$inData['school']=$school;
-		$inData['gradeLevel']=$gradeLevel;
-		$inData['account']=$account;
-
-		$studentObj=new \Application_Model_Student();
-		$student=$studentObj->getByRefId($inData['refId']);
-
-			$status=1; //unless error
-			try{
-
-				if (count($student)==0){
-					$studentObj->newFromArrayList(array($inData), false);
-				}
-				else{
-
-					$studentObj->updateFromArray($student, $inData);
-				}
-			}
-			catch(Exception $e){
-				$status=-1;
-				$messages[]=array('server_error', $e->errorInfo);
-			}
 
 			$this->_helper->json(array(
 				status=>$status,
 				messages=>$messages,
-				data=>array(
-					"identity"=>array(
-						'firstName'=>$inData['firstName'],
-						'lastName'=>$inData['lastName']
-					)
-				)
+				data=>array(tmp=>'test')
 			));
 
-
-    }
-}
+		}
+	}
 
 
 }
