@@ -8,6 +8,10 @@ steal(
 	'./resources/jqueryPlugins/jquery.md5.js',
 	'./resources/jqueryPlugins/jquery.qprompt.js',
 
+	'./resources/other/json2.js',
+	'./resources/other/mousetrap.js',
+
+
 	'./good_earth_store.css', 			// application CSS file
 	'./models/models.js',		// steals all your models
 	'jquery/dom/fixture',	// sets up fixtures for your models
