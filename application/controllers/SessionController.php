@@ -11,7 +11,7 @@ class SessionController extends Zend_Controller_Action
     public function checkAction()
     {
 		$hello=$this->getRequest()->getPost('data');
-//Q\Utils::dumpCli($_POST);
+
 		$namespace = new Zend_Session_Namespace('sessionData'); // default namespace
 		$namespace->setExpirationSeconds(60);
 		if (isset($namespace->count)) {

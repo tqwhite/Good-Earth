@@ -21,7 +21,8 @@ qtools.validateProperties({
 		{name:'myId'},
 		{name:'submitButton'},
 		{name:'cancelButton'},
-		{name:'status'}
+		{name:'status'},
+		{name:'entryContainer'}
 
 	],
  source:'customer.checkout.ejs' });
@@ -52,6 +53,28 @@ qtools.validateProperties({
 
 	outString="<table style='font-size:8pt;'>"+titleString+outString+"</table>";
 
+	if (false){
+		var cardName='',
+			billingStreet='',
+			billingCity='',
+			billingZip='',
+			phoneNumber='',
+			cardNumber='',
+			expMonth='',
+			expYear='';
+
+	}
+	else{
+		var cardName='TQ White II',
+			billingStreet='5004 Three Points Blvd',
+			billingCity='Fairfax',
+			billingZip='55364',
+			phoneNumber='708-763-0100',
+			cardNumber='4005 5500 0000 0019',
+			expMonth='06',
+			expYear='13';
+	}
+
 %><div class='mainContainer' style='color:#426134;' id='<%= displayParameters.myId.divId %>'>
 <div style='position:relative;height:360px;'>
 
@@ -61,16 +84,18 @@ qtools.validateProperties({
 
 
 
-<div id='entryContainer' style='width:48%;height:335px;border:1pt solid gray;float:right;padding-top:15px;'>
+<div id='<%=this.displayParameters.entryContainer.divId%>' style='width:48%;height:335px;border:1pt solid gray;float:right;padding-top:15px;'>
 	<table style='font-size:10pt;'>
-	<tr><td>Name on Card</td><td><input name='cardName' value='TQ White II'></td>
-	<tr><td>Billing Street Address</td><td><input name='billingStreet' value='5004 Three Points Blvd'></td>
-	<tr><td>City</td><td><input style='width:30%;' name='billingCity' value='Fairfax'></td>
-	<tr><td>State (two letters)</td><td><input style='width:20%;' name='billingState' value='CA'></td>
-	<tr><td>Zip</td><td><input style='width:30%;' name='billingZip' value='55364'></td>
-	<tr><td>Phone</td><td><input name='phoneNumber' value='708-763-0100'></td>
-	<tr><td style='padding-top:5px;;'>Card Number</td><td><input name='cardNumber' value='4005 5500 0000 0019'></td>
-	<tr><td>Expiration Date</td><td><input style='width:20%;' name='expMonth' value='' prompt='MM'><input style='margin-left:5px;width:20%;' name='expYear' value='' prompt='YY'></td>
+	<tr><td>Name on Card</td><td><input type='text' name='cardName' value='<%=cardName%>'></td>
+	<tr><td>Billing Street</td><td><input type='text' name='billingStreet' value='<%=billingStreet%>'></td>
+	<tr><td>City</td><td><input type='text' style='width:30%;' name='billingCity' value='<%=billingCity%>'>, CA</td>
+	<input type='hidden' style='width:20%;' name='billingState' value='CA'>
+	<tr><td>Zip</td><td><input type='text' style='width:30%;' name='billingZip' value='<%=billingZip%>' prompt='00000'></td>
+
+	<tr><td>Phone</td><td><input name='phoneNumber' value='<%=phoneNumber%>' prompt='000-000-0000'></td>
+
+	<tr><td style='padding-top:5px;;'>Card Number</td><td><input type='text' name='cardNumber' value='<%=cardNumber%>' prompt='0000 0000 0000 0000'></td>
+	<tr><td>Expiration</td><td><input type='text' style='width:20%;' name='expMonth' value='<%=expMonth%>'  prompt='MM'><input style='margin-left:5px;width:20%;' value='<%=expYear%>' name='expYear' value='' prompt='YY'></td>
 	<input type='hidden' name='chargeTotal' value='<%=total%>'>
 	</table>
 <div id='<%=this.displayParameters.status.divId%>' style='font-size:10pt;'></div>

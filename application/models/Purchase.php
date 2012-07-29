@@ -48,12 +48,11 @@ class Application_Model_Purchase extends Application_Model_Base
 
 		if ($inData->refId){
 			$outArray=array(
-				'firstName'=>$inData->firstName,
-				'lastName'=>$inData->lastName,
 				'refId'=>$inData->refId,
-				'schoolRefId'=>$inData->school->refId,
-				'accountRefId'=>$inData->account->refId,
-				'gradeLevelRefId'=>$inData->gradeLevel->refId
+				'created'=>$inData->created,
+				'fdOrderId'=>$inData->fdOrderId,
+				'deferredPaymentPreference'=>$inData->deferredPaymentPreference,
+				'orders'=>\Application_Model_Order::formatOutput($inData->purchaseOrderNodes)
 			);
 		}
 		else{

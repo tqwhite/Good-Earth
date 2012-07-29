@@ -18,6 +18,7 @@ class PurchaseController extends Zend_Controller_Action
 		$inData=$this->getRequest()->getPost('data');
 		$messages=array();
 
+
 		$errorList=\Application_Model_Purchase::validate($inData);
 
 		if (count($errorList)==0){
@@ -47,6 +48,7 @@ class PurchaseController extends Zend_Controller_Action
 				$purchaseObj=new \Application_Model_Purchase();
 				$purchase=$purchaseObj->generate();
 				$purchase->chargeTotal=$inData['cardData']['chargeTotal'];
+				$purchase->lastFour=substr($inData['cardData']['cardNumber'], strlen($inData['cardData']['cardNumber'])-4, 4);
 
 				$purchase->fdTransactionTime=$processResult['FDGGWSAPI:TRANSACTIONTIME'];
 				$purchase->fdProcessorReferenceNumber=$processResult['FDGGWSAPI:PROCESSORREFERENCENUMBER'];
@@ -77,12 +79,14 @@ class PurchaseController extends Zend_Controller_Action
 					$order->offering=$offering;
 					$order->day=$day;
 					$orderObj->persist(Application_Model_Base::noFlush);
-
+		$orderEntityList[]=$order;
 					$purchaseObj->addOrder($order);
 				}
 
-				$purchaseObj->persist(Application_Model_Base::yesFlush);
 
+				$purchaseObj->persist(Application_Model_Base::yesFlush); //I put "$this->emailReceipt($purchaseObj);" ahead of this line and it stopped persisting!?
+
+				$this->emailReceipt($purchaseObj->entity->refId, $orderEntityList);
 
 			$this->_helper->json(array(
 				status=>$status,
@@ -90,11 +94,54 @@ class PurchaseController extends Zend_Controller_Action
 				data=>array(tmp=>'test')
 			));
 
-		}
+
+    }
+    }
+
+    public function emailReceipt($purchaseRefId, $orderEntityList)
+    {
+        $auth = \Zend_Auth::getInstance();
+		$user=$auth->getIdentity();
+
+// 		$purchaseObj=new Application_Model_Purchase();
+// 		$purchaseObj->getByRefId($purchaseRefId);
+
+
+		$this->doctrineContainer=\Zend_Registry::get('doctrine');
+		$this->entityManager=$this->doctrineContainer->getEntityManager();
+		$purchaseEntity=$this->entityManager->find('GE\Entity\Purchase', $purchaseRefId);
+
+
+		$view = new Zend_View();
+		$view->setScriptPath(APPLICATION_PATH.'/views/scripts/purchase');
+
+		$view->user=$user;
+		$view->purchaseEntity=$purchaseEntity;
+		$view->orderEntityList=$orderEntityList;
+
+		$emailMessage=$view->render('email-receipt.phtml');
+
+		$mail = new Zend_Mail();
+		$tr=new Zend_Mail_Transport_Sendmail();
+
+
+		$mail->setBodyHtml($emailMessage);
+		$mail->setFrom('sherry@genatural.com', "Good Earth Lunch Program");
+
+		$mail->setSubject("Good Earth: Lunch Program Purchase Receipt");
+
+		$mail->addTo('tq@justkidding.com', 'TQ White II');
+
+
+		$mail->send();
+
+		return true;
 	}
 
 
 }
+
+
 
 
 

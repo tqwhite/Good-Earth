@@ -22,12 +22,6 @@ class School /*extends Base*/{
 	 **/
 	private $name;
 
-	/**
-	 * @column(type="string", length=60, nullable=true)
-	 * @var string
-	 **/
-	private $testField;
-
 
 
 	/**
@@ -65,6 +59,10 @@ class School /*extends Base*/{
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
 	$this->created=new \DateTime(date("Y-m-d H:i:s"));
+
+	$this->students = new \Doctrine\Common\Collections\ArrayCollection();
+	$this->gradeLevelNodes = new \Doctrine\Common\Collections\ArrayCollection();
+	$this->offeringSchoolNodes = new \Doctrine\Common\Collections\ArrayCollection();
 }
 
 public function __get($property){

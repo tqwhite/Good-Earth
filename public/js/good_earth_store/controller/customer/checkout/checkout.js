@@ -1,5 +1,5 @@
 steal( 'jquery/controller','jquery/view/ejs' )
-	.then( './views/init.ejs', function($){
+	.then( './views/init.ejs','./views/approved.ejs', function($){
 
 /**
  * @class GoodEarthStore.Controller.Customer.Checkout
@@ -48,6 +48,7 @@ initDisplayProperties:function(){
 
 	name='myId'; nameArray.push({name:name});
 	name='status'; nameArray.push({name:name});
+	name='entryContainer'; nameArray.push({name:name});
 
 	name='submitButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 	name='cancelButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
@@ -109,6 +110,7 @@ submitButtonHandler:function(control, parameter){
 	var componentName='submitButton';
 	switch(control){
 		case 'click':
+console.clear();console.log('checkout.submitButtonHandler did console.clear()');
 			GoodEarthStore.Models.Purchase.process({
 					cardData:this.element.formParams(),
 					purchase:this.purchases
@@ -141,7 +143,7 @@ cancelButtonHandler:function(control, parameter){
 },
 
 catchProcessResult:function(inData){
-	if (inData.status<0){
+	if (false && inData.status<0){
 		var statusDomObj=$('#'+this.displayParameters.status.divId);
 		statusDomObj.html('');
 	var list=inData.messages;
@@ -150,6 +152,11 @@ catchProcessResult:function(inData){
 		statusDomObj.append("<div style=color:red;margin-left:4px;'>"+element[1]+"</div>");
 	}
 
+	}
+	else{
+	//	$('#'+this.displayParameters.submitButton.divId).remove();
+	//	$('#'+this.displayParameters.cancelButton.divId).remove();
+	//	$('#'+this.displayParameters.entryContainer.divId).html($.View('//good_earth_store/controller/customer/checkout/views/approved.ejs'));
 	}
 }
 })

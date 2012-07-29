@@ -42,7 +42,12 @@ class Purchase /*extends Base*/{
 	 * @column(type="string", length=200, nullable=true)
 	 * @var string
 	 **/
-	private $deferedPaymentPreference;
+	private $deferredPaymentPreference;
+	/**
+	 * @column(type="string", length=4, nullable=true)
+	 * @var string
+	 **/
+	private $lastFour;
 
 	//======================================
 
@@ -93,6 +98,7 @@ class Purchase /*extends Base*/{
 	 * @var string
 	 **/
 	private $fdOrderId;
+
 	/**
 	 * @column(type="string", length=200, nullable=true)
 	 * @var string
@@ -110,13 +116,31 @@ class Purchase /*extends Base*/{
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
 	$this->created=new \DateTime(date("Y-m-d H:i:s"));
+
+
+	$this->accountPurchaseNodes = new \Doctrine\Common\Collections\ArrayCollection();
+	$this->purchaseOrderNodes = new \Doctrine\Common\Collections\ArrayCollection();
 }
 
 public function __get($property){
-	return $this->$property;
+	switch($property){
+		case 'chargeTotal':
+			return $this->$property/100;
+			break;
+		default:
+			return $this->$property;
+			break;
+	}
 }
 
 public function __set($property, $value){
-	$this->$property=$value;
+	switch($property){
+		case 'chargeTotal':
+			$this->$property=$value*100;
+			break;
+		default:
+			$this->$property=$value;
+			break;
+	}
 }
 }

@@ -63,38 +63,63 @@ validate:function(inData){
 	datum=inData[name];
 	if (!datum)
 	{errors.push([name, "Name is required"]);}
+
 	name='billingStreet';
 	datum=inData[name];
 	if (!datum)
 	{errors.push([name, "Street is required"]);}
+
 	name='billingCity';
 	datum=inData[name];
 	if (!datum)
 	{errors.push([name, "City is required"]);}
+
 	name='billingState';
 	datum=inData[name];
-	if (!datum)
-	{errors.push([name, "State is required"]);}
+	if (datum.toLowerCase()!='ca')
+	{errors.push([name, "We only serve California"]);}
+
 	name='billingZip';
 	datum=inData[name];
-	if (!datum)
+	if (!datum || datum=='00000')
 	{errors.push([name, "Zip Code is required"]);}
+		else if (datum.length!=5)
+		{errors.push([name, "Zip must be five digits (00000)"]);}
+		else if (!datum.match(/\d{5}/))
+		{errors.push([name, "Zip must be five digits (00000)"]);}
+
 	name='phoneNumber';
 	datum=inData[name];
-	if (!datum)
+	if (!datum || datum=='000-000-0000')
 	{errors.push([name, "Phone Number is required"]);}
+		else if (datum.length!=12)
+		{errors.push([name, "Phone Number must be 000-000-0000"]);}
+		else if (!datum.match(/\d{3}[ -]\d{3}[- ]\d{4}/))
+		{errors.push([name, "Phone Number must be 000-000-0000"]);}
+
+
 	name='cardNumber';
 	datum=inData[name];
-	if (!datum)
+	if (!datum || datum=='0000 0000 0000 0000')
 	{errors.push([name, "Card Number is required"]);}
-	name='expYear';
-	datum=inData[name];
-	if (!datum)
-	{errors.push([name, "Expiration Date is required"]);}
+		else if (datum.replace(/ /g, '', datum).length!=16)
+		{errors.push([name, "Card number must be of the form 0000 0000 0000 0000"]);}
+
 	name='expMonth';
 	datum=inData[name];
-	if (!datum)
-	{errors.push([name, "Expiration Month is required"]);}
+	if (!datum || datum=='MM')
+	{errors.push([name, "Expiration Date is required"]);}
+		else if (!datum.match(/\d{2}/))
+		{errors.push([name, "Month must be two numbers"]);}
+		else if (datum<1 || datum>12)
+		{errors.push([name, "Month must be 1 to 12"]);}
+
+	name='expYear';
+	datum=inData[name];
+	if (!datum || datum=='YY')
+	{errors.push([name, "year is required"]);}
+		else if (!datum.match(/\d{2}/))
+		{errors.push([name, "Year must be two numbers"]);}
 
 	return errors;
 }

@@ -190,7 +190,6 @@ echo 'GradeLevel='.$gradeLevelEntity->title."<br/>";
 			$em=$this->em;
 
 		if ($initSchema=='pleaseKillMyData'){
-
 			$this->view->message .= "initializing database schema<br/>";
 			$this->view->sqlList=$this->initializeDatabaseSchema();
 			$this->view->message .= "database initialization complete<p/>";
@@ -289,7 +288,8 @@ echo 'GradeLevel='.$gradeLevelEntity->title."<br/>";
 			array('title'=>'Fifth', refId=>'Fifth'),
 			array('title'=>'Sixth', refId=>'Sixth'),
 			array('title'=>'Seventh', refId=>'Seventh'),
-			array('title'=>'Eight', refId=>'Eight')
+			array('title'=>'Eight', refId=>'Eight'),
+			array('title'=>'Teacher/Adult', refId=>'adult')
 		);
 
 		$newObj=new \Application_Model_GradeLevel();

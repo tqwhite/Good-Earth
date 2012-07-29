@@ -154,6 +154,10 @@
           <viewControllerScriptsDirectory forControllerName="Purchase">
             <viewScriptFile forActionName="pay"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Purchase"/>
+          <viewControllerScriptsDirectory forControllerName="purchase">
+            <viewScriptFile forActionName="emailReceipt"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
