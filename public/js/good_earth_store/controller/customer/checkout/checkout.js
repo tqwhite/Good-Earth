@@ -154,9 +154,11 @@ catchProcessResult:function(inData){
 
 	}
 	else{
-	//	$('#'+this.displayParameters.submitButton.divId).remove();
-	//	$('#'+this.displayParameters.cancelButton.divId).remove();
-	//	$('#'+this.displayParameters.entryContainer.divId).html($.View('//good_earth_store/controller/customer/checkout/views/approved.ejs'));
+		if (true){ //this can go away as soon as debugging is well into the past. 'false' makes it so that the payment process can run repeatedly.
+			$('#'+this.displayParameters.submitButton.divId).remove();
+			$('#'+this.displayParameters.cancelButton.divId).remove();
+			$('#'+this.displayParameters.entryContainer.divId).html($.View('//good_earth_store/controller/customer/checkout/views/approved.ejs'));
+		}
 	}
 }
 })
