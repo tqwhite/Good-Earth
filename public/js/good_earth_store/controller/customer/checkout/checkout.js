@@ -86,7 +86,7 @@ initDomElements:function(){
 		unavailable:{classs:'basicUnavailable'},
 		accessFunction:displayItem.handler,
 		initialControl:'setToReady', //initialControl:'setUnavailable'
-		label:"Submit"
+		label:"<div style='margin-top:4px;'>Submit</div>"
 	});
 
 	var displayItem=this.displayParameters.cancelButton;

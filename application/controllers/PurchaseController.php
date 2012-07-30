@@ -17,6 +17,7 @@ class PurchaseController extends Zend_Controller_Action
     {
 		$inData=$this->getRequest()->getPost('data');
 		$messages=array();
+		$processResult=array();
 
 		$specialInstruction=substr($inData['cardData']['cardNumber'], 0, 4);
 
@@ -41,11 +42,11 @@ class PurchaseController extends Zend_Controller_Action
 			else{
 				switch ($specialInstruction){
 					case '9999':
-						$processResult['deferredPaymentPreference']!='DEFERRED by 9999';
+						$processResult['deferredPaymentPreference']='DEFERRED by 9999';
 						$status=2;
 						break;
 					case '8888':
-						$processResult['deferredPaymentPreference']!='DEFERRED by 8888';
+						$processResult['deferredPaymentPreference']='DEFERRED by 8888';
 						$status=3;
 						break;
 				}
@@ -74,6 +75,8 @@ class PurchaseController extends Zend_Controller_Action
 				$purchase->zip=$inData['cardData']['zip'];
 				$purchase->phoneNumber=$inData['cardData']['phoneNumber'];
 				$purchase->lastFour=substr($inData['cardData']['cardNumber'], strlen($inData['cardData']['cardNumber'])-4, 4);
+
+				$purchase->deferredPaymentPreference=$processResult['deferredPaymentPreference'];
 
 				$purchase->fdTransactionTime=$processResult['FDGGWSAPI:TRANSACTIONTIME'];
 				$purchase->fdProcessorReferenceNumber=$processResult['FDGGWSAPI:PROCESSORREFERENCENUMBER'];

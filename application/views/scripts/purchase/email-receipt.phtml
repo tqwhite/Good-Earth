@@ -42,7 +42,7 @@ $orderEntityList=$this->orderEntityList;
 		<?php echo $schoolString;?>
 	</div>
 </div>
-		Your credit card <span style='font-size:85%'>(...<?php echo $purchaseEntity->lastFour;?>)</span> was charged: <span style='font-size:85%'>$<?php echo $purchaseEntity->chargeTotal;?></span>.<p/>
+		Your credit card <span style='font-size:85%'>(...<?php echo $purchaseEntity->lastFour;?>)</span> was charged: <span style='font-size:85%'>$<?php echo number_format($purchaseEntity->chargeTotal, 2);?></span>.<p/>
 
 Thank You,<br/>
 Your Friends at Good Earth Natural Foods
