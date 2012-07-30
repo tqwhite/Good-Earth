@@ -22,6 +22,13 @@ class GradeLevel /*extends Base*/{
 	 **/
 	private $title;
 
+	/**
+	 *
+	 * @column(name="seqNum", type="integer", nullable=true)
+	 **/
+
+	 private $seqNum;
+
 
 
     /**

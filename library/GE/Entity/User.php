@@ -63,6 +63,13 @@ class User /*extends Base*/{
 
 	private $confirmationCode; //has md5(refId) if email is NOT confirmed
 
+	/**
+	 * @column(type="string", length=20)
+	 * @var string
+	 **/
+
+	private $phoneNumber;
+
 
 
 

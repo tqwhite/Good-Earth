@@ -22,6 +22,13 @@ class Day /*extends Base*/{
 	 **/
 	private $title;
 
+	/**
+	 *
+	 * @column(name="seqNum", type="integer", nullable=true)
+	 **/
+
+	 private $seqNum;
+
 
 	/**
 	 * @column(type="datetime", nullable=false)

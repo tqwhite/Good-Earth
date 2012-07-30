@@ -110,7 +110,6 @@ submitButtonHandler:function(control, parameter){
 	var componentName='submitButton';
 	switch(control){
 		case 'click':
-console.clear();console.log('checkout.submitButtonHandler did console.clear()');
 			GoodEarthStore.Models.Purchase.process({
 					cardData:this.element.formParams(),
 					purchase:this.purchases
@@ -143,13 +142,14 @@ cancelButtonHandler:function(control, parameter){
 },
 
 catchProcessResult:function(inData){
-	if (false && inData.status<0){
+	if (inData.status<0){
 		var statusDomObj=$('#'+this.displayParameters.status.divId);
 		statusDomObj.html('');
 	var list=inData.messages;
 	for (var i=0, len=list.length; i<len; i++){
 		var element=list[i];
-		statusDomObj.append("<div style=color:red;margin-left:4px;'>"+element[1]+"</div>");
+		$message=element[1]?element[1]:'Unknown processor error, contact tech support'; //element[0] is fieldname or category, element[1] is message
+		statusDomObj.append("<div style=color:red;margin-left:4px;'>"+$message+"</div>");
 	}
 
 	}

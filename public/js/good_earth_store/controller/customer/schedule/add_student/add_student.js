@@ -154,7 +154,7 @@ schoolSelectHandler:function(){ //this is a jquery type of event handler, not jm
 		var gradeLevelSelectString=this.viewHelper.makeSelectTag({
 			selectedValue:'',
 			selectVarName:'gradeLevelRefId',
-			sourceObj:school.gradeLevels,
+			sourceObj:school.gradeLevels.sort(qtools.byObjectProperty('seqNum')),
 			valuePropertyName:'refId',
 			labelPropertyName:'title',
 			firstItemLabel:'Select Grade Level',

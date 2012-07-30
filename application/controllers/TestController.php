@@ -279,17 +279,17 @@ echo 'GradeLevel='.$gradeLevelEntity->title."<br/>";
 
 	private function _initGradesLevels(){
 		$source=array(
-			array('title'=>'Preschool', refId=>'Preschool'),
-			array('title'=>'Kindergarten', refId=>'Kindergarten'),
-			array('title'=>'First', refId=>'First'),
-			array('title'=>'Second', refId=>'Second'),
-			array('title'=>'Third', refId=>'Third'),
-			array('title'=>'Fourth', refId=>'Fourth'),
-			array('title'=>'Fifth', refId=>'Fifth'),
-			array('title'=>'Sixth', refId=>'Sixth'),
-			array('title'=>'Seventh', refId=>'Seventh'),
-			array('title'=>'Eight', refId=>'Eight'),
-			array('title'=>'Teacher/Adult', refId=>'adult')
+			array('title'=>'Preschool', refId=>'Preschool', 'seqNum'=>'5'),
+			array('title'=>'Kindergarten', refId=>'Kindergarten', 'seqNum'=>'6'),
+			array('title'=>'First', refId=>'First', 'seqNum'=>'10'),
+			array('title'=>'Second', refId=>'Second', 'seqNum'=>'20'),
+			array('title'=>'Third', refId=>'Third', 'seqNum'=>'30'),
+			array('title'=>'Fourth', refId=>'Fourth', 'seqNum'=>'40'),
+			array('title'=>'Fifth', refId=>'Fifth', 'seqNum'=>'50'),
+			array('title'=>'Sixth', refId=>'Sixth', 'seqNum'=>'60'),
+			array('title'=>'Seventh', refId=>'Seventh', 'seqNum'=>'70'),
+			array('title'=>'Eight', refId=>'Eight', 'seqNum'=>'80'),
+			array('title'=>'Teacher/Adult', refId=>'adult', 'seqNum'=>'100')
 		);
 
 		$newObj=new \Application_Model_GradeLevel();
@@ -324,11 +324,11 @@ echo 'GradeLevel='.$gradeLevelEntity->title."<br/>";
 
 	private function _initDays(){
 		$source=array(
-			array(title=>'Mon', refId=>'1'),
-			array(title=>'Tues', refId=>'2'),
-			array(title=>'Weds', refId=>'3'),
-			array(title=>'Thurs', refId=>'4'),
-			array(title=>'Fri', refId=>'5')
+			array(title=>'Mon', 'refId'=>'1', 'seqNum'=>'10'),
+			array(title=>'Tues', 'refId'=>'2', 'seqNum'=>'20'),
+			array(title=>'Weds', 'refId'=>'3', 'seqNum'=>'30'),
+			array(title=>'Thurs', 'refId'=>'4', 'seqNum'=>'40'),
+			array(title=>'Fri', 'refId'=>'5', 'seqNum'=>'50')
 		);
 
 		$newObj=new \Application_Model_Day();

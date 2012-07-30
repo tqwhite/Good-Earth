@@ -93,6 +93,11 @@ listMessages:function(messageArray, separator, itemIndex){
 	}
 
 	return outString;
+},
+
+setupEnterKey:function(handler){
+	$('input', this.element).addClass('mousetrap');
+	Mousetrap.bind("enter", handler);
 }
 
 })

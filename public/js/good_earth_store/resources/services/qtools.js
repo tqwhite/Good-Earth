@@ -972,6 +972,49 @@ divPrefix:function(inString, nonRandom){
 dateToday:function(format){
 	var x=new Date();
 	return (x.getMonth()+1)+'/'+x.getDate()+'/'+x.getFullYear();
-}
+},
+
+byObjectProperty:function(fieldName, transformer){
+		//called: resultArray=someArray.sort(qtools.byObjectProperty('somePropertyName'));
+		//based on closure of fieldName
+		return fullNameSort=function(a,b){
+			var localFieldName=fieldName, //for debug
+				localTransformer=transformer; //for debug
+
+			if (typeof(fieldName)=='function'){
+				var aa=a,
+					bb=b;
+				var transformer=fieldName;
+			}
+			else{
+				var aa=qtools.getDottedPath(a, fieldName),
+					bb=qtools.getDottedPath(b, fieldName);
+				}
+
+			if (typeof(transformer)=='function'){
+				aa=transformer(aa);
+				bb=transformer(bb);
+			}
+			else if (transformer){
+				switch(transformer){
+					case 'caseInsensitive':
+							aa=aa.toLowerCase();
+							bb=bb.toLowerCase();
+						break;
+					default:
+						qtools.consoleMessage('qtools.byObjectProperty says, No such transformer as: '+transformer);
+						break;
+				}
+			}
+
+			if (!bb && !aa){ return 0;}
+			if (!bb){ return -1;}
+			if (!aa){ return 1;}
+
+			if (aa>bb){ return 1;}
+			if (aa<bb){ return -1;}
+			return 0;
+		}
+	}
 
 }

@@ -48,6 +48,12 @@ class PurchaseController extends Zend_Controller_Action
 				$purchaseObj=new \Application_Model_Purchase();
 				$purchase=$purchaseObj->generate();
 				$purchase->chargeTotal=$inData['cardData']['chargeTotal'];
+				$purchase->chargeTotal=$inData['cardData']['billingName'];
+				$purchase->chargeTotal=$inData['cardData']['street'];
+				$purchase->chargeTotal=$inData['cardData']['city'];
+				$purchase->chargeTotal=$inData['cardData']['state'];
+				$purchase->chargeTotal=$inData['cardData']['zip'];
+				$purchase->chargeTotal=$inData['cardData']['phoneNumber'];
 				$purchase->lastFour=substr($inData['cardData']['cardNumber'], strlen($inData['cardData']['cardNumber'])-4, 4);
 
 				$purchase->fdTransactionTime=$processResult['FDGGWSAPI:TRANSACTIONTIME'];

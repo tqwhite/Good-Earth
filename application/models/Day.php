@@ -12,6 +12,7 @@ class Application_Model_Day extends Application_Model_Base
 
 	return array(
 					'title'=>$inData->day->title,
+				'seqNum'=>$inData->day->seqNum,
 					'refId'=>$inData->day->refId
 				);
 	}

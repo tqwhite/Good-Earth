@@ -86,6 +86,9 @@ initDomElements:function(){
 	if (this.initialStatusMessage){
 		$('#'+this.displayParameters.status.divId).html(this.initialStatusMessage).removeClass('bad').addClass('good');
 	}
+
+	this.setupEnterKey(this.displayParameters.saveButton.handler);
+
 },
 
 //BUTTON HANDLERS =========================================================================================================
@@ -93,6 +96,7 @@ initDomElements:function(){
 
 saveButtonHandler:function(control, parameter){
 	var componentName='saveButton';
+	if (control.which=='13'){control='click';}; //enter key
 	switch(control){
 		case 'click':
 

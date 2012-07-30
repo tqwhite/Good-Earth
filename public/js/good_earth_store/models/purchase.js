@@ -64,22 +64,22 @@ validate:function(inData){
 	if (!datum)
 	{errors.push([name, "Name is required"]);}
 
-	name='billingStreet';
+	name='street';
 	datum=inData[name];
 	if (!datum)
 	{errors.push([name, "Street is required"]);}
 
-	name='billingCity';
+	name='city';
 	datum=inData[name];
 	if (!datum)
 	{errors.push([name, "City is required"]);}
 
-	name='billingState';
+	name='state';
 	datum=inData[name];
 	if (datum.toLowerCase()!='ca')
 	{errors.push([name, "We only serve California"]);}
 
-	name='billingZip';
+	name='zip';
 	datum=inData[name];
 	if (!datum || datum=='00000')
 	{errors.push([name, "Zip Code is required"]);}
