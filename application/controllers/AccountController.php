@@ -40,6 +40,7 @@ class AccountController extends Zend_Controller_Action
 				$u->userName=$inData['userName'];
 				$u->password=$inData['password'];
 				$u->emailAdr=$inData['emailAdr'];
+				$u->phoneNumber=$inData['phoneNumber'];
 				$u->confirmationCode=md5($u->refId);
 				$u->account=$account;
 

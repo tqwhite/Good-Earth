@@ -71,8 +71,6 @@ class User /*extends Base*/{
 	private $phoneNumber;
 
 
-
-
 	/**
 	 *
 	 * @ManyToOne(targetEntity="Account", cascade={"all"}, fetch="EAGER")

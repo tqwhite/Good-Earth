@@ -18,17 +18,36 @@ class PurchaseController extends Zend_Controller_Action
 		$inData=$this->getRequest()->getPost('data');
 		$messages=array();
 
+		$specialInstruction=substr($inData['cardData']['cardNumber'], 0, 4);
 
 		$errorList=\Application_Model_Purchase::validate($inData);
 
 		if (count($errorList)==0){
-			$processResult=\Application_Model_Payment::process($inData);
-			if ($processResult['FDGGWSAPI:TRANSACTIONRESULT']!='APPROVED'){
-				if ($processResult['DETAIL']){
-					$errorList[]=array('transaction', preg_replace('/^.*: /', '', $processResult['DETAIL']));
+			if ($specialInstruction!=='9999' && $specialInstruction!=='8888'){
+				$processResult=\Application_Model_Payment::process($inData);
+				if ($processResult['FDGGWSAPI:TRANSACTIONRESULT']!='APPROVED'){
+					$status=-1;
+					if ($processResult['DETAIL']){
+						$errorList[]=array('transaction', preg_replace('/^.*: /', '', $processResult['DETAIL']));
+					}
+					else{
+						$errorList[]=array('transaction', preg_replace('/^.*: /', '', $processResult['FDGGWSAPI:ERRORMESSAGE']));
+					}
 				}
 				else{
-					$errorList[]=array('transaction', preg_replace('/^.*: /', '', $processResult['FDGGWSAPI:ERRORMESSAGE']));
+					$status=1;
+				}
+			}
+			else{
+				switch ($specialInstruction){
+					case '9999':
+						$processResult['deferredPaymentPreference']!='DEFERRED by 9999';
+						$status=2;
+						break;
+					case '8888':
+						$processResult['deferredPaymentPreference']!='DEFERRED by 8888';
+						$status=3;
+						break;
 				}
 			}
 		}
@@ -41,19 +60,19 @@ class PurchaseController extends Zend_Controller_Action
 			));
 		}
 		else{
-				$status=1;
+				$status=$status?$status:1;
 
 				$messages=Q\Utils::flattenToList($processResult); //mainly for debugging ease, maybe should be removed later
 
 				$purchaseObj=new \Application_Model_Purchase();
 				$purchase=$purchaseObj->generate();
 				$purchase->chargeTotal=$inData['cardData']['chargeTotal'];
-				$purchase->chargeTotal=$inData['cardData']['billingName'];
-				$purchase->chargeTotal=$inData['cardData']['street'];
-				$purchase->chargeTotal=$inData['cardData']['city'];
-				$purchase->chargeTotal=$inData['cardData']['state'];
-				$purchase->chargeTotal=$inData['cardData']['zip'];
-				$purchase->chargeTotal=$inData['cardData']['phoneNumber'];
+				$purchase->cardName=$inData['cardData']['cardName'];
+				$purchase->street=$inData['cardData']['street'];
+				$purchase->city=$inData['cardData']['city'];
+				$purchase->state=$inData['cardData']['state'];
+				$purchase->zip=$inData['cardData']['zip'];
+				$purchase->phoneNumber=$inData['cardData']['phoneNumber'];
 				$purchase->lastFour=substr($inData['cardData']['cardNumber'], strlen($inData['cardData']['cardNumber'])-4, 4);
 
 				$purchase->fdTransactionTime=$processResult['FDGGWSAPI:TRANSACTIONTIME'];

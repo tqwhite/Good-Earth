@@ -142,23 +142,38 @@ cancelButtonHandler:function(control, parameter){
 },
 
 catchProcessResult:function(inData){
-	if (inData.status<0){
 		var statusDomObj=$('#'+this.displayParameters.status.divId);
+	if (inData.status<0){
 		statusDomObj.html('');
-	var list=inData.messages;
-	for (var i=0, len=list.length; i<len; i++){
-		var element=list[i];
-		$message=element[1]?element[1]:'Unknown processor error, contact tech support'; //element[0] is fieldname or category, element[1] is message
-		statusDomObj.append("<div style=color:red;margin-left:4px;'>"+$message+"</div>");
-	}
-
+		var list=inData.messages;
+		for (var i=0, len=list.length; i<len; i++){
+			var element=list[i];
+			$message=element[1]?element[1]:'Unknown processor error, contact tech support'; //element[0] is fieldname or category, element[1] is message
+			statusDomObj.append("<div style=color:red;margin-left:4px;'>"+$message+"</div>");
+		}
 	}
 	else{
 		if (true){ //this can go away as soon as debugging is well into the past. 'false' makes it so that the payment process can run repeatedly.
-			$('#'+this.displayParameters.submitButton.divId).remove();
-			$('#'+this.displayParameters.cancelButton.divId).remove();
-			$('#'+this.displayParameters.entryContainer.divId).html($.View('//good_earth_store/controller/customer/checkout/views/approved.ejs'));
-		}
+
+			switch(inData.status.toString()){
+				case '1':
+					$('#'+this.displayParameters.submitButton.divId).remove();
+					$('#'+this.displayParameters.cancelButton.divId).remove();
+					$('#'+this.displayParameters.entryContainer.divId).html($.View('//good_earth_store/controller/customer/checkout/views/approved.ejs'));
+					break;
+				case '2':
+					$('#'+this.displayParameters.submitButton.divId).remove();
+					$('#'+this.displayParameters.cancelButton.divId).remove();
+					$('#'+this.displayParameters.entryContainer.divId).html($.View('//good_earth_store/controller/customer/checkout/views/deferred.ejs'));
+				case '3':
+					statusDomObj.append("<div style=color:red;margin-left:4px;'>Repeat</div>");
+					break;
+
+					break;
+			}
+
+
+					}
 	}
 }
 })
