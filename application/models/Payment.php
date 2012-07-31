@@ -35,7 +35,7 @@ static function process($inData){
 							<v1:ExpYear>$expYear</v1:ExpYear>
 						</v1:CreditCardData>
 						<v1:Payment>
-							<v1:ChargeTotal>2</v1:ChargeTotal>
+							<v1:ChargeTotal>$chargeTotal</v1:ChargeTotal>
 						</v1:Payment>
 					</v1:Transaction>
 				</fdggwsapi:FDGGWSApiOrderRequest>
