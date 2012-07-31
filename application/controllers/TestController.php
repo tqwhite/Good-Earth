@@ -259,16 +259,16 @@ echo 'GradeLevel='.$gradeLevelEntity->title."<br/>";
     private function _initSchools(){
 
 	$source=array(
-		array('name'=>'Saint Marks', refId=>'SaintMarks'),
-		array('name'=>'Lycee Français', refId=>'LyceeFrancais'),
-		array('name'=>'Neil Cummins', refId=>'NeilCummins'),
-		array('name'=>'Cascade Canyon', refId=>'CascadeCanyon'),
-		array('name'=>'Marin Horizon', refId=>'MarinHorizon'),
-		array('name'=>'St Anselm', refId=>'StAnselm'),
-		array('name'=>'Hall Middle School', refId=>'HallMiddleSchool'),
-		array('name'=>'Sonoma Academy', refId=>'SonomaAcademy'),
-		array('name'=>'Good Shepherd', refId=>'GoodShepherd'),
-		array('name'=>'Marin Christian Academy', refId=>'MarinChristianAcademy')
+		array('name'=>'Cascade Canyon', refId=>'9'),
+		array('name'=>'Good Shepherd', refId=>'34'),
+		array('name'=>'Greenwood', refId=>'5'),
+		array('name'=>'Hall Middle School', refId=>'29'),
+		array('name'=>'Lycee Francais', refId=>'21'),
+		array('name'=>'Marin Horizon', refId=>'8'),
+		array('name'=>'Neil Cummins', refId=>'22'),
+		array('name'=>'Saint Marks', refId=>'3'),
+		array('name'=>'Sonoma Academy', refId=>'33'),
+		array('name'=>'St Anselm', refId=>'28')
 	);
 
 	$newObj=new \Application_Model_School();

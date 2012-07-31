@@ -14,8 +14,9 @@ static function process($inData){
 	$cardNumber=preg_replace('/[^\S]/', '', $cardNumber);
 
 	$ch =curl_init("https://ws.firstdataglobalgateway.com/fdggwsapi/services/order.wsdl");
-	$pemPath="../library/Credentials/FDGGWS_Certificate_WS1001178130._.1/WS1001178130._.1.pem";
-	$keyPath="../library/Credentials/FDGGWS_Certificate_WS1001178130._.1/WS1001178130._.1.key";
+	$dir = __DIR__;
+	$pemPath=$dir."/../../library/Credentials/FDGGWS_Certificate_WS1001178130._.1/WS1001178130._.1.pem";
+	$keyPath=$dir."/../../library/Credentials/FDGGWS_Certificate_WS1001178130._.1/WS1001178130._.1.key";
 	$sslPw="ckp_1343424713";
 	$acctPassword="WS1001178130._.1:Gh8daJgG";
 
@@ -34,7 +35,7 @@ static function process($inData){
 							<v1:ExpYear>$expYear</v1:ExpYear>
 						</v1:CreditCardData>
 						<v1:Payment>
-							<v1:ChargeTotal>$chargeTotal</v1:ChargeTotal>
+							<v1:ChargeTotal>2</v1:ChargeTotal>
 						</v1:Payment>
 					</v1:Transaction>
 				</fdggwsapi:FDGGWSApiOrderRequest>
