@@ -89,6 +89,8 @@ initDomElements:function(){
 
 	this.setupEnterKey(this.displayParameters.saveButton.handler);
 
+	this.element.find('input').qprompt();
+
 },
 
 //BUTTON HANDLERS =========================================================================================================
