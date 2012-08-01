@@ -367,7 +367,7 @@ array(
 
 array(
 'refId'=>'international',
-'name'=>'International   2 Slices of Good Earth Pizza, Cheese or Turkey Sausage, Chicken Rice Bowl',
+'name'=>'International',
 'description'=>'2 slices of of Good Earth Pizza, Cheese or Sausage, Chicken Rice Bowl, and daily side dishes, Fresh Fruit, Raw Veggies, Yogurt, Bagels, and Granola'
 ),
 
