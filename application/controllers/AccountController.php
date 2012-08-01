@@ -141,7 +141,7 @@ class AccountController extends Zend_Controller_Action
 						$serverComm[]=array("fieldName"=>"new_username", "value"=>$result['user'][0]->userName);
 					break;
 				case \Application_Model_User::alreadyConfirmed:
-						$message="Welcome Back {$result['user'][0]->firstName}, You are already confirmed.";
+						$message="Welcome Back {$result['user'][0]->firstName}. You are already confirmed.";
 						$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'login');
 						$serverComm[]=array("fieldName"=>"new_username", "value"=>$result['user'][0]->userName);
 					break;

@@ -16,12 +16,6 @@ class GradeSchoolNode /*extends Base*/{
 	**/
 	private $refId;
 
-	/**
-	 * @column(type="string", length=60, nullable=false)
-	 * @var string
-	 **/
-	private $descriptor;
-
 
 	/**
 	 *

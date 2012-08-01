@@ -24,7 +24,7 @@ qtools.validateProperties({
  source:'customer.offerings.ejs' });
 
  var offeringString='',
- 	offerings=this.formData.offerings,
+ 	offerings=this.formData.offerings.sort(qtools.byObjectProperty(function(item){return item.days[0].seqNum;})),
  	studentSchoolRefId=this.formData.student.schoolRefId
  	studentGradeLevelRefId=this.formData.student.gradeLevelRefId;
  for (var i=0, len=offerings.length; i<len; i++){
@@ -43,7 +43,7 @@ qtools.validateProperties({
 
 	var dayString='',
 	offeringRefId=offerings[i].refId,
-	days=offerings[i].days;
+	days=offerings[i].days.sort(qtools.byObjectProperty('seqNum'));
 
 	for (var j=days.length, len2=0; j>len2; j=j-1){
 
@@ -52,12 +52,12 @@ qtools.validateProperties({
 	}
 
 	var titleString=offerings[i].meal.description+"<br/>"+offerings[i].refId;
- //	offeringString+="<div><div class='offeringTitle' style='border:1pt solid transparent;width:60%;' title='"+titleString+"'>"+offerings[i].name+" <span style='color:gray;'>($"+offerings[i].price+")</span> </div>"+dayString+"</div>";
+ //	offeringString+="<div><div class='offeringTitle' style='border:1pt solid transparent;width:60%;' title='"+titleString+"'>"+offerings[i].name+" <span style='color:gray;'>($"+offerings[i].price.toFixed(2)+")</span> </div>"+dayString+"</div>";
 
  	offeringString+="<div style='border-bottom:1pt solid gray;height:30px;margin-top:4px;'>";
 		offeringString+="<div class='offeringTitle' style='width:60%;float:left;' title='"+titleString+"'>";
 			offeringString+=offerings[i].name;
-			offeringString+=" <span style='color:gray;'>($"+offerings[i].price+")</span>";
+			offeringString+=" <span style='color:gray;'>($"+offerings[i].price.toFixed(2)+")</span>";
 		offeringString+="</div>";
 		offeringString+="<div style='float:right;'>";
 			offeringString+=dayString;

@@ -19,6 +19,12 @@ GoodEarthStore.Models.Base.extend('GoodEarthStore.Models.Account',
 		success=success?success:function(){alert('success');};
 		error=error?error:GoodEarthStore.Models.Base.defaultError();
 
+		var errors=this.validate(data);
+		if (errors.length>0){
+			success({status:-1, messages:errors, data:{}});
+			return;
+		}
+
 		$.ajax({
 				url: '/account/get',
 				type: 'post',
@@ -28,6 +34,17 @@ GoodEarthStore.Models.Base.extend('GoodEarthStore.Models.Account',
 				error: error,
 				fixture: false
 			});
+},
+
+validate:function(inData){ //unused
+	var name, datum,
+		errors=[];
+	name='firstName';
+	datum=inData[name];
+	if (!datum)
+	{errors.push([name, "First name is required"]);}
+
+	return errors;
 }
 },
 

@@ -16,7 +16,7 @@ class Application_Model_Offering extends Application_Model_Base
 					'name'=>$inData->name,
 					'refId'=>$inData->refId,
 					'created'=>$inData->created,
-					'price'=>$inData->price/100,
+					'price'=>$inData->price,
 					'test'=>$inData->gradeLevelNodes->temp,
 					'meal'=>\Application_Model_Meal::formatOutput($inData->meal),
 					'gradeLevels'=>array(
@@ -45,7 +45,7 @@ class Application_Model_Offering extends Application_Model_Base
 					'name'=>$inData->name,
 					'refId'=>$inData->refId,
 					'created'=>$inData->created,
-					'price'=>$inData->price/100,
+					'price'=>$inData->price,
 					'test'=>$inData->gradeLevelNodes->temp,
 					'meal'=>\Application_Model_Meal::formatOutput($inData->meal),
 					'gradeLevels'=>\Application_Model_GradeLevel::formatOutput($inData->gradeLevelNodes, 'limited'),
@@ -56,63 +56,66 @@ class Application_Model_Offering extends Application_Model_Base
 
 	public function newFromArrayList($source, $suppressFlush){ //overrides base.newFromArrayList()
 
+
 		$outArray=array();
 
 		if (!isset($suppressFlush)){ $suppressFlush=false; }
 
 		foreach ($source as $objArray){
-
 			$this->generate();
+
+				foreach ($objArray as $label=>$data){
+					switch($label){
+						case 'school':
+						case 'schoolRefId':
+							if (gettype($data)=='array'){
+								foreach ($data as $data2){
+									$this->addSchool($data2);
+								}
+							}
+							else{
+								$this->addSchool($data);
+							}
+							break;
+						case 'gradeLevelRefId':
+						case 'gradeLevel':
+							if (gettype($data)=='array'){
+								foreach ($data as $data2){
+									$this->addGradeLevel($data2);
+								}
+							}
+							else{
+								$this->addGradeLevel($data);
+							}
+							break;
+						case 'dayRefId':
+						case 'day':
+							if (gettype($data)=='array'){
+								foreach ($data as $data2){
+									$this->addDay($data2);
+								}
+							}
+							else{
+								$this->addDay($data);
+							}
+							break;
+						case 'mealRefId':
+						case 'meal':
+							$this->addMeal($data);
+							break;
+						default:
+							$this->entity->$label=$data;
+							break;
+					}
+				} //end of inner (property) loop
+
 			$this->entityManager->persist($this->entity);
-
-			foreach ($objArray as $label=>$data){
-				switch($label){
-					case 'school':
-						if (gettype($data)=='array'){
-							foreach ($data as $data2){
-								$this->addSchool($data2);
-							}
-						}
-						else{
-							$this->addSchool($data);
-						}
-						break;
-					case 'gradeLevel':
-						if (gettype($data)=='array'){
-							foreach ($data as $data2){
-								$this->addGradeLevel($data2);
-							}
-						}
-						else{
-							$this->addGradeLevel($data);
-						}
-						break;
-					case 'day':
-						if (gettype($data)=='array'){
-							foreach ($data as $data2){
-								$this->addDay($data2);
-							}
-						}
-						else{
-							$this->addDay($data);
-						}
-						break;
-					case 'meal':
-						$this->addMeal($data);
-						break;
-					default:
-						$this->entity->$label=$data;
-						break;
-				}
-			}
-
-			$this->entityManager->persist($this->entity);
-
-			if (!$suppressFlush){
-				$this->entityManager->flush();
-			}
 
 			$outArray[]=$this->entity;
+		}
+
+		if (!$suppressFlush){
+			$this->entityManager->flush();
 		}
 		return $outArray;
 	}
@@ -130,6 +133,7 @@ class Application_Model_Offering extends Application_Model_Base
 			$dayObj=new \Application_Model_Day();
 			$inData=$dayObj->getByRefId($inData);
 		}
+
 		$this->addNodeProperty('OfferingDayNode', 'day', $inData);
 	}
 

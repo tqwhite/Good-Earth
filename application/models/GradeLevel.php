@@ -17,7 +17,6 @@ class Application_Model_GradeLevel extends Application_Model_Base
 			$refId=$inData->refId;
 
 			$outArray=array(
-				'descriptor'=>$inData->descriptor,
 				'title'=>$title,
 				'seqNum'=>$inData->seqNum,
 				'refId'=>$refId

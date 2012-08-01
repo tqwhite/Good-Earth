@@ -23,23 +23,10 @@ class Meal /*extends Base*/{
 	private $name;
 
 	/**
-	 * @column(type="string", length=60, nullable=false)
-	 * @var string
-	 **/
-	private $shortName;
-
-	/**
 	 * @column(type="text", nullable=false)
 	 * @var string
 	 **/
 	private $description;
-
-	/**
-	 *
-	 * @column(name="suggestedPrice", type="integer", nullable=true)
-	 **/
-
-	 private $suggestedPrice;
 
 
 
