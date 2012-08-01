@@ -141,7 +141,7 @@ editButtonHandler:function(control, parameter){
 		case 'click':
 			var studentRefId=parameter.thisDomObj.attr('refId');
 
-			$(parameter.thisDomObj.parent()).html("<td colspan=7 id='editLine'>tmp</td>");
+			$(parameter.thisDomObj.parent()).html("<td colspan=7 id='editLine'><span style='font-size:80%;'>Only one student can be edited at a time</span></td>");
 
 			$('#editLine').good_earth_store_customer_schedule_add_student({
 				'account':this.account,

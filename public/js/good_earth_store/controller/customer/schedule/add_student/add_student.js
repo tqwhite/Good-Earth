@@ -197,6 +197,7 @@ cancelButtonHandler:function(control, parameter){
 
 saveStudent:function(){
 	this.formParams=this.element.formParams();
+	if (!this.formParams.vegetarianFlag){this.formParams.vegetarianFlag=0;}
 	GoodEarthStore.Models.Student.add(this.formParams, this.callback('catchSave'));
 },
 

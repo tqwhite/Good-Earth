@@ -30,6 +30,12 @@ class Student /*extends Base*/{
 	private $lastName;
 
 	/**
+	 * @column(type="boolean", nullable=true)
+	 * @var string
+	 **/
+	private $vegetarianFlag;
+
+	/**
 	 *
 	 * @ManyToOne(targetEntity="Account", cascade={"all"}, fetch="EAGER")
 	 * @JoinColumn(name="accountRefId", referencedColumnName="refId")

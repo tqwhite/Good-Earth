@@ -29,6 +29,8 @@ qtools.validateProperties({
 	],
  source:'session.dashboard.dashboardMain' });
 
+var vegetarianSelected=this.formData.student.vegetarianFlag?'checked':'';
+
  var lastName=this.formData.student.lastName?this.formData.student.lastName:this.formData.account.familyName;
 
 var schoolString=this.viewHelper.makeSelectTag({
@@ -49,6 +51,7 @@ if (this.formData.gradeLevel && this.formData.gradeLevel.refId){
 //I don't think this ever gets called. Remove it at the earliest convenience.
 
 var gradeLevelSelectString=this.viewHelper.makeSelectTag({
+	selectClassName:'gradeLevelSelect',
 	selectedValue:this.formData.gradeLevel.refId,
 	selectVarName:'gradeLevelRefId',
 	sourceObj:this.formData.school.gradeLevels.sort(qtools.byObjectProperty('seqNum')),
@@ -69,6 +72,7 @@ gradeLevelSelectString='- - - - - - - - ';
 <input type='hidden' name='refId' value='<%=this.formData.student.refId%>'>
 <input prompt='First Name' name='firstName' style='font-size:8pt;width:60px;' value='<%=this.formData.student.firstName%>'>
 <input prompt='Last Name' name='lastName' style='font-size:8pt;width:60px;' value='<%=lastName%>'>
+Vegetarian <input type='checkbox' name='vegetarianFlag' value='1' <%=vegetarianSelected%>>
 <%==schoolString%>
 <span id='<%=this.displayParameters.gradeLevelSelect.divId%>'><%==gradeLevelSelectString%></span>
 <span class='smallButton' style='margin-left:10px;' id='<%=this.displayParameters.saveButton.divId%>'></span>

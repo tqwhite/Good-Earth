@@ -19,12 +19,6 @@ GoodEarthStore.Models.Base.extend('GoodEarthStore.Models.Account',
 		success=success?success:function(){alert('success');};
 		error=error?error:GoodEarthStore.Models.Base.defaultError();
 
-		var errors=this.validate(data);
-		if (errors.length>0){
-			success({status:-1, messages:errors, data:{}});
-			return;
-		}
-
 		$.ajax({
 				url: '/account/get',
 				type: 'post',
