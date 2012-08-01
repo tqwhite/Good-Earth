@@ -158,7 +158,9 @@ class PurchaseController extends Zend_Controller_Action
 
 		$mail->setSubject("Good Earth: Lunch Program Purchase Receipt");
 
+
 		$mail->addTo('tq@justkidding.com', 'TQ White II');
+		$mail->addTo($user->emailAdr, $user->firstName.' '.$user->lastName);
 
 
 		$mail->send();
