@@ -87,7 +87,7 @@ initDomElements:function(){
 				initialControl:'setToReady', //initialControl:'setUnavailable'
 				label:"<div >New Customer</div>"
 			});
-
+/*
 			this.displayParameters.forgotButton.domObj.good_earth_store_tools_ui_button2({
 				ready:{classs:'smallReady'},
 				hover:{classs:'smallHover'},
@@ -97,7 +97,7 @@ initDomElements:function(){
 				initialControl:'setToReady', //initialControl:'setUnavailable'
 				label:"<div style='text-decoration:line-through;'>Forgot Password</div>"
 			});
-
+*/
 			if (this.initialStatusMessage){
 				$('#'+this.displayParameters.status.divId).html(this.initialStatusMessage).removeClass('bad').addClass('good');
 			}
