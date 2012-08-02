@@ -131,7 +131,22 @@ resetAfterSave:function(inData){
 		GoodEarthStore.Models.Session.keep('user', inData.data);
 		$('#'+this.displayParameters.status.divId).html("Welcome back, "+inData.data.firstName+" <span style=color:gray;font-size:6pt'>("+inData.data.school+")</span>").removeClass('bad').addClass('good');
 		GoodEarthStore.Models.LocalStorage.setCookie(GoodEarthStore.Models.LocalStorage.getConstant('loginCookieName'), inData.data.userName);
-		this.element.html('').good_earth_store_customer_dashboard();
+		this.element.html("<div style='margin-left:450px;margin-top:200px;' id='spinner'></div>").good_earth_store_customer_dashboard();
+
+
+	var opts={
+	  lines: 7, // The number of lines to draw
+	  length: 20, // The length of each line
+	  width: 4, // The line thickness
+	  radius: 10, // The radius of the inner circle
+	  color: '#436235', // #rbg or #rrggbb
+	  speed: 1, // Rounds per second
+	  trail: 60, // Afterglow percentage
+	  shadow: true // Whether to render a shadow
+	};
+
+	var spinner = new Spinner(opts).spin();
+	$('#spinner').append(spinner.el);
 
 	}
 	else{
