@@ -50,7 +50,7 @@ class TestController extends Zend_Controller_Action
 
     public function doctrineAction()
     {
-
+echo "disabled"; exit;
 $cardNumber="4005550000000019"; //only approve for one dollar even, remember to void transaction
 $expMonth="12";
 $expYear="13";

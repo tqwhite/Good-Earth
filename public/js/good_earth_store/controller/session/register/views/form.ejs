@@ -20,13 +20,20 @@ qtools.validateProperties({
 var password='tqwhite'+Math.floor((Math.random()*1000)+1);
 
 %>
-<div class='entryBox' style='height:370px;width:300px;'>
+<div class='entryBox' style='height:475px;width:300px;'>
 
-<div class='entryPanelErrorList' style='margin-top:25px;height:30px;width:100%' id='<%==displayParameters.status.divId%>'>Welcome!</div>
+<div class='entryPanelErrorList' style='margin-top:25px;height:30px;width:100%' id='<%==displayParameters.status.divId%>'>
+	<div style='font-size:10pt;width:285px'>
+<b>Welcome!</b>
+	An account covers all the children in a family. Parents must share this account. Credit card numbers
+	are not stored. Lunches are purchased by the day and can be paid for with separate credit cards. Receipts are
+	emailed to the  address entered below.
+	</div>
+</div>
 
-<table style='border:none;font-size:10pt;'>
-	<tr><td style='width:100px;'>First Name:</td><td><input prompt='required' name='firstName' value=''></td></tr>
-	<tr><td style='width:100px;'>Last Name:</td><td><input prompt='required' name='lastName' value=''></td></tr>
+<table style='border:none;font-size:10pt;margin-top:105px;'>
+	<tr><td style='width:100px;'>Parent First Name:</td><td><input prompt='required' name='firstName' value=''></td></tr>
+	<tr><td style='width:100px;'>Parent Last Name:</td><td><input prompt='required' name='lastName' value=''></td></tr>
 	<tr><td style='width:100px;'>User Name:</td><td><input prompt='required' name='userName' value=''></td></tr>
 	<tr><td>Password:</td><td><input type='password' prompt='6+ characters' name='password' value=''></td></tr>
 	<tr><td>Email Address:</td><td><input prompt='required' name='emailAdr' value=''></td></tr>
