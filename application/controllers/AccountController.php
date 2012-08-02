@@ -108,7 +108,7 @@ class AccountController extends Zend_Controller_Action
 		</div></body>";
 
 		$mail->setBodyHtml($emailMessage);
-		$mail->setFrom('sherry@genatural.com', "Good Earth Lunch Program");
+		$mail->setFrom('school@genatural.com', "Good Earth Lunch Program");
 		$mail->setSubject("Good Earth: Lunch Program Email Address Confirmation ".$userObj->userName);
 
 		$mail->addTo($userObj->emailAdr, $userObj->firstName.' '.$userObj->lastName);
