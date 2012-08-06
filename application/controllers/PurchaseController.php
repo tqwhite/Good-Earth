@@ -161,6 +161,7 @@ class PurchaseController extends Zend_Controller_Action
 				$mail->setSubject("Good Earth Lunch Program Purchase Receipt");
 				break;
 			case '2':
+			case '3':
 				$emailMessage=$view->render('deferred-email-receipt.phtml');
 				$mail->setSubject("Good Earth Lunch Program Invoice");
 				break;
