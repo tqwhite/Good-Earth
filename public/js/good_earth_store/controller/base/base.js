@@ -98,6 +98,36 @@ listMessages:function(messageArray, separator, itemIndex){
 setupEnterKey:function(handler){
 	$('input', this.element).addClass('mousetrap');
 	Mousetrap.bind("enter", handler);
+},
+
+startProgressIndicator:function(args){
+		if (typeof(args)!='object'){args={};}
+		domObj=args.domObj?args.domObj:this.element;
+		styleString=args.styleString?"style='"+args.styleString+"'":'';
+		classString=args.classString?"class='"+args.classString+"'":'';
+		divPrefix=this.divPrefix?this.divPrefix:'';
+		divId=args.divId?args.divId:divPrefix+'_progressIndicator';
+
+		if (!styleString && !classString){
+			styleString="style='margin-left:100px;margin-top:100px;'";
+		}
+
+		domObj.html("<div "+classString+" "+styleString+" id='"+divId+"'></div>");
+
+	var opts={
+	  lines: 7, // The number of lines to draw
+	  length: 20, // The length of each line
+	  width: 4, // The line thickness
+	  radius: 10, // The radius of the inner circle
+	  color: '#436235', // #rbg or #rrggbb
+	  speed: 1, // Rounds per second
+	  trail: 60, // Afterglow percentage
+	  shadow: true // Whether to render a shadow
+	};
+
+
+	var spinner = new Spinner(opts).spin();
+	$('#'+divId).append(spinner.el);
 }
 
 })

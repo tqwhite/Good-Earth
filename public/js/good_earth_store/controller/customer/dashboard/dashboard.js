@@ -23,6 +23,8 @@ init: function(el, options) {
  	});
  	this.startupOptions=options?options:{};
 
+	this.startProgressIndicator({styleString:'margin-left:300px;margin-top:200px;'});
+
 	this.initControlProperties();
 	this.initDisplayProperties();
 	this.getReferenceData(this.callback('initDisplay'));
