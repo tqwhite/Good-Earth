@@ -47,7 +47,11 @@ $orderEntityList=$this->orderEntityList;
 	<div style='margin:15px 0px 15px 20px;font-size:10pt;'>
 			Please make check payable to
 <p/>
-			<b>Good Earth School Lunches</b>, and mail it to:
+			<b>Good Earth</b> for $<?php echo number_format($purchaseEntity->chargeTotal, 2);?>
+
+<br/>		with the invoice #$<?php echo $purchaseEntity->refId;?> in the memo line
+
+<p/>			and mail it to:
 <p/>
 			Good Earth School Lunches<br/>
 			11 Digital Drive<br/>

@@ -2,6 +2,7 @@
 
 class AccountController extends Zend_Controller_Action
 {
+	private $newPassword='';
 
     public function init()
     {
@@ -33,6 +34,7 @@ class AccountController extends Zend_Controller_Action
 		$account=new GE\Entity\Account();
 		$account->familyName=$inData['lastName'];
 
+		$this->newPassword=$inData['password'];
 
 			$u=new GE\Entity\User();
 				$u->firstName=$inData['firstName'];
@@ -104,7 +106,7 @@ class AccountController extends Zend_Controller_Action
 
 		Thank You,<br/>
 		Your Friends at Good Earth Natural Foods
-			<div style='font-size:10pt;color:#e2be83;margin-top:20px;'>PS, User ID: {$userObj->userName}</div>
+			<div style='font-size:10pt;margin-top:20px;'>PS, User ID/Password: {$userObj->userName}/$this->{$userObj->userName}}</div>
 		</div></body>";
 
 		$mail->setBodyHtml($emailMessage);
