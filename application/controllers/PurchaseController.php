@@ -24,7 +24,7 @@ class PurchaseController extends Zend_Controller_Action
 		$errorList=\Application_Model_Purchase::validate($inData);
 
 		if (count($errorList)==0){
-			if ($specialInstruction!=='9999' && $specialInstruction!=='8888'){
+			if ($specialInstruction!=='9999' && $specialInstruction!=='8888' && $specialInstruction!=='9012'){
 				$processResult=\Application_Model_Payment::process($inData);
 				if ($processResult['FDGGWSAPI:TRANSACTIONRESULT']!='APPROVED'){
 					$status=-1;
@@ -48,6 +48,10 @@ class PurchaseController extends Zend_Controller_Action
 					case '8888':
 						$processResult['deferredPaymentPreference']='DEFERRED by 8888';
 						$status=3;
+						break;
+					case '9012':
+						$processResult['deferredPaymentPreference']='DEFERRED by 9012';
+						$status=2;
 						break;
 				}
 			}
@@ -114,7 +118,7 @@ class PurchaseController extends Zend_Controller_Action
 
 				$purchaseObj->persist(Application_Model_Base::yesFlush); //I put "$this->emailReceipt($purchaseObj);" ahead of this line and it stopped persisting!?
 
-				$this->emailReceipt($purchaseObj->entity->refId, $orderEntityList);
+				$this->emailReceipt($purchaseObj->entity->refId, $orderEntityList, $status);
 
 			$this->_helper->json(array(
 				status=>$status,
@@ -126,7 +130,7 @@ class PurchaseController extends Zend_Controller_Action
     }
     }
 
-    public function emailReceipt($purchaseRefId, $orderEntityList)
+    public function emailReceipt($purchaseRefId, $orderEntityList, $status)
     {
         $auth = \Zend_Auth::getInstance();
 		$user=$auth->getIdentity();
@@ -147,7 +151,15 @@ class PurchaseController extends Zend_Controller_Action
 		$view->purchaseEntity=$purchaseEntity;
 		$view->orderEntityList=$orderEntityList;
 
-		$emailMessage=$view->render('email-receipt.phtml');
+		switch($status){
+			default:
+				$emailMessage=$view->render('email-receipt.phtml');
+				break;
+			case '2':
+				$emailMessage=$view->render('email-receipt.phtml');
+				break;
+		}
+
 
 		$mail = new Zend_Mail();
 		$tr=new Zend_Mail_Transport_Sendmail();
