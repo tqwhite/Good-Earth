@@ -154,9 +154,11 @@ class PurchaseController extends Zend_Controller_Action
 		switch($status){
 			default:
 				$emailMessage=$view->render('email-receipt.phtml');
+				$mail->setSubject("Good Earth Lunch Program Purchase Receipt");
 				break;
 			case '2':
 				$emailMessage=$view->render('email-receipt.phtml');
+				$mail->setSubject("Good Earth Lunch Program Invoice");
 				break;
 		}
 
@@ -167,8 +169,6 @@ class PurchaseController extends Zend_Controller_Action
 
 		$mail->setBodyHtml($emailMessage);
 		$mail->setFrom('sherry@genatural.com', "Good Earth Lunch Program");
-
-		$mail->setSubject("Good Earth: Lunch Program Purchase Receipt");
 
 
 		$mail->addBcc('school@genatural.com', 'Sherry Crilly');
