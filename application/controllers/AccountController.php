@@ -106,7 +106,7 @@ class AccountController extends Zend_Controller_Action
 
 		Thank You,<br/>
 		Your Friends at Good Earth Natural Foods
-			<div style='font-size:10pt;margin-top:20px;'>PS, User ID/Password: {$userObj->userName}/{$this->userName}}</div>
+			<div style='font-size:10pt;margin-top:20px;'>PS, User ID/Password: {$userObj->userName}/{$this->newPassword}}</div>
 		</div></body>";
 
 		$mail->setBodyHtml($emailMessage);
