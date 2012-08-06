@@ -151,20 +151,21 @@ class PurchaseController extends Zend_Controller_Action
 		$view->purchaseEntity=$purchaseEntity;
 		$view->orderEntityList=$orderEntityList;
 
+
+		$mail = new Zend_Mail();
+		$tr=new Zend_Mail_Transport_Sendmail();
+
 		switch($status){
 			default:
 				$emailMessage=$view->render('email-receipt.phtml');
 				$mail->setSubject("Good Earth Lunch Program Purchase Receipt");
 				break;
 			case '2':
-				$emailMessage=$view->render('email-receipt.phtml');
+				$emailMessage=$view->render('deferred-email-receipt.phtml');
 				$mail->setSubject("Good Earth Lunch Program Invoice");
 				break;
 		}
 
-
-		$mail = new Zend_Mail();
-		$tr=new Zend_Mail_Transport_Sendmail();
 
 
 		$mail->setBodyHtml($emailMessage);
