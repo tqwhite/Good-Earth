@@ -53,7 +53,18 @@ qtools.validateProperties({
 
 	outString="<table style='font-size:8pt;'>"+titleString+outString+"</table>";
 
-	if (true){
+
+if (window.location.host=='goodearth.local'){
+		var cardName='TQ White II',
+			street='5004 Three Points Blvd',
+			city='Fairfax',
+			zip='55364',
+			phoneNumber='708-763-0100',
+			cardNumber='0000 0000 0000 0000',
+			expMonth='12',
+			expYear='13';
+	}
+	else{
 		var cardName='',
 			street='',
 			city='',
@@ -63,16 +74,6 @@ qtools.validateProperties({
 			expMonth='',
 			expYear='';
 
-	}
-	else{
-		var cardName='TQ White II',
-			street='5004 Three Points Blvd',
-			city='Fairfax',
-			zip='55364',
-			phoneNumber='708-763-0100',
-			cardNumber='4005 5500 0000 0019',
-			expMonth='06',
-			expYear='13';
 	}
 
 %><div class='mainContainer' style='color:#426134;' id='<%= displayParameters.myId.divId %>'>

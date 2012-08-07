@@ -22,6 +22,12 @@ class School /*extends Base*/{
 	 **/
 	private $name;
 
+	/**
+	 * @column(type="string", length=60, nullable=true)
+	 * @var string
+	 **/
+	private $emailAdr;
+
 
 
 	/**

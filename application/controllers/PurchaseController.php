@@ -45,13 +45,13 @@ class PurchaseController extends Zend_Controller_Action
 						$processResult['deferredPaymentPreference']='DEFERRED by 9999';
 						$status=2;
 						break;
-					case '8888':
-						$processResult['deferredPaymentPreference']='DEFERRED by 8888';
-						$status=3;
-						break;
 					case '9012':
 						$processResult['deferredPaymentPreference']='DEFERRED by 9012';
 						$status=2;
+						break;
+					case '8888':
+						$processResult['deferredPaymentPreference']='DEFERRED by 8888';
+						$status=3;
 						break;
 				}
 			}
@@ -159,25 +159,59 @@ class PurchaseController extends Zend_Controller_Action
 			default:
 				$emailMessage=$view->render('email-receipt.phtml');
 				$mail->setSubject("Good Earth Lunch Program Purchase Receipt");
+
+				if (!preg_match('tq', $user->emailAdr)){
+
+					$list=$orderEntityList;
+					$schoolList=array();
+					for ($i=0, $len=count($list); $i<$len; $i++){
+						$element=$list[$i];
+
+						if ($element->student->school->emailAdr){
+							$mail->addCc($element->student->school->emailAdr, $element->student->school->name.' School Lunch Volunteer');
+						}
+					}
+
+					$mail->addCc('school@genatural.com', 'Sherry Crilly');
+					$mail->addBcc('tq@justkidding.com', 'Good Earth Programmer');
+				}
+
 				break;
 			case '2':
+				$emailMessage=$view->render('deferred-email-receipt.phtml');
+				$mail->setSubject("Good Earth Lunch Program Invoice");
+
+				if (!preg_match('tq', $user->emailAdr)){
+
+					$list=$orderEntityList;
+					$schoolList=array();
+					for ($i=0, $len=count($list); $i<$len; $i++){
+						$element=$list[$i];
+
+						if ($element->student->school->emailAdr){
+							$mail->addCc($element->student->school->emailAdr, $element->student->school->name.' School Lunch Volunteer');
+						}
+					}
+
+					$mail->addCc('school@genatural.com', 'Sherry Crilly');
+					$mail->addBcc('tq@justkidding.com', 'Good Earth Programmer');
+				}
+				break;
 			case '3':
 				$emailMessage=$view->render('deferred-email-receipt.phtml');
 				$mail->setSubject("Good Earth Lunch Program Invoice");
+
+				if (!preg_match('tq', $user->emailAdr)){
+					$mail->addCc('tq@justkidding.com', 'Good Earth Programmer');
+				}
+
 				break;
 		}
-
-
 
 		$mail->setBodyHtml($emailMessage);
 		$mail->setFrom('sherry@genatural.com', "Good Earth Lunch Program");
 
-
-		$mail->addBcc('school@genatural.com', 'Sherry Crilly');
-		$mail->addBcc('tq@justkidding.com', 'TQ White II');
-
 		$mail->addTo($user->emailAdr, $user->firstName.' '.$user->lastName);
-
 
 		$mail->send();
 

@@ -262,10 +262,10 @@ set_time_limit(3600);
 		array('name'=>'Cascade Canyon', refId=>'9'),
 		array('name'=>'Good Shepherd', refId=>'34'),
 		array('name'=>'Greenwood', refId=>'5'),
-		array('name'=>'Hall Middle School', refId=>'29'),
+		array('name'=>'Hall Middle School', refId=>'29', emailAdr=>'Hall-hallhotlunch@gmail.com'),
 		array('name'=>'Lycee Francais', refId=>'21'),
 		array('name'=>'Marin Horizon', refId=>'8'),
-		array('name'=>'Neil Cummins', refId=>'22'),
+		array('name'=>'Neil Cummins', refId=>'22', emailAdr=>'nchotlunch@gmail.com'),
 		array('name'=>'Saint Marks', refId=>'3'),
 		array('name'=>'Sonoma Academy', refId=>'33'),
 		array('name'=>'St Anselm', refId=>'28')
