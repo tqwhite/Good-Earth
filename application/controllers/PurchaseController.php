@@ -160,7 +160,7 @@ class PurchaseController extends Zend_Controller_Action
 				$emailMessage=$view->render('email-receipt.phtml');
 				$mail->setSubject("Good Earth Lunch Program Purchase Receipt");
 
-				if (!preg_match('tq', $user->emailAdr)){
+				if (!preg_match('/tq/', $user->emailAdr)){
 
 					$list=$orderEntityList;
 					$schoolList=array();
@@ -181,7 +181,7 @@ class PurchaseController extends Zend_Controller_Action
 				$emailMessage=$view->render('deferred-email-receipt.phtml');
 				$mail->setSubject("Good Earth Lunch Program Invoice");
 
-				if (!preg_match('tq', $user->emailAdr)){
+				if (!preg_match('/tq/', $user->emailAdr)){
 
 					$list=$orderEntityList;
 					$schoolList=array();
@@ -194,20 +194,19 @@ class PurchaseController extends Zend_Controller_Action
 					}
 
 					$mail->addCc('school@genatural.com', 'Sherry Crilly');
-					$mail->addBcc('tq@justkidding.com', 'Good Earth Programmer');
+					$mail->addBcc('tq@justkidding.com');
 				}
 				break;
 			case '3':
 				$emailMessage=$view->render('deferred-email-receipt.phtml');
 				$mail->setSubject("Good Earth Lunch Program Invoice");
 
-				if (!preg_match('tq', $user->emailAdr)){
+				if (!preg_match('/tq/', $user->emailAdr)){
 					$mail->addCc('tq@justkidding.com', 'Good Earth Programmer');
 				}
 
 				break;
 		}
-
 		$mail->setBodyHtml($emailMessage);
 		$mail->setFrom('sherry@genatural.com', "Good Earth Lunch Program");
 
@@ -220,8 +219,3 @@ class PurchaseController extends Zend_Controller_Action
 
 
 }
-
-
-
-
-
