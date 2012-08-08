@@ -151,6 +151,66 @@ class PurchaseController extends Zend_Controller_Action
 		$view->purchaseEntity=$purchaseEntity;
 		$view->orderEntityList=$orderEntityList;
 
+		$tr=new Zend_Mail_Transport_Sendmail();
+		Zend_Mail::setDefaultTransport($tr);
+		Zend_Mail::setDefaultFrom('school@genatural.com', "Good Earth Lunch Program");
+		Zend_Mail::setDefaultReplyTo('school@genatural.com', "Good Earth Lunch Program");
+
+		$addressList=$this->addSchoolAddresses($orderEntityList, $user);
+		$addressList[]=array('name'=>'school@genatural.com', 'address'=>'school@genatural.com', 'type'=>'accounting');
+		$addressList[]=array('name'=>$user->firstName.' '.$user->lastName, 'address'=>$user->emailAdr, 'type'=>'customer');
+
+		switch($status){
+			default:
+				$emailMessage=$view->render('email-receipt.phtml');
+				$emailSubject="Good Earth Lunch Program Purchase Receipt";
+				break;
+			case '2':
+				$emailMessage=$view->render('deferred-email-receipt.phtml');
+				$emailSubject="Good Earth Lunch Program Invoice";
+				break;
+			case '3':
+				$emailMessage=$view->render('deferred-email-receipt.phtml');
+				$emailSubject="Good Earth Lunch Program Invoice";
+				break;
+		}
+
+		for ($i=0, $len=count($addressList); $i<$len; $i++){
+			$element=$addressList[$i];
+			$mail = new Zend_Mail();
+			$mail->setSubject($emailSubject);
+			$mail->setBodyHtml($emailMessage);
+			$mail->addTo($element['address'], $element['name']);
+			$mail->send($tr);
+		}
+
+
+		Zend_Mail::clearDefaultFrom();
+		Zend_Mail::clearDefaultReplyTo();
+		return true;
+	}
+
+    public function DISCARDemailReceipt($purchaseRefId, $orderEntityList, $status)
+    {
+        $auth = \Zend_Auth::getInstance();
+		$user=$auth->getIdentity();
+
+// 		$purchaseObj=new Application_Model_Purchase();
+// 		$purchaseObj->getByRefId($purchaseRefId);
+
+
+		$this->doctrineContainer=\Zend_Registry::get('doctrine');
+		$this->entityManager=$this->doctrineContainer->getEntityManager();
+		$purchaseEntity=$this->entityManager->find('GE\Entity\Purchase', $purchaseRefId);
+
+
+		$view = new Zend_View();
+		$view->setScriptPath(APPLICATION_PATH.'/views/scripts/purchase');
+
+		$view->user=$user;
+		$view->purchaseEntity=$purchaseEntity;
+		$view->orderEntityList=$orderEntityList;
+
 
 		$mail = new Zend_Mail();
 		$tr=new Zend_Mail_Transport_Sendmail();
@@ -159,32 +219,18 @@ class PurchaseController extends Zend_Controller_Action
 			default:
 				$emailMessage=$view->render('email-receipt.phtml');
 				$mail->setSubject("Good Earth Lunch Program Purchase Receipt");
-
-				$this->addSchoolAddresses($mail, $orderEntityList, $user);
-				$mail->addCc('school@genatural.com', 'Sherry Crilly');
-				$mail->addBcc('tq@justkidding.com');
-
 				break;
 			case '2':
 				$emailMessage=$view->render('deferred-email-receipt.phtml');
 				$mail->setSubject("Good Earth Lunch Program Invoice");
-				$this->addSchoolAddresses($mail, $orderEntityList, $user);
-				$mail->addCc('school@genatural.com', 'Sherry Crilly');
-				$mail->addBcc('tq@justkidding.com');
-
 				break;
 			case '3':
 				$emailMessage=$view->render('deferred-email-receipt.phtml');
 				$mail->setSubject("Good Earth Lunch Program Invoice");
-
-				if (!preg_match('/tq/', $user->emailAdr)){
-					$mail->addCc('tq@justkidding.com', 'Good Earth Programmer');
-				}
-
 				break;
 		}
 		$mail->setBodyHtml($emailMessage);
-		$mail->setFrom('sherry@genatural.com', "Good Earth Lunch Program");
+		$mail->setFrom('school@genatural.com', "Good Earth Lunch Program");
 
 		$mail->addTo($user->emailAdr, $user->firstName.' '.$user->lastName);
 
@@ -193,7 +239,9 @@ class PurchaseController extends Zend_Controller_Action
 		return true;
 	}
 
-	private function addSchoolAddresses($mail, $orderList, $user){
+	private function addSchoolAddresses($orderList, $user){
+		$rawAddressList=array();
+		$addressList=array();
 		if (!preg_match('/tq/', $user->emailAdr)){
 
 			$list=$orderList;
@@ -202,14 +250,18 @@ class PurchaseController extends Zend_Controller_Action
 				$element=$list[$i];
 
 				if ($element->student->school->emailAdr){
-
-					$addressList[$element->student->school->emailAdr]=$element->student->school->name;
+					$rawAddressList[$element->student->school->emailAdr]=$element->student->school->name;
 				}
 			}
 
-			foreach($addressList as $address=>$name){
-				$mail->addCc($address, $name.' School Lunch Volunteer');
-		}
+			foreach($rawAddressList as $address=>$name){
+				$addressList[]=array(
+					'name'=>$name.' School Lunch Volunteer',
+					'address'=>$address,
+					'type'=>'school'
+				);
+			}
+		return $addressList;
 
 	}
 	}

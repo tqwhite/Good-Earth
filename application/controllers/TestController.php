@@ -109,7 +109,15 @@ curl_close($ch);
 		$outList[$values[$i]['tag']]=$values[$i]['value'];
 	}
 Q\Utils::dumpWeb($outList);
+Q\Utils::dumpWeb($outList);
+echo "<br/>curl_exec result= ".htmlentities($result)."<br/>";
+//Q\Utils::dumpWeb($outList);
 
+echo "<p/>pemPath= $pemPath<br/>";
+echo "<p/>keyPath= $keyPath<br/>";
+echo "<p/>pem file contents:<p/>".file_get_contents($pemPath);
+echo "<p/><p/>key file contents:<p/>".file_get_contents($keyPath);
+exit;
 
 exit;
     }
