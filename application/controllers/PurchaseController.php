@@ -242,7 +242,6 @@ class PurchaseController extends Zend_Controller_Action
 	private function addSchoolAddresses($orderList, $user){
 		$rawAddressList=array();
 		$addressList=array();
-		if (!preg_match('/tq/', $user->emailAdr)){
 
 			$list=$orderList;
 			$addresslist=array();
@@ -263,7 +262,7 @@ class PurchaseController extends Zend_Controller_Action
 			}
 		return $addressList;
 
-	}
+
 	}
 
 
