@@ -19,7 +19,7 @@ class Application_Model_Purchase extends Application_Model_Base
 		if (!$datum){
 			$errorList[]=array($name, "Credit card number required");
 		}
-		else if (strlen(preg_replace('/[^\S]/', '', $datum))!=16){
+		else if (strlen(preg_replace('/[^\S]/', '', $datum))<15){
 			$errorList[]=array($name, "Credit card number is incorrect");
 		}
 

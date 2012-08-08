@@ -100,10 +100,10 @@ validate:function(inData){
 
 	name='cardNumber';
 	datum=inData[name];
-	if (!datum || datum=='0000 0000 0000 0000')
+	if (!datum)
 	{errors.push([name, "Card Number is required"]);}
-		else if (datum.replace(/ /g, '', datum).length!=16)
-		{errors.push([name, "Card number must be of the form 0000 0000 0000 0000"]);}
+		else if (datum.replace(/ /g, '', datum).length<15)
+		{errors.push([name, "Card number is invalid"]);}
 
 	name='expMonth';
 	datum=inData[name];
