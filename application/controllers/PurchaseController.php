@@ -157,7 +157,8 @@ class PurchaseController extends Zend_Controller_Action
 		Zend_Mail::setDefaultReplyTo('school@genatural.com', "Good Earth Lunch Program");
 
 		$addressList=$this->addSchoolAddresses($orderEntityList, $user);
-		$addressList[]=array('name'=>'school@genatural.com', 'address'=>'school@genatural.com', 'type'=>'accounting');
+		$addressList[]=array('name'=>'Good Earth Organic School Lunch Program', 'address'=>'school@genatural.com', 'type'=>'accounting');
+		$addressList[]=array('name'=>'Website Programmer', 'address'=>'tq@justkidding.com', 'type'=>'accounting');
 		$addressList[]=array('name'=>$user->firstName.' '.$user->lastName, 'address'=>$user->emailAdr, 'type'=>'customer');
 
 		switch($status){
@@ -182,60 +183,12 @@ class PurchaseController extends Zend_Controller_Action
 			$mail->setBodyHtml($emailMessage);
 			$mail->addTo($element['address'], $element['name']);
 			$mail->send($tr);
+//			echo "{$element['address']}, {$element['name']}\n";
 		}
 
 
 		Zend_Mail::clearDefaultFrom();
 		Zend_Mail::clearDefaultReplyTo();
-		return true;
-	}
-
-    public function DISCARDemailReceipt($purchaseRefId, $orderEntityList, $status)
-    {
-        $auth = \Zend_Auth::getInstance();
-		$user=$auth->getIdentity();
-
-// 		$purchaseObj=new Application_Model_Purchase();
-// 		$purchaseObj->getByRefId($purchaseRefId);
-
-
-		$this->doctrineContainer=\Zend_Registry::get('doctrine');
-		$this->entityManager=$this->doctrineContainer->getEntityManager();
-		$purchaseEntity=$this->entityManager->find('GE\Entity\Purchase', $purchaseRefId);
-
-
-		$view = new Zend_View();
-		$view->setScriptPath(APPLICATION_PATH.'/views/scripts/purchase');
-
-		$view->user=$user;
-		$view->purchaseEntity=$purchaseEntity;
-		$view->orderEntityList=$orderEntityList;
-
-
-		$mail = new Zend_Mail();
-		$tr=new Zend_Mail_Transport_Sendmail();
-
-		switch($status){
-			default:
-				$emailMessage=$view->render('email-receipt.phtml');
-				$mail->setSubject("Good Earth Lunch Program Purchase Receipt");
-				break;
-			case '2':
-				$emailMessage=$view->render('deferred-email-receipt.phtml');
-				$mail->setSubject("Good Earth Lunch Program Invoice");
-				break;
-			case '3':
-				$emailMessage=$view->render('deferred-email-receipt.phtml');
-				$mail->setSubject("Good Earth Lunch Program Invoice");
-				break;
-		}
-		$mail->setBodyHtml($emailMessage);
-		$mail->setFrom('school@genatural.com', "Good Earth Lunch Program");
-
-		$mail->addTo($user->emailAdr, $user->firstName.' '.$user->lastName);
-
-		$mail->send();
-
 		return true;
 	}
 
