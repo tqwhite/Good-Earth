@@ -112,6 +112,33 @@ static function flattenToList($inArray){
 	return $outArray;
 }
 
+static function callStack($stringFlag){
+	$stackArray=debug_backtrace();
+
+	$colorA='#ddf';
+	$colorB='#dfd';
+
+	$list=$stackArray;
+	$outString='';
+	$currColor=$colorA;
+	for ($i=0, $len=count($list); $i<$len; $i++){
+		$element=$list[$i];
+		$outString.="<tr style='background:$currColor;'><td>$i</td><td>{$element['class']}::{$element['class']} (line {$element['line']})</td></tr>";
+		$outString.="<tr style='background:$currColor;'><td>&nbsp;</td><td>{$element['file']}</td></tr>";
+		$outString.="<tr style='background:transparent;'><td colspan='2'>&nbsp;</td></tr>";
+		$currColor=($currColor==$colorA)?$colorB:$colorA;
+	}
+
+	$outString="<table style='font-family:sans-serif;'>$outString</table>";
+
+	if ($stringFlag){
+		return $outString;
+	}
+	else{
+		echo $outString;
+	}
+}
+
 }//end of class
 
 
