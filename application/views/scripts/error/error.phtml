@@ -1,7 +1,12 @@
 <?php /*require_once($_SERVER['DOCUMENT_ROOT'].'/tools/mailNotificationInclude.php');*/?>
 <?php
-	error_log('showing error page');
-	error_log(Q\Utils::callStack(true));
+	if (isset($this->exception)){
+		$getMessage=$this->exception->getMessage();
+	}
+	else{
+		$getMessage='no exception object';
+	}
+	error_log("ZEND ERROR PAGE: $getMessage STACK TRACE  ".Q\Utils::callStack(true));
 	exit;
 ?>
 <!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
@@ -52,14 +57,7 @@
 /* <![CDATA[ */
 $(document).ready(function(){
 
-<?php
-if (isset($this->exception)){
-	$getMessage=$this->exception->getMessage();
-}
-else{
-	$getMessage='';
-}
-?>
+
 	$('body').append("<div style='z-index:200;position:absolute;left:100px;top:150px;'><?php echo $this->message ?><br/><?php echo $getMessage ?></div>");
 
 
