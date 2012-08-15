@@ -18,7 +18,7 @@ $orderEntityList=$this->orderEntityList;
 		$orderString.="<td style='padding-right:15px;'>".$element->offering->name."</td>";
 		$orderString.="<td>\$$price</td</tr>\n";
 
-		$schoolList[$element->student->refId]=array('name'=>$element->student->firstName, 'school'=>$element->student->school->name);
+		$schoolList[$element->student->refId]=array('firstName'=>$element->student->firstName, 'lastName'=>$element->student->lastName, 'school'=>$element->student->school->name);
 
 	}
 	$orderString="<table style='margin:15px 0px 15px 20px;color:#385B2B;'>$orderString</table>\n\n";
@@ -27,12 +27,12 @@ $orderEntityList=$this->orderEntityList;
 
 	$schoolString='';
 	foreach ($schoolList as $element){
-		$schoolString.="<div>{$element['name']} at {$element['school']} school</div>";
+		$schoolString.="<div>{$element['firstName']} {$element['lastName']} at {$element['school']} school</div>";
 	}
 
 ?>
 <body style='background:#F5E4C6;'><div style='color:#385B2B;font-size:12pt;margin:20px 0px 20px 10px;'>
-	<div>Dear <?php echo $user->firstName;?>,<p/>
+	<div>Dear <?php echo $user->firstName.' '.$user->lastName;?>,<p/>
 		Thank you for participation in the Good Earth School Lunch Program.<p/>
 		Following is a recap of your order:
 <?php echo $orderString;?>

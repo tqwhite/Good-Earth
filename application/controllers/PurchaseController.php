@@ -96,6 +96,9 @@ class PurchaseController extends Zend_Controller_Action
 				for ($i=0, $len=count($list); $i<$len; $i++){
 					$element=$list[$i];
 
+		//			$accountObj=new \Application_Model_Account();
+//					$account=$accountObj->getByRefId($element['account']['refId']);
+
 					$studentObj=new \Application_Model_Student();
 					$student=$studentObj->getByRefId($element['student']['refId']);
 
