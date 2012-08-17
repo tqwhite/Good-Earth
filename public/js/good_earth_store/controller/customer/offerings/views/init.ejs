@@ -4,7 +4,8 @@ qtools.validateProperties({
 	propList:[
 		{name:'displayParameters'},
 		{name:'viewHelper'},
-		{name:'formData'}
+		{name:'formData'},
+		{name:'daysIdClassLookup'}
 	],
  source:'customer.offerings.ejs' });
 
@@ -48,7 +49,12 @@ qtools.validateProperties({
 	for (var j=days.length, len2=0; j>len2; j=j-1){
 
 		var dayRefId=days[j-1].refId;
-		dayString+="<div offeringRefId='"+offeringRefId+"' dayRefId='"+dayRefId+"' class='"+this.displayParameters.chooseOfferingButtonClassId.divId+" tinyButton' style='float:right;'> "+days[j-1].title+" </div>";
+		dayString+="<div offeringRefId='"+offeringRefId+"' dayRefId='"+dayRefId+
+			"' class='"+this.displayParameters.chooseOfferingButtonClassId.divId+
+			" "+this.daysIdClassLookup[days[j-1].refId]+
+			" tinyButton' style='float:right;' dayIdClass='"+
+			this.daysIdClassLookup[days[j-1].refId]+
+			"'> "+days[j-1].title+" </div>";
 	}
 
 	var titleString=offerings[i].meal.description+"<br/>"+offerings[i].refId;

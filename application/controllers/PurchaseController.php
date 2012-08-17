@@ -159,8 +159,11 @@ class PurchaseController extends Zend_Controller_Action
 		Zend_Mail::setDefaultFrom('school@genatural.com', "Good Earth Lunch Program");
 		Zend_Mail::setDefaultReplyTo('school@genatural.com', "Good Earth Lunch Program");
 
-		$addressList=$this->addSchoolAddresses($orderEntityList, $user);
-		$addressList[]=array('name'=>'Good Earth Organic School Lunch Program', 'address'=>'school@genatural.com', 'type'=>'accounting');
+		if ($status!=3){ //ie, payment code starts with '8888' for debugging
+			$addressList=$this->addSchoolAddresses($orderEntityList, $user);
+			$addressList[]=array('name'=>'Good Earth Organic School Lunch Program', 'address'=>'school@genatural.com', 'type'=>'accounting');
+		}
+
 		$addressList[]=array('name'=>'Website Programmer', 'address'=>'tq@justkidding.com', 'type'=>'accounting');
 		$addressList[]=array('name'=>$user->firstName.' '.$user->lastName, 'address'=>$user->emailAdr, 'type'=>'customer');
 
@@ -184,7 +187,9 @@ class PurchaseController extends Zend_Controller_Action
 			$mail = new Zend_Mail();
 			$mail->setSubject($emailSubject);
 			$mail->setBodyHtml($emailMessage);
+
 			$mail->addTo($element['address'], $element['name']);
+
 			$mail->send($tr);
 //			echo "{$element['address']}, {$element['name']}\n";
 		}

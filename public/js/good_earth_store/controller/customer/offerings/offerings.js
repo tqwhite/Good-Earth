@@ -21,7 +21,9 @@ init: function(el, options) {
 		propList:[
 			{name:'offerings'},
 			{name:'parentAccessFunction'},
-			{name:'student'}
+			{name:'student'},
+			{name:'purchases'},
+			{name:'daysIdClassLookup'}
 		],
 		source:this.constructor._fullName
  	});
@@ -64,7 +66,8 @@ initDisplay:function(inData){
 			formData:{
 				offerings:this.offerings,
 				student:this.student
-			}
+			},
+			daysIdClassLookup:this.daysIdClassLookup
 		})
 		);
 	this.element.html(html);
@@ -85,6 +88,8 @@ initDomElements:function(){
 		label:'nolabel'
 	});
 
+	this.disableDaysAlreadyBought();
+
 },
 
 
@@ -96,6 +101,7 @@ chooseOfferingButtonClassIdHandler:function(control, parameter){
 				offeringRefId=parameter.thisDomObj.attr('offeringRefId');
 				this.parentAccessFunction('sendPurchase', {
 					dayRefId:dayRefId,
+					dayIdClass:this.daysIdClassLookup[dayRefId],
 					offeringRefId:offeringRefId,
 					offeringButtonAccessFunction:parameter.buttonAccessFunction
 				});
@@ -107,6 +113,22 @@ chooseOfferingButtonClassIdHandler:function(control, parameter){
 	}
 	//change dblclick mousedown mouseover mouseout dblclick
 	//focusin focusout keydown keyup keypress select
+},
+
+disableDaysAlreadyBought:function(){
+
+	var list=this.purchases.orders,
+		dayRefId, dayIdClass;
+	for (var i=0, len=list.length; i<len; i++){
+		var element=list[i];
+		dayRefId=element.day.refId;
+		dayIdClass=this.daysIdClassLookup[dayRefId],
+		orderStudentRefId=element.student.refId;
+
+		if (this.student.refId==orderStudentRefId){
+			$('.'+dayIdClass).good_earth_store_tools_ui_button2('setUnavailable');
+		}
+	}
 }
 
 

@@ -22,7 +22,8 @@ init: function(el, options) {
 			{name:'offerings'},
 			{name:'parentAccessFunction'},
 			{name:'student'},
-			{name:'purchases'}
+			{name:'purchases'},
+			{name:'daysIdClassLookup'}
 		],
 		source:this.constructor._fullName
  	});
@@ -74,7 +75,11 @@ initDisplay:function(inData){
 
 	var studentPurchases=this.filteredPurchaseList();
 	for (var i=0, len=studentPurchases.length; i<len; i++){
-		this.updateDisplay({purchase:studentPurchases[i], deleteId:qtools.newGuid()});
+		this.updateDisplay({
+			purchase:studentPurchases[i],
+			deleteId:qtools.newGuid(),
+			dayIdClass:this.daysIdClassLookup[studentPurchases[i].day.refId]
+		});
 	}
 },
 
@@ -106,8 +111,12 @@ receiveFromParent:function(control, parameter){
 				day:day
 			});
 
-			this.updateDisplay({purchase:purchase, deleteId:qtools.newGuid()});
-			parameter.offeringButtonAccessFunction('setUnavailable');
+			this.updateDisplay({
+				purchase:purchase,
+				deleteId:qtools.newGuid(),
+				dayIdClass:parameter.dayIdClass
+			});
+			$('.'+parameter.dayIdClass).good_earth_store_tools_ui_button2('setUnavailable');
 			this.offeringButtonControls[purchase.refId]=parameter.offeringButtonAccessFunction;
 			break;
 	}
@@ -130,7 +139,8 @@ updateDisplay:function(args){
 
 	var html=$.View('//good_earth_store/controller/customer/choices/views/listElement.ejs', {
 			purchase:args.purchase,
-			deleteId:args.deleteId
+			deleteId:args.deleteId,
+			dayIdClass:args.dayIdClass
 		});
 		this.element.append(html);
 
@@ -163,10 +173,11 @@ deleteButtonHandler:function(control, parameter){
 	var componentName='saveButton';
 	switch(control){
 		case 'click':
-			var purchaseRefId=parameter.thisDomObj.attr('refId');
+			var purchaseRefId=parameter.thisDomObj.attr('refId'),
+				dayIdClass=parameter.thisDomObj.attr('dayIdClass');
 			this.deletePurchase(purchaseRefId);
 			$('#'+purchaseRefId).remove();
-			this.offeringButtonControls[purchaseRefId]('setToReady');
+			$('.'+dayIdClass).good_earth_store_tools_ui_button2('setToReady');
 		break;
 		case 'setAccessFunction':
 			if (!this[componentName]){this[componentName]={};}

@@ -62,6 +62,7 @@ initDisplayProperties:function(){
 initControlProperties:function(){
 	this.viewHelper=new viewHelper2();
 	this.student=qtools.getByProperty(this.account.students, 'refId', this.studentRefId);
+	this.daysIdClassLookup=this.generateDaysIdClassLookup();
 },
 
 initDisplay:function(inData){
@@ -96,14 +97,17 @@ initDomElements:function(){
 	this.displayParameters.offeringSpace.domObj.good_earth_store_customer_offerings({
 		offerings:this.offerings,
 		parentAccessFunction:this.displayParameters.offeringSpace.handler,
-		student:this.student
+		student:this.student,
+		purchases:this.purchases,
+		daysIdClassLookup:this.daysIdClassLookup
 	});
 
 	this.displayParameters.selectedSpace.domObj.good_earth_store_customer_choices({
 		offerings:this.offerings,
 		parentAccessFunction:this.displayParameters.selectedSpace.handler,
 		student:this.student,
-		purchases:this.purchases
+		purchases:this.purchases,
+		daysIdClassLookup:this.daysIdClassLookup
 	});
 
 },
@@ -149,6 +153,32 @@ selectedSpaceHandler:function(control, parameter){
 	}
 	//change dblclick mousedown mouseover mouseout dblclick
 	//focusin focusout keydown keyup keypress select
+},
+
+disableDaysAlreadyBought:function(){
+
+	var list=this.purchases.orders,
+		dayRefId, dayIdClass;
+	for (var i=0, len=list.length; i<len; i++){
+		var element=list[i];
+		dayRefId=element.day.refId;
+		dayIdClass=this.daysIdClassLookup[dayRefId];
+		$('.'+dayIdClass).good_earth_store_tools_ui_button2('setUnavailable');
+	}
+},
+
+generateDaysIdClassLookup:function(){
+
+	var list=this.offerings,
+		outObj={};
+	for (var i=0, len=list.length; i<len; i++){
+		var element=list[i].days;
+		for (j=0, len2=element.length; j<len2; j++){
+			outObj[element[j].refId]='day_'+element[j].refId;
+		}
+	}
+
+	return outObj;
 }
 
 
