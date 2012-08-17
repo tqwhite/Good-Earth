@@ -1,0 +1,48 @@
+<?php
+$user=$this->user;
+$purchaseEntity=$this->purchaseEntity;
+$orderEntityList=$this->orderEntityList;
+
+
+//\Doctrine\Common\Util\Debug::dump($orderEntityList[0]->student->school);
+
+
+	$list=$orderEntityList;
+	$schoolList=array();
+	$orderString='';
+	for ($i=0, $len=count($list); $i<$len; $i++){
+		$element=$list[$i];
+		$price=number_format($element->offering->price, 2);
+		$orderString.="\n<tr><td style='padding-right:15px;'>".$element->student->firstName."</td>";
+		$orderString.="<td style='padding-right:15px;'>".$element->day->title."</td>";
+		$orderString.="<td style='padding-right:15px;'>".$element->offering->name."</td>";
+		$orderString.="<td>\$$price</td</tr>\n";
+
+		$schoolList[$element->student->refId]=array('firstName'=>$element->student->firstName, 'lastName'=>$element->student->lastName, 'school'=>$element->student->school->name);
+
+	}
+	$orderString="<table style='margin:15px 0px 15px 20px;color:#385B2B;'>$orderString</table>\n\n";
+
+
+
+	$schoolString='';
+	foreach ($schoolList as $element){
+		$schoolString.="<div>{$element['firstName']} {$element['lastName']} at {$element['school']} school</div>";
+	}
+
+?>
+<body style='background:#F5E4C6;'><div style='color:#385B2B;font-size:12pt;margin:20px 0px 20px 10px;'>
+	<div>Dear <?php echo $user->firstName.' '.$user->lastName;?>,<p/>
+		Thank you for participation in the Good Earth School Lunch Program.<p/>
+		Following is a recap of your lunches:
+<?php echo $orderString;?>
+<div>
+	Lunches for ...
+	<div style='margin:15px 0px 15px 20px;font-size:10pt;'>
+		<?php echo $schoolString;?>
+	</div>
+</div>
+
+Thank You,<br/>
+Your Friends at Good Earth Natural Foods
+</div></body>

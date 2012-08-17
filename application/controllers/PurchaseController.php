@@ -24,7 +24,7 @@ class PurchaseController extends Zend_Controller_Action
 		$errorList=\Application_Model_Purchase::validate($inData);
 
 		if (count($errorList)==0){
-			if ($specialInstruction!=='9999' && $specialInstruction!=='8888' && $specialInstruction!=='9012'){
+			if ($specialInstruction!=='9999' && $specialInstruction!=='8888' && $specialInstruction!=='9012'&& $specialInstruction!=='9022'){
 				$processResult=\Application_Model_Payment::process($inData);
 				if ($processResult['FDGGWSAPI:TRANSACTIONRESULT']!='APPROVED'){
 					$status=-1;
@@ -52,6 +52,10 @@ class PurchaseController extends Zend_Controller_Action
 					case '8888':
 						$processResult['deferredPaymentPreference']='DEFERRED by 8888';
 						$status=3;
+						break;
+					case '9022':
+						$processResult['deferredPaymentPreference']='DEFERRED by 9022';
+						$status=4;
 						break;
 				}
 			}
@@ -179,6 +183,10 @@ class PurchaseController extends Zend_Controller_Action
 			case '3':
 				$emailMessage=$view->render('deferred-email-receipt.phtml');
 				$emailSubject="Good Earth Lunch Program Invoice";
+				break;
+			case '4':
+				$emailMessage=$view->render('fr-email-receipt.phtml');
+				$emailSubject="Good Earth Lunch Program Notification";
 				break;
 		}
 

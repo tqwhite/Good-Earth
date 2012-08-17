@@ -17,7 +17,7 @@ class Offering /*extends Base*/{
 	private $refId;
 
 	/**
-	 * @column(type="string", length=60, nullable=false)
+	 * @column(type="string", length=100, nullable=false)
 	 * @var string
 	 **/
 	private $name;

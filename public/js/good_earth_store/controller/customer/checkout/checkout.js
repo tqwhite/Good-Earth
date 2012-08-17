@@ -165,8 +165,14 @@ catchProcessResult:function(inData){
 					$('#'+this.displayParameters.submitButton.divId).remove();
 					$('#'+this.displayParameters.cancelButton.divId).remove();
 					$('#'+this.displayParameters.entryContainer.divId).html($.View('//good_earth_store/controller/customer/checkout/views/deferred.ejs'));
+					break;
 				case '3':
 					statusDomObj.append("<div style=color:red;margin-left:4px;'>Repeat</div>");
+					break;
+				case '4':
+					$('#'+this.displayParameters.submitButton.divId).remove();
+					$('#'+this.displayParameters.cancelButton.divId).remove();
+					$('#'+this.displayParameters.entryContainer.divId).html($.View('//good_earth_store/controller/customer/checkout/views/fr.ejs'));
 					break;
 
 					break;

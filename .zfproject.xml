@@ -157,8 +157,12 @@
           <viewControllerScriptsDirectory forControllerName="Purchase"/>
           <viewControllerScriptsDirectory forControllerName="purchase">
             <viewScriptFile forActionName="emailReceipt"/>
+          </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="purchase">
             <viewScriptFile forActionName="deferredEmailReceipt"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="purchase">
+            <viewScriptFile forActionName="frEmailReceipt"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
