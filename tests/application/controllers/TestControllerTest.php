@@ -1,6 +1,6 @@
 <?php
 
-class TestControllerTest extends ControllerTestCase
+class TestControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
 {
 
     public function setUp()
@@ -9,7 +9,8 @@ class TestControllerTest extends ControllerTestCase
         parent::setUp();
     }
 
-	public function testCanTouchWebPage(){
+    public function testCanTouchWebPage()
+    {
 		$this->dispatch("/test/index");
 
 		//echo $this->getResponse()->getBody();
@@ -18,7 +19,7 @@ class TestControllerTest extends ControllerTestCase
 		$this->assertAction('index');
 		$this->assertResponseCode(200);
 
-	}
+    }
 
     public function testInitAction()
     {
@@ -30,23 +31,26 @@ class TestControllerTest extends ControllerTestCase
 		$this->assertAction('init');
 		$this->assertResponseCode(200);
     }
-/*
-	public function XXXtestCanGetDefaultIndexPage(){
 
-		$this->dispatch("/test/doctrine");
-		$this->assertXpathContentContains("id('message')", "default");
-	}
+    public function testHeliportAction()
+    {
+        $params = array('action' => 'heliport', 'controller' => 'Test', 'module' => 'default');
+        $urlParams = $this->urlizeOptions($params);
+        $url = $this->url($urlParams);
+        $this->dispatch($url);
+        
+        // assertions
+        $this->assertModule($urlParams['module']);
+        $this->assertController($urlParams['controller']);
+        $this->assertAction($urlParams['action']);
+        $this->assertQueryContentContains(
+            'div#view-content p',
+            'View script for controller <b>' . $params['controller'] . '</b> and script/action name <b>' . $params['action'] . '</b>'
+            );
+    }
 
-	public function XXXtestCanSetMessageIndexPage(){
-		$testMessage='hello from testMessage';
-		$this->getRequest()
-			->setMethod('GET')
-			->setParams(array('m'=>$testMessage));
 
-		$this->dispatch("/test/doctrine");
-		$this->assertXpathContentContains("id('message')", $testMessage);
-	}
-//this is definitely being found and executed by phpunit
-*/
 }
+
+
 

@@ -17,6 +17,7 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="database"/>
           <actionMethod actionName="doctrine"/>
+          <actionMethod actionName="heliport"/>
         </controllerFile>
         <controllerFile controllerName="Session">
           <actionMethod actionName="index"/>
@@ -164,6 +165,9 @@
           <viewControllerScriptsDirectory forControllerName="purchase">
             <viewScriptFile forActionName="frEmailReceipt"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Test">
+            <viewScriptFile forActionName="heliport"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
@@ -236,6 +240,9 @@
           <testApplicationControllerFile forControllerName="Purchase">
             <testApplicationActionMethod forActionName="index"/>
             <testApplicationActionMethod forActionName="pay"/>
+          </testApplicationControllerFile>
+          <testApplicationControllerFile forControllerName="Test">
+            <testApplicationActionMethod forActionName="heliport"/>
           </testApplicationControllerFile>
         </testApplicationControllerDirectory>
       </testApplicationDirectory>

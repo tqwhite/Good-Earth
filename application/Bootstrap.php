@@ -4,11 +4,19 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 
 public function _initSession(){
+
+
+	$config=$this->getOptions();
+	Zend_Registry::set('store', $config['store']);
+
 	Zend_Session::start();
 
 	$front = Zend_Controller_Front::getInstance();
 //	$front->registerPlugin(new Q\Plugin\Authorize\Check());
 
+
+	$config=$this->getOptions();
+	Zend_Registry::set('helixConfiguration', $config['helix']['configuration']);
 
 
 }

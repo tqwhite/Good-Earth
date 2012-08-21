@@ -48,7 +48,7 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 		var userIdCookie=GoodEarthStore.Models.LocalStorage.getCookieData(GoodEarthStore.Models.LocalStorage.getConstant('loginCookieName')).data;
 
 
-		if (inData.status<1 || this.initialController=='none'){
+		if (inData.status<1 || this.initialController=='none' || this.initialController=='closed'){
 			if (!this.initialController && !this.startingHash && userIdCookie){this.initialController='login';}
 			switch (this.startingHash || this.initialController){
 				default:
@@ -60,6 +60,19 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 					break;
 				case 'none':
 					this.serverDataDomObj.html('<div style="color:white;background:#cc9999;">aborting store app</div>').show();
+					break;
+				case 'closed':
+					var message='';
+					message+="<div style='color:#436235;margin-top:10px;'>We are busy organizing delicious lunches for school children and can't take your order right now.<p/>"
+					message+="The store will be open again tomorrow morning for signups that will be effective on Monday.<p/>"
+					message+="We deeply appreciate your business and look forward to serving you.<p/>"
+
+					message+="Sincerely,<p/>"
+					message+="<span style='font-style:italic;font-size:110%;'>&nbsp;&nbsp;&nbsp;Sherry</span><p/>"
+					message+="Program Manager<br/>";
+					message+="Good Earth School Lunch Program</div>";
+
+					this.element.html("<div style='width:400px;margin-left:150px;margin-top:0px;'><img style='width:200px;' src='/media/business_closed_sign_page.png'>"+message+"</div>").show();
 					break;
 			}
 		}

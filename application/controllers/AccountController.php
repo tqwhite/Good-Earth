@@ -124,6 +124,13 @@ class AccountController extends Zend_Controller_Action
 
 		$serverComm=array();
 
+		$store=	Zend_Registry::get('store');
+		if ($store['status']=='closed'){
+			$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'closed');
+			$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
+			return;
+		}
+
 		$requestUri=$_SERVER['REQUEST_URI'];
 		$elements=explode('/', $requestUri);
 		$confirmationCode=$elements['3'];
@@ -159,8 +166,9 @@ class AccountController extends Zend_Controller_Action
 				$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'register');
 		}
 
-			$serverComm[]=array("fieldName"=>"user_confirm_message", "value"=>$message);
 
+
+		$serverComm[]=array("fieldName"=>"user_confirm_message", "value"=>$message);
 		$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
 
 	}

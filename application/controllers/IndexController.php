@@ -14,6 +14,12 @@ class IndexController extends Zend_Controller_Action
         // which shows the common graphic context
         // and sends the javascript application call
         // which does the real work.
+
+		$store=	Zend_Registry::get('store');
+		if ($store['status']=='closed'){
+			$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'closed');
+			$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
+		}
     }
 
     public function payAction()
