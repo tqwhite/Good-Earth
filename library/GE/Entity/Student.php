@@ -92,7 +92,14 @@ public function __construct(){
 }
 
 public function __get($property){
-	return $this->$property;
+	switch($property){
+		case 'created':
+			return $this->created->format("Y-m-d H:i:s");
+			break;
+		default:
+			return $this->$property;
+			break;
+	}
 }
 
 public function __set($property, $value){

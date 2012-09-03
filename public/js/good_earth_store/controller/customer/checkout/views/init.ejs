@@ -6,39 +6,104 @@ qtools.validateProperties({
 		{name:'viewHelper'},
 		{name:'formData'}
 	],
- source:'session.login.mainPanel' });
+ source:'customer.checkout.ejs' });
 
 qtools.validateProperties({
 	targetObject:formData,
 	propList:[
-		{name:'userName', importance:'optional'},
-		{name:'newUsername', importance:'optional'}
+		{name:'purchases'}
 	],
- source:'session.login.mainPanel' });
+ source:'customer.checkout.ejs' });
 
 qtools.validateProperties({
 	targetObject:displayParameters,
 	propList:[
-		{name:'saveButton'},
-		{name:'registerButton'},
-		{name:'forgotButton'},
-		{name:'status'}
+		{name:'myId'},
+		{name:'submitButton'},
+		{name:'cancelButton'},
+		{name:'status'},
+		{name:'entryContainer'}
+
 	],
- source:'session.login.mainPanel' });
+ source:'customer.checkout.ejs' });
 
-$userName=this.formData['newUsername']?this.formData['newUsername']:this.formData['userName'];
+ var purchases=this.formData.purchases.orders,
+ 	outString='',
+ 	total=0;
 
-%>
-<div class='entryBox' style='height:250px;width:300px;'>
+ for (var i=0, len=purchases.length; i<len; i++){
+ 	outString+="<tr style='border-bottom:1pt solid #aaa;'><td style='width:300px;border-bottom:1pt solid #aaa;vertical-align:top;'><b>";
+ 	outString+=purchases[i].student.firstName+": ";
+ 	outString+=purchases[i].offering.name;
+ 	outString+="</b></td><td style='border-bottom:1pt solid #aaa;vertical-align:top;'>";
+ 	outString+=purchases[i].day.title;
+ 	outString+="</td><td style='width:100px;text-align:right;border-bottom:1pt solid #aaa;vertical-align:top;'>";
+ 	outString+='$'+purchases[i].offering.price.toFixed(2);
+ 	outString+="</td></tr>";
 
-<div style='margin-top:25px;height:30px;width:100%' id='<%==this.displayParameters.status.divId%>'></div>
+ 	total=total+purchases[i].offering.price;
+ }
+	total=total.toFixed(2);
 
-<table style='border:none;font-size:10pt;'>
-	<tr><td style='width:100px;'>User Name:</td><td><input name='userName' value='<%==$userName%>'></td></tr>
-	<tr><td>Password:</td><td><input type='password' name='password' value=''></td></tr><!--debugg-->
-</table>
-<div class='basicButton' style='margin-left:136px;margin-top:20px;' id='<%==this.displayParameters.saveButton.divId%>'></div>
+	var titleString='';
+ 	titleString+="<tr style='border-bottom:1pt solid #aaa;'><td colspan='3' style='font-size:12pt;width:100%;padding-left:5px;border-bottom:2pt solid #aaa;'><b>";
+ 	titleString+="Your Student Lunches"
+ 	titleString+="</b></td>";
 
-<div class='smallButton' style='margin-left:165px;margin-top:20px;' id='<%==this.displayParameters.registerButton.divId%>'></div>
-<div class='smallButton' style='margin-left:165px;margin-top:10px;' id='<%==this.displayParameters.forgotButton.divId%>'></div>
+
+	outString="<table style='font-size:8pt;'>"+titleString+outString+"</table>";
+
+
+if (window.location.host=='goodearth.local'){
+		var cardName='TQ White II',
+			street='5004 Three Points Blvd',
+			city='Fairfax',
+			zip='55364',
+			phoneNumber='708-763-0100',
+			cardNumber='0000 0000 0000 0000',
+			expMonth='12',
+			expYear='13';
+	}
+	else{
+		var cardName='',
+			street='',
+			city='',
+			zip='',
+			phoneNumber='',
+			cardNumber='',
+			expMonth='',
+			expYear='';
+
+	}
+
+%><div class='mainContainer' style='color:#426134;' id='<%= displayParameters.myId.divId %>'>
+<div style='position:relative;height:360px;'>
+
+<div id='entryContainer' style='width:48%;height:350px;border:1pt solid gray;float:left;padding-top:2px;'>
+	<%==outString%>
+</div>
+
+
+
+<div id='<%=this.displayParameters.entryContainer.divId%>' style='width:48%;height:335px;border:1pt solid gray;float:right;padding-top:15px;'>
+	<table style='font-size:10pt;'>
+	<tr><td style='width:35%;'>Name on Card</td><td style='width:60%;'><input type='text' name='cardName' value='<%=cardName%>'></td>
+	<tr><td>Billing Street</td><td><input type='text' name='street' value='<%=street%>'></td>
+	<tr><td>City, State</td><td><input type='text' style='width:30%;' name='city' value='<%=city%>'>, <input type='text' style='width:20%;' name='state' value='CA'></td>
+
+	<tr><td>Zip</td><td><input type='text' style='width:30%;' name='zip' value='<%=zip%>' prompt='00000'></td>
+
+	<tr><td>Phone</td><td><input name='phoneNumber' value='<%=phoneNumber%>' prompt='000-000-0000'></td>
+
+	<tr><td style='padding-top:5px;;'>Card Number</td><td><input type='text' name='cardNumber' value='<%=cardNumber%>' prompt='visa/mc/amex/discover/diners/jcb'></td>
+	<tr><td>Expiration Date</td><td><input type='text' style='width:20%;' name='expMonth' value='<%=expMonth%>'  prompt='MM'><input style='margin-left:5px;width:20%;' value='<%=expYear%>' name='expYear' value='' prompt='YY'></td>
+	<input type='hidden' name='chargeTotal' value='<%=total%>'>
+	</table>
+<div id='<%=this.displayParameters.status.divId%>' style='font-size:10pt;'></div>
+</div>
+
+</div>
+<div class='basicButton' style='float:right;margin-right:40px;' id='<%= displayParameters.submitButton.divId %>'></div>
+<div class='smallButton' style='float:right;margin-right:40px;margin-top:7px;' id='<%= displayParameters.cancelButton.divId %>'></div>
+<div class='checkoutTotal' style='float:left;margin-left:20px;'>Amount to be charged: $<%=total%></div>
 </div>
