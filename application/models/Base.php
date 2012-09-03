@@ -112,32 +112,35 @@ class Application_Model_Base
 	}
 
 	static function formatOutput($inData, $outputType){
-		if (count($inData)<2){
-			return static::formatScalar($inData, $outputType);
-		}
-		else{
 
-			$list=$inData;
-			$outList=array();
-			for ($i=0, $len=count($list); $i<$len; $i++){
-				$outList[]=static::formatScalar($list[$i], $outputType);
-			}
-			return $outList;
-		}
+		$isList=Q\Utils::isList($inData);
+		$oneItemList=($isList && count($inData)==1);
+		if (get_class($inData)!='Doctrine\ORM\PersistentCollection'
+			&& ($oneItemList || !$isList)){
+					return static::formatScalar($inData, $outputType);
+				}
+				else{
+
+					$list=$inData;
+					$outList=array();
+
+					for ($i=0, $len=count($list); $i<$len; $i++){
+						$outList[]=static::formatScalar($list[$i], $outputType);
+					}
+					return $outList;
+				}
 
 	}
 
 	static function formatScalar($inData, $outputType){
-
-		foreach ($inData as $label=>$data){
-			$hasZeroProperty=true;
+		//this is called only if it's associative or has one numbered element
+		$isList=Q\Utils::isList($inData);
+		if ($isList){
+			$inData=$inData[0]; //pop if off
 		}
 
-		if ($hasZeroProperty){
-			$inData=$inData[0];
-		}
 		$outArray=static::formatDetail($inData, $outputType);
-		if ($hasZeroProperty){
+		if ($isList){
 			return array($outArray);
 		}
 		else{

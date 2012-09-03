@@ -34,6 +34,7 @@ class PurchaseOrderNode /*extends Base*/{
 	private $order;
 
 
+
 	/**
 	 * @column(type="datetime", nullable=false)
 	 * @var datetime
@@ -41,12 +42,20 @@ class PurchaseOrderNode /*extends Base*/{
 
 	private $created;
 
+	/**
+	 * @column(type="boolean", nullable=true)
+	 * @var integer
+	 **/
+
+	private $alreadyInHelix;
+
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
 	$this->created=new \DateTime(date("Y-m-d H:i:s"));
 }
 
 public function __get($property){
+	if ($property=='refId'){return 'yy';}
 	return $this->$property;
 }
 

@@ -34,6 +34,7 @@ initDisplayProperties:function(){
 	name='status'; nameArray.push({name:name});
 	name='saveButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 	name='loginButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+	name='forgotButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -57,9 +58,8 @@ initDisplay:function(inData){
 },
 
 initDomElements:function(){
-	this.displayParameters.saveButton.domObj=$('#'+this.displayParameters.saveButton.divId);
-	this.displayParameters.loginButton.domObj=$('#'+this.displayParameters.loginButton.divId);
 
+	this.displayParameters.saveButton.domObj=$('#'+this.displayParameters.saveButton.divId);
 			this.displayParameters.saveButton.domObj.good_earth_store_tools_ui_button2({
 				ready:{classs:'basicReady'},
 				hover:{classs:'basicHover'},
@@ -70,6 +70,7 @@ initDomElements:function(){
 				label:"<div style='margin-top:5px;'>Save</div>"
 			});
 
+	this.displayParameters.loginButton.domObj=$('#'+this.displayParameters.loginButton.divId);
 			this.displayParameters.loginButton.domObj.good_earth_store_tools_ui_button2({
 				ready:{classs:'smallReady'},
 				hover:{classs:'smallHover'},
@@ -78,6 +79,17 @@ initDomElements:function(){
 				accessFunction:this.displayParameters.loginButton.handler,
 				initialControl:'setToReady', //initialControl:'setUnavailable'
 				label:"<div>Login Instead</div>"
+			});
+
+			this.displayParameters.forgotButton.domObj=$('#'+this.displayParameters.forgotButton.divId);
+			this.displayParameters.forgotButton.domObj.good_earth_store_tools_ui_button2({
+				ready:{classs:'smallReady'},
+				hover:{classs:'smallHover'},
+				clicked:{classs:'smallActive'},
+				unavailable:{classs:'smallUnavailable'},
+				accessFunction:this.displayParameters.forgotButton.handler,
+				initialControl:'setToReady', //initialControl:'setUnavailable'
+				label:"<div>Forgot Password</div>"
 			});
 
 	$($('.schoolIdClassString').find('option')[1]).attr('selected', 'selected'); //for debugg only, see form.ejs
@@ -101,6 +113,9 @@ saveButtonHandler:function(control, parameter){
 	if (control.which=='13'){control='click';}; //enter key
 	switch(control){
 		case 'click':
+
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
 
 		GoodEarthStore.Models.User.register(this.element.formParams(), this.callback('resetAfterSave'));
 
@@ -134,7 +149,31 @@ loginButtonHandler:function(control, parameter){
 	var componentName='loginButton';
 	switch(control){
 		case 'click':
+
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+
 			this.element.good_earth_store_session_login();
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
+},
+
+forgotButtonHandler:function(control, parameter){
+	var componentName='forgotButton';
+	switch(control){
+		case 'click':
+
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+
+		this.element.good_earth_store_session_forgot({selector:'password'});
+
 		break;
 		case 'setAccessFunction':
 			if (!this[componentName]){this[componentName]={};}

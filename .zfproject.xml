@@ -18,6 +18,11 @@
           <actionMethod actionName="database"/>
           <actionMethod actionName="doctrine"/>
           <actionMethod actionName="heliport"/>
+          <actionMethod actionName="export"/>
+          <actionMethod actionName="exportAccounts"/>
+          <actionMethod actionName="accounts"/>
+          <actionMethod actionName="migrateDb"/>
+          <actionMethod actionName="migrate"/>
         </controllerFile>
         <controllerFile controllerName="Session">
           <actionMethod actionName="index"/>
@@ -29,6 +34,9 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="register"/>
           <actionMethod actionName="confirm"/>
+          <actionMethod actionName="resetpw"/>
+          <actionMethod actionName="changepw"/>
+          <actionMethod actionName="setpw"/>
         </controllerFile>
         <controllerFile controllerName="School">
           <actionMethod actionName="index"/>
@@ -73,6 +81,7 @@
         <modelFile modelName="Order"/>
         <modelFile modelName="Purchase"/>
         <modelFile modelName="Payment"/>
+        <modelFile modelName="Export"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>
@@ -168,6 +177,30 @@
           <viewControllerScriptsDirectory forControllerName="Test">
             <viewScriptFile forActionName="heliport"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Test">
+            <viewScriptFile forActionName="export"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Test">
+            <viewScriptFile forActionName="exportAccounts"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Test">
+            <viewScriptFile forActionName="accounts"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Test">
+            <viewScriptFile forActionName="migrateDb"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Test">
+            <viewScriptFile forActionName="migrate"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="User">
+            <viewScriptFile forActionName="resetpw"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="User">
+            <viewScriptFile forActionName="changepw"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="User">
+            <viewScriptFile forActionName="setpw"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
@@ -215,6 +248,9 @@
             <testApplicationActionMethod forActionName="index"/>
             <testApplicationActionMethod forActionName="register"/>
             <testApplicationActionMethod forActionName="confirm"/>
+            <testApplicationActionMethod forActionName="resetpw"/>
+            <testApplicationActionMethod forActionName="changepw"/>
+            <testApplicationActionMethod forActionName="setpw"/>
           </testApplicationControllerFile>
           <testApplicationControllerFile forControllerName="School">
             <testApplicationActionMethod forActionName="index"/>
@@ -243,6 +279,11 @@
           </testApplicationControllerFile>
           <testApplicationControllerFile forControllerName="Test">
             <testApplicationActionMethod forActionName="heliport"/>
+            <testApplicationActionMethod forActionName="export"/>
+            <testApplicationActionMethod forActionName="exportAccounts"/>
+            <testApplicationActionMethod forActionName="accounts"/>
+            <testApplicationActionMethod forActionName="migrateDb"/>
+            <testApplicationActionMethod forActionName="migrate"/>
           </testApplicationControllerFile>
         </testApplicationControllerDirectory>
       </testApplicationDirectory>

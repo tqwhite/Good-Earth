@@ -42,6 +42,8 @@ class ErrorController extends Zend_Controller_Action
 
         $this->view->request   = $errors->request;
 
+		$message=isset($message)?$message:'';
+
 		$serverComm=array();
 		$serverComm[]=array("fieldName"=>"user_confirm_message", "value"=>$message);
 		$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'none');

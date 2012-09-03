@@ -93,21 +93,21 @@ final class PersistentCollection implements Collection
 
     /**
      * Whether the collection has already been initialized.
-     * 
+     *
      * @var boolean
      */
     private $initialized = true;
-    
+
     /**
      * The wrapped Collection instance.
-     * 
+     *
      * @var Collection
      */
     private $coll;
 
     /**
      * Creates a new persistent collection.
-     * 
+     *
      * @param EntityManager $em The EntityManager the collection will be associated with.
      * @param ClassMetadata $class The class descriptor of the entity type of this collection.
      * @param array The collection elements.
@@ -144,7 +144,7 @@ final class PersistentCollection implements Collection
     {
         return $this->owner;
     }
-    
+
     public function getTypeClass()
     {
         return $this->typeClass;
@@ -154,7 +154,7 @@ final class PersistentCollection implements Collection
      * INTERNAL:
      * Adds an element to a collection during hydration. This will automatically
      * complete bidirectional associations in the case of a one-to-many association.
-     * 
+     *
      * @param mixed $element The element to add.
      */
     public function hydrateAdd($element)
@@ -172,7 +172,7 @@ final class PersistentCollection implements Collection
                     $this->owner);
         }
     }
-    
+
     /**
      * INTERNAL:
      * Sets a keyed element in the collection during hydration.
@@ -271,7 +271,7 @@ final class PersistentCollection implements Collection
     {
         return $this->association;
     }
-   
+
     /**
      * Marks this collection as changed/dirty.
      */
@@ -306,17 +306,17 @@ final class PersistentCollection implements Collection
     {
         $this->isDirty = $dirty;
     }
-    
+
     /**
      * Sets the initialized flag of the collection, forcing it into that state.
-     * 
+     *
      * @param boolean $bool
      */
     public function setInitialized($bool)
     {
         $this->initialized = $bool;
     }
-    
+
     /**
      * Checks whether this collection has been initialized.
      *
@@ -377,7 +377,7 @@ final class PersistentCollection implements Collection
             $this->em->getUnitOfWork()->getCollectionPersister($this->association)
                 ->deleteRows($this, $element);
         }*/
-        
+
         $this->initialize();
         $removed = $this->coll->removeElement($element);
         if ($removed) {
@@ -420,7 +420,7 @@ final class PersistentCollection implements Collection
             }
             return false;
         }*/
-        
+
         $this->initialize();
         return $this->coll->contains($element);
     }
@@ -507,7 +507,7 @@ final class PersistentCollection implements Collection
         $this->initialize();
         return $this->coll->isEmpty();
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -534,7 +534,7 @@ final class PersistentCollection implements Collection
         $this->initialize();
         return $this->coll->filter($p);
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -552,7 +552,7 @@ final class PersistentCollection implements Collection
         $this->initialize();
         return $this->coll->partition($p);
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -582,7 +582,7 @@ final class PersistentCollection implements Collection
             $this->takeSnapshot();
         }
     }
-    
+
     /**
      * Called by PHP when this collection is serialized. Ensures that only the
      * elements are properly serialized.
@@ -594,7 +594,7 @@ final class PersistentCollection implements Collection
     {
         return array('coll', 'initialized');
     }
-    
+
     /* ArrayAccess implementation */
 
     /**
@@ -632,12 +632,12 @@ final class PersistentCollection implements Collection
     {
         return $this->remove($offset);
     }
-    
+
     public function key()
     {
         return $this->coll->key();
     }
-    
+
     /**
      * Gets the element of the collection at the current iterator position.
      */
@@ -645,7 +645,7 @@ final class PersistentCollection implements Collection
     {
         return $this->coll->current();
     }
-    
+
     /**
      * Moves the internal iterator position to the next element.
      */
@@ -653,7 +653,7 @@ final class PersistentCollection implements Collection
     {
         return $this->coll->next();
     }
-    
+
     /**
      * Retrieves the wrapped Collection instance.
      */

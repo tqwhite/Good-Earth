@@ -117,6 +117,9 @@ newButtonHandler:function(control, parameter){
 	switch(control){
 		case 'click':
 
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+
 			$($('#'+this.displayParameters.newButton.divId).parent()).good_earth_store_customer_schedule_add_student({
 				'account':this.account,
 				'redrawSchedule':this.callback('update'),
@@ -139,6 +142,10 @@ editButtonHandler:function(control, parameter){
 	var componentName='newButton';
 	switch(control){
 		case 'click':
+
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+
 			var studentRefId=parameter.thisDomObj.attr('refId');
 
 			$(parameter.thisDomObj.parent()).html("<td colspan=7 id='editLine'><span style='font-size:80%;'>Only one student can be edited at a time</span></td>");

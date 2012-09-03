@@ -28,14 +28,15 @@ class Application_Model_Account extends Application_Model_Base
 		return $errorList;
 	}
 
-	static function formatOutput($inData, $outputType){
 
-		$users=Q\Utils::buildArray($inData->users, 'firstName lastName');
-		$students=array();
 
-		foreach ($inData->students as $data){
-			$students[]=\Application_Model_Student::formatOutput($data);
+	static function formatDetail($inData, $outputType){
+
+		if (get_class($inData)=='GE\Entity\AccountPurchaseNode'){
+			$inData=$inData->account;
 		}
+
+		if ($inData->refId){
 
 		switch ($outputType){
 
@@ -52,17 +53,25 @@ class Application_Model_Account extends Application_Model_Base
 						'students'=>\Application_Model_Student::formatOutput($inData->students, $outputType)
 					);
 				break;
+			case 'export':
+echo get_class($inData)." (models/account)<BR>";
+				$outArray=array(
+						'refId'=>$inData->refId,
+						'familyName'=>$inData->familyName,
+						'users'=>\Application_Model_User::formatOutput($inData->users, $outputType),
+						'students'=>\Application_Model_Student::formatOutput($inData->students, $outputType),
+						'created'=>$inData->created
+					);
+				break;
 		}
 
-
+		}
+		else{
+			$outArray=array();
+		}
 		return $outArray;
 
 	}
-/*
-
-						'users'=>\Application_Model_User::formatOutput($inData->users),
-						'students'=>\Application_Model_Student::formatOutput($inData->students)
-*/
 
 }
 

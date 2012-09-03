@@ -38,6 +38,7 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 				formParams={};
 			}
 
+			this.serverData=formParams;
 			if (formParams.user_confirm_message){this.userConfirmMessage=formParams.user_confirm_message;}
 			if (formParams.assert_initial_controller){this.initialController=formParams.assert_initial_controller;}
 			if (formParams.new_username){this.newUsername=formParams.new_username;}
@@ -51,6 +52,12 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 		if (inData.status<1 || this.initialController=='none' || this.initialController=='closed'){
 			if (!this.initialController && !this.startingHash && userIdCookie){this.initialController='login';}
 			switch (this.startingHash || this.initialController){
+				case 'changePw':
+					this.element.good_earth_store_session_forgot_password({serverData:this.serverData});
+					break;
+				case 'resetPw':
+					this.element.good_earth_store_session_forgot({selector:'password'});
+					break;
 				default:
 				case 'register':
 					this.element.good_earth_store_session_register({initialStatusMessage:this.userConfirmMessage});
@@ -64,7 +71,7 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 				case 'closed':
 					var message='';
 					message+="<div style='color:#436235;margin-top:10px;'>We are busy organizing delicious lunches for school children and can't take your order right now.<p/>"
-					message+="The store will be open again tomorrow morning for signups that will be effective on Monday.<p/>"
+					message+="The store will be open again tomorrow morning, bright and early, for signups.<p/>"
 					message+="We deeply appreciate your business and look forward to serving you.<p/>"
 
 					message+="Sincerely,<p/>"

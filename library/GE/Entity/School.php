@@ -55,12 +55,22 @@ class School /*extends Base*/{
     private $offeringSchoolNodes;
 
 
+
 	/**
 	 * @column(type="datetime", nullable=false)
 	 * @var datetime
 	 **/
 
 	private $created;
+
+	/**
+	 * @column(type="boolean", nullable=true)
+	 * @var integer
+	 **/
+
+	private $alreadyInHelix;
+
+
 
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
@@ -72,7 +82,14 @@ public function __construct(){
 }
 
 public function __get($property){
-	return $this->$property;
+	switch($property){
+		case 'created':
+			return $this->created->format("Y-m-d H:i:s");
+			break;
+		default:
+			return $this->$property;
+			break;
+	}
 }
 
 public function __set($property, $value){

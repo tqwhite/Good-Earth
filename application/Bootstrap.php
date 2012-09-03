@@ -5,6 +5,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
 public function _initSession(){
 
+error_reporting(E_ERROR | E_PARSE & ~E_WARNING & ~E_NOTICE); //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 
 	$config=$this->getOptions();
 	Zend_Registry::set('store', $config['store']);

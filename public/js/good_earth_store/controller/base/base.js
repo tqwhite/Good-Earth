@@ -47,7 +47,7 @@ assembleComponentDivIdObject:function(nameArray){
 // CLICK MANAGEMENT ========================================================================
 
 turnOffClicksForAwhile: function(milliseconds, callbacks) {
-	milliseconds=milliseconds?milliseconds:2000;
+	milliseconds=milliseconds?milliseconds:500;
 	callbacks=callbacks?callbacks:{};
 
 	this.setNotAcceptClicks();

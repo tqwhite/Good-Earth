@@ -97,6 +97,10 @@ chooseOfferingButtonClassIdHandler:function(control, parameter){
 	var componentName='chooseOfferingButtonClassId';
 	switch(control){
 		case 'click':
+
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+
 			var dayRefId=parameter.thisDomObj.attr('dayRefId'),
 				offeringRefId=parameter.thisDomObj.attr('offeringRefId');
 				this.parentAccessFunction('sendPurchase', {

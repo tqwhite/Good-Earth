@@ -38,6 +38,93 @@ GoodEarthStore.Models.Base.extend('GoodEarthStore.Models.User',
 
 },
 
+	resetPassword:function(data, success, error){
+
+		success=success?success:function(){alert('success');};
+		error=error?error:this.defaultError;
+
+		var errors=this.validateReset(data);
+		if (errors.length>0){
+			success({status:-1, messages:errors, data:{}});
+			return;
+		}
+
+		$.ajax({
+				url: '/user/resetpw',
+				type: 'post',
+				dataType: 'json',
+				data: {data:data},
+				success: success,
+				error: error,
+				fixture: false
+			});
+
+},
+
+	changePassword:function(data, success, error){
+
+		success=success?success:function(){alert('success');};
+		error=error?error:this.defaultError;
+
+		var errors=this.validateChange(data);
+		if (errors.length>0){
+			success({status:-1, messages:errors, data:{}});
+			return;
+		}
+
+		$.ajax({
+				url: '/user/setpw',
+				type: 'post',
+				dataType: 'json',
+				data: {data:data},
+				success: success,
+				error: error,
+				fixture: false
+			});
+
+},
+
+validateChange:function(inData){
+	var name, datum,
+		errors=[];
+
+	name='password';
+	datum=inData[name];
+	if (!datum || datum.toLowerCase()=='required')
+	{errors.push([name, "Password is required"]);}
+
+	name='confirmPassword';
+	datum=inData[name];
+	if (!datum || datum.toLowerCase()=='required')
+	{errors.push([name, "Confirmation Password is required"]);}
+
+	if (inData['password']!=inData['confirmPassword'])
+	{errors.push([name, "Confirmation Password does not match"]);}
+
+	name='password';
+	datum=inData[name];
+	if (!datum || datum.length<6)
+	{errors.push([name, "Password must be six or more characters"]);}
+
+
+	return errors;
+},
+
+validateReset:function(inData){
+	var name, datum,
+		errors=[];
+
+
+
+	name='identifier';
+	datum=inData[name];
+	if (!datum || datum.toLowerCase()=='required')
+	{errors.push([name, "Last name is required"]);}
+
+
+	return errors;
+},
+
 validate:function(inData){
 	var name, datum,
 		errors=[];
@@ -57,12 +144,12 @@ validate:function(inData){
 	name='userName';
 	datum=inData[name];
 	if (!datum || datum.length<6 || datum.toLowerCase()=='required')
-	{errors.push([name, "User Name too short"]);}
+	{errors.push([name, "User Name must be six or more characters"]);}
 
 	name='password';
 	datum=inData[name];
 	if (!datum || datum.length<6)
-	{errors.push([name, "Password too short"]);}
+	{errors.push([name, "Password must be six or more characters"]);}
 
 	name='emailAdr';
 	datum=inData[name];

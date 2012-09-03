@@ -2,7 +2,8 @@
 
 class AccountController extends Zend_Controller_Action
 {
-	private $newPassword='';
+
+    private $newPassword = '';
 
     public function init()
     {
@@ -80,11 +81,11 @@ class AccountController extends Zend_Controller_Action
 			));
 
 
-    }
-	}
 
-	private function sendEmailConfirmation($userObj)
-	{
+    }
+}
+    private function sendEmailConfirmation($userObj)
+    {
 
 		$mail = new Zend_Mail();
 		$tr=new Zend_Mail_Transport_Sendmail();
@@ -97,11 +98,11 @@ class AccountController extends Zend_Controller_Action
 				{$userObj->emailAdr}
 			<div style='margin-top:15px;'>Please click this link:</div>
 			<div style='margin:25px 0px 30px 50px;font-size:14pt;color:#E26437;'>
-			<A href='{$_SERVER['HTTP_REFERER']}account/confirm/{$userObj->confirmationCode}' style='color:#E26437;text-decoration:none;'>CONFIRM</a>
+			<A href='{http://{$_SERVER['SERVER_NAME']}/account/confirm/{$userObj->confirmationCode}' style='color:#E26437;text-decoration:none;'>CONFIRM</a>
 			</div>
 			Or, copy and paste this link:
 			<div style='font-size:10pt;margin:20px 0px 30px 50px;color:#E26437;'>
-			<A href='{$_SERVER['HTTP_REFERER']}account/confirm/{$userObj->confirmationCode}' style='color:#E26437;text-decoration:none;'>{$_SERVER['HTTP_REFERER']}account/confirm/{$userObj->confirmationCode}</a>
+			<A href='http://{$_SERVER['SERVER_NAME']}/account/confirm/{$userObj->confirmationCode}' style='color:#E26437;text-decoration:none;'>{$_SERVER['SERVER_NAME']}/account/confirm/{$userObj->confirmationCode}</a>
 			</div>
 
 		Thank You,<br/>
@@ -117,10 +118,10 @@ class AccountController extends Zend_Controller_Action
 		$mail->send();
 
 		return true;
-	}
+    }
 
-	public function confirmAction()
-	{
+    public function confirmAction()
+    {
 
 		$serverComm=array();
 
@@ -171,10 +172,10 @@ class AccountController extends Zend_Controller_Action
 		$serverComm[]=array("fieldName"=>"user_confirm_message", "value"=>$message);
 		$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
 
-	}
+    }
 
-	public function getAction()
-	{
+    public function getAction()
+    {
 		$inData=$this->getRequest()->getParam('data');
 
 		$accessObj=new \Application_Model_Account();
@@ -187,10 +188,12 @@ class AccountController extends Zend_Controller_Action
 			status=>$status,
 			data=>\Application_Model_Account::formatOutput($result)
 		));
-	}
+    }
 
 
 }
+
+
 
 
 

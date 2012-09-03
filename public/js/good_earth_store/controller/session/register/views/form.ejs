@@ -12,6 +12,7 @@ qtools.validateProperties({
 	propList:[
 		{name:'saveButton'},
 		{name:'loginButton'},
+		{name:'forgotButton'},
 		{name:'status'}
 	],
  source:'session.register.mainPanel' });
@@ -36,7 +37,7 @@ else{
 }
 
 %>
-<div class='entryBox' style='height:475px;width:300px;'>
+<div class='entryBox' style='height:500px;width:300px;'>
 
 <div class='entryPanelErrorList' style='margin-top:25px;height:30px;width:100%' id='<%==displayParameters.status.divId%>'>
 	<div style='font-size:10pt;width:285px'>
@@ -59,4 +60,5 @@ else{
 <div class='basicButton' style='margin-left:136px;margin-top:20px;' id='<%==displayParameters.saveButton.divId%>'></div>
 
 <div class='smallButton' style='margin-left:165px;margin-top:20px;' id='<%==displayParameters.loginButton.divId%>'></div>
+<div class='smallButton' style='margin-left:165px;margin-top:10px;' id='<%==this.displayParameters.forgotButton.divId%>'></div>
 </div>

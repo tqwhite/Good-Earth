@@ -103,6 +103,10 @@ lunchButtonHandler:function(control, parameter){
 	var componentName='lunchButton';
 	switch(control){
 		case 'click':
+
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+
 			var studentRefId=parameter.thisDomObj.attr('refId');
 			this.element.html('');
 			this.element.good_earth_store_customer_choose_menu({

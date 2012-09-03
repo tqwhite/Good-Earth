@@ -169,6 +169,10 @@ saveButtonHandler:function(control, parameter){
 	var componentName='saveButton';
 	switch(control){
 		case 'click':
+
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+
 			this.saveStudent();
 		break;
 		case 'setAccessFunction':

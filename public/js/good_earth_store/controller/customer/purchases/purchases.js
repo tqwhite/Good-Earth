@@ -102,6 +102,10 @@ checkoutButtonHandler:function(control, parameter){
 	var componentName='checkoutButton';
 	switch(control){
 		case 'click':
+
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+
 			this.dashboardContainer.good_earth_store_customer_checkout({
 				dashboardContainer:this.dashboardContainer,
 				returnClassName:this.returnClassName,

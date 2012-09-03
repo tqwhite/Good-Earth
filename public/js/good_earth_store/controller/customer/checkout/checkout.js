@@ -110,9 +110,14 @@ submitButtonHandler:function(control, parameter){
 	var componentName='submitButton';
 	switch(control){
 		case 'click':
+
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+
 			GoodEarthStore.Models.Purchase.process({
 					cardData:this.element.formParams(),
-					purchase:this.purchases
+					purchase:this.purchases,
+					account:this.account
 				},
 				this.callback('catchProcessResult'));
 		break;
@@ -130,6 +135,10 @@ cancelButtonHandler:function(control, parameter){
 	var componentName='cancelButton';
 	switch(control){
 		case 'click':
+
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+
 			this.dashboardContainer[this.returnClassName](this.returnClassOptions);
 		break;
 		case 'setAccessFunction':

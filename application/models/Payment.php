@@ -11,6 +11,8 @@ static function process($inData){
 	$expYear=$inData['cardData']['expYear'];
 	$chargeTotal=$inData['cardData']['chargeTotal'];
 
+	$purchaseRefId=$inData['purchase']['refId'];
+
 	$cardNumber=preg_replace('/[^\S]/', '', $cardNumber);
 
 	$ch =curl_init("https://ws.firstdataglobalgateway.com/fdggwsapi/services/order.wsdl");
@@ -37,12 +39,26 @@ static function process($inData){
 						<v1:Payment>
 							<v1:ChargeTotal>$chargeTotal</v1:ChargeTotal>
 						</v1:Payment>
+						<v1:Billing>
+							<v1:Name>{$inData['cardData']['cardName']}</v1:Name>
+							<v1:Address1>{$inData['cardData']['street']}</v1:Address1>
+							<v1:Address2></v1:Address2>
+							<v1:City>{$inData['cardData']['city']}</v1:City>
+							<v1:State>{$inData['cardData']['state']}</v1:State>
+							<v1:Zip>{$inData['cardData']['zip']}</v1:Zip>
+							<v1:Phone>{$inData['cardData']['phoneNumber']}</v1:Phone>
+						</v1:Billing>
 					</v1:Transaction>
 				</fdggwsapi:FDGGWSApiOrderRequest>
 			</SOAP-ENV:Body>
 		</SOAP-ENV:Envelope>
 	";
 
+/*
+						<v1:TransactionDetails>
+							<v1:OrderId>$purchaseRefId</v1:OrderId>
+						</v1:TransactionDetails>
+*/
 
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 	curl_setopt($ch, CURLOPT_SSLCERT, $pemPath);

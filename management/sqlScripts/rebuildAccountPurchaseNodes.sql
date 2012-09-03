@@ -1,5 +1,5 @@
-#insert into accountPurchaseNodes
-#(accountRefId, purchaseRefId, refId, created)
+insert into accountPurchaseNodes
+(accountRefId, purchaseRefId, refId, created)
 
 select a.refId, p.refId, p.refId, p.created
 from purchaseOrderNodes as pon

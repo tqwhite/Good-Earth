@@ -76,8 +76,8 @@ validate:function(inData){
 
 	name='state';
 	datum=inData[name];
-	if (datum.toLowerCase()!='ca')
-	{errors.push([name, "We only serve California"]);}
+	if (datum.length!=2)
+	{errors.push([name, "State code must be two characters"]);}
 
 	name='zip';
 	datum=inData[name];
@@ -110,7 +110,7 @@ validate:function(inData){
 	if (!datum || datum=='MM')
 	{errors.push([name, "Expiration Date is required"]);}
 		else if (!datum.match(/\d{2}/))
-		{errors.push([name, "Month must be two numbers"]);}
+		{errors.push([name, "Month must be two digits"]);}
 		else if (datum<1 || datum>12)
 		{errors.push([name, "Month must be 1 to 12"]);}
 
@@ -119,7 +119,7 @@ validate:function(inData){
 	if (!datum || datum=='YY')
 	{errors.push([name, "year is required"]);}
 		else if (!datum.match(/\d{2}/))
-		{errors.push([name, "Year must be two numbers"]);}
+		{errors.push([name, "Year must be two digits"]);}
 
 	return errors;
 }

@@ -123,6 +123,10 @@ static function callStack($stringFlag){
 	$currColor=$colorA;
 	for ($i=0, $len=count($list); $i<$len; $i++){
 		$element=$list[$i];
+
+		$element['class']=(isset($element['class']))?$element['class']:'';
+		$element['line']=(isset($element['line']))?$element['line']:'';
+		$element['file']=(isset($element['file']))?$element['file']:'';
 		$outString.="<tr style='background:$currColor;'><td>$i</td><td>{$element['class']}::{$element['class']} (line {$element['line']})</td></tr>";
 		$outString.="<tr style='background:$currColor;'><td>&nbsp;</td><td>{$element['file']}</td></tr>";
 		$outString.="<tr style='background:transparent;'><td colspan='2'>&nbsp;</td></tr>";
@@ -137,6 +141,48 @@ static function callStack($stringFlag){
 	else{
 		echo $outString;
 	}
+}
+
+static function isList($inData){
+	if (get_class($inData)=='Doctrine\ORM\PersistentCollection'){
+		$isList=true;
+	}
+	else{
+		foreach ($inData as $label=>$data){
+			if ($label===0){
+				$isList=true;
+				break;
+			}
+			else{
+				$isList=false;
+			}
+		}
+	}
+	return $isList;
+
+}
+
+static function getFromDottedPath($assocArray, $path){
+	$target=$assocArray;
+	$elements=explode('.', $path);
+
+	if (!$path){
+		return $assocArray;
+	}
+
+	if (count($elements)<2){
+		return $assocArray[$path];
+	}
+
+	//else
+	for ($i=0, $len=count($elements); $i<$len; $i++){
+		$element=$elements[$i];
+		if ($element!==''){ //mainly eliminates trailing periods but would also eliminate double periods
+			$target=$target[$element];
+			if (!$target){return '';}
+		}
+	}
+	return $target;
 }
 
 }//end of class

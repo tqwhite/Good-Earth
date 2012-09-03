@@ -32,3 +32,4 @@ left join offeringSchoolNodes as osn on osn.offeringRefId=o2.refId
 left join schools as s on s.refId=osn.schoolRefid
 
 order by s.name, d.title, m.name, eaters.lastName, eaters.firstName
+limit 100000

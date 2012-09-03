@@ -10,8 +10,7 @@ $orderEntityList=$this->orderEntityList;
 	$list=$orderEntityList;
 	$schoolList=array();
 	$orderString='';
-	for ($i=0, $len=count($list); $i<$len; $i++){
-		$element=$list[$i];
+	foreach ($list as $label=>$element){
 		$price=number_format($element->offering->price, 2);
 		$orderString.="\n<tr><td style='padding-right:15px;'>".$element->student->firstName."</td>";
 		$orderString.="<td style='padding-right:15px;'>".$element->day->title."</td>";
@@ -49,7 +48,7 @@ $orderEntityList=$this->orderEntityList;
 <p/>
 			<b>Good Earth</b> for $<?php echo number_format($purchaseEntity->chargeTotal, 2);?>
 
-<br/>		with the invoice #$<?php echo $purchaseEntity->refId;?> in the memo line
+<br/>		with the invoice #$<?php echo substr($purchaseEntity->refId, 0, 8);?> in the memo line
 
 <p/>			and mail it to:
 <p/>

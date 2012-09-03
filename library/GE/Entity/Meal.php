@@ -30,12 +30,20 @@ class Meal /*extends Base*/{
 
 
 
+
 	/**
 	 * @column(type="datetime", nullable=false)
 	 * @var datetime
 	 **/
 
 	private $created;
+
+	/**
+	 * @column(type="boolean", nullable=true)
+	 * @var integer
+	 **/
+
+	private $alreadyInHelix;
 
 
 	/**

@@ -117,6 +117,10 @@ doneButtonHandler:function(control, parameter){
 	var componentName='doneButton';
 	switch(control){
 		case 'click':
+
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+
 			this.element[this.returnClassName](this.returnClassOptions);
 		break;
 		case 'setAccessFunction':

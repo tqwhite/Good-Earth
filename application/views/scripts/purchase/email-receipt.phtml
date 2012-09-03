@@ -10,8 +10,7 @@ $orderEntityList=$this->orderEntityList;
 	$list=$orderEntityList;
 	$schoolList=array();
 	$orderString='';
-	for ($i=0, $len=count($list); $i<$len; $i++){
-		$element=$list[$i];
+	foreach ($list as $label=>$element){
 		$price=number_format($element->offering->price, 2);
 		$orderString.="\n<tr><td style='padding-right:15px;'>".$element->student->firstName."</td>";
 		$orderString.="<td style='padding-right:15px;'>".$element->day->title."</td>";

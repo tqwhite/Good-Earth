@@ -20,14 +20,15 @@ class TestController extends Zend_Controller_Action
 
     public function databaseAction()
     {
-
-    echo "DATABASE\n";
+	$query='select * from accounts';
+    echo "DATABASE ($query)\n";
 		$locale=$this->getRequest()->getParam('locale');
 
 	switch ($locale){
+		default:
 		case 'qDev':
 			$db = new Zend_Db_Adapter_Pdo_Mysql(array(
-				'host'     => '127.0.0.1',
+				'host'     => 'localhost',
 				'username' => 'tq',
 				'password' => '',
 				'dbname'   => 'test1'
@@ -35,8 +36,8 @@ class TestController extends Zend_Controller_Action
 		break;
 		case 'demo':
 			$db = new Zend_Db_Adapter_Pdo_Mysql(array(
-				'host'     => 'localhost',
-				'username' => 'goodearthsite',
+				'host'     => '69.195.198.238',
+				'username' => 'qbook',
 				'password' => 'glory*snacks',
 				'dbname'   => 'goodEarthDemoData'
 			));
@@ -44,84 +45,86 @@ class TestController extends Zend_Controller_Action
 
 		}
 
-		$stmt = $db->query('select * from example');
+		$stmt = $db->query($query);
 
-		print_r($stmt->fetch());
+
+		Zend_Debug::dump($stmt->fetchAll());
 		echo '<p/>'.Zend_Version::VERSION;
+exit;
     }
 
     public function doctrineAction()
     {
-echo "disabled"; exit;
-$cardNumber="4005550000000019"; //only approve for one dollar even, remember to void transaction
-$expMonth="12";
-$expYear="13";
-$chargeTotal="1";
-$acctPassword="WS1001178130._.1:Gh8daJgG";
+		echo "disabled"; exit;
+		$cardNumber="4005550000000019"; //only approve for one dollar even, remember to void transaction
+		$expMonth="12";
+		$expYear="13";
+		$chargeTotal="1";
+		$acctPassword="WS1001178130._.1:Gh8daJgG";
 
-$ch =curl_init("https://ws.firstdataglobalgateway.com/fdggwsapi/services/order.wsdl");
-$pemPath="../library/Credentials/FDGGWS_Certificate_WS1001178130._.1/WS1001178130._.1.pem";
-$keyPath="../library/Credentials/FDGGWS_Certificate_WS1001178130._.1/WS1001178130._.1.key";
-$sslPw="ckp_1343424713";
+		$ch =curl_init("https://ws.firstdataglobalgateway.com/fdggwsapi/services/order.wsdl");
+		$pemPath="../library/Credentials/FDGGWS_Certificate_WS1001178130._.1/WS1001178130._.1.pem";
+		$keyPath="../library/Credentials/FDGGWS_Certificate_WS1001178130._.1/WS1001178130._.1.key";
+		$sslPw="ckp_1343424713";
 
-$body = "
-	<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">
-		<SOAP-ENV:Header />
-		<SOAP-ENV:Body>
-			<fdggwsapi:FDGGWSApiOrderRequest xmlns:fdggwsapi=\"http://secure.linkpt.net/fdggwsapi/schemas_us/fdggwsapi\">
-				<v1:Transaction xmlns:v1=\"http://secure.linkpt.net/fdggwsapi/schemas_us/v1\">
-					<v1:CreditCardTxType>
-						<v1:Type>sale</v1:Type>
-					</v1:CreditCardTxType>
-					<v1:CreditCardData>
-						<v1:CardNumber>$cardNumber</v1:CardNumber>
-						<v1:ExpMonth>$expMonth</v1:ExpMonth>
-						<v1:ExpYear>$expYear</v1:ExpYear>
-					</v1:CreditCardData>
-					<v1:Payment>
-						<v1:ChargeTotal>$chargeTotal</v1:ChargeTotal>
-					</v1:Payment>
-				</v1:Transaction>
-			</fdggwsapi:FDGGWSApiOrderRequest>
-		</SOAP-ENV:Body>
-	</SOAP-ENV:Envelope>
-";
+		$body = "
+			<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">
+				<SOAP-ENV:Header />
+				<SOAP-ENV:Body>
+					<fdggwsapi:FDGGWSApiOrderRequest xmlns:fdggwsapi=\"http://secure.linkpt.net/fdggwsapi/schemas_us/fdggwsapi\">
+						<v1:Transaction xmlns:v1=\"http://secure.linkpt.net/fdggwsapi/schemas_us/v1\">
+							<v1:CreditCardTxType>
+								<v1:Type>sale</v1:Type>
+							</v1:CreditCardTxType>
+							<v1:CreditCardData>
+								<v1:CardNumber>$cardNumber</v1:CardNumber>
+								<v1:ExpMonth>$expMonth</v1:ExpMonth>
+								<v1:ExpYear>$expYear</v1:ExpYear>
+							</v1:CreditCardData>
+							<v1:Payment>
+								<v1:ChargeTotal>$chargeTotal</v1:ChargeTotal>
+							</v1:Payment>
+						</v1:Transaction>
+					</fdggwsapi:FDGGWSApiOrderRequest>
+				</SOAP-ENV:Body>
+			</SOAP-ENV:Envelope>
+		";
 
 
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-curl_setopt($ch, CURLOPT_SSLCERT, $pemPath);
-curl_setopt($ch, CURLOPT_SSLKEY, $keyPath);
-curl_setopt($ch, CURLOPT_SSLKEYPASSWD, $sslPw);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_setopt($ch, CURLOPT_SSLCERT, $pemPath);
+		curl_setopt($ch, CURLOPT_SSLKEY, $keyPath);
+		curl_setopt($ch, CURLOPT_SSLKEYPASSWD, $sslPw);
 
-curl_setopt($ch, CURLOPT_POST, 1);
-curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: text/xml"));
-curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-curl_setopt($ch, CURLOPT_USERPWD, $acctPassword);
-curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-$result = curl_exec($ch);
-curl_close($ch);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: text/xml"));
+		curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+		curl_setopt($ch, CURLOPT_USERPWD, $acctPassword);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$result = curl_exec($ch);
+		curl_close($ch);
 
-	$xml=xml_parser_create('');
-	$values=array();
-	$index=array();
-	xml_parse_into_struct($xml, $result, &$values, &$index);
-	$outList=array();
-	for ($i=0, $len=count($values); $i<$len; $i++){
-		$outList[$values[$i]['tag']]=$values[$i]['value'];
-	}
-Q\Utils::dumpWeb($outList);
-Q\Utils::dumpWeb($outList);
-echo "<br/>curl_exec result= ".htmlentities($result)."<br/>";
-//Q\Utils::dumpWeb($outList);
+			$xml=xml_parser_create('');
+			$values=array();
+			$index=array();
+			xml_parse_into_struct($xml, $result, &$values, &$index);
+			$outList=array();
+			for ($i=0, $len=count($values); $i<$len; $i++){
+				$outList[$values[$i]['tag']]=$values[$i]['value'];
+			}
+		Q\Utils::dumpWeb($outList);
+		Q\Utils::dumpWeb($outList);
+		echo "<br/>curl_exec result= ".htmlentities($result)."<br/>";
+		//Q\Utils::dumpWeb($outList);
 
-echo "<p/>pemPath= $pemPath<br/>";
-echo "<p/>keyPath= $keyPath<br/>";
-echo "<p/>pem file contents:<p/>".file_get_contents($pemPath);
-echo "<p/><p/>key file contents:<p/>".file_get_contents($keyPath);
-exit;
+		echo "<p/>pemPath= $pemPath<br/>";
+		echo "<p/>keyPath= $keyPath<br/>";
+		echo "<p/>pem file contents:<p/>".file_get_contents($pemPath);
+		echo "<p/><p/>key file contents:<p/>".file_get_contents($keyPath);
+		exit;
 
-exit;
+		exit;
     }
 
     public function offeringsDevelopmentMethod()
@@ -250,7 +253,9 @@ echo 'GradeLevel='.$gradeLevelEntity->title."<br/>";
 		$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
 
 
-    }
+		}
+
+
     }
 
     private function initializeDatabaseSchema()
@@ -344,7 +349,8 @@ echo 'GradeLevel='.$gradeLevelEntity->title."<br/>";
 			$this->em->persist($node);
 			$this->em->flush();
 
-   		}
+		}
+
     }
 
     private function _initDays()
@@ -924,14 +930,188 @@ echo 'GradeLevel='.$gradeLevelEntity->title."<br/>";
 			$heliportObj=new Heliport\ServerInterface();
 			$helix_status = $heliportObj->ihr190();
 			$heliportObj->leasePoolUser();
+
+			$dataArray=array(
+				'refId'=>\Q\Utils::newGuid(),
+				'familyName'=>'XX-testFamily',
+				'created'=>'2012-08-16 22:31:49'
+			);
+Q\Utils::dumpWeb($dataArray);
+//Zend_Debug::dump($dataArray);
+echo "=======================<br/>";
+
+			$resultSet = $heliportObj->store(
+			"  inert process",
+			"accounts",
+			$dataArray
+			);
+
+echo "=======================<br/>";
+
 			$heliportObj->releasePoolUser();
 
 			echo "leasePoolUser={$heliportObj->hasPoolUserLeased()}<br/>";
+
+			//database name: GoodeEarth81712d (file name of the database file)
+			//view name: show in title bar
+
+			//relation name: SLN_tableName
+			//relation suffix: tableName
+
+
+
+			//insert or update helix ===
+			//relation name: '  inertprocess'
+			//view name: tableNameSuffix
+
+			//extracting =====
+			//relation name: '  inertprocess'
+			//query condition viewname: query_dateCreated_tableNameSuffix
+
+			//relation name: SLN_tableName suffix
+			//view name: tableName suffix
+
+			//dirty field names: inSql, inHelix
+
+			//order of import
+			/*
+				1-days
+				2-grade levels
+				3-schools
+				4-meals
+				5-gradeSchool
+				6-offerings
+				7-offeringDay
+				8-offeringGrade
+				9-offeringSchool
+
+				Transactions
+				1-accounts
+				2-users
+				3-students
+				4-orders
+				5-purchases
+				6-accountPurchNodes
+				7-purchaseOrderNodes
+			*/
+
 			exit;
+    }
+
+    public function exportAction()
+    {
+    	$dataObj=new \Application_Model_Export();
+		$dataList=$dataObj->collectPurchases();
+		$tableArray=$dataObj->getTableData($dataList, 'purchases accounts users students orders purchaseOrderNodes accountPurchaseNodes');
+	//	$result=$dataObj->write($tableArray);
+
+		Zend_Debug::dump($tableArray, 'tableArray');
+	//	echo "<div style='background:green;height:25px;width:100%;'></div>";
+		exit;
+    }
+
+    public function exportAccountsAction()
+    {
+    echo "hello";exit;
+
+    }
+
+    public function accountsAction()
+    {
+
+        $accessObj=new \Application_Model_Account();
+		$dataList=$accessObj->getList('record');
+
+		for ($i=0, $len=count($dataList); $i<5; $i++){
+			$element=$dataList[$i];
+			$result=\Application_Model_Account::formatOutput($element, 'export');
+			Zend_Debug::dump($result);
+			echo "<hr/>";
+		}
+		exit;
+    }
+
+    public function migrateDbAction()
+    {
+
+    }
+
+    public function migrateAction()
+    {
+
+
+
+		$updateSchema=$this->getRequest()->getParam('updateSchema');
+
+		if($updateSchema=='pleaseRiskMyHappiness'){
+
+
+			echo "Doing these things...<p/>";
+
+			$cmd="php ../scripts/doctrine.php orm:schema-tool:update --dump-sql;";
+			$result=shell_exec($cmd);
+
+			if (strlen($result)<2){$result="database is up to date. no changes required.";}
+
+			$out=str_replace(';', ';<p/>', $result);
+			$out=str_replace(',', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;', $out);
+			echo "<div style='font-family:sans-serif;font-size:10pt;margin:40px 0px 0px 50px;'>$out</div>";
+
+
+			//if you run the code below, it will actually change the database, SO DON'T
+
+			$em=$this->doctrineContainer->getEntityManager();
+			$classes=array(
+				$em->getClassMetadata('GE\Entity\Account'),
+				$em->getClassMetadata('GE\Entity\AccountPurchaseNode'),
+				$em->getClassMetadata('GE\Entity\Day'),
+				$em->getClassMetadata('GE\Entity\GradeLevel'),
+				$em->getClassMetadata('GE\Entity\GradeSchoolNode'),
+				$em->getClassMetadata('GE\Entity\Meal'),
+				$em->getClassMetadata('GE\Entity\Offering'),
+				$em->getClassMetadata('GE\Entity\OfferingDayNode'),
+				$em->getClassMetadata('GE\Entity\OfferingGradeLevelNode'),
+				$em->getClassMetadata('GE\Entity\OfferingSchoolNode'),
+				$em->getClassMetadata('GE\Entity\Order'),
+				$em->getClassMetadata('GE\Entity\Purchase'),
+				$em->getClassMetadata('GE\Entity\PurchaseOrderNode'),
+				$em->getClassMetadata('GE\Entity\School'),
+				$em->getClassMetadata('GE\Entity\Student'),
+				$em->getClassMetadata('GE\Entity\User')
+			);
+			$tool = new \Doctrine\ORM\Tools\SchemaTool($em);
+			echo $tool->updateSchema($classes, true);
+			echo '<p/>And they are done.<BR>';
+			exit;
+		}
+		else{
+
+			$cmd="php ../scripts/doctrine.php orm:schema-tool:update --dump-sql;";
+			$result=shell_exec($cmd);
+
+			if (strlen($result)<2){$result="database is up to date. no changes required.";}
+
+			$out=str_replace(';', ';<p/>', $result);
+			$out=str_replace(',', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;', $out);
+			echo "<div style='font-family:sans-serif;font-size:10pt;margin:40px 0px 0px 50px;'>$out</div>";
+			exit;
+		}
     }
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

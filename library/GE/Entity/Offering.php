@@ -24,14 +24,6 @@ class Offering /*extends Base*/{
 
 
 	/**
-	 * @column(type="datetime", nullable=false)
-	 * @var datetime
-	 **/
-
-	private $created;
-
-
-	/**
 	 * @column(type="text", nullable=true)
 	 * @var string
 	 **/
@@ -83,6 +75,21 @@ class Offering /*extends Base*/{
 	 * @OneToMany(targetEntity="Order", mappedBy="offering", cascade={"persist", "remove"});
      */
     private $orders;
+
+
+	/**
+	 * @column(type="datetime", nullable=false)
+	 * @var datetime
+	 **/
+
+	private $created;
+
+	/**
+	 * @column(type="boolean", nullable=true)
+	 * @var integer
+	 **/
+
+	private $alreadyInHelix;
 
 
 public function __construct(){

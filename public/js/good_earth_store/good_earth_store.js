@@ -21,6 +21,8 @@ steal(
 	'./controller/session/register/register.js',
 	'./controller/session/dispatch/dispatch.js',
 	'./controller/session/login/login.js',
+	'./controller/session/forgot/forgot.js',
+	'./controller/session/forgot/password/password.js',
 
 	'./controller/customer/dashboard/dashboard.js',
 	'./controller/customer/choose_menu/choose_menu.js',

@@ -82,11 +82,33 @@ class User /*extends Base*/{
 
 
 	/**
+	 * @column(type="string", length=60)
+	 * @var string
+	 **/
+
+	private $resetCode;
+
+	/**
+	 * @column(type="datetime", nullable=false)
+	 * @var datetime
+	 **/
+
+	private $resetDate;
+
+
+	/**
 	 * @column(type="datetime", nullable=false)
 	 * @var datetime
 	 **/
 
 	private $created;
+
+	/**
+	 * @column(type="boolean", nullable=true)
+	 * @var integer
+	 **/
+
+	private $alreadyInHelix;
 
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
@@ -98,6 +120,13 @@ public function __get($property){
 }
 
 public function __set($property, $value){
-	$this->$property=$value;
+	switch ($property){
+		case 'password':
+			$this->$property=md5($value);
+		break;
+		default:
+			$this->$property=$value;
+		break;
+	}
 }
 }

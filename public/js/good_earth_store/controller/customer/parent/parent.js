@@ -89,6 +89,10 @@ logoutButtonHandler:function(control, parameter){
 	var componentName='logoutButton';
 	switch(control){
 		case 'click':
+
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+
 			GoodEarthStore.Models.Session.logout({}, this.callback('catchLogout'));
 		break;
 		case 'setAccessFunction':

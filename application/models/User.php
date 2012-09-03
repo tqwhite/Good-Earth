@@ -3,7 +3,7 @@
 class Application_Model_User extends Application_Model_Base
 {
 
-	const entityName="Student";
+	const entityName="User";
 
 	const	badConfirmationCode=-1;
 	const	alreadyConfirmed=1;
@@ -32,15 +32,52 @@ class Application_Model_User extends Application_Model_Base
 		return $errorList;
 	}
 
+	static function validateNewPw($inData){
+
+		$errorList=array();
+
+		$name='password';
+		$datum=$inData[$name];
+		if (strlen($datum)<6){
+			$errorList[]=array($name, "Password too short");
+		}
+
+
+		if ($inData['password']!=$inData['confirmPassword']){
+			$errorList[]=array($name, "Confirmation password doesn't match");
+		}
+
+		return $errorList;
+	}
+
 	static function formatDetail($inData, $outputType){
 	if ($inData->refId){
-		$outArray=array(
-			'firstName'=>$inData->firstName,
-			'lastName'=>$inData->lastName,
-			'emailAdr'=>$inData->emailAdr,
-			'userName'=>$inData->userName,
-			'account'=>\Application_Model_Account::formatOutput($inData->account, $outputType)
+		switch ($outputType){
+		default:
+			$outArray=array(
+				'firstName'=>$inData->firstName,
+				'lastName'=>$inData->lastName,
+				'emailAdr'=>$inData->emailAdr,
+				'userName'=>$inData->userName,
+				'account'=>\Application_Model_Account::formatOutput($inData->account, $outputType)
 			);
+			break;
+		case 'export':
+			$outArray=array(
+				'refId'=>$inData->refId,
+				'firstName'=>$inData->firstName,
+				'emailAdr'=>$inData->emailAdr,
+				'lastName'=>$inData->lastName,
+				'userName'=>$inData->userName,
+				'password'=>$inData->password,
+				'emailStatus'=>$inData->emailStatus,
+				'confirmationCode'=>$inData->confirmationCode,
+				'phoneNumber'=>$inData->phoneNumber,
+				'accountRefId'=>$inData->account->refId,
+				'created'=>$inData->created
+			);
+			break;
+		}
 	}
 	else{
 		$outArray=array();
@@ -59,6 +96,27 @@ class Application_Model_User extends Application_Model_Base
 			'name' => $userName
 		));
 		$users = $query->getResult();
+		$this->entity=$users[0];
+		return $users[0];
+	}
+
+	public function getByEmail($emailAdr){
+		$query = $this->entityManager->createQuery('SELECT u from GE\Entity\User u WHERE u.emailAdr = :emailAdr');
+		$query->setParameters(array(
+			'emailAdr' => $emailAdr
+		));
+		$users = $query->getResult();
+		$this->entity=$users[0];
+		return $users[0];
+	}
+
+	public function getByResetCode($resetCode){
+		$query = $this->entityManager->createQuery('SELECT u from GE\Entity\User u WHERE u.resetCode = :resetCode');
+		$query->setParameters(array(
+			'resetCode' => $resetCode
+		));
+		$users = $query->getResult();
+		$this->entity=$users[0];
 		return $users[0];
 	}
 

@@ -50,18 +50,35 @@ class Application_Model_Student extends Application_Model_Base
 		return $errorList;
 	}
 
-	static function formatDetail($inData, $originsArray){
+	static function formatDetail($inData, $outputType){
 
 		if ($inData->refId){
+		switch ($outputType){
+			default:
+				$outArray=array(
+					'firstName'=>$inData->firstName,
+					'lastName'=>$inData->lastName,
+					'refId'=>$inData->refId,
+					'vegetarianFlag'=>$inData->vegetarianFlag,
+					'schoolRefId'=>$inData->school->refId,
+					'accountRefId'=>$inData->account->refId,
+					'gradeLevelRefId'=>$inData->gradeLevel->refId
+				);
+				break;
+		case 'export':
 			$outArray=array(
-				'firstName'=>$inData->firstName,
-				'lastName'=>$inData->lastName,
 				'refId'=>$inData->refId,
+				'firstName'=>'XD-'.$inData->firstName,
+				'lastName'=>$inData->lastName,
 				'vegetarianFlag'=>$inData->vegetarianFlag,
 				'schoolRefId'=>$inData->school->refId,
 				'accountRefId'=>$inData->account->refId,
-				'gradeLevelRefId'=>$inData->gradeLevel->refId
+				'gradeLevelRefId'=>$inData->gradeLevel->refId,
+				'created'=>$inData->created
 			);
+			break;
+
+			}
 		}
 		else{
 			$outArray=array();

@@ -1,0 +1,44 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'},
+		{name:'formData'}
+	],
+ source:'session.forgot.password.mainPanel' });
+
+qtools.validateProperties({
+	targetObject:formData,
+	propList:[
+		{name:'serverData'}
+	],
+ source:'session.forgot.password.mainPanel' });
+
+qtools.validateProperties({
+	targetObject:displayParameters,
+	propList:[
+		{name:'saveButton'},
+		{name:'registerButton'},
+		{name:'loginButton'},
+		{name:'status'}
+	],
+ source:'session.forgot.password.mainPanel' });
+
+$userName=this.formData['userName'];
+
+%>
+<div class='entryBox' style='height:270px;width:300px;'>
+
+<div style='margin-top:25px;height:50px;width:100%' id='<%==this.displayParameters.status.divId%>'></div>
+
+<table style='border:none;font-size:10pt;'>
+	<tr><td style='width:100px;'>New Password:</td><td><input name='password' value=''></td></tr>
+	<tr><td>Reenter:</td><td><input prompt='required' name='confirmPassword' value=''></td></tr>
+	<input type='hidden' name='refId' value='<%=this.formData.serverData.refId%>'>
+</table>
+<div class='basicButton' style='margin-left:136px;margin-top:20px;' id='<%==this.displayParameters.saveButton.divId%>'></div>
+
+<div class='smallButton' style='margin-left:165px;margin-top:20px;' id='<%==this.displayParameters.registerButton.divId%>'></div>
+<div class='smallButton' style='margin-left:165px;margin-top:10px;' id='<%==displayParameters.loginButton.divId%>'></div>
+</div>

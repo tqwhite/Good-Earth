@@ -50,18 +50,30 @@ class Application_Model_Order extends Application_Model_Base
 		return $errorList;
 	}
 
-	static function formatDetail($inData, $originsArray){
+	static function formatDetail($inData, $outputType){
+		if (get_class($inData)=='GE\Entity\PurchaseOrderNode'){
+			$inData=$inData->order;
+		}
 
 		if ($inData->refId){
-			$outArray=array(
-				'firstName'=>$inData->firstName,
-				'lastName'=>$inData->lastName,
-				'refId'=>$inData->refId,
-				'schoolRefId'=>$inData->school->refId,
-				'accountRefId'=>$inData->account->refId,
-				'gradeLevelRefId'=>$inData->gradeLevel->refId,
-				'offeringRefId'=>$inData->offering->refId
-			);
+			switch ($outputType){
+				default:
+					$outArray=array(
+						'refId'=>$inData->refId,
+					);
+					break;
+				case 'export':
+echo get_class($inData)." (models/order/scalar)<BR>";
+					$outArray=array(
+						'refId'=>$inData->refId,
+						'studentRefId'=>$inData->student->refId,
+						'dayRefId'=>$inData->day->refId,
+						'offeringRefId'=>$inData->offering->refId,
+						'created'=>$inData->created
+					);
+					break;
+
+			}
 		}
 		else{
 			$outArray=array();
@@ -89,5 +101,22 @@ class Application_Model_Order extends Application_Model_Base
 
 	}
 
+
+
+
+	static function formatOutput($inData, $outputType, $tracker){
+
+echo "tracker=$tracker<BR>";
+echo get_class($inData).'/'.gettype($inData)." (base/formatOutput)<BR>";
+
+
+		foreach ($inData as $label=>$data){
+			$outList[]=static::formatScalar($data, $outputType);
+		}
+
+
+		return $outList;
+
+	}
 }
 

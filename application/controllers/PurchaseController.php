@@ -21,6 +21,9 @@ class PurchaseController extends Zend_Controller_Action
 
 		$specialInstruction=substr($inData['cardData']['cardNumber'], 0, 4);
 
+		$newPurchaseRefId=\Q\Utils::newGuid();
+		$inData['purchase']['refId']=$newPurchaseRefId;
+
 		$errorList=\Application_Model_Purchase::validate($inData);
 
 		if (count($errorList)==0){
@@ -73,8 +76,14 @@ class PurchaseController extends Zend_Controller_Action
 
 				$messages=Q\Utils::flattenToList($processResult); //mainly for debugging ease, maybe should be removed later
 
+
+
+
+
 				$purchaseObj=new \Application_Model_Purchase();
 				$purchase=$purchaseObj->generate();
+				$purchaseObj->entity->refId=$newPurchaseRefId; //created above so it could be given to credit card processor, overrides default gen'd by entity, ok because it's new
+
 				$purchase->chargeTotal=$inData['cardData']['chargeTotal'];
 				$purchase->cardName=$inData['cardData']['cardName'];
 				$purchase->street=$inData['cardData']['street'];
@@ -95,13 +104,15 @@ class PurchaseController extends Zend_Controller_Action
 				$purchase->fdOrderId=$processResult['FDGGWSAPI:ORDERID'];
 				$purchase->fdApprovalCode=$processResult['FDGGWSAPI:APPROVALCODE'];
 
+
+				$accountObj=new \Application_Model_Account();
+				$account=$accountObj->getByRefId($inData['account']['refId']);
+				$purchaseObj->addAccount($account);
+
 				$list=$inData['orders'];
 				$orderEntityList=array();
 				for ($i=0, $len=count($list); $i<$len; $i++){
 					$element=$list[$i];
-
-		//			$accountObj=new \Application_Model_Account();
-//					$account=$accountObj->getByRefId($element['account']['refId']);
 
 					$studentObj=new \Application_Model_Student();
 					$student=$studentObj->getByRefId($element['student']['refId']);
@@ -118,8 +129,11 @@ class PurchaseController extends Zend_Controller_Action
 					$order->offering=$offering;
 					$order->day=$day;
 					$orderObj->persist(Application_Model_Base::noFlush);
-		$orderEntityList[]=$order;
 					$purchaseObj->addOrder($order);
+
+					$sortKey=$student->firstName.$day->seqNum.$student->refId;
+					$orderEntityList[$sortKey]=$order; //collect orders for email
+
 				}
 
 
@@ -150,6 +164,7 @@ class PurchaseController extends Zend_Controller_Action
 		$this->entityManager=$this->doctrineContainer->getEntityManager();
 		$purchaseEntity=$this->entityManager->find('GE\Entity\Purchase', $purchaseRefId);
 
+		ksort($orderEntityList);
 
 		$view = new Zend_View();
 		$view->setScriptPath(APPLICATION_PATH.'/views/scripts/purchase');

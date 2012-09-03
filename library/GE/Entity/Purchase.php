@@ -148,12 +148,20 @@ class Purchase /*extends Base*/{
 	private $fdApprovalCode;
 
 
+
 	/**
 	 * @column(type="datetime", nullable=false)
 	 * @var datetime
 	 **/
 
 	private $created;
+
+	/**
+	 * @column(type="boolean", nullable=true)
+	 * @var integer
+	 **/
+
+	private $alreadyInHelix;
 
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}

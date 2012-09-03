@@ -24,7 +24,7 @@ public function authenticate(){
 	$userObj=new \Application_Model_User();
 	$user=$userObj->getUserByUserId($this->_userName);
 
-	if ($user && $this->_password==$user->password){
+	if ($user && md5($this->_password)==$user->password){
 		return (new \Zend_Auth_Result(
 				\Zend_Auth_Result::SUCCESS,
 				$user

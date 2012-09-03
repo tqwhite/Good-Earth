@@ -65,8 +65,6 @@ initDisplay:function(inData){
 
 initDomElements:function(){
 	this.displayParameters.saveButton.domObj=$('#'+this.displayParameters.saveButton.divId);
-	this.displayParameters.registerButton.domObj=$('#'+this.displayParameters.registerButton.divId);
-	this.displayParameters.forgotButton.domObj=$('#'+this.displayParameters.forgotButton.divId);
 
 			this.displayParameters.saveButton.domObj.good_earth_store_tools_ui_button2({
 				ready:{classs:'basicReady'},
@@ -78,6 +76,7 @@ initDomElements:function(){
 				label:"<div style='margin-top:5px;'>Login</div>"
 			});
 
+	this.displayParameters.registerButton.domObj=$('#'+this.displayParameters.registerButton.divId);
 			this.displayParameters.registerButton.domObj.good_earth_store_tools_ui_button2({
 				ready:{classs:'smallReady'},
 				hover:{classs:'smallHover'},
@@ -87,7 +86,8 @@ initDomElements:function(){
 				initialControl:'setToReady', //initialControl:'setUnavailable'
 				label:"<div >New Customer</div>"
 			});
-/*
+
+	this.displayParameters.forgotButton.domObj=$('#'+this.displayParameters.forgotButton.divId);
 			this.displayParameters.forgotButton.domObj.good_earth_store_tools_ui_button2({
 				ready:{classs:'smallReady'},
 				hover:{classs:'smallHover'},
@@ -95,9 +95,9 @@ initDomElements:function(){
 				unavailable:{classs:'smallUnavailable'},
 				accessFunction:this.displayParameters.forgotButton.handler,
 				initialControl:'setToReady', //initialControl:'setUnavailable'
-				label:"<div style='text-decoration:line-through;'>Forgot Password</div>"
+				label:"<div>Forgot Password</div>"
 			});
-*/
+
 			if (this.initialStatusMessage){
 				$('#'+this.displayParameters.status.divId).html(this.initialStatusMessage).removeClass('bad').addClass('good');
 			}
@@ -110,10 +110,17 @@ initDomElements:function(){
 
 
 saveButtonHandler:function(control, parameter){
+
+
+
 	var componentName='saveButton';
 	if (control.which=='13'){control='click';}; //enter key
 	switch(control){
 		case 'click':
+
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+
 			GoodEarthStore.Models.Session.login(this.element.formParams(), this.callback('resetAfterSave'));
 		break;
 		case 'setAccessFunction':
@@ -155,7 +162,7 @@ resetAfterSave:function(inData){
 
 					var outMessage='';
 					for (var i=0, len=inData.messages.length; i<len; i++){
-						outMessage+=inData.messages[i]+'<br/>';
+						outMessage+=inData.messages[i][1]+'<br/>';
 					}
 				$('#'+this.displayParameters.status.divId).html(outMessage).removeClass('good').addClass('bad');
 
@@ -177,6 +184,9 @@ registerButtonHandler:function(control, parameter){
 	switch(control){
 		case 'click':
 
+		if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+		else{return;}
+
 		this.element.good_earth_store_session_register();
 
 		break;
@@ -194,7 +204,10 @@ forgotButtonHandler:function(control, parameter){
 	switch(control){
 		case 'click':
 
-		alert("Sorry, we've not had time to get this working. Please call us and we will help you out.");
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+
+		this.element.good_earth_store_session_forgot({selector:'password'});
 
 		break;
 		case 'setAccessFunction':
