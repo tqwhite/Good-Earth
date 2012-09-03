@@ -84,7 +84,7 @@ private function sendResetEmail($userObj){
 			Or, copy and paste this link:
 			<div style='font-size:10pt;margin:20px 0px 30px 50px;color:#E26437;'>
 			<A href='http://{$_SERVER['SERVER_NAME']}/user/changepw/{$userObj->resetCode}' style='color:#E26437;text-decoration:none;'>
-				{http://{$_SERVER['SERVER_NAME']}/user/changepw/{$userObj->resetCode}
+				http://{$_SERVER['SERVER_NAME']}/user/changepw/{$userObj->resetCode}
 			</a>
 			</div>
 
