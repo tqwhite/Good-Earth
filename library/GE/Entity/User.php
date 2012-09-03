@@ -82,14 +82,14 @@ class User /*extends Base*/{
 
 
 	/**
-	 * @column(type="string", length=60)
+	 * @column(type="string", length=60, nullable=true)
 	 * @var string
 	 **/
 
 	private $resetCode;
 
 	/**
-	 * @column(type="datetime", nullable=false)
+	 * @column(type="datetime", nullable=true)
 	 * @var datetime
 	 **/
 
