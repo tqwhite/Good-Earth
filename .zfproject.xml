@@ -82,6 +82,7 @@
         <modelFile modelName="Purchase"/>
         <modelFile modelName="Payment"/>
         <modelFile modelName="Export"/>
+        <modelFile modelName="StraightSql"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>

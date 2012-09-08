@@ -49,6 +49,23 @@ class Application_Model_Base
 
 	}
 
+	public function getHelixList($hydrationMode){
+
+		$query = $this->entityManager->createQuery("SELECT u from GE\\Entity\\{$this->entityName} u WHERE u.alreadyInHelix IS NULL");
+
+		switch ($hydrationMode){
+			default:
+			case 'array':
+				$list = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+				break;
+			case 'record':
+				$list = $query->getResult();
+				break;
+		}
+		return $list;
+
+	}
+
 	public function getByRefId($refId){
 
 		$query = $this->entityManager->createQuery("SELECT u from GE\\Entity\\{$this->entityName} u WHERE u.refId = :refId");

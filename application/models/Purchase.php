@@ -59,34 +59,10 @@ class Application_Model_Purchase extends Application_Model_Base
 			);
 				break;
 			case 'export':
-/*
-echo get_class($inData->accountPurchaseNodes)." x<BR>";
-//\Zend_Debug::dump($inData->accountPurchaseNodes);
-$a=$inData->accountPurchaseNodes[0];
-echo "<div style='background:red;height:10px;width:100%;'></div>";
-*/
-
-//			error_reporting(~E_ALL); //error_reporting(E_ERROR | E_WARNING | E_PARSE); //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
-echo "<div style='padding-bottom:200px;'>";
-echo "<HR>";
-
-echo get_class($inData)."<BR>";
-echo get_class($inData->accountPurchaseNodes)."<BR>";
-echo get_class($inData->accountPurchaseNodes[0])."<BR>";
-echo "<HR>";
-
-echo get_class($inData)." x<BR>";
-echo get_class($inData->purchaseOrderNodes)."<BR>";
-echo 'aa'.get_class($inData->purchaseOrderNodes[0])."<BR>";
-echo 'past lookup';
-echo "</div>";
-exit;;
-
-
 				$outArray=array(
 					'refId'=>$inData->refId,
 					'phoneNumber'=>$inData->phoneNumber,
-					'cardName'=>$inData->cardName,
+					'cardName'=>'XC'.$inData->cardName,
 					'street'=>$inData->street,
 					'city'=>$inData->city,
 					'state'=>$inData->state,
@@ -104,10 +80,10 @@ exit;;
 					'fdApprovalCode'=>$inData->fdApprovalCode,
 					'created'=>$inData->created,
 					'accounts'=>\Application_Model_Account::formatOutput($inData->accountPurchaseNodes, 'export', 'accounts'),
-					'orders'=>\Application_Model_Order::formatOutput($inData->purchaseOrderNodes, 'export', 'orders')/*,
+					'orders'=>\Application_Model_Order::formatOutput($inData->purchaseOrderNodes, 'export', 'orders'),
 					'purchaseOrderNodes'=>\Application_Model_Export::formatOutput($inData->purchaseOrderNodes, 'export', 'pon'),
-					'accountPurchaseNodes'=>\Application_Model_Export::formatOutput($inData->accountPurchaseNodes, 'export', 'apn')*/
-
+					'accountPurchaseNodes'=>\Application_Model_Export::formatOutput($inData->accountPurchaseNodes, 'export', 'apn')
+//web data manager, lunchie
 				);
 				break;
 

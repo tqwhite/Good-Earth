@@ -4,12 +4,12 @@ class Application_Model_Export
 {
 
 public function collectPurchases(){
+error_reporting(E_ALL && ~E_NOTICE); //error_reporting(E_ERROR | E_WARNING | E_PARSE); //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 
 	$dataObj=new \Application_Model_Purchase();
 	$outList=array();
-		$dataList=$dataObj->getList('record');
+		$dataList=$dataObj->getHelixList('record');
 
-error_reporting(E_ALL && ~E_NOTICE); //error_reporting(E_ERROR | E_WARNING | E_PARSE); //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 	if ($debug=true){
 		$len=6;
 	}
@@ -20,8 +20,9 @@ error_reporting(E_ALL && ~E_NOTICE); //error_reporting(E_ERROR | E_WARNING | E_P
 	$i=0;
 	foreach($dataList as $label=>$element){
 		if ($i++>$len){break;}
-echo get_class($element)." (models/export)<BR>";
-		$outList[]=\Application_Model_Purchase::formatOutput($element, 'export', 'purchase');
+		$item=\Application_Model_Purchase::formatOutput($element, 'export', 'purchase');
+		$outList[]=$item;
+
 	}
 
 
@@ -40,29 +41,29 @@ public function getTableData($purchaseList, $tableListString){
 					$outList[$tableName][]=$this->extractScalars($purchaseRec, $path);
 				break;
 				case 'purchaseOrderNodes':
-// 					$path='purchaseOrderNodes';
-// 					$outList[$tableName][]=$this->extractScalars($purchaseRec, $path);
-// 				break;
-// 				case 'accountPurchaseNodes':
-// 					$path='accountPurchaseNodes';
-// 					$outList[$tableName][]=$this->extractScalars($purchaseRec, $path);
-// 				break;
-// 				case 'purchases':
-// 					$path='';
-// 					$outList[$tableName][]=$this->extractScalars($purchaseRec, $path);
-// 				break;
-// 				case 'users':
-// 					$path='accounts.0.users';
-// 					$outList[$tableName][]=$this->extractScalars($purchaseRec, $path);
-// 				break;
+					$path='purchaseOrderNodes';
+					$outList[$tableName][]=$this->extractScalars($purchaseRec, $path);
+				break;
+				case 'accountPurchaseNodes':
+					$path='accountPurchaseNodes';
+					$outList[$tableName][]=$this->extractScalars($purchaseRec, $path);
+				break;
+				case 'purchases':
+					$path='';
+					$outList[$tableName][]=$this->extractScalars($purchaseRec, $path);
+				break;
+				case 'users':
+					$path='accounts.0.users';
+					$outList[$tableName][]=$this->extractScalars($purchaseRec, $path);
+				break;
 				case 'students':
 					$path='accounts.0.students';
 					$outList[$tableName][]=$this->extractScalars($purchaseRec, $path);
 				break;
-// 				case 'orders':
-// 					$path='orders';
-// 					$outList[$tableName][]=$this->extractScalars($purchaseRec, $path);
-// 				break;
+				case 'orders':
+					$path='orders';
+					$outList[$tableName][]=$this->extractScalars($purchaseRec, $path);
+				break;
 			}
 		}
 	}

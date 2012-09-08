@@ -1,7 +1,7 @@
-update accountPurchaseNodes set dirtyForHelix=1 where isnull(dirtyForHelix);
-update accounts set dirtyForHelix=1 where isnull(dirtyForHelix);
-update orders set dirtyForHelix=1 where isnull(dirtyForHelix);
-update purchaseOrderNodes set dirtyForHelix=1 where isnull(dirtyForHelix);
-update purchases set dirtyForHelix=1 where isnull(dirtyForHelix);
-update students set dirtyForHelix=1 where isnull(dirtyForHelix);
-update users set dirtyForHelix=1 where isnull(dirtyForHelix);
+update accountPurchaseNodes set alreadyInHelix=1 where isnull(alreadyInHelix);
+update accounts set alreadyInHelix=1 where isnull(alreadyInHelix);
+update orders set alreadyInHelix=1 where isnull(alreadyInHelix);
+update purchaseOrderNodes set alreadyInHelix=1 where isnull(alreadyInHelix);
+update purchases set alreadyInHelix=1 where isnull(alreadyInHelix);
+update students set alreadyInHelix=1 where isnull(alreadyInHelix);
+update users set alreadyInHelix=1 where isnull(alreadyInHelix);

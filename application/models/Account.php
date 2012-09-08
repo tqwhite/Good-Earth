@@ -54,10 +54,9 @@ class Application_Model_Account extends Application_Model_Base
 					);
 				break;
 			case 'export':
-echo get_class($inData)." (models/account)<BR>";
 				$outArray=array(
 						'refId'=>$inData->refId,
-						'familyName'=>$inData->familyName,
+						'familyName'=>'AB'.$inData->familyName,
 						'users'=>\Application_Model_User::formatOutput($inData->users, $outputType),
 						'students'=>\Application_Model_Student::formatOutput($inData->students, $outputType),
 						'created'=>$inData->created

@@ -55,7 +55,6 @@ public function __construct(){
 }
 
 public function __get($property){
-	if ($property=='refId'){return 'yy';}
 	return $this->$property;
 }
 

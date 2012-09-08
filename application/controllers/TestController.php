@@ -1003,7 +1003,7 @@ echo "=======================<br/>";
     	$dataObj=new \Application_Model_Export();
 		$dataList=$dataObj->collectPurchases();
 		$tableArray=$dataObj->getTableData($dataList, 'purchases accounts users students orders purchaseOrderNodes accountPurchaseNodes');
-	//	$result=$dataObj->write($tableArray);
+		$result=$dataObj->write($tableArray);
 
 		Zend_Debug::dump($tableArray, 'tableArray');
 	//	echo "<div style='background:green;height:25px;width:100%;'></div>";
@@ -1012,7 +1012,7 @@ echo "=======================<br/>";
 
     public function exportAccountsAction()
     {
-    echo "hello";exit;
+    echo "not in use";exit;
 
     }
 

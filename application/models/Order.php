@@ -63,7 +63,6 @@ class Application_Model_Order extends Application_Model_Base
 					);
 					break;
 				case 'export':
-echo get_class($inData)." (models/order/scalar)<BR>";
 					$outArray=array(
 						'refId'=>$inData->refId,
 						'studentRefId'=>$inData->student->refId,
@@ -101,22 +100,5 @@ echo get_class($inData)." (models/order/scalar)<BR>";
 
 	}
 
-
-
-
-	static function formatOutput($inData, $outputType, $tracker){
-
-echo "tracker=$tracker<BR>";
-echo get_class($inData).'/'.gettype($inData)." (base/formatOutput)<BR>";
-
-
-		foreach ($inData as $label=>$data){
-			$outList[]=static::formatScalar($data, $outputType);
-		}
-
-
-		return $outList;
-
-	}
-}
+} //end of class
 

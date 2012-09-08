@@ -1,11 +1,13 @@
-select 
-a.created, a.familyName, p.chargeTotal/100
-from purchases as p
-left join accountPurchaseNodes as apn on apn.purchaseRefId=p.refId
-left join accounts as a on a.refId=apn.accountRefId
+select  
+a.familyName, 
+a.created as account, p.created as purchase,
+p.lastFour as purch, o.created as 'order'
 
-#left join purchaseOrderNodes as pon on pon.purchaseRefId=p.refId
-#left join orders as o on o.refId=pon.orderRefId
+from accounts as a
+left join accountPurchaseNodes as apn on apn.accountRefId=a.refId
+left join purchases as p on p.refId=apn.purchaseRefId
 
-where p.refId='003C226B-1D5C-CAA9-CC5F-386B2069140C'
-order by a.created desc limit 10
+left join purchaseOrderNodes as pon on pon.purchaseRefId=p.refId
+left join orders as o on o.refId=pon.orderRefId
+
+order by o.created desc limit 10

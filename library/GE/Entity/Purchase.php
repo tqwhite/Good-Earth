@@ -75,7 +75,7 @@ class Purchase /*extends Base*/{
 
     /**
 	 * @param \Doctrine\Common\Collections\Collection $property
-	 * @OneToMany(targetEntity="PurchaseOrderNode", mappedBy="purchases", cascade={"persist", "remove"});
+	 * @OneToMany(targetEntity="PurchaseOrderNode", mappedBy="purchase", cascade={"persist", "remove"});
      */
     private $purchaseOrderNodes;
 

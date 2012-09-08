@@ -1,1 +1,4 @@
 mysqldump -ugoodearthsite -pglory*snacks  goodEarthProductionData > goodEarthProductionData.sql
+
+
+mysqldump -ugoodearthsite -pglory*snacks  goodEarthDemoData > goodEarthDemoData.sql
