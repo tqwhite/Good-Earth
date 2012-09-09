@@ -6,11 +6,13 @@ class TestController extends Zend_Controller_Action
     private $doctrineContainer = null;
 
     private $em = null;
+    private $entityManager; //I prefer this name
 
     public function init()
     {
 		$this->doctrineContainer=Zend_Registry::get('doctrine');
 		$this->em=$this->doctrineContainer->getEntityManager();
+		$this->entityManager=$this->em;
     }
 
     public function indexAction()
@@ -1001,19 +1003,33 @@ echo "=======================<br/>";
     public function exportAction()
     {
     	$dataObj=new \Application_Model_Export();
-		$dataList=$dataObj->collectPurchases();
-		$tableArray=$dataObj->getTableData($dataList, 'purchases accounts users students orders purchaseOrderNodes accountPurchaseNodes');
+		$purchaseData=$dataObj->collectPurchases();
+		$dataList=$purchaseData['exportData'];
+		$tableArray=$dataObj->getTableData($dataList, 'accounts users students orders purchases accountPurchaseNodes purchaseOrderNodes');
 		$result=$dataObj->write($tableArray);
 
-		Zend_Debug::dump($tableArray, 'tableArray');
-	//	echo "<div style='background:green;height:25px;width:100%;'></div>";
+
+		echo "export write result=$result<BR>";
+
+		if (true){
+			echo "setting alreadyInHelix<br/>";
+			foreach ($purchaseData['entityList'] as $purchase){
+
+	 				$purchase->alreadyInHelix=true;
+	 				$this->entityManager->persist($purchase);
+					echo "setting {$purchase->refId}<br/>";
+			}
+			echo "done setting alreadyInHelix<br/>";
+			$this->entityManager->flush();
+		}
+		echo 'export complete';
+	//	Zend_Debug::dump($tableArray, 'exportAction/tableArray');
 		exit;
     }
 
     public function exportAccountsAction()
     {
-    echo "not in use";exit;
-
+    	echo 'not in use'; exit;
     }
 
     public function accountsAction()

@@ -65,7 +65,8 @@ initDisplay:function(inData){
 			displayParameters:this.displayParameters,
 			viewHelper:this.viewHelper,
 			formData:{
-				account:this.account
+				account:this.account,
+				schools:this.schools
 			}
 		})
 		);

@@ -6,15 +6,7 @@ class Application_Model_StraightSql
     static function update($args)
     {
 
-	$args=array(
-		'updateSetData'=>array(
-			'alreadyInHelix'=>1
-			),
-		'tableName'=>'purchases',
-		'whereClauses'=>array(
-			"refId='5727B2F9-46A6-0BCD-65C1-4B1C328C5EBB'"
-		)
-	);
+
 
 		$locale='qDev';
 	switch ($locale){
@@ -38,10 +30,13 @@ class Application_Model_StraightSql
 		break;
 
 		}
-$result=$db->fetchAll("select * from schools");
-\Q\Utils::dumpWeb($result);
+\Q\Utils::dumpWeb($args['tableName']);
+\Q\Utils::dumpWeb($args['updateSetData']);
+\Q\Utils::dumpWeb($args['whereClauses']);
+
 	$result=$db->update($args['tableName'], $args['updateSetData'], $args['whereClauses']);
-\Q\Utils::dumpWeb($result); exit;
+\Q\Utils::dumpWeb($result);
+exit;
 		return;
 
     }

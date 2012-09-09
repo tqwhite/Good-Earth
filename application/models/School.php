@@ -34,6 +34,7 @@ class Application_Model_School extends Application_Model_Base
 			return array(
 				'name'=>$inData->school->name,
 				'refId'=>$inData->school->refId,
+				'suppressDisplay'=>$inData->school->suppressDisplay,
 				'gradeLevels'=>\Application_Model_GradeLevel::formatOutput($inData->school->gradeLevelNodes)
 			);
 		}
@@ -41,6 +42,7 @@ class Application_Model_School extends Application_Model_Base
 			return array(
 				'name'=>$inData->name,
 				'refId'=>$inData->refId,
+				'suppressDisplay'=>$inData->suppressDisplay,
 				'gradeLevels'=>\Application_Model_GradeLevel::formatOutput($inData->gradeLevelNodes)
 			);
 		}

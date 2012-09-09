@@ -27,7 +27,14 @@ class PurchaseController extends Zend_Controller_Action
 		$errorList=\Application_Model_Purchase::validate($inData);
 
 		if (count($errorList)==0){
-			if ($specialInstruction!=='9999' && $specialInstruction!=='8888' && $specialInstruction!=='9012'&& $specialInstruction!=='9022'){
+			if (
+				$specialInstruction!=='9999'
+				&& $specialInstruction!=='8888'
+				&& $specialInstruction!=='9012'
+				&& $specialInstruction!=='9100' //not implemented: definition, F&R, *only* sends mail to user, not schools, sherry or anyone
+				&& $specialInstruction!=='9101' //not implemented: definition, F&R, *only* sends mail to sherry, not schools, user or anyone
+				&& $specialInstruction!=='9022'
+			){
 				$processResult=\Application_Model_Payment::process($inData);
 				if ($processResult['FDGGWSAPI:TRANSACTIONRESULT']!='APPROVED'){
 					$status=-1;

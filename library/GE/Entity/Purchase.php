@@ -177,6 +177,9 @@ public function __get($property){
 		case 'chargeTotal':
 			return $this->$property/100;
 			break;
+		case 'created':
+			return $this->created->format("Y-m-d H:i:s");
+			break;
 		default:
 			return $this->$property;
 			break;

@@ -19,16 +19,23 @@ class IndexController extends Zend_Controller_Action
 		if ($store['status']=='closed'){
 			$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'closed');
 			$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
-		}
+
+  	  }
+	}
+    public function payAction()
+    {
+        // action body
     }
 
-    public function payAction()
+    public function exportAction()
     {
         // action body
     }
 
 
 }
+
+
 
 
 

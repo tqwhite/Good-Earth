@@ -159,6 +159,8 @@ class ServerInterface
      */
     public $poolRetryTimes = 3;
 
+	private $displayFieldsReport=false;
+
 public function __construct(){
 
 		$helixConfiguration=\Zend_Registry::get('helixConfiguration');
@@ -443,6 +445,39 @@ public function retrieve($rel, $view, $include_outer_data = false)
         }
     }
 
+private function sequenceFieldsToHelix($inData, $fieldArray){
+	$remainingFieldNameList=$fieldArray;
+	$remainingDataElementList=$inData;
+	$resultingFieldList=array();
+
+	$outArray=array();
+	foreach ($fieldArray as $label=>$fieldName){
+		if (isset($inData[$fieldName])){
+			$outArray[$fieldName]=$inData[$fieldName];
+			$resultingFieldList[$fieldName]=$fieldName;
+			unset($remainingDataElementList[$fieldName]);
+			unset($remainingFieldNameList[$label]);
+		}
+	}
+
+	if ($this->displayFieldsReport){
+		\Zend_Debug::dump($remainingFieldNameList, 'helix names not fulfilled');
+		\Zend_Debug::dump($remainingDataElementList, 'sql data not used');
+		echo "<div style='border-bottom:1pt solid gray;width:300px;height:5px;'></div>";
+		\Zend_Debug::dump($fieldArray, 'helix expected field sequence');
+		echo "<div style='border-bottom:1pt solid gray;width:300px;height:5px;'></div>";
+		\Zend_Debug::dump($resultingFieldList, 'actual outbound field sequence');
+		\Zend_Debug::dump($outArray, 'actual outbound data');
+		echo "<div style='background:red;height:10px;width:100%;'></div>";
+	}
+	return $outArray;
+}
+
+public function storeAndDisplayFieldsReport($rel, $view, $data){
+	$this->displayFieldsReport=true;
+	return $this->store($rel, $view, $data);
+}
+
 public function store($rel, $view, $data)
     {
 //debug//echo "<hr/>entering hc.store<br>";
@@ -462,8 +497,17 @@ public function store($rel, $view, $data)
 
         $store_done = true;
         if ($do_store) {
+			if ($this->displayFieldsReport){
+				echo "tableName/view=$view<br>";
+			}
 
+			$data=$this->sequenceFieldsToHelix($data, $this->fieldNames);
             $store_done = $this->saveSingleRecord($data);
+
+        if ($this->displayFieldsReport){
+				\Zend_Debug::dump($data, "actual SENT data-tableName/view=$view");
+			}
+//debug//\Zend_Debug::dump($data, 'actual SENT data-tableName/view=$view');
         }
 //debug//echo "exit hc.store=$store_done<br>";
         return $store_done;
@@ -951,9 +995,8 @@ private function ssc110($data)
                     $this->viewName . chr(13) /* TLS: hardcode to carriage-return. (dont use the record delimiter which can change!) $recordDelimiter */ .
                     implode($field_sep, $values);
 
-
 //debug//echo "<div style=background:black;color:white;>hc.saveSingleRecord (110) says: wrote to fileSocket, said=".urlencode($tmp)."</div>";
-
+//debug//\Q\Utils::dumpWeb($values, 'file socket wrote this data');
                 fwrite($this->fileSocket, $ssc110, strlen($ssc110));
                 $output = $this->read_socket();
                 if (substr($output, 0, 10) == 'ERR SSC110') {

@@ -56,7 +56,7 @@ class Application_Model_Account extends Application_Model_Base
 			case 'export':
 				$outArray=array(
 						'refId'=>$inData->refId,
-						'familyName'=>'AB'.$inData->familyName,
+						'familyName'=>'XF'.$inData->familyName,
 						'users'=>\Application_Model_User::formatOutput($inData->users, $outputType),
 						'students'=>\Application_Model_Student::formatOutput($inData->students, $outputType),
 						'created'=>$inData->created

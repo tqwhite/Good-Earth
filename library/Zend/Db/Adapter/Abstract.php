@@ -476,10 +476,13 @@ abstract class Zend_Db_Adapter_Abstract
 
         // prepare and execute the statement with profiling
         $stmt = $this->prepare($sql);
-        $stmt->execute($bind);
 
+        $stmt->execute($bind);
         // return the results embedded in the prepared statement object
         $stmt->setFetchMode($this->_fetchMode);
+
+
+
         return $stmt;
     }
 

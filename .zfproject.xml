@@ -11,6 +11,7 @@
         <controllerFile controllerName="Index">
           <actionMethod actionName="index"/>
           <actionMethod actionName="database"/>
+          <actionMethod actionName="export"/>
         </controllerFile>
         <controllerFile controllerName="Error"/>
         <controllerFile controllerName="Test">
@@ -62,6 +63,11 @@
         <controllerFile controllerName="Purchase">
           <actionMethod actionName="index"/>
           <actionMethod actionName="pay"/>
+        </controllerFile>
+        <controllerFile controllerName="Utility">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="export"/>
+          <actionMethod actionName="migrate"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
@@ -202,6 +208,18 @@
           <viewControllerScriptsDirectory forControllerName="User">
             <viewScriptFile forActionName="setpw"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Utility">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Index">
+            <viewScriptFile forActionName="export"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Utility">
+            <viewScriptFile forActionName="export"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Utility">
+            <viewScriptFile forActionName="migrate"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
@@ -238,7 +256,9 @@
       <testPHPUnitBootstrapFile filesystemName="bootstrap.php"/>
       <testApplicationDirectory>
         <testApplicationControllerDirectory>
-          <testApplicationControllerFile forControllerName="Index"/>
+          <testApplicationControllerFile forControllerName="Index">
+            <testApplicationActionMethod forActionName="export"/>
+          </testApplicationControllerFile>
           <testApplicationControllerFile forControllerName="Session">
             <testApplicationActionMethod forActionName="index"/>
             <testApplicationActionMethod forActionName="login"/>
@@ -284,6 +304,11 @@
             <testApplicationActionMethod forActionName="exportAccounts"/>
             <testApplicationActionMethod forActionName="accounts"/>
             <testApplicationActionMethod forActionName="migrateDb"/>
+            <testApplicationActionMethod forActionName="migrate"/>
+          </testApplicationControllerFile>
+          <testApplicationControllerFile forControllerName="Utility">
+            <testApplicationActionMethod forActionName="index"/>
+            <testApplicationActionMethod forActionName="export"/>
             <testApplicationActionMethod forActionName="migrate"/>
           </testApplicationControllerFile>
         </testApplicationControllerDirectory>

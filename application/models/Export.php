@@ -8,10 +8,10 @@ error_reporting(E_ALL && ~E_NOTICE); //error_reporting(E_ERROR | E_WARNING | E_P
 
 	$dataObj=new \Application_Model_Purchase();
 	$outList=array();
-		$dataList=$dataObj->getHelixList('record');
+		$dataList=$dataObj->getHelixSendList('record');
 
 	if ($debug=true){
-		$len=6;
+		$len=0;
 	}
 	else{
 		$len=count($dataList);
@@ -25,8 +25,10 @@ error_reporting(E_ALL && ~E_NOTICE); //error_reporting(E_ERROR | E_WARNING | E_P
 
 	}
 
-
-	return $outList;
+	return array(
+		'entityList'=>$dataList,
+		'exportData'=>$outList
+	);
 }
 
 public function getTableData($purchaseList, $tableListString){
@@ -122,14 +124,13 @@ static function formatOutput($inData, $outputType){
 
 
 public function write($inData){
-
-			error_reporting(E_ALL); //error_reporting(E_ERROR | E_WARNING | E_PARSE); //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 	$outputManager=new \Heliport\OutputManager();
 
 	foreach ($inData as $tableName=>$data){
-		echo "$tableName<BR>";
-		$outputManager->write($tableName, $data);
+		$result=$outputManager->write($tableName, $data);
 	}
+
+	return $result;
 }
 
 }
