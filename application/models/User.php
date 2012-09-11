@@ -65,7 +65,7 @@ class Application_Model_User extends Application_Model_Base
 		case 'export':
 			$outArray=array(
 				'refId'=>$inData->refId,
-				'firstName'=>'XF'.$inData->firstName,
+				'firstName'=>$inData->firstName,
 				'emailAdr'=>$inData->emailAdr,
 				'lastName'=>$inData->lastName,
 				'userName'=>$inData->userName,

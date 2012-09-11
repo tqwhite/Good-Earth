@@ -62,7 +62,7 @@ class Application_Model_Purchase extends Application_Model_Base
 				$outArray=array(
 					'refId'=>$inData->refId,
 					'phoneNumber'=>$inData->phoneNumber,
-					'cardName'=>'XF'.$inData->cardName,
+					'cardName'=>$inData->cardName,
 					'street'=>$inData->street,
 					'city'=>$inData->city,
 					'state'=>$inData->state,
