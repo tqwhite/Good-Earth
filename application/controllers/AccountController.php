@@ -98,7 +98,7 @@ class AccountController extends Zend_Controller_Action
 				{$userObj->emailAdr}
 			<div style='margin-top:15px;'>Please click this link:</div>
 			<div style='margin:25px 0px 30px 50px;font-size:14pt;color:#E26437;'>
-			<A href='{http://{$_SERVER['SERVER_NAME']}/account/confirm/{$userObj->confirmationCode}' style='color:#E26437;text-decoration:none;'>CONFIRM</a>
+			<A href='http://{$_SERVER['SERVER_NAME']}/account/confirm/{$userObj->confirmationCode}' style='color:#E26437;text-decoration:none;'>CONFIRM</a>
 			</div>
 			Or, copy and paste this link:
 			<div style='font-size:10pt;margin:20px 0px 30px 50px;color:#E26437;'>
