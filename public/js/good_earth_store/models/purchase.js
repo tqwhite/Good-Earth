@@ -104,12 +104,14 @@ validate:function(inData){
 	{errors.push([name, "Card Number is required"]);}
 		else if (datum.replace(/ /g, '', datum).length<15)
 		{errors.push([name, "Card number is invalid"]);}
+		else if (datum.match(/[^0-9 ]/))
+		{errors.push([name, "Numbers and spaces only in card number"]);}
 
 	name='expMonth';
 	datum=inData[name];
 	if (!datum || datum=='MM')
 	{errors.push([name, "Expiration Date is required"]);}
-		else if (!datum.match(/\d{2}/))
+		else if (!datum.match(/^\d{2}$/))
 		{errors.push([name, "Month must be two digits"]);}
 		else if (datum<1 || datum>12)
 		{errors.push([name, "Month must be 1 to 12"]);}
@@ -118,7 +120,7 @@ validate:function(inData){
 	datum=inData[name];
 	if (!datum || datum=='YY')
 	{errors.push([name, "year is required"]);}
-		else if (!datum.match(/\d{2}/))
+		else if (!datum.match(/$\d{2}$/))
 		{errors.push([name, "Year must be two digits"]);}
 
 	return errors;
