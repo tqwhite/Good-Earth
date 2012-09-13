@@ -22,7 +22,7 @@ class UtilityController extends Zend_Controller_Action
     public function exportAction()
     {
 
-    ob_start();
+    	ob_start();
 
     	$dataObj=new \Application_Model_Export();
 		$purchaseData=$dataObj->collectPurchases();

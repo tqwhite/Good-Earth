@@ -68,7 +68,7 @@ class Application_Model_Student extends Application_Model_Base
 		case 'export':
 			$outArray=array(
 				'refId'=>$inData->refId,
-				'firstName'=>'$inData->firstName,
+				'firstName'=>$inData->firstName,
 				'lastName'=>$inData->lastName,
 				'vegetarianFlag'=>$inData->vegetarianFlag,
 				'schoolRefId'=>$inData->school->refId,
