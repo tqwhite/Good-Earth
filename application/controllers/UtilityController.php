@@ -30,6 +30,7 @@ class UtilityController extends Zend_Controller_Action
 
 		if (count($dataList)>0){
 			$tableArray=$dataObj->getTableData($dataList, 'accounts users students orders purchases accountPurchaseNodes purchaseOrderNodes');
+
 			$result=$dataObj->write($tableArray);
 		}
 		else{
@@ -47,8 +48,8 @@ class UtilityController extends Zend_Controller_Action
 
 			foreach ($purchaseData['entityList'] as $purchase){
 
-					$purchase->alreadyInHelix=true;
-					$this->entityManager->persist($purchase);
+// 					$purchase->alreadyInHelix=true;
+// 					$this->entityManager->persist($purchase);
 					echo "purchaseRefId {$purchase->refId}<br/>\n";
 			}
 			$this->entityManager->flush();

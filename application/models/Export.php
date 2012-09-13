@@ -84,7 +84,9 @@ private function extractScalars($list, $path){
 
 			foreach ($data as $label2=>$data2){
 				if (gettype($data2)!='array' and gettype($data2)!='object'){
-					$assocArray[$label2]=$data2;
+					if (!isset($assocArray[$label2])){
+						$assocArray[$label2]=$data2;
+					}
 				}
 			}
 		}
