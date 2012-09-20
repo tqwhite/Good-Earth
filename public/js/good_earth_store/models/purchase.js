@@ -120,7 +120,7 @@ validate:function(inData){
 	datum=inData[name];
 	if (!datum || datum=='YY')
 	{errors.push([name, "year is required"]);}
-		else if (!datum.match(/$\d{2}$/))
+		else if (!datum.match(/^\d{2}$/))
 		{errors.push([name, "Year must be two digits"]);}
 
 	return errors;

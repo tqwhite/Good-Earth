@@ -10,7 +10,7 @@ error_reporting(E_ALL && ~E_NOTICE); //error_reporting(E_ERROR | E_WARNING | E_P
 	$outList=array();
 		$dataList=$dataObj->getHelixSendList('record');
 
-	if ($debug=true){
+	if ($debug=false){
 		$len=0;
 	}
 	else{
@@ -40,31 +40,31 @@ public function getTableData($purchaseList, $tableListString){
 			switch ($tableName){
 				case 'accounts':
 					$path='accounts'; //there is a database design error that makes this purchase to accounts be many-to-many
-					$outList[$tableName][]=$this->extractScalars($purchaseRec, $path);
+					$this->extractScalars($outList[$tableName], $purchaseRec, $path);
 				break;
 				case 'purchaseOrderNodes':
 					$path='purchaseOrderNodes';
-					$outList[$tableName][]=$this->extractScalars($purchaseRec, $path);
+					$this->extractScalars($outList[$tableName], $purchaseRec, $path);
 				break;
 				case 'accountPurchaseNodes':
 					$path='accountPurchaseNodes';
-					$outList[$tableName][]=$this->extractScalars($purchaseRec, $path);
+					$this->extractScalars($outList[$tableName], $purchaseRec, $path);
 				break;
 				case 'purchases':
 					$path='';
-					$outList[$tableName][]=$this->extractScalars($purchaseRec, $path);
+					$this->extractScalars($outList[$tableName], $purchaseRec, $path);
 				break;
 				case 'users':
 					$path='accounts.0.users';
-					$outList[$tableName][]=$this->extractScalars($purchaseRec, $path);
+					$this->extractScalars($outList[$tableName], $purchaseRec, $path);
 				break;
 				case 'students':
 					$path='accounts.0.students';
-					$outList[$tableName][]=$this->extractScalars($purchaseRec, $path);
+					$this->extractScalars($outList[$tableName], $purchaseRec, $path);
 				break;
 				case 'orders':
 					$path='orders';
-					$outList[$tableName][]=$this->extractScalars($purchaseRec, $path);
+ 					$this->extractScalars($outList[$tableName], $purchaseRec, $path);
 				break;
 			}
 		}
@@ -72,16 +72,31 @@ public function getTableData($purchaseList, $tableListString){
 	return $outList;
 }
 
-private function extractScalars($list, $path){
-	$assocArray=array();
+private function extractScalars(&$outTable, $list, $path){
 	$list=Q\Utils::getFromDottedPath($list, $path);
+	$isList=true;
 
-	foreach ($list as $label=>$data){
+	foreach($list as $label=>$data){
 		if (gettype($data)!='array' and gettype($data)!='object'){
-					$assocArray[$label]=$data;
+			$isList=false;
+			break;
 		}
-		else{
+	}
 
+	if (!$isList){
+		$assocArray=array();
+		foreach ($list as $label=>$data){
+			if (gettype($data)!='array' and gettype($data)!='object'){
+				if (!isset($assocArray[$label])){
+					$assocArray[$label]=$data;
+				}
+			}
+		}
+		$outTable[]=$assocArray;
+	}
+	else{
+		foreach ($list as $label=>$data){
+			$assocArray=array();
 			foreach ($data as $label2=>$data2){
 				if (gettype($data2)!='array' and gettype($data2)!='object'){
 					if (!isset($assocArray[$label2])){
@@ -89,9 +104,9 @@ private function extractScalars($list, $path){
 					}
 				}
 			}
+			$outTable[]=$assocArray;
 		}
 	}
-	return $assocArray;
 }
 
 static function formatOutput($inData, $outputType){
