@@ -30,8 +30,22 @@ class UtilityController extends Zend_Controller_Action
 
 		if (count($dataList)>0){
 			$tableArray=$dataObj->getTableData($dataList, 'accounts users students orders purchases accountPurchaseNodes purchaseOrderNodes');
+
+
+echo "accountCount=".count($tableArray['accounts'])."<BR>";
+echo "accountPurchaseNodeCount=".count($tableArray['accountPurchaseNodes'])."<BR>";
+echo "userCount=".count($tableArray['users'])."<BR>";
+echo "studentCount=".count($tableArray['students'])."<BR>";
+
+echo "purchaseCount=".count($tableArray['purchases'])."<BR>";
+echo "purchaseOrderNodeCount=".count($tableArray['purchaseOrderNodes'])."<BR>";
+echo "orderCount=".count($tableArray['orders'])."<BR>";
+
+
 \Q\Utils::dumpWeb($tableArray, 'tableArray');
+
 			$result=$dataObj->write($tableArray);
+
 		}
 		else{
 			echo "NO NEW DATA IS READY FOR HELIX. NOTHING SENT.<p/>\n\n";

@@ -34,7 +34,6 @@ error_reporting(E_ALL && ~E_NOTICE); //error_reporting(E_ERROR | E_WARNING | E_P
 public function getTableData($purchaseList, $tableListString){
 
 	$tableList=explode(' ', $tableListString);
-
 	foreach ($purchaseList as $purchaseRec){
 		foreach ($tableList as $tableName){
 			switch ($tableName){
@@ -109,14 +108,14 @@ private function extractScalars(&$outTable, $list, $path){
 	}
 }
 
-static function formatOutput($inData, $outputType){
-
+static function formatOutput($inData, $outputType, $flag){
+	$newRec=array();
 	for ($i=0, $len=count($inData); $i<$len; $i++){
 		$element=$inData[$i];
 
 		switch(get_class($element)){
 			case 'GE\Entity\PurchaseOrderNode':
-				$newRec=array(
+				$newRec[]=array(
 					'orderRefId'=>$element->order->refId,
 					'purchaseRefId'=>$element->purchase->refId,
 					'refId'=>$element->refId,
@@ -126,7 +125,7 @@ static function formatOutput($inData, $outputType){
 
 			break;
 			case 'GE\Entity\AccountPurchaseNode':
-				$newRec=array(
+				$newRec[]=array(
 					'accountRefId'=>$element->account->refId,
 					'purchaseRefId'=>$element->purchase->refId,
 					'refId'=>$element->refId,
