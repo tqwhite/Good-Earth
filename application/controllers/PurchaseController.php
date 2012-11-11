@@ -19,6 +19,11 @@ class PurchaseController extends Zend_Controller_Action
 		$messages=array();
 		$processResult=array();
 
+$debugObject=Zend_Registry::get('debugObject');
+$debugObject['payActionInData']=$inData;
+Zend_Registry::set('debugObject', $debugObject);
+
+
 		$specialInstruction=substr($inData['cardData']['cardNumber'], 0, 4);
 
 		$newPurchaseRefId=\Q\Utils::newGuid();
@@ -115,7 +120,7 @@ class PurchaseController extends Zend_Controller_Action
 				$accountObj=new \Application_Model_Account();
 				$account=$accountObj->getByRefId($inData['account']['refId']);
 				$purchaseObj->addAccount($account);
-
+$debugElementArray=array();
 				$list=$inData['orders'];
 				$orderEntityList=array();
 				for ($i=0, $len=count($list); $i<$len; $i++){
@@ -140,6 +145,12 @@ class PurchaseController extends Zend_Controller_Action
 
 					$sortKey=$student->firstName.$day->seqNum.$student->refId;
 					$orderEntityList[$sortKey]=$order; //collect orders for email
+$debugElementArray[]=array(
+'studentRefId'=>$element['student']['refId'],
+'offeringRefId'=>$element['offer']['refId'],
+'dayRefId'=>$element['day']['refId'],
+'accountRefId'=>$inData['account']['refId']
+);
 
 				}
 
@@ -147,6 +158,19 @@ class PurchaseController extends Zend_Controller_Action
 				$purchaseObj->persist(Application_Model_Base::yesFlush); //I put "$this->emailReceipt($purchaseObj);" ahead of this line and it stopped persisting!?
 
 				$this->emailReceipt($purchaseObj->entity->refId, $orderEntityList, $status);
+
+
+$purchaseObj=array(
+	'chargeTotal'=>$inData['cardData']['chargeTotal'],
+	'cardName'=>$inData['cardData']['cardName']
+);
+
+$debugObject=Zend_Registry::get('debugObject');
+$debugObject['debugElementArray']=$debugElementArray;
+$debugObject['purchaseObj']=$purchaseObj;
+Zend_Registry::set('debugObject', $debugObject);
+
+error_log("<!--startDebug!-->".\Q\Utils::dumpWebString($debugObject)."<!--endDebug!-->");
 
 			$this->_helper->json(array(
 				status=>$status,
@@ -171,6 +195,7 @@ class PurchaseController extends Zend_Controller_Action
 		$this->entityManager=$this->doctrineContainer->getEntityManager();
 		$purchaseEntity=$this->entityManager->find('GE\Entity\Purchase', $purchaseRefId);
 
+
 		ksort($orderEntityList);
 
 		$view = new Zend_View();
@@ -192,6 +217,7 @@ class PurchaseController extends Zend_Controller_Action
 
 		$addressList[]=array('name'=>'Website Programmer', 'address'=>'tq@justkidding.com', 'type'=>'accounting');
 		$addressList[]=array('name'=>$user->firstName.' '.$user->lastName, 'address'=>$user->emailAdr, 'type'=>'customer');
+
 
 		switch($status){
 			default:
