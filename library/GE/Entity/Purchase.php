@@ -164,6 +164,12 @@ class Purchase /*extends Base*/{
 
 	private $alreadyInHelix;
 
+	/**
+	 * @column(type="string", length=4, nullable=true)
+	 * @var string
+	 **/
+	private $lastFour;
+
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
 	$this->created=new \DateTime(date("Y-m-d H:i:s"));
