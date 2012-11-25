@@ -70,7 +70,7 @@ class Application_Model_Purchase extends Application_Model_Base
 					'chargeTotal'=>$inData->chargeTotal,
 					'deferredPaymentPreference'=>$inData->deferredPaymentPreference,
 					'lastFour'=>$inData->lastFour,
-					'firstFour'=>$inData->firstFour,
+//					'firstFour'=>$inData->firstFour,
 					'fdTransactionTime'=>$inData->fdTransactionTime,
 					'fdProcessorReferenceNumber'=>$inData->fdProcessorReferenceNumber,
 					'fdProcessorResponseMessage'=>$inData->fdProcessorResponseMessage,
