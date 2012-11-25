@@ -1,0 +1,7 @@
+
+/*micro clearfix, container with class='blah cf' will contain floating things inside
+thanks: http://themergency.com/css-clearfix-demystified/*/
+
+.cf:before, .cf:after { display: table; }
+.cf:after { clear: both; }
+.cf { zoom: 1; }

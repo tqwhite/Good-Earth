@@ -29,6 +29,59 @@ class Application_Model_User extends Application_Model_Base
 			$errorList[]=array($name, "Password too short");
 		}
 
+		$userObj=new \Application_Model_User();
+
+		$name='emailAdr';
+		$datum=$inData[$name];
+
+		$user=$userObj->getByEmail($datum);
+
+		if (count($user)>0 && !in_array($datum, array('sherry@genatural.com', 'tq@justkidding.com'))){
+			$errorList[]=array($name, "That email address is already associated with an account. Use 'Forgot Password' if you need to.");
+		}
+
+		$name='userName';
+		$datum=$inData[$name];
+
+		$user=$userObj->getUserByUserId($datum);
+
+		if (count($user)>0){
+			$errorList[]=array($name, "That User Name is already in use. User 'Forgot Password' if you need to.");
+		}
+
+
+
+
+		$name='street';
+		$datum=$inData[$name];
+
+		if (!isset($datum)){
+			$errorList[]=array($name, "Street is required");
+		}
+
+		$name='city';
+		$datum=$inData[$name];
+
+		if (!isset($datum)){
+			$errorList[]=array($name, "City is required");
+		}
+
+		$name='state';
+		$datum=$inData[$name];
+
+		if (!isset($datum) || strlen($datum)!=2){
+			$errorList[]=array($name, "State code must be two characters");
+		}
+
+
+		$name='zip';
+		$datum=$inData[$name];
+
+		if (!isset($datum) || strlen($datum)!=5){
+			$errorList[]=array($name, "ZIP code must be five digits");
+		}
+
+
 		return $errorList;
 	}
 
@@ -59,6 +112,14 @@ class Application_Model_User extends Application_Model_Base
 				'lastName'=>$inData->lastName,
 				'emailAdr'=>$inData->emailAdr,
 				'userName'=>$inData->userName,
+
+				'street'=>$inData->street,
+				'city'=>$inData->city,
+				'state'=>$inData->state,
+				'zip'=>$inData->zip,
+
+				'phoneNumber'=>$inData->phoneNumber,
+
 				'account'=>\Application_Model_Account::formatOutput($inData->account, $outputType)
 			);
 			break;
@@ -70,6 +131,12 @@ class Application_Model_User extends Application_Model_Base
 				'lastName'=>$inData->lastName,
 				'userName'=>$inData->userName,
 				'password'=>$inData->password,
+
+				'street'=>$inData->street,
+				'city'=>$inData->city,
+				'state'=>$inData->state,
+				'zip'=>$inData->zip,
+
 				'emailStatus'=>$inData->emailStatus,
 				'confirmationCode'=>$inData->confirmationCode,
 				'phoneNumber'=>$inData->phoneNumber,

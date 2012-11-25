@@ -104,6 +104,7 @@ Zend_Registry::set('debugObject', $debugObject);
 				$purchase->zip=$inData['cardData']['zip'];
 				$purchase->phoneNumber=$inData['cardData']['phoneNumber'];
 				$purchase->lastFour=substr($inData['cardData']['cardNumber'], strlen($inData['cardData']['cardNumber'])-4, 4);
+				$purchase->firstFour=substr($inData['cardData']['cardNumber'], 0, 4);
 
 				$purchase->deferredPaymentPreference=$processResult['deferredPaymentPreference'];
 

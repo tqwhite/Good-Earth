@@ -21,6 +21,7 @@ class AccountController extends Zend_Controller_Action
 		$messages=array();
 
 		$userObj=new \Application_Model_User();
+
 		$errorList=\Application_Model_User::validate($inData);
 
 		if ($errorList){
@@ -43,6 +44,13 @@ class AccountController extends Zend_Controller_Action
 				$u->userName=$inData['userName'];
 				$u->password=$inData['password'];
 				$u->emailAdr=$inData['emailAdr'];
+
+				$u->street=$inData['street'];
+				$u->city=$inData['city'];
+				$u->state=$inData['state'];
+				$u->zip=$inData['zip'];
+
+
 				$u->phoneNumber=$inData['phoneNumber'];
 				$u->confirmationCode=md5($u->refId);
 				$u->account=$account;

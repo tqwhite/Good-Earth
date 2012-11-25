@@ -174,6 +174,32 @@ validate:function(inData){
 		else if (!datum.match(/\d{3}[ -]\d{3}[- ]\d{4}/))
 		{errors.push([name, "Phone Number must be 000-000-0000"]);}
 
+	name='street';
+	datum=inData[name];
+	if (!datum || datum=='required')
+	{errors.push([name, "Street is required"]);}
+
+	name='city';
+	datum=inData[name];
+	if (!datum || datum=='required')
+	{errors.push([name, "City is required"]);}
+
+	name='state';
+	datum=inData[name];
+	if (datum.length!=2)
+	{errors.push([name, "State code must be two characters"]);}
+
+	name='zip';
+	datum=inData[name];
+	if (!datum || datum=='00000')
+	{errors.push([name, "Zip Code is required"]);}
+		else if (datum.length!=5)
+		{errors.push([name, "Zip must be five digits (00000)"]);}
+		else if (!datum.match(/\d{5}/))
+		{errors.push([name, "Zip must be five digits (00000)"]);}
+
+
+
 
 	return errors;
 }

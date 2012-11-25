@@ -1,0 +1,1 @@
+SELECT emailAdr,COUNT(*) FROM users GROUP BY emailAdr HAVING COUNT(*)>1

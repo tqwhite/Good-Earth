@@ -138,8 +138,8 @@ resetAfterSave:function(inData){
 		GoodEarthStore.Models.Session.keep('user', inData.data);
 		$('#'+this.displayParameters.status.divId).html("Welcome back, "+inData.data.firstName+" <span style=color:gray;font-size:6pt'>("+inData.data.school+")</span>").removeClass('bad').addClass('good');
 		GoodEarthStore.Models.LocalStorage.setCookie(GoodEarthStore.Models.LocalStorage.getConstant('loginCookieName'), inData.data.userName);
-		this.element.html("<div style='margin-left:450px;margin-top:200px;' id='spinner'></div>").good_earth_store_customer_dashboard();
 
+		this.element.html("<div style='margin-left:450px;margin-top:200px;' id='spinner'></div>").good_earth_store_customer_dashboard();
 
 	var opts={
 	  lines: 7, // The number of lines to draw

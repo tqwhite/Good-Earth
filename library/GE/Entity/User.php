@@ -23,7 +23,7 @@ class User /*extends Base*/{
 	private $firstName;
 
 	/**
-	 * @column(type="string", length=60, nullable=true)
+	 * @column(type="string", length=60, nullable=false)
 	 * @var string
 	 **/
 	private $emailAdr;
@@ -69,6 +69,34 @@ class User /*extends Base*/{
 	 **/
 
 	private $phoneNumber;
+
+	/**
+	 * @column(type="string", length=60)
+	 * @var string
+	 **/
+
+	private $street;
+
+	/**
+	 * @column(type="string", length=20)
+	 * @var string
+	 **/
+
+	private $city;
+
+	/**
+	 * @column(type="string", length=20)
+	 * @var string
+	 **/
+
+	private $state;
+
+	/**
+	 * @column(type="string", length=20)
+	 * @var string
+	 **/
+
+	private $zip;
 
 
 	/**
