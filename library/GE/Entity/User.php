@@ -78,21 +78,21 @@ class User /*extends Base*/{
 	private $street;
 
 	/**
-	 * @column(type="string", length=20)
+	 * @column(type="string", length=60)
 	 * @var string
 	 **/
 
 	private $city;
 
 	/**
-	 * @column(type="string", length=20)
+	 * @column(type="string", length=2)
 	 * @var string
 	 **/
 
 	private $state;
 
 	/**
-	 * @column(type="string", length=20)
+	 * @column(type="string", length=5)
 	 * @var string
 	 **/
 
