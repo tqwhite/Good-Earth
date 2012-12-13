@@ -1,7 +1,10 @@
-select * from offerings as o1
+select d1.* from offerings as o1
 
 left join offeringGradeLevelNodes as ogl on ogl.offeringRefId=o1.refId
 left join gradeLevels as gl on gl.refId=ogl.gradeLevelRefId
+
+left join offeringDayNodes as odn1 on odn1.offeringRefId=o1.refId
+left join days as d1 on d1.refId=odn1.dayRefId
 
 where o1.refId in 
 (select o.refId

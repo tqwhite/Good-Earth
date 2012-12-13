@@ -17,7 +17,7 @@ qtools.validateProperties({
 	],
  source:'session.register.mainPanel' });
 
-if (window.location.host=='goodearth.local'){
+if (window.location.host=='goodearth.local' || window.location.hash=='#tq'){
 	var firstName='tq',
 		lastName='white',
 		userName='tqwhite'+Math.floor((Math.random()*1000)+1),
@@ -63,7 +63,7 @@ else{
 			<td><input prompt='required' name='userName' value='<%=userName%>'></td>
 		<td style='width:10px;'>&nbsp;</td>
 		<td style='width:70px;'>Password:</td>
-			<td><input type='password' name='password' value='<%=password%>'> ></td>
+			<td><input type='password' name='password' value='<%=password%>'></td>
 	</tr>
 
 

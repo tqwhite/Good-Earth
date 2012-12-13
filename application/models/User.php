@@ -132,10 +132,10 @@ class Application_Model_User extends Application_Model_Base
 				'userName'=>$inData->userName,
 				'password'=>$inData->password,
 
-// 				'street'=>$inData->street,
-// 				'city'=>$inData->city,
-// 				'state'=>$inData->state,
-// 				'zip'=>$inData->zip,
+				'street'=>$inData->street,
+				'city'=>$inData->city,
+				'state'=>$inData->state,
+				'zip'=>$inData->zip,
 
 				'emailStatus'=>$inData->emailStatus,
 				'confirmationCode'=>$inData->confirmationCode,
