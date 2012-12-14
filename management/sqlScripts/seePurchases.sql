@@ -1,4 +1,5 @@
 select 
+p.refId, apn.refId, p.chargeTotal,
 a.familyName,
 u.firstName, u.lastName,
 s.firstname, s.lastName,
@@ -23,3 +24,5 @@ left join meals as m on m.refId=of.mealRefId
 
 left join schools as sch on sch.refId=s.schoolRefId
 left join gradeLevels as g on g.refId=s.gradeLevelRefId
+
+order by p.created desc
