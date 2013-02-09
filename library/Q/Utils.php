@@ -7,7 +7,7 @@ class Utils{
 
 static function dump($data, $name = false, $html=null, $echo_out = true){
 	require_once('dump.php');
-	dump($data, $name, $html, $echo_out);
+	return dump($data, $name, $html, $echo_out);
 }
 
 static function dumpWeb($name, $label=null){

@@ -85,11 +85,12 @@ class Purchase /*extends Base*/{
 	 * @var string
 	 **/
 	private $deferredPaymentPreference;
+
 	/**
 	 * @column(type="string", length=4, nullable=true)
 	 * @var string
 	 **/
-	private $lastFour;
+	private $firstFour;
 
 	//======================================
 
@@ -162,6 +163,12 @@ class Purchase /*extends Base*/{
 	 **/
 
 	private $alreadyInHelix;
+
+	/**
+	 * @column(type="string", length=4, nullable=true)
+	 * @var string
+	 **/
+	private $lastFour;
 
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}

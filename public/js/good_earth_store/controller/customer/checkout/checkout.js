@@ -28,6 +28,8 @@ init: function(el, options) {
 		source:this.constructor._fullName
  	});
 
+	this.user=GoodEarthStore.Models.Session.get('user');
+
 	this.initControlProperties();
 	this.initDisplayProperties();
 
@@ -59,6 +61,9 @@ initDisplayProperties:function(){
 
 initControlProperties:function(){
 	this.viewHelper=new viewHelper2();
+
+
+
 },
 
 initDisplay:function(inData){
@@ -69,7 +74,8 @@ initDisplay:function(inData){
 			viewHelper:this.viewHelper,
 			formData:{
 				account:this.account,
-				purchases:this.purchases
+				purchases:this.purchases,
+				loginUser:this.user
 			}
 		})
 		);

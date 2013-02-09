@@ -6,7 +6,19 @@
 	else{
 		$getMessage='no exception object';
 	}
-	error_log("ZEND ERROR PAGE ========================================================================================: $getMessage STACK TRACE  ".Q\Utils::callStack(true));
+
+
+	$debugObject=Zend_Registry::get('debugObject');
+
+	error_log("ZEND ERROR PAGE ========================================================================================");
+if (isset($debugObject)){
+	error_log(\Q\Utils::dumpWebString($debugObject, 'debugObject'));
+	}
+	else{
+		error_log('no debug object');
+	}
+
+//	error_log("ZEND ERROR PAGE ========================================================================================: $getMessage STACK TRACE  ".Q\Utils::callStack(true));
 	exit;
 ?>
 <!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
