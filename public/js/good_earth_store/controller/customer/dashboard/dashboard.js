@@ -168,7 +168,7 @@ getReferenceData:function(callback){
 },
 
 referenceCallback:function(callback, inData){
-
+referenceData=inData;
 		this.account=inData.account;
 		this.schools=inData.schools;
 		this.gradeLevels=inData.gradeLevels;
