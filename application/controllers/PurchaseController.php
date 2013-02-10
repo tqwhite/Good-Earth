@@ -171,7 +171,7 @@ $debugObject['debugElementArray']=$debugElementArray;
 $debugObject['purchaseObj']=$purchaseObj;
 Zend_Registry::set('debugObject', $debugObject);
 
-error_log("<!--startDebug!-->".\Q\Utils::dumpWebString($debugObject)."<!--endDebug!-->");
+//error_log("<!--startDebug!-->".\Q\Utils::dumpWebString($debugObject)."<!--endDebug!-->");
 
 			$this->_helper->json(array(
 				status=>$status,
@@ -219,7 +219,6 @@ error_log("<!--startDebug!-->".\Q\Utils::dumpWebString($debugObject)."<!--endDeb
 		$addressList[]=array('name'=>'Website Programmer', 'address'=>'tq@justkidding.com', 'type'=>'accounting');
 		$addressList[]=array('name'=>$user->firstName.' '.$user->lastName, 'address'=>$user->emailAdr, 'type'=>'customer');
 
-
 		switch($status){
 			default:
 				$emailMessage=$view->render('email-receipt.phtml');
@@ -248,7 +247,7 @@ error_log("<!--startDebug!-->".\Q\Utils::dumpWebString($debugObject)."<!--endDeb
 			$mail->addTo($element['address'], $element['name']);
 
 			$mail->send($tr);
-//			echo "{$element['address']}, {$element['name']}\n";
+
 		}
 
 
@@ -263,8 +262,8 @@ error_log("<!--startDebug!-->".\Q\Utils::dumpWebString($debugObject)."<!--endDeb
 
 			$list=$orderList;
 			$addresslist=array();
-			for ($i=0, $len=count($list); $i<$len; $i++){
-				$element=$list[$i];
+
+		foreach ($list as $label=>$element){
 
 				if ($element->student->school->emailAdr){
 					$rawAddressList[$element->student->school->emailAdr]=$element->student->school->name;
@@ -272,6 +271,7 @@ error_log("<!--startDebug!-->".\Q\Utils::dumpWebString($debugObject)."<!--endDeb
 			}
 
 			foreach($rawAddressList as $address=>$name){
+
 				$addressList[]=array(
 					'name'=>$name.' School Lunch Volunteer',
 					'address'=>$address,

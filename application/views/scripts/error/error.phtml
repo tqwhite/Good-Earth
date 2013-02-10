@@ -12,7 +12,7 @@
 
 	error_log("ZEND ERROR PAGE ========================================================================================");
 if (isset($debugObject)){
-	error_log(\Q\Utils::dumpWebString($debugObject, 'debugObject'));
+	error_log($this->exception->getMessage());
 	}
 	else{
 		error_log('no debug object');
