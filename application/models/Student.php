@@ -60,6 +60,7 @@ class Application_Model_Student extends Application_Model_Base
 					'lastName'=>$inData->lastName,
 					'refId'=>$inData->refId,
 					'vegetarianFlag'=>$inData->vegetarianFlag,
+					'allergyFlag'=>$inData->allergyFlag,
 					'schoolRefId'=>$inData->school->refId,
 					'accountRefId'=>$inData->account->refId,
 					'gradeLevelRefId'=>$inData->gradeLevel->refId
@@ -71,6 +72,7 @@ class Application_Model_Student extends Application_Model_Base
 				'firstName'=>$inData->firstName,
 				'lastName'=>$inData->lastName,
 				'vegetarianFlag'=>$inData->vegetarianFlag,
+					'allergyFlag'=>$inData->allergyFlag,
 				'schoolRefId'=>$inData->school->refId,
 				'accountRefId'=>$inData->account->refId,
 				'gradeLevelRefId'=>$inData->gradeLevel->refId,

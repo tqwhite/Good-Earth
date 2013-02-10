@@ -36,6 +36,12 @@ class Student /*extends Base*/{
 	private $vegetarianFlag;
 
 	/**
+	 * @column(type="boolean", nullable=true)
+	 * @var string
+	 **/
+	private $allergyFlag;
+
+	/**
 	 *
 	 * @ManyToOne(targetEntity="Account", cascade={"all"}, fetch="EAGER")
 	 * @JoinColumn(name="accountRefId", referencedColumnName="refId")

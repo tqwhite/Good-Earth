@@ -30,6 +30,7 @@ qtools.validateProperties({
  source:'session.dashboard.dashboardMain' });
 
 var vegetarianSelected=this.formData.student.vegetarianFlag?'checked':'';
+var allergySelected=this.formData.student.allergyFlag?'checked':'';
 
  var lastName=this.formData.student.lastName?this.formData.student.lastName:this.formData.account.familyName;
 
@@ -42,7 +43,7 @@ var schoolString=this.viewHelper.makeSelectTag({
 		labelPropertyName:'name',
 		firstItemLabel:'Select School',
 		firstItemValue:'',
-		selectClassName:'schoolIdClassString' //this is for debug purposes only, see register.initDomObjects()
+		selectClassName:'schoolSelect schoolIdClassString' //schoolIdClassString is for debug purposes only, see register.initDomObjects()
 
 	});
 
@@ -62,19 +63,27 @@ var gradeLevelSelectString=this.viewHelper.makeSelectTag({
 });
 }
 else{
-gradeLevelSelectString='- - - - - - - - ';
-
+	gradeLevelSelectString="<span style='padding-right:125px;'>&nbsp;</span>";
 }
 %>
 
-<div style='font-size:8pt;'>
-<input type='hidden' name='accountRefId' value='<%=this.formData.account.refId%>'>
-<input type='hidden' name='refId' value='<%=this.formData.student.refId%>'>
-<input prompt='First Name' name='firstName' style='font-size:8pt;width:60px;' value='<%=this.formData.student.firstName%>'>
-<input prompt='Last Name' name='lastName' style='font-size:8pt;width:60px;' value='<%=lastName%>'>
-Vegetarian <input type='checkbox' name='vegetarianFlag' value='1' <%=vegetarianSelected%>>
-<%==schoolString%>
-<span id='<%=this.displayParameters.gradeLevelSelect.divId%>'><%==gradeLevelSelectString%></span>
-<span class='smallButton' style='margin-left:10px;' id='<%=this.displayParameters.saveButton.divId%>'></span>
-<span title='Cancel' class='smallButton' style='margin-left:10px;' id='<%=this.displayParameters.cancelButton.divId%>'></span>
+<div style='font-size:8pt;height:20px;text-align:left;'>
+<div>
+	<input type='hidden' name='accountRefId' value='<%=this.formData.account.refId%>'>
+	<input type='hidden' name='refId' value='<%=this.formData.student.refId%>'>
+	<input prompt='First Name' name='firstName' style='font-size:8pt;width:60px;' value='<%=this.formData.student.firstName%>'>
+	<input prompt='Last Name' name='lastName' style='font-size:8pt;width:60px;' value='<%=lastName%>'>
+	<span style='padding-right:35px;'>&nbsp;</span>
+	<%==schoolString%>
+	<span id='<%=this.displayParameters.gradeLevelSelect.divId%>'><%==gradeLevelSelectString%></span>
+	<span class='smallButton' style='margin-left:20px;' id='<%=this.displayParameters.saveButton.divId%>'></span>
+	<span title='Cancel' class='smallButton' style='margin-left:10px;' id='<%=this.displayParameters.cancelButton.divId%>'></span>
+</div>
+<div style='text-align:right;padding-right:120px;padding-top:5px;'>
+	
+	 Are there any allergy issues? Check here and we will follow up via email. <input type='checkbox' name='allergyFlag' value='1' <%=allergySelected%>>
+	Vegetarian? <input type='checkbox' name='vegetarianFlag' value='1' <%=vegetarianSelected%>><br/>
+
+</div>
+
 </div>

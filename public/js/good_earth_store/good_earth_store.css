@@ -319,5 +319,9 @@ margin:50px 0px 0px 200px;padding-left:25px;border:1pt solid gray;
 }
 
 .gradeLevelSelect{
-	width:60px;
+	width:140px;
+}
+
+.schoolSelect{
+	width:140px;
 }
