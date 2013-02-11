@@ -18,6 +18,9 @@ class IndexController extends Zend_Controller_Action
 		$store=	Zend_Registry::get('store');
 		if ($store['status']=='closed'){
 			$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'closed');
+			if (isset($store['closedMessage'])){
+				$serverComm[]=array("fieldName"=>"closedMessage", "value"=>$store['closedMessage']);
+			}
 			$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
 
   	  }

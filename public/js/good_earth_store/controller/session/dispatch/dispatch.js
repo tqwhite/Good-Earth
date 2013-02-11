@@ -71,7 +71,14 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 				case 'closed':
 					var message='';
 					message+="<div style='color:#436235;margin-top:10px;'>We are busy organizing delicious lunches for school children and can't take your order right now.<p/>"
-					message+="The store will be open again tomorrow morning, bright and early, for signups.<p/>"
+
+					if (typeof(this.serverData['closedMessage'])!='undefined' && this.serverData['closedMessage']){
+						message+=this.serverData['closedMessage']+'<p/>';
+					}
+					else{
+						message+="The store will be open again tomorrow morning, bright and early, for signups.<p/>"
+					}
+					
 					message+="We deeply appreciate your business and look forward to serving you.<p/>"
 
 					message+="Sincerely,<p/>"
