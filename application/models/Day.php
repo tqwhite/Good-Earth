@@ -3,6 +3,9 @@
 class Application_Model_Day extends Application_Model_Base
 {
 	const entityName="Day";
+	
+	const helixImportRelationName="SLN_days";
+	const helixImportViewName="days_Data";
 
 	public function __construct(){
 		parent::__construct();

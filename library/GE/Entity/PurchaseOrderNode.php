@@ -9,6 +9,9 @@ namespace GE\Entity;
 *
 **/
 class PurchaseOrderNode /*extends Base*/{
+
+	const tableName='purchaseOrderNodes';
+	
 	/**
 	* @var string $id
 	* @column(name="refId", type="string", length=36, nullable=false, unique="true")

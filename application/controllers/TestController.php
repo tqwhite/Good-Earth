@@ -22,37 +22,23 @@ class TestController extends Zend_Controller_Action
 
     public function databaseAction()
     {
-	$query='select * from accounts';
-    echo "DATABASE ($query)\n";
-		$locale=$this->getRequest()->getParam('locale');
+		$specs=Zend_Registry::get('databaseSpecs');
 
-	switch ($locale){
-		default:
-		case 'qDev':
-			$db = new Zend_Db_Adapter_Pdo_Mysql(array(
-				'host'     => 'localhost',
-				'username' => 'tq',
-				'password' => '',
-				'dbname'   => 'test1'
-			));
-		break;
-		case 'demo':
-			$db = new Zend_Db_Adapter_Pdo_Mysql(array(
-				'host'     => '69.195.198.238',
-				'username' => 'qbook',
-				'password' => 'glory*snacks',
-				'dbname'   => 'goodEarthDemoData'
-			));
-		break;
-
-		}
-
+		$db = new Zend_Db_Adapter_Pdo_Mysql(array(
+			'host'     => $specs['host'],
+			'username' => $specs['user'],
+			'password' => $specs['password'],
+			'dbname'   => $specs['dbname']
+		));		
+		
+				$query='select * from accounts';
 		$stmt = $db->query($query);
-
-
 		Zend_Debug::dump($stmt->fetchAll());
-		echo '<p/>'.Zend_Version::VERSION;
-exit;
+		
+		
+		\Q\Utils::dumpWeb($db->listTables(), 'tables');	
+		
+		exit;
     }
 
     public function doctrineAction()

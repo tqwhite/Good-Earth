@@ -69,6 +69,12 @@
           <actionMethod actionName="export"/>
           <actionMethod actionName="migrate"/>
         </controllerFile>
+        <controllerFile controllerName="Data">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="test"/>
+          <actionMethod actionName="export"/>
+          <actionMethod actionName="import"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
       <layoutsDirectory>
@@ -89,6 +95,7 @@
         <modelFile modelName="Payment"/>
         <modelFile modelName="Export"/>
         <modelFile modelName="StraightSql"/>
+        <modelFile modelName="Import"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>
@@ -219,6 +226,18 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Utility">
             <viewScriptFile forActionName="migrate"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Data">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Data">
+            <viewScriptFile forActionName="test"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Data">
+            <viewScriptFile forActionName="export"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Data">
+            <viewScriptFile forActionName="import"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

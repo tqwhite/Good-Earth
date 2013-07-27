@@ -3,6 +3,12 @@
 class Application_Model_Export
 {
 
+private $className;
+
+public function __construct(){
+	$this->className=get_class($this);
+}
+
 public function collectPurchases(){
 error_reporting(E_ALL && ~E_NOTICE); //error_reporting(E_ERROR | E_WARNING | E_PARSE); //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 
@@ -31,35 +37,36 @@ error_reporting(E_ALL && ~E_NOTICE); //error_reporting(E_ERROR | E_WARNING | E_P
 	);
 }
 
-public function getTableData($purchaseList, $tableListString){
+private function getTableData($purchaseList, $tableListString){
 
 	$tableList=explode(' ', $tableListString);
 	foreach ($purchaseList as $purchaseRec){
+		$purchaseRefId=$purchaseRec['refId'];
 		foreach ($tableList as $tableName){
 			switch ($tableName){
 				case 'accounts':
 					$path='accounts'; //there is a database design error that makes this purchase to accounts be many-to-many
-					$this->extractScalars($outList[$tableName], $purchaseRec, $path);
+					$this->extractScalars($outList[$tableName], $purchaseRec, $path, $purchaseRefId);
 				break;
 				case 'purchaseOrderNodes':
 					$path='purchaseOrderNodes';
-					$this->extractScalars($outList[$tableName], $purchaseRec, $path);
+					$this->extractScalars($outList[$tableName], $purchaseRec, $path, $purchaseRefId);
 				break;
 				case 'accountPurchaseNodes':
 					$path='accountPurchaseNodes';
-					$this->extractScalars($outList[$tableName], $purchaseRec, $path);
+					$this->extractScalars($outList[$tableName], $purchaseRec, $path, $purchaseRefId);
 				break;
 				case 'purchases':
 					$path='';
-					$this->extractScalars($outList[$tableName], $purchaseRec, $path);
+					$this->extractScalars($outList[$tableName], $purchaseRec, $path, $purchaseRefId);
 				break;
 				case 'users':
 					$path='accounts.0.users';
-					$this->extractScalars($outList[$tableName], $purchaseRec, $path);
+					$this->extractScalars($outList[$tableName], $purchaseRec, $path, $purchaseRefId);
 				break;
 				case 'students':
 					$path='accounts.0.students';
-					$this->extractScalars($outList[$tableName], $purchaseRec, $path);
+					$this->extractScalars($outList[$tableName], $purchaseRec, $path, $purchaseRefId);
 				break;
 				case 'orders':
 					$path='orders';
@@ -71,7 +78,7 @@ public function getTableData($purchaseList, $tableListString){
 	return $outList;
 }
 
-private function extractScalars(&$outTable, $list, $path){
+private function extractScalars(&$outTable, $list, $path, $purchaseRefId){
 	$list=Q\Utils::getFromDottedPath($list, $path);
 	$isList=true;
 
@@ -83,7 +90,7 @@ private function extractScalars(&$outTable, $list, $path){
 	}
 
 	if (!$isList){
-		$assocArray=array();
+		$assocArray=array('purchaseRefId'=>$purchaseRefId);
 		foreach ($list as $label=>$data){
 			if (gettype($data)!='array' and gettype($data)!='object'){
 				if (!isset($assocArray[$label])){
@@ -95,7 +102,7 @@ private function extractScalars(&$outTable, $list, $path){
 	}
 	else{
 		foreach ($list as $label=>$data){
-			$assocArray=array();
+			$assocArray=array('purchaseRefId'=>$purchaseRefId);
 			foreach ($data as $label2=>$data2){
 				if (gettype($data2)!='array' and gettype($data2)!='object'){
 					if (!isset($assocArray[$label2])){
@@ -138,15 +145,58 @@ static function formatOutput($inData, $outputType, $flag){
 	return $newRec;
 }
 
+public function writeAndValidate($dataList){
 
-public function write($inData){
+	$tableArray=$this->getTableData($dataList, 'accounts users students orders purchases accountPurchaseNodes purchaseOrderNodes');
+	$resultArray=$this->executeWriteAndValidate($tableArray);
+
+	
+	
+	$listingString=$this->generateListings($tableArray);
+	$resultArray['messages'].=$resultArray['messages'].$listingString;
+	
+	return $resultArray;
+}
+
+private function executeWriteAndValidate($inData){
+	$outString='';
 	$outputManager=new \Heliport\OutputManager();
+	$batchId=$outputManager->setBatchId();
+	
+	$failedTwice=array();
 
 	foreach ($inData as $tableName=>$data){
-		$result=$outputManager->write($tableName, $data);
+	
+		$result=$outputManager->writeAndValidate($tableName, $data);
+
+
+
+		$outString.=$result['messages'];
+		
+		if (is_array($result['failedTwice'])){
+			$failedTwice=array_merge($failedTwice, $result['failedTwice']);
+		}
+
+
 	}
 
-	return $result;
+	return array('messages'=>$outString, 'failedTwice'=>$failedTwice);
+}
+
+private function generateListings($tableArray){
+			
+
+			$outString="accountCount=".count($tableArray['accounts'])."<BR>";
+			$outString.="accountPurchaseNodeCount=".count($tableArray['accountPurchaseNodes'])."<BR>";
+			$outString.="userCount=".count($tableArray['users'])."<BR>";
+			$outString.="studentCount=".count($tableArray['students'])."<BR>";
+
+			$outString.="purchaseCount=".count($tableArray['purchases'])."<BR>";
+			$outString.="purchaseOrderNodeCount=".count($tableArray['purchaseOrderNodes'])."<BR>";
+			$outString.="orderCount=".count($tableArray['orders'])."<BR>";
+			$outString.=\Q\Utils::dumpWebString($tableArray, 'tableArray');
+			
+			return $outString;
 }
 
 }

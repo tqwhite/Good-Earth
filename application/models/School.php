@@ -4,6 +4,9 @@ class Application_Model_School extends Application_Model_Base
 {
 
 	const entityName="School";
+	
+	const helixImportRelationName="SLN_schools";
+	const helixImportViewName="schools_Data";
 
 	public function __construct(){
 		parent::__construct();

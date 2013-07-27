@@ -185,6 +185,28 @@ static function getFromDottedPath($assocArray, $path){
 	return $target;
 }
 
+static function intoSimpleArray($listArray, $fieldName){
+	$outArray=array();
+	
+		foreach ($listArray as $label=>$data){
+			$outArray[]=$data[$fieldName];
+		}
+	return $outArray;
+}
+
+static function filterAllowed($haystack, $fieldName, $needleList){
+		$outArray=array();
+		
+		foreach ($haystack as $label=>$data){
+			if (in_array($data[$fieldName], $needleList)){
+				$outArray[]=$data;
+			}
+		}
+		
+		return $outArray;
+
+}
+
 }//end of class
 
 

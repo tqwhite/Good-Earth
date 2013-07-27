@@ -8,10 +8,21 @@ class Application_Model_Base
 	protected $doctrineContainer;
 	protected $entityManager;
 	protected $entityName;
+	private $helixImportSpecs;
 	protected $entity;
+	
+	public static $dbConnection;
 
 	public function __construct(){
 		$this->entityName=static::entityName;
+		
+
+		if (defined('static::helixImportRelationName')){
+			$this->helixImportSpecs=array(
+				'viewName'=>static::helixImportViewName,
+				'relationName'=>static::helixImportRelationName
+			);
+		}
 
 		$this->doctrineContainer=\Zend_Registry::get('doctrine');
 		$this->entityManager=$this->doctrineContainer->getEntityManager();
@@ -165,5 +176,143 @@ class Application_Model_Base
 		}
 
 	}
+	
+	public function import($connectionObject){
+	
+		$helixData=$connectionObject->read($this->helixImportSpecs);
+	
+		$cleanArray=$this->mapHelixToEntity($entityObject, $helixData); //filters against entity properties
+		
+		return $cleanArray;
+	}
+	
+	public function mapHelixToEntity($entityObject, $helixArray){
+		$entityObject=$this->generate();
+
+		$propertyList=$this->extractProperties($entityObject);
+
+		foreach ($helixArray as $label=>$record){
+			$outItemArray=array();
+			foreach ($record as $fieldName=>$data2){
+				if (isset($propertyList[$fieldName])){
+					$outItemArray[$fieldName]=$data2;
+				}
+			}
+			
+			$outArray[]=$outItemArray;
+		}
+		
+		return $outArray;
+	} //end of method
+	
+	
+	public function extractProperties($inObj){
+			$objArray=(array)$inObj;
+			$outArray=array();
+
+			foreach ($objArray as $label=>$data){
+				$label=preg_replace('/.*\\x00(.*)$/', '\1', $label);
+				$outArray[$label]=true;
+			}
+		
+		return $outArray;
+	}
+	
+	private function getTableName(){
+		$entity=$this->entity;
+		return $entity::tableName;
+	}
+
+
+public function writeDb($recListArray){
+
+
+		$dbResult=$this->updateOrInsert($recListArray);
+
+		
+// 		$query='select * from accounts';
+// 		$stmt = $db->query($query);
+// 		Zend_Debug::dump($stmt->fetchAll());
+		
+	
+	return $dbResult;
+
+}//end of method
+	
+public function updateOrInsert($recArray){
+	//http://framework.zend.com/manual/1.12/en/zend.db.select.html
+	//echo "get_class=".get_class($select)."<br>";
+	$db=$this->getDbConnection();
+	
+	$helixRefIdList=\Q\Utils::intoSimpleArray($recArray, 'refId');
+	$helixRefIdList[]=time();
+	
+	$select = $db->select();
+	$select->from($this->getTableName());
+	$select->where('refId IN(?)', $helixRefIdList);
+	$stmt = $db->query($select);
+	$result = $stmt->fetchAll();
+	
+	$alreadyInDbRefIdList=\Q\Utils::intoSimpleArray($result, 'refId');
+	$notInDbRefIdList=array_diff($helixRefIdList, $alreadyInDbRefIdList);
+	
+	$updateList=\Q\Utils::filterAllowed($recArray, 'refId', $alreadyInDbRefIdList);
+	$insertList=\Q\Utils::filterAllowed($recArray, 'refId', $notInDbRefIdList);
+	
+	$this->updateDb($updateList);
+	$this->insertDb($insertList);
+
+	
+	return "base model::updateOrInsert() says tableName= ".$this->getTableName()."";
+	}
+
+private function updateDb($recList){
+
+		$db=$this->getDbConnection();
+		$tableName=$this->getTableName();
+		
+		foreach ($recList as $label=>$data){
+			$db->update($tableName, $data, 'refId = '.$data['refId']);
+		}
+\Q\Utils::dumpWeb($recList, "updateDb");
+
 }
+
+private function insertDb($recList){
+
+		$db=$this->getDbConnection();
+		$tableName=$this->getTableName();
+		
+		if ($tableName='days'){
+	
+		}
+		
+		foreach ($recList as $label=>$data){
+			$db->insert($tableName, $data);
+		}
+\Q\Utils::dumpWeb($recList, "insertDb");
+
+}
+
+private function getDbConnection(){
+
+	if (!isset(self::$dbConnection)){
+		$specs=Zend_Registry::get('databaseSpecs');
+
+		$db = new Zend_Db_Adapter_Pdo_Mysql(array(
+			'host'     => $specs['host'],
+			'username' => $specs['user'],
+			'password' => $specs['password'],
+			'dbname'   => $specs['dbname']
+		));		
+		
+		self::$dbConnection=$db;
+		
+	}
+	
+	return self::$dbConnection;
+	
+}//end of method
+
+}//end of class
 

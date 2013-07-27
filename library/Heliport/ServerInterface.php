@@ -160,8 +160,12 @@ class ServerInterface
     public $poolRetryTimes = 3;
 
 	private $displayFieldsReport=false;
+private $className;
 
 public function __construct(){
+
+
+		$this->className=get_class($this);
 
 		$helixConfiguration=\Zend_Registry::get('helixConfiguration');
 
@@ -473,14 +477,17 @@ private function sequenceFieldsToHelix($inData, $fieldArray){
 	return $outArray;
 }
 
-public function storeAndDisplayFieldsReport($rel, $view, $data){
-	$this->displayFieldsReport=true;
+public function storeAndDisplayFieldsReport($rel, $view, $data, $displayFieldsReport=false){
+	$this->displayFieldsReport=$displayFieldsReport;
 	return $this->store($rel, $view, $data);
 }
 
 public function store($rel, $view, $data)
     {
 //debug//echo "<hr/>entering hc.store<br>";
+//debug//\Q\Utils::dumpWeb($rel, "rel");
+//debug//\Q\Utils::dumpWeb($view, "view");
+//debug//\Q\Utils::dumpWeb($data, "data");
         $func_name = 'store';
         $this->relationName = $rel;
         $this->viewName = $view;

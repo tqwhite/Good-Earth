@@ -9,6 +9,9 @@ namespace GE\Entity;
 *
 **/
 class Student /*extends Base*/{
+
+	const tableName='students';
+	
 	/**
 	* @var string $id
 	* @column(name="refId", type="string", length=36, nullable=false, unique="true")

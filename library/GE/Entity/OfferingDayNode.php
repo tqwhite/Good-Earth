@@ -9,6 +9,9 @@ namespace GE\Entity;
 *
 **/
 class OfferingDayNode /*extends Base*/{
+
+	const tableName='offeringDayNodes';
+	
 	/**
 	* @var string $id
 	* @column(name="refId", type="string", length=36, nullable=false, unique="true")
