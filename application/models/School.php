@@ -37,6 +37,11 @@ class Application_Model_School extends Application_Model_Base
 			return array(
 				'name'=>$inData->school->name,
 				'refId'=>$inData->school->refId,
+				
+				'currPeriod'=>$inData->school->currPeriod,
+				'dateOrderingEnd'=>$inData->school->dateOrderingEnd,
+				'dateOrderingBegin'=>$inData->school->dateOrderingBegin,
+				
 				'suppressDisplay'=>$inData->school->suppressDisplay,
 				'gradeLevels'=>\Application_Model_GradeLevel::formatOutput($inData->school->gradeLevelNodes)
 			);
@@ -45,10 +50,23 @@ class Application_Model_School extends Application_Model_Base
 			return array(
 				'name'=>$inData->name,
 				'refId'=>$inData->refId,
+				
+				'currPeriod'=>$inData->currPeriod,
+				'dateOrderingEnd'=>$inData->dateOrderingEnd,
+				'dateOrderingBegin'=>$inData->dateOrderingBegin,
+				
 				'suppressDisplay'=>$inData->suppressDisplay,
 				'gradeLevels'=>\Application_Model_GradeLevel::formatOutput($inData->gradeLevelNodes)
 			);
 		}
+	}
+	
+	public function convertHelixData($data){
+
+		$data['dateOrderingBegin']=$this->helixToDate($data['dateOrderingBegin']);
+		$data['dateOrderingEnd']=$this->helixToDate($data['dateOrderingEnd']);
+
+		return $data;
 	}
 
 }

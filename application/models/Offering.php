@@ -4,7 +4,8 @@ class Application_Model_Offering extends Application_Model_Base
 {
 	const entityName="Offering";
 
-
+	const helixImportRelationName="SLN_offeringsCombined";
+	const helixImportViewName="offerings_Data";
 
 	public function __construct(){
 		parent::__construct();

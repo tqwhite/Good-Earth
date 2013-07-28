@@ -4,7 +4,8 @@ qtools.validateProperties({
 	propList:[
 		{name:'displayParameters'},
 		{name:'viewHelper'},
-		{name:'formData'}
+		{name:'formData'},
+		{name:'storeDomObj'}
 	],
  source:'session.dashboard.dashboardMain' });
 
@@ -28,11 +29,29 @@ qtools.validateProperties({
 
 	var list=this.formData.schools;
 	var suppressObject={};
+	var nowDate=new Date(),
+		beginThreshold, endThreshold, suppressFlag,
+		twentyFourHours = (24*60*60*1000),
+		openSchoolCount=list.length;
+		
 	for (var i=0, len=list.length; i<len; i++){
 		var element=list[i];
-		if (element.suppressDisplay){
+		
+		beginThreshold=new Date(element.dateOrderingBegin); //this represents midnight of that day
+		
+		endThreshold=new Date(element.dateOrderingEnd);
+		endThreshold.setTime(endThreshold.getTime() + (twentyFourHours-1000)); //one second before midnight
+			
+		suppressFlag=!(nowDate>beginThreshold && nowDate<endThreshold);
+		
+		if (suppressFlag){
 			suppressObject[element.refId]=true;
+			openSchoolCount--;
 		}
+	}
+console.dir(this.storeDomObj);	
+	if (openSchoolCount===0){
+		this.storeDomObj.good_earth_store_session_dispatch('closeStore');
 	}
 
 var students=this.formData.account.students;

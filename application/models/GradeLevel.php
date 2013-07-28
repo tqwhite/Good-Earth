@@ -4,6 +4,9 @@ class Application_Model_GradeLevel extends Application_Model_Base
 {
 
 	const entityName="GradeLevel";
+	
+	const helixImportRelationName="SLN_gradeLevels";
+	const helixImportViewName="gradeLevels_Data";
 
 	public function __construct(){
 		parent::__construct();

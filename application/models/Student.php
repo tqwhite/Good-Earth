@@ -4,6 +4,9 @@ class Application_Model_Student extends Application_Model_Base
 {
 
 	const entityName="Student";
+	
+	const helixImportRelationName="SLN_students";
+	const helixImportViewName="students_Data";
 
 	public function __construct(){
 		parent::__construct();

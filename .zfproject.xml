@@ -96,6 +96,11 @@
         <modelFile modelName="Export"/>
         <modelFile modelName="StraightSql"/>
         <modelFile modelName="Import"/>
+        <modelFile modelName="AccountPurchaseNodes"/>
+        <modelFile modelName="GradeSchoolNodes"/>
+        <modelFile modelName="OfferingDayNodes"/>
+        <modelFile modelName="OfferingGradeLevelNodes"/>
+        <modelFile modelName="OfferingSchoolNodes"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <viewsDirectory>

@@ -4,6 +4,9 @@ class Application_Model_Account extends Application_Model_Base
 {
 
 	const entityName="Account";
+	
+	const helixImportRelationName="SLN_accounts";
+	const helixImportViewName="accounts_Data";
 
 	public function __construct(){
 		parent::__construct();

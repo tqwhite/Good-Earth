@@ -53,6 +53,13 @@ class Order /*extends Base*/{
 
 
 
+	/**
+	 * @column(type="string", nullable=false)
+	 * @var string
+	 **/
+
+	private $currPeriodFull;
+
 
 	/**
 	 * @column(type="datetime", nullable=false)

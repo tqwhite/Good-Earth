@@ -207,6 +207,11 @@ class Application_Model_Base
 	
 	
 	public function extractProperties($inObj){
+	
+		if (method_exists($this, specialPropertyList)){
+			$outArray=$this->specialPropertyList(); //node entities do not have properties corresponding to table, this specifies them explicitly
+		}
+		else{
 			$objArray=(array)$inObj;
 			$outArray=array();
 
@@ -214,7 +219,8 @@ class Application_Model_Base
 				$label=preg_replace('/.*\\x00(.*)$/', '\1', $label);
 				$outArray[$label]=true;
 			}
-		
+		}
+
 		return $outArray;
 	}
 	
@@ -243,7 +249,7 @@ public function updateOrInsert($recArray){
 	//http://framework.zend.com/manual/1.12/en/zend.db.select.html
 	//echo "get_class=".get_class($select)."<br>";
 	$db=$this->getDbConnection();
-	
+
 	$helixRefIdList=\Q\Utils::intoSimpleArray($recArray, 'refId');
 	$helixRefIdList[]=time();
 	
@@ -255,10 +261,10 @@ public function updateOrInsert($recArray){
 	
 	$alreadyInDbRefIdList=\Q\Utils::intoSimpleArray($result, 'refId');
 	$notInDbRefIdList=array_diff($helixRefIdList, $alreadyInDbRefIdList);
-	
+
 	$updateList=\Q\Utils::filterAllowed($recArray, 'refId', $alreadyInDbRefIdList);
 	$insertList=\Q\Utils::filterAllowed($recArray, 'refId', $notInDbRefIdList);
-	
+
 	$this->updateDb($updateList);
 	$this->insertDb($insertList);
 
@@ -272,9 +278,13 @@ private function updateDb($recList){
 		$tableName=$this->getTableName();
 		
 		foreach ($recList as $label=>$data){
-			$db->update($tableName, $data, 'refId = '.$data['refId']);
+			if (method_exists($this, 'convertHelixData')){
+					$data=$this->convertHelixData($data);
+			}
+		
+			$db->update($tableName, $data, "refId = '{$data['refId']}'");
 		}
-\Q\Utils::dumpWeb($recList, "updateDb");
+\Q\Utils::dumpWeb($recList, "updateDb $tableName");
 
 }
 
@@ -283,14 +293,16 @@ private function insertDb($recList){
 		$db=$this->getDbConnection();
 		$tableName=$this->getTableName();
 		
-		if ($tableName='days'){
-	
-		}
 		
 		foreach ($recList as $label=>$data){
+			if (method_exists($this, 'convertHelixData')){
+					$data=$this->convertHelixData($data);
+			}
+			
 			$db->insert($tableName, $data);
+
 		}
-\Q\Utils::dumpWeb($recList, "insertDb");
+\Q\Utils::dumpWeb($recList, "insertDb $tableName");
 
 }
 
@@ -313,6 +325,19 @@ private function getDbConnection(){
 	return self::$dbConnection;
 	
 }//end of method
+
+protected function helixToDate($value){
+	$valueBits=explode('/', $value);
+	
+	$year=$valueBits[2];
+	if ($year<2000){
+		$year=$year+2000;
+	}
+	$month=str_pad($valueBits[0], 2, '0', STR_PAD_LEFT);
+	$day=str_pad($valueBits[1], 2, '0', STR_PAD_LEFT);
+	$dateString="$year-$month-$day";
+	return $dateString;
+}
 
 }//end of class
 

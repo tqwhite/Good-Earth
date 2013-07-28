@@ -40,10 +40,10 @@ public function writeAndValidate($tableName, $inData){
 		
 		$validationList=$this->getValidationList($tableName);
 		
-if (true && $tableName=='purchaseOrderNodes'){
-	unset($validationList[0]);
-	unset($validationList[7]);
-}
+// if (true && $tableName=='purchaseOrderNodes'){
+// 	unset($validationList[0]);
+// 	unset($validationList[7]);
+// }
 		foreach ($writeStatusDetails as $label=>$data){	
 			
 			if (in_array($data['recordData']['refId'], $validationList)){
@@ -57,9 +57,9 @@ if (true && $tableName=='purchaseOrderNodes'){
 			$secondTryResult=$this->write($tableName, array($data));
 			$validationList=$this->getValidationList($tableName);
 			
-if (true && $tableName=='purchaseOrderNodes'){
-	unset($validationList[0]);
-}
+// if (true && $tableName=='purchaseOrderNodes'){
+// 	unset($validationList[0]);
+// }
 			if (!in_array($data['recordData']['refId'], $validationList)){
  				$outString.="<div style='color:red;'>FAILED TWICE on $tableName\[{$data['recordData']['refId']}] (purchaseRefId={$data['purchaseRefId']})</div>";
 				$failedTwice[$data['recordData']['purchaseRefId']]=$data;

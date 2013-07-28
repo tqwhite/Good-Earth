@@ -57,6 +57,7 @@ class DataController extends Zend_Controller_Action
 		if ($result){
 			$outString.="Exported to helix ".date("Y-m-d H:i:s")."<p/>\n\n\n";
 			$outString.="start of purchaseId list <br/>\n";
+			$sucessListString='';
 			
 			$mailFailList=array();
 
@@ -68,6 +69,7 @@ class DataController extends Zend_Controller_Action
 
   					$purchase->alreadyInHelix=true;
   					$entityManager->persist($purchase);
+  					$sucessListString.="{$purchase->refId}<br/>\n";
  					$outString.="purchaseRefId {$purchase->refId}<br/>\n";
 			}
 			$entityManager->flush();
@@ -88,8 +90,9 @@ class DataController extends Zend_Controller_Action
 
 		$outString="<div style='color:red;'>start transcript</div>\n\n
 			sent email concering $mailResult failed purchase transmissions<br/>
-			$failedListString
-			$outString
+			failedListString=$failedListString
+			sucessListString=$sucessListString
+			outString=$outString
 			<div style='color:red;'>end transcript</div>\n";
 		
 		$this->view->message=$outString;

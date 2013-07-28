@@ -4,6 +4,9 @@ class Application_Model_User extends Application_Model_Base
 {
 
 	const entityName="User";
+	
+	const helixImportRelationName="SLN_users";
+	const helixImportViewName="users_Data";
 
 	const	badConfirmationCode=-1;
 	const	alreadyConfirmed=1;

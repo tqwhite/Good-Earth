@@ -11,8 +11,18 @@ private function importList(){
 
 	return array(
 
-		new \Application_Model_Day(),
-		new \Application_Model_School()
+// 		new \Application_Model_Day(),
+ 		new \Application_Model_School(),
+// 		new \Application_Model_GradeLevel(),
+//		new \Application_Model_Account(),
+//		new \Application_Model_User(),
+//		new \Application_Model_Student(),
+// 		new \Application_Model_Meal(),
+// 		new \Application_Model_Offering(),
+// 		new \Application_Model_OfferingDayNodes(),
+// 		new \Application_Model_OfferingGradeLevelNodes(),
+// 		new \Application_Model_OfferingSchoolNodes(),
+//		new \Application_Model_GradeSchoolNodes()
 
 	);
 }//end of method
@@ -28,6 +38,7 @@ public function execute(){
 	foreach ($importList as $modelObject){
 	
 		$cleanHelixData=$modelObject->import($inputManager);
+
 		$dbResult=$modelObject->writeDb($cleanHelixData);
 		
 		$dbResultArray[$modelObject->entityName]=$dbResult;

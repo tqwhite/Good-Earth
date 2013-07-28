@@ -34,6 +34,30 @@ class School /*extends Base*/{
 
 
 	/**
+	 * @column(type="string", nullable=false)
+	 * @var string
+	 **/
+
+	private $currPeriod;
+
+	/**
+	 * @column(type="date", nullable=false)
+	 * @var date
+	 **/
+
+	private $dateOrderingBegin;
+
+
+	/**
+	 * @column(type="date", nullable=false)
+	 * @var date
+	 **/
+
+	private $dateOrderingEnd;
+
+
+
+	/**
 	 *
 	 * @param \Doctrine\Common\Collections\Collection $property
 	 * @OneToMany(targetEntity="Student", mappedBy="school", cascade={"persist", "remove"});
@@ -93,8 +117,12 @@ public function __construct(){
 
 public function __get($property){
 	switch($property){
+		case 'dateOrderingBegin':
+		case 'dateOrderingEnd':
+			return $this->$property->format("Y-m-d");
+			break;
 		case 'created':
-			return $this->created->format("Y-m-d H:i:s");
+			return $this->$property->format("Y-m-d H:i:s");
 			break;
 		default:
 			return $this->$property;
@@ -103,6 +131,14 @@ public function __get($property){
 }
 
 public function __set($property, $value){
-	$this->$property=$value;
+	switch($property){
+		case 'dateOrderingBegin':
+		case 'dateOrderingEnd':
+			$this->$property=$this->helixToDate($value);
+			break;
+		default:
+			$this->$property=$value;
+			break;
+	}
 }
 }
