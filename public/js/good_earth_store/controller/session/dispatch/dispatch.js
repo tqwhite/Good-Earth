@@ -25,14 +25,6 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 		}
 
 	},
-	
-	update: function(control, parameter){
-		switch(control){
-			case 'closeStore':
-				this.initialController='closed';
-				this.receiveSessionStartup({status:-1});
-		}
-	},
 
 	getServerData:function(){
 		var serverDataDomObj=$('#serverData'), //'#serverData' is defined in Q_Controller_Action_Helper_WriteServerCommDiv()
@@ -78,13 +70,13 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 					break;
 				case 'closed':
 					var message='';
-				//	message+="<div style='color:#436235;margin-top:10px;'>We are busy organizing delicious lunches for school children and can't take your order right now.<p/>"
+					message+="<div style='color:#436235;margin-top:10px;'>We are busy organizing delicious lunches for school children and can't take your order right now.<p/>"
 
 					if (typeof(this.serverData['closedMessage'])!='undefined' && this.serverData['closedMessage']){
 						message+=this.serverData['closedMessage']+'<p/>';
 					}
 					else{
-						message+="Ordering for all of our schools is presently closed. We will open up again about three weeks before the next period..<p/>"
+						message+="The store will be open again tomorrow morning, bright and early, for signups.<p/>"
 					}
 					
 					message+="We deeply appreciate your business and look forward to serving you.<p/>"
@@ -94,9 +86,7 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 					message+="Program Manager<br/>";
 					message+="Good Earth School Lunch Program</div>";
 
-					this.element.hide()
-						.html("<div style='width:400px;margin-left:150px;margin-top:0px;'><img style='width:200px;' src='/media/business_closed_sign_page.png'>"+message+"</div>")
-						.fadeIn(2000);
+					this.element.html("<div style='width:400px;margin-left:150px;margin-top:0px;'><img style='width:200px;' src='/media/business_closed_sign_page.png'>"+message+"</div>").show();
 					break;
 			}
 		}

@@ -4,8 +4,7 @@ qtools.validateProperties({
 	propList:[
 		{name:'displayParameters'},
 		{name:'viewHelper'},
-		{name:'formData'},
-		{name:'storeDomObj'}
+		{name:'formData'}
 	],
  source:'session.dashboard.dashboardMain' });
 
@@ -48,10 +47,6 @@ qtools.validateProperties({
 			suppressObject[element.refId]=true;
 			openSchoolCount--;
 		}
-	}
-	
-	if (openSchoolCount===0){
-		this.storeDomObj.good_earth_store_session_dispatch('closeStore');
 	}
 
 var students=this.formData.account.students;

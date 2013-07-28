@@ -86,8 +86,7 @@ initDomElements:function(){
 		account:this.account,
 		schools:this.schools,
 		gradeLevels:this.gradeLevels,
-		lunchButtonHandler:this.callback('lunchButtonHandler'),
-		storeDomObj:this.element //added ability for store to be closed when it realizes that no schools are open, need to be able to overwrite the correct space
+		lunchButtonHandler:this.callback('lunchButtonHandler')
 		});
 	this.displayParameters.purchaseSpace.domObj.good_earth_store_customer_purchases({
 		dashboardContainer:this.element,

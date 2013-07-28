@@ -16,7 +16,11 @@ class IndexController extends Zend_Controller_Action
         // which does the real work.
 
 		$store=	Zend_Registry::get('store');
-		if ($store['status']=='closed'){
+		
+		$schoolObj=new \Application_Model_School();
+		$takingOrders=$schoolObj->isAnyoneOpen();
+		
+		if (!$schoolObj->isAnyoneOpen()){
 			$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'closed');
 			if (isset($store['closedMessage'])){
 				$serverComm[]=array("fieldName"=>"closedMessage", "value"=>$store['closedMessage']);

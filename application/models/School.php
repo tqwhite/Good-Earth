@@ -68,6 +68,35 @@ class Application_Model_School extends Application_Model_Base
 
 		return $data;
 	}
+	
+	public function isAnyoneOpen(){
+		$schools=$this->getList();
+		$now=new DateTime();
+		$oneDay=new DateInterval('P1D');
+		
+		$schoolCount=count($schools);
+		
+		for ($i=0, $len=$schoolCount; $i<$len; $i++){
+			$element=$schools[$i];
+			
+			$begin=$element['dateOrderingBegin'];
+			$end=$element['dateOrderingEnd'];
+			$end=$end->add($oneDay);
+			
+			$open=($now>$begin && $now<$end);
+			if (!$open){
+				$schoolCount--;
+			}
+			
+		}
+		
+		If ($schoolCount===0){
+			return false;
+		}
+		else{
+			return true;	
+		}
+	}
 
 }
 

@@ -22,8 +22,7 @@ init: function(el, options) {
 			{name:'account'},
 			{name:'schools'},
 			{name:'gradeLevels'},
-			{name:'lunchButtonHandler'},
-			{name:'storeDomObj'}
+			{name:'lunchButtonHandler'}
 		],
 		source:this.constructor._fullName
  	});
@@ -68,8 +67,7 @@ initDisplay:function(inData){
 			formData:{
 				account:this.account,
 				schools:this.schools
-			},
-			storeDomObj:this.storeDomObj
+			}
 		})
 		);
 	this.element.html(html);
