@@ -31,7 +31,7 @@ private function importList(){
 
 public function execute(){
 	$inputManager=new \Heliport\InputManager();
-//	$inputManager->tickle('start');
+	$inputManager->tickle('start');
 
 	$importList=$this->importList(); //returns a literal array of Application_Model objects
 	
@@ -46,7 +46,7 @@ public function execute(){
 	
 \Q\Utils::dumpWeb($dbResultArray, "dbResultArray");
 
-//	$inputManager->tickle('end');
+	$inputManager->tickle('end');
 }//end of method
 
 }//end of class
