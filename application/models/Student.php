@@ -110,6 +110,11 @@ class Application_Model_Student extends Application_Model_Base
 		return $list;
 
 	}
+	
+	protected function convertHelixData($data){
+		$data['isActiveFlag']=$this->helixToDate($data['active?']);
+		return $data;
+	}
 
 }
 

@@ -66,6 +66,14 @@ class GradeLevel /*extends Base*/{
 
 	private $alreadyInHelix;
 
+
+	/**
+	 * @column(type="boolean", nullable=true)
+	 * @var integer
+	 **/
+
+	private $isActiveFlag;
+
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
 	$this->created=new \DateTime(date("Y-m-d H:i:s"));

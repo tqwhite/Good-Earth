@@ -167,6 +167,14 @@ class Purchase /*extends Base*/{
 
 	private $alreadyInHelix;
 
+
+	/**
+	 * @column(type="boolean", nullable=true)
+	 * @var integer
+	 **/
+
+	private $isActiveFlag;
+
 	/**
 	 * @column(type="string", length=4, nullable=true)
 	 * @var string

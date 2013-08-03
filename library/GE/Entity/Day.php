@@ -49,6 +49,14 @@ class Day /*extends Base*/{
 	private $alreadyInHelix;
 
 
+	/**
+	 * @column(type="boolean", nullable=true)
+	 * @var integer
+	 **/
+
+	private $isActiveFlag;
+
+
     /**
 	 * @param \Doctrine\Common\Collections\Collection $property
 	 * @OneToMany(targetEntity="OfferingDayNode", mappedBy="days", cascade={"persist", "remove"});

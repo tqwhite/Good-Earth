@@ -74,6 +74,13 @@ class Application_Model_Account extends Application_Model_Base
 		return $outArray;
 
 	}
+	
+	protected function convertHelixData($data){
+
+		$data['isActiveFlag']=$this->helixToDate($data['active?']);
+
+		return $data;
+	}
 
 }
 

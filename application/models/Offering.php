@@ -47,6 +47,7 @@ class Application_Model_Offering extends Application_Model_Base
 					'refId'=>$inData->refId,
 					'created'=>$inData->created,
 					'price'=>$inData->price,
+					'perYearFull'=>$inData->perYearFull,
 					'test'=>$inData->gradeLevelNodes->temp,
 					'meal'=>\Application_Model_Meal::formatOutput($inData->meal),
 					'gradeLevels'=>\Application_Model_GradeLevel::formatOutput($inData->gradeLevelNodes, 'limited'),
@@ -162,6 +163,36 @@ class Application_Model_Offering extends Application_Model_Base
 		$nodeEntity->$propertyName=$inEntity;
 		$nodeEntity->offering=$this->entity;
 		$this->entityManager->persist($nodeEntity);
+	}
+	
+	public function convertHelixData($data){
+		$data['perYearFull']=$this->helixToDate($data['perYear Full']);
+		$data['isActiveFlag']=$this->helixToDate($data['active?']);
+		$data['dateOrderingBegin']=$this->helixToDate($data['dateOrderingBegin']);
+		$data['dateOrderingEnd']=$this->helixToDate($data['dateOrderingEnd']);
+
+		return $data;
+	}
+
+	public function getByCurrPeriod($periodList, $hydrationMode='array'){
+		$tmp=implode("','", $periodList);
+		$sqlString='(\''.$tmp.'\')';
+		
+		$query = $this->entityManager->createQuery("SELECT u from GE\\Entity\\{$this->entityName} u WHERE u.perYearFull in $sqlString");
+
+		switch ($hydrationMode){
+			default:
+			case 'array':
+				$list = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+				break;
+			case 'record':
+				$list = $query->getResult();
+				break;
+		}
+
+		return $list;
+
+	
 	}
 }
 

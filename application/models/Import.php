@@ -27,11 +27,31 @@ private function importList(){
 	);
 }//end of method
 
+private function hold(){
+
+	return array(
+
+ 		new \Application_Model_Day(),
+ 		new \Application_Model_School(),
+		new \Application_Model_GradeLevel(),
+		new \Application_Model_Account(),
+		new \Application_Model_User(),
+		new \Application_Model_Student(),
+		new \Application_Model_Meal(),
+		new \Application_Model_Offering(),
+		new \Application_Model_OfferingDayNodes(),
+		new \Application_Model_OfferingGradeLevelNodes(),
+		new \Application_Model_OfferingSchoolNodes(),
+		new \Application_Model_GradeSchoolNodes()
+
+	);
+}//end of method
+
 
 
 public function execute(){
 	$inputManager=new \Heliport\InputManager();
-	$inputManager->tickle('start');
+//	$inputManager->tickle('start');
 
 	$importList=$this->importList(); //returns a literal array of Application_Model objects
 	
@@ -40,13 +60,21 @@ public function execute(){
 		$cleanHelixData=$modelObject->import($inputManager);
 
 		$dbResult=$modelObject->writeDb($cleanHelixData);
+
 		
 		$dbResultArray[$modelObject->entityName]=$dbResult;
 	}
+
+		for ($len=count($importList), $i=$len-1; $i>0; $i--){
+			$element=$importList[$i];
+			$result=$element->purgeInactive();
+			
+			echo "$result<br/>";
+		}
 	
 \Q\Utils::dumpWeb($dbResultArray, "dbResultArray");
 
-	$inputManager->tickle('end');
+//	$inputManager->tickle('end');
 }//end of method
 
 }//end of class

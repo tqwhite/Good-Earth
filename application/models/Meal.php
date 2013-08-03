@@ -14,5 +14,10 @@ class Application_Model_Meal extends Application_Model_Base
 					'refId'=>$inData->refId,
 				);
 	}
+	
+	protected function convertHelixData($data){
+		$data['isActiveFlag']=$this->helixToDate($data['active?']);
+		return $data;
+	}
 }
 

@@ -3,7 +3,8 @@ qtools.validateProperties({
 	targetObject:this,
 	propList:[
 		{name:'displayParameters'},
-		{name:'viewHelper'}
+		{name:'viewHelper'},
+		{name:'emailOverride'}
 	],
  source:'session.register.mainPanel' });
 
@@ -44,8 +45,17 @@ else{
 		zip='';
 }
 
+if (this.emailOverride){
+var emailOverrideString="<input type='hidden' name='emailOverride' value='true'>";
+}
+else{
+var emailOverrideString="";
+}
+
 %>
 <div class='entryBox' style='margin-left:100px;height:380px;width:533px;'>
+
+<%== emailOverrideString %>
 
 <div class='entryPanelErrorList' style='margin-top:25px;height:30px;width:100%' id='<%==displayParameters.status.divId%>'>
 	<div style='font-size:10pt;width:485px'>

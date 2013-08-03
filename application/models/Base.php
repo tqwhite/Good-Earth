@@ -223,11 +223,6 @@ class Application_Model_Base
 
 		return $outArray;
 	}
-	
-	private function getTableName(){
-		$entity=$this->entity;
-		return $entity::tableName;
-	}
 
 
 public function writeDb($recListArray){
@@ -284,7 +279,7 @@ private function updateDb($recList){
 		
 			$db->update($tableName, $data, "refId = '{$data['refId']}'");
 		}
-\Q\Utils::dumpWeb($recList, "updateDb $tableName");
+\Q\Utils::dumpWeb($recList, "update existing in $tableName");
 
 }
 
@@ -302,7 +297,7 @@ private function insertDb($recList){
 			$db->insert($tableName, $data);
 
 		}
-\Q\Utils::dumpWeb($recList, "insertDb $tableName");
+\Q\Utils::dumpWeb($recList, "insert new into $tableName");
 
 }
 
@@ -338,6 +333,19 @@ protected function helixToDate($value){
 	$dateString="$year-$month-$day";
 	return $dateString;
 }
+
+public function purgeInactive(){
+		$db=$this->getDbConnection();		
+		$tableName=$this->getTableName();
+ 		$count=$db->delete($tableName, "isActiveFlag='0'");
+		return "Deleted $count records from $tableName";
+}
+	
+	private function getTableName(){
+		if (!isset($this->entity)){ $this->generate();}
+		$entity=$this->entity;
+		return $entity::tableName;
+	}
 
 }//end of class
 

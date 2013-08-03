@@ -17,8 +17,11 @@ class AccountController extends Zend_Controller_Action
 
     public function registerAction()
     {
+    
+    
 		$inData=$this->getRequest()->getPost('data');
 		$messages=array();
+    		
 
 		$userObj=new \Application_Model_User();
 
@@ -54,6 +57,10 @@ class AccountController extends Zend_Controller_Action
 				$u->phoneNumber=$inData['phoneNumber'];
 				$u->confirmationCode=md5($u->refId);
 				$u->account=$account;
+				
+				if ($inData['emailOverride']){
+					$u->emailStatus=1;
+				}
 
 
 
@@ -73,9 +80,14 @@ class AccountController extends Zend_Controller_Action
 			$user=$userObj->getUserByUserId($inData['userName']);
 			$user->emailStatus=md5($user->refId);
 
-			$mailStatus=$this->sendEmailConfirmation($user);
-
-			if ($mailStatus){$messages[]=array('registration', 'Confirmation email sent'); }
+			if (!$inData['emailOverride']){
+				$mailStatus=$this->sendEmailConfirmation($user);
+				if ($mailStatus){$messages[]=array('registration', 'Confirmation email sent'); }
+			}
+			else{
+				$status=-1;
+				$messages[]=array('registration', "The rules don&apos;t apply to Sherry. No confirmation email was sent.<br/>The account is confirmed. You can login at any time.<br/> {$inData['userName']}/{$inData['password']}"); 
+			}
 
 			$this->_helper->json(array(
 				status=>$status,
@@ -123,7 +135,7 @@ class AccountController extends Zend_Controller_Action
 		$mail->setSubject("Good Earth: Lunch Program Email Address Confirmation ".$userObj->userName);
 
 		$mail->addTo($userObj->emailAdr, $userObj->firstName.' '.$userObj->lastName);
-		$mail->send();
+//		$mail->send();
 
 		return true;
     }

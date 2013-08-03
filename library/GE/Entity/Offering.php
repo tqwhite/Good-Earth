@@ -25,6 +25,13 @@ class Offering /*extends Base*/{
 	 **/
 	private $name;
 
+	/**
+	 * @column(type="string", nullable=false)
+	 * @var string
+	 **/
+
+	private $perYearFull;
+
 
 	/**
 	 * @column(type="text", nullable=true)
@@ -93,6 +100,14 @@ class Offering /*extends Base*/{
 	 **/
 
 	private $alreadyInHelix;
+
+
+	/**
+	 * @column(type="boolean", nullable=true)
+	 * @var integer
+	 **/
+
+	private $isActiveFlag;
 
 
 public function __construct(){

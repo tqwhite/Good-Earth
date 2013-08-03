@@ -1100,7 +1100,48 @@ echo "=======================<br/>";
 		}
     }
 
+	public function authorizeAction(){
+	
+	$inData=array();
+	$inData['cardData']['cardNumber']='4222222222222222';
+	$inData['cardData']['expMonth']='01';
+	$inData['cardData']['expYear']='16';
+	$inData['cardData']['chargeTotal']='1.00';
+	$inData['purchase']['refId']='xyz';
+	$inData['cardData']['cardName']='TQ White II';
+	$inData['cardData']['street']='5004 Three Points Blvd';
+	$inData['cardData']['city']='Mound';
+	$inData['cardData']['state']='MN';
+	$inData['cardData']['zip']='55364';
+	$inData['cardData']['phoneNumber']='708-763-0100';
 
+	$result=\Application_Model_Payment::process($inData);
+
+
+	\Q\Utils::dumpWeb($result, "result");	
+	echo "<br>response_code=".$result->response_code."<BR>"; 
+	echo "response_subcode=".$result->response_subcode."<BR>"; 
+	echo "response_reason_code=".$result->response_reason_code."<BR>"; 
+	echo "transaction_id=".$result->transaction_id."<BR>";  
+	echo "response=".$result->response."<BR>"; 
+
+
+	exit;
+	exit;
+	}
+	
+	public function xxxAction(){
+	
+	$inputManager=new \Heliport\InputManager();
+	
+	$threshold='7-1-05  20:29:27';
+	$inputManager->setHelixExportThreshold($threshold);
+	
+//	$inputManager->releasePoolUsers();
+	
+echo "<div style='color:black;'>threshold={$threshold}</div>";
+	exit;
+	}
 }
 
 

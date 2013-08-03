@@ -99,6 +99,11 @@ class Application_Model_Order extends Application_Model_Base
 		return $list;
 
 	}
+	
+	protected function convertHelixData($data){
+		$data['isActiveFlag']=$this->helixToDate($data['active?']);
+		return $data;
+	}
 
 } //end of class
 

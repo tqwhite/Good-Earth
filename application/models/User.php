@@ -38,9 +38,11 @@ class Application_Model_User extends Application_Model_Base
 		$datum=$inData[$name];
 
 		$user=$userObj->getByEmail($datum);
+		
+$exempt=(in_array($datum, array('sherry@genatural.com', 'tq@justkidding.com')) || $inData['emailOverride']);
 
-		if (count($user)>0 && !in_array($datum, array('sherry@genatural.com', 'tq@justkidding.com'))){
-			$errorList[]=array($name, "That email address is already associated with an account. Use 'Forgot Password' if you need to.");
+		if (count($user)>0 && !$exempt){
+			$errorList[]=array($name, "Thaty {$exempt} email address is already associated with an account. Use 'Forgot Password' if you need to.");
 		}
 
 		$name='userName';
@@ -225,6 +227,11 @@ class Application_Model_User extends Application_Model_Base
 		));
 		$users = $query->getResult();
 		return $users;
+	}
+	
+	protected function convertHelixData($data){
+		$data['isActiveFlag']=$this->helixToDate($data['active?']);
+		return $data;
 	}
 
 }

@@ -19,6 +19,11 @@ class Application_Model_Day extends Application_Model_Base
 					'refId'=>$inData->day->refId
 				);
 	}
+	
+	protected function convertHelixData($data){
+		$data['isActiveFlag']=$this->helixToDate($data['active?']);
+		return $data;
+	}
 
 }
 

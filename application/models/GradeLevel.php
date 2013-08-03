@@ -42,6 +42,11 @@ class Application_Model_GradeLevel extends Application_Model_Base
 		return $this->entity;
 
 	}
+	
+	protected function convertHelixData($data){
+		$data['isActiveFlag']=$this->helixToDate($data['active?']);
+		return $data;
+	}
 
 }
 

@@ -71,6 +71,7 @@ class Application_Model_Purchase extends Application_Model_Base
 					'deferredPaymentPreference'=>$inData->deferredPaymentPreference,
 					'lastFour'=>$inData->lastFour,
 					'firstFour'=>$inData->firstFour,
+					
 					'fdTransactionTime'=>$inData->fdTransactionTime,
 					'fdProcessorReferenceNumber'=>$inData->fdProcessorReferenceNumber,
 					'fdProcessorResponseMessage'=>$inData->fdProcessorResponseMessage,
@@ -79,6 +80,7 @@ class Application_Model_Purchase extends Application_Model_Base
 					'fdErrorMessage'=>$inData->fdErrorMessage,
 					'fdOrderId'=>$inData->fdOrderId,
 					'fdApprovalCode'=>$inData->fdApprovalCode,
+					
 					'created'=>$inData->created,
 					'accounts'=>\Application_Model_Account::formatOutput($inData->accountPurchaseNodes, 'export', 'accounts'),
 					'orders'=>\Application_Model_Order::formatOutput($inData->purchaseOrderNodes, 'export', 'orders'),
@@ -110,6 +112,11 @@ class Application_Model_Purchase extends Application_Model_Base
 		$node->account=$account;
 		$node->purchase=$this->entity;
 		$this->entityManager->persist($node);
+	}
+	
+	protected function convertHelixData($data){
+		$data['isActiveFlag']=$this->helixToDate($data['active?']);
+		return $data;
 	}
 }
 

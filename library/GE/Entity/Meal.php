@@ -50,6 +50,14 @@ class Meal /*extends Base*/{
 
 
 	/**
+	 * @column(type="boolean", nullable=true)
+	 * @var integer
+	 **/
+
+	private $isActiveFlag;
+
+
+	/**
 	 *
 	 * @param \Doctrine\Common\Collections\Collection $property
 	 * @OneToMany(targetEntity="Offering", mappedBy="meal", cascade={"persist", "remove"});

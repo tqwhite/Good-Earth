@@ -50,7 +50,8 @@ initDisplay:function(inData){
 	var html=$.View('//good_earth_store/controller/session/register/views/form.ejs',
 		$.extend(inData, {
 			displayParameters:this.displayParameters,
-			viewHelper:this.viewHelper
+			viewHelper:this.viewHelper,
+			emailOverride:(window.location.search=='?rulesDontApplyToSherry')?true:false
 		})
 		);
 	this.element.html(html);

@@ -54,7 +54,7 @@ class Order /*extends Base*/{
 
 
 	/**
-	 * @column(type="string", nullable=false)
+	 * @column(type="string", nullable=true)
 	 * @var string
 	 **/
 
@@ -74,6 +74,14 @@ class Order /*extends Base*/{
 	 **/
 
 	private $alreadyInHelix;
+
+
+	/**
+	 * @column(type="boolean", nullable=true)
+	 * @var integer
+	 **/
+
+	private $isActiveFlag;
 
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}

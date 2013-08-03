@@ -12,6 +12,8 @@ error_reporting(E_ERROR | E_PARSE & ~E_WARNING & ~E_NOTICE); //error_reporting(E
 	
 	$config=$this->getOptions();
 	Zend_Registry::set('databaseSpecs', $config['resources']['doctrine']['dbal']['connections']['default']['parameters']);
+	
+	Zend_Registry::set('authorize', $config['authorize']);
 
 	Zend_Session::start();
 

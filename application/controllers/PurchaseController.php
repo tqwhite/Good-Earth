@@ -29,6 +29,7 @@ Zend_Registry::set('debugObject', $debugObject);
 		$newPurchaseRefId=\Q\Utils::newGuid();
 		$inData['purchase']['refId']=$newPurchaseRefId;
 
+
 		$errorList=\Application_Model_Purchase::validate($inData);
 
 		if (count($errorList)==0){
@@ -40,14 +41,22 @@ Zend_Registry::set('debugObject', $debugObject);
 				&& $specialInstruction!=='9101' //not implemented: definition, F&R, *only* sends mail to sherry, not schools, user or anyone
 				&& $specialInstruction!=='9022'
 			){
+				
 				$processResult=\Application_Model_Payment::process($inData);
-				if ($processResult['FDGGWSAPI:TRANSACTIONRESULT']!='APPROVED'){
+
+
+// 		'approved'=>($result->response_code==1)?true:false,
+// 		'explanation'=>$result->response_reason_text,
+// 		'transactionId'=>$result->transaction_id
+		
+		
+				if (!$processResult['approved']){
 					$status=-1;
 					if ($processResult['DETAIL']){
-						$errorList[]=array('transaction', preg_replace('/^.*: /', '', $processResult['DETAIL']));
+						$errorList[]=array('transaction', preg_replace('/^.*: /', '', $processResult['explanation']));
 					}
 					else{
-						$errorList[]=array('transaction', preg_replace('/^.*: /', '', $processResult['FDGGWSAPI:ERRORMESSAGE']));
+						$errorList[]=array('transaction', preg_replace('/^.*: /', '', $processResult['explanation']));
 					}
 				}
 				else{
@@ -75,7 +84,6 @@ Zend_Registry::set('debugObject', $debugObject);
 				}
 			}
 		}
-
 		if (count($errorList)>0){
 			$this->_helper->json(array(
 				status=>-1,
@@ -109,13 +117,13 @@ Zend_Registry::set('debugObject', $debugObject);
 				$purchase->deferredPaymentPreference=$processResult['deferredPaymentPreference'];
 
 				$purchase->fdTransactionTime=$processResult['FDGGWSAPI:TRANSACTIONTIME'];
-				$purchase->fdProcessorReferenceNumber=$processResult['FDGGWSAPI:PROCESSORREFERENCENUMBER'];
-				$purchase->fdProcessorResponseMessage=$processResult['FDGGWSAPI:PROCESSORRESPONSEMESSAGE'];
-				$purchase->fdProcessorResponseCode=$processResult['FDGGWSAPI:PROCESSORRESPONSECODE'];
-				$purchase->fdProcessorApprovalCode=$processResult['FDGGWSAPI:PROCESSORAPPROVALCODE'];
-				$purchase->fdErrorMessage=$processResult['FDGGWSAPI:ERRORMESSAGE'];
-				$purchase->fdOrderId=$processResult['FDGGWSAPI:ORDERID'];
-				$purchase->fdApprovalCode=$processResult['FDGGWSAPI:APPROVALCODE'];
+				$purchase->fdProcessorReferenceNumber=$processResult['transaction_id'];
+				$purchase->fdProcessorResponseMessage=$processResult['explanation'];
+				$purchase->fdProcessorResponseCode=$processResult['response_code'];
+				$purchase->fdProcessorApprovalCode=$processResult['authorization_code'];
+				$purchase->fdErrorMessage=$processResult['explanation'];
+				$purchase->fdOrderId=$inData['purchase']['refId'];
+				$purchase->fdApprovalCode=$processResult['authorization_code'];
 
 
 				$accountObj=new \Application_Model_Account();
@@ -138,6 +146,7 @@ $debugElementArray=array();
 
 					$orderObj=new \Application_Model_Order();
 					$order=$orderObj->generate();
+					$order->currPeriodFull=$offering->perYearFull;
 					$order->student=$student;
 					$order->offering=$offering;
 					$order->day=$day;
@@ -175,6 +184,7 @@ Zend_Registry::set('debugObject', $debugObject);
 
 			$this->_helper->json(array(
 				status=>$status,
+				'tmp'=>'hello',
 				messages=>$messages,
 				data=>array(tmp=>'test')
 			));

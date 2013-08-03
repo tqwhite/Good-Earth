@@ -97,6 +97,14 @@ class School /*extends Base*/{
 
 	private $alreadyInHelix;
 
+
+	/**
+	 * @column(type="boolean", nullable=true)
+	 * @var integer
+	 **/
+
+	private $isActiveFlag;
+
 	/**
 	 * @column(type="boolean", nullable=true)
 	 * @var integer

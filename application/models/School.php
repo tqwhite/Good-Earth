@@ -61,14 +61,6 @@ class Application_Model_School extends Application_Model_Base
 		}
 	}
 	
-	public function convertHelixData($data){
-
-		$data['dateOrderingBegin']=$this->helixToDate($data['dateOrderingBegin']);
-		$data['dateOrderingEnd']=$this->helixToDate($data['dateOrderingEnd']);
-
-		return $data;
-	}
-	
 	public function isAnyoneOpen(){
 		$schools=$this->getList();
 		$now=new DateTime();
@@ -96,6 +88,14 @@ class Application_Model_School extends Application_Model_Base
 		else{
 			return true;	
 		}
+	}
+	
+	protected function convertHelixData($data){
+		$data['isActiveFlag']=$this->helixToDate($data['active?']);
+		$data['dateOrderingBegin']=$this->helixToDate($data['dateOrderingBegin']);
+		$data['dateOrderingEnd']=$this->helixToDate($data['dateOrderingEnd']);
+
+		return $data;
 	}
 
 }

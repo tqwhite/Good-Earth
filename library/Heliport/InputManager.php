@@ -20,6 +20,26 @@ private function initHelix(){
 	$this->connection->leasePoolUser();
 }
 
+public function setHelixExportThreshold($threshold='7-1-00  20:29:27'){
+
+	$this->connection->store(
+					'  inert process',
+					'Release All Pool Users',
+					array('blank1'=>'hello',
+					'blank2'=>'hello',
+					'startrun'=>$threshold
+					)
+				);
+}
+
+public function releasePoolUsers(){
+
+	$this->connection->retrieve(
+					'  user pool global',
+					'export_end'
+				);
+}
+
 public function tickle($whichSide){
 	if ($whichSide=='start'){
 		$tickler='export_start';
