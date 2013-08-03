@@ -168,8 +168,6 @@ class Application_Model_Offering extends Application_Model_Base
 	public function convertHelixData($data){
 		$data['perYearFull']=$this->helixToDate($data['perYear Full']);
 		$data['isActiveFlag']=$this->helixToDate($data['active?']);
-		$data['dateOrderingBegin']=$this->helixToDate($data['dateOrderingBegin']);
-		$data['dateOrderingEnd']=$this->helixToDate($data['dateOrderingEnd']);
 		$data['price']=number_format($this->helixToDate($data['price'])*100, 0);
 
 		return $data;
