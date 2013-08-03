@@ -11,6 +11,8 @@ class Application_Model_User extends Application_Model_Base
 	const	badConfirmationCode=-1;
 	const	alreadyConfirmed=1;
 	const	confirmationSuccessful=2;
+	
+	private $tmpStamp; //used to generate username in case Helix sends me an empty one
 
 	public function __construct(){
 		parent::__construct();
@@ -230,7 +232,14 @@ $exempt=(in_array($datum, array('sherry@genatural.com', 'tq@justkidding.com')) |
 	}
 	
 	protected function convertHelixData($data){
+	
+		if (!isset($this->tmpStamp)){$this->tmpStamp=time();}
+	
 		$data['isActiveFlag']=$this->helixToDate($data['active?']);
+		
+		if (!$data['userName']){
+			$data['userName']='empty_'.($this->tmpStamp+1)
+		}
 		return $data;
 	}
 
