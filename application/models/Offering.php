@@ -166,8 +166,11 @@ class Application_Model_Offering extends Application_Model_Base
 	}
 	
 	public function convertHelixData($data){
-		$data['isActiveFlag']=$this->helixToDate($data['active?']);
-		$data['price']=number_format($this->helixToDate($data['price'])*100, 0);
+		$data['isActiveFlag']=$data['active?']; unset($data['active?']); unset($data['active?']);
+
+		$data['perYearFull']=$data['perYear full']; unset($data['perYear full']);
+		
+		$data['price']=$data['price']*100;
 
 		return $data;
 	}

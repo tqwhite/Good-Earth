@@ -91,7 +91,7 @@ class Application_Model_School extends Application_Model_Base
 	}
 	
 	protected function convertHelixData($data){
-		$data['isActiveFlag']=$this->helixToDate($data['active?']);
+		$data['isActiveFlag']=$data['active?']; unset($data['active?']); unset($data['active?']);
 		$data['dateOrderingBegin']=$this->helixToDate($data['dateOrderingBegin']);
 		$data['dateOrderingEnd']=$this->helixToDate($data['dateOrderingEnd']);
 

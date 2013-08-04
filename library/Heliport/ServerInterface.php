@@ -6,16 +6,35 @@ namespace Heliport;
 
 /**
  *
-100 open process
-130 close process
+IHR190
+test to see if Helix is up and running
+checks view state of one view.
+awake of not...
 
-110 enter data
 
-Series
 
-120 how many recs on form and delis
-141 what are their field names
-140 retrieve the records
+Retrieve items
+rgc 100	open process id
+
+rgc 120	View record count delim stop char  e.g. 5 9 13
+rgc 141	View fieldnames
+rgc 140	retrieve the data
+
+rgc 130	close process
+
+
+
+
+Store items
+rgc 100	open process id
+
+rgc 120	View record count delim stop char  e.g. 5 9 13
+rgc 141	View fieldnames
+rgc 130	close process
+
+
+SSC110	enter the data  //after the close because an SC110 is its own process
+
 
  */
 /*

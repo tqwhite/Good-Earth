@@ -235,7 +235,7 @@ $exempt=(in_array($datum, array('sherry@genatural.com', 'tq@justkidding.com')) |
 	
 		if (!isset($this->tmpStamp)){$this->tmpStamp=time();}
 	
-		$data['isActiveFlag']=$this->helixToDate($data['active?']);
+		$data['isActiveFlag']=$data['active?']; unset($data['active?']); unset($data['active?']);
 		
 		$this->tmpStamp=$this->tmpStamp+1;
 		

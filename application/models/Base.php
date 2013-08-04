@@ -180,9 +180,7 @@ class Application_Model_Base
 	public function import($connectionObject){
 	
 		$helixData=$connectionObject->read($this->helixImportSpecs);
-	
 		$cleanArray=$this->mapHelixToEntity($entityObject, $helixData); //filters against entity properties
-		
 		return $cleanArray;
 	}
 	
@@ -190,18 +188,28 @@ class Application_Model_Base
 		$entityObject=$this->generate();
 
 		$propertyList=$this->extractProperties($entityObject);
-		
-		$manyToOneMappingArray=array('accountRefId', 'studentRefId', 'dayRefId', 'offeringRefId', 'gradeLevelRefId', 'schoolRefid', 
-			'purchaseRefId', 'mealRefId');
+		$specialFieldNameList=array(
+			'perYear full',
+			'active?','accountRefId',
+			'dayRefId',
+			'gradeLevelRefId',
+			'mealRefId',
+			'offeringRefId',
+			'orderRefId',
+			'purchaseRefId',
+			'schoolRefId',
+			'studentRefId',
+			'userRefId'
+		); //these are weird helix names that don't match anything
 
 		foreach ($helixArray as $label=>$record){
 			$outItemArray=array();
 			foreach ($record as $fieldName=>$data2){
-				if (isset($propertyList[$fieldName])  || in_array($fieldName, $manyToOneMappingArray)){
+		
+				if (isset($propertyList[$fieldName]) || in_array($fieldName, $specialFieldNameList)){
 					$outItemArray[$fieldName]=$data2;
 				}
-			}
-			
+			}			
 			$outArray[]=$outItemArray;
 		}
 		
@@ -246,6 +254,7 @@ public function writeDb($recListArray){
 public function updateOrInsert($recArray){
 	//http://framework.zend.com/manual/1.12/en/zend.db.select.html
 	//echo "get_class=".get_class($select)."<br>";
+	
 	$db=$this->getDbConnection();
 
 	$helixRefIdList=\Q\Utils::intoSimpleArray($recArray, 'refId');
@@ -277,11 +286,17 @@ private function updateDb($recList){
 		
 		foreach ($recList as $label=>$data){
 			if (method_exists($this, 'convertHelixData')){
+
 					$data=$this->convertHelixData($data);
+
 			}
-		
-error_log(\Q\Utils::dumpCliString($data, "updating $tableName"));
+			
+			$logString=\Q\Utils::dumpCLIString($data, "Base::updateDb() - $tableName:");
+			error_log($logString);
+			
+			
 			$db->update($tableName, $data, "refId = '{$data['refId']}'");
+			
 		}
 \Q\Utils::dumpWeb($recList, "update existing in $tableName");
 
@@ -295,10 +310,12 @@ private function insertDb($recList){
 		
 		foreach ($recList as $label=>$data){
 			if (method_exists($this, 'convertHelixData')){
+
 					$data=$this->convertHelixData($data);
+
 			}
+			error_log($logString);
 			
-error_log(\Q\Utils::dumpCliString($data, "inserting $tableName"));
 			$db->insert($tableName, $data);
 
 		}

@@ -16,7 +16,7 @@ class Application_Model_Meal extends Application_Model_Base
 	}
 	
 	protected function convertHelixData($data){
-		$data['isActiveFlag']=$this->helixToDate($data['active?']);
+		$data['isActiveFlag']=$data['active?']; unset($data['active?']); unset($data['active?']);
 		return $data;
 	}
 }
