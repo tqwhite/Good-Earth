@@ -190,11 +190,14 @@ class Application_Model_Base
 		$entityObject=$this->generate();
 
 		$propertyList=$this->extractProperties($entityObject);
+		
+		$manyToOneMappingArray=array('accountRefId', 'studentRefId', 'dayRefId', 'offeringRefId', 'gradeLevelRefId', 'schoolRefid', 
+			'purchaseRefId', 'mealRefId');
 
 		foreach ($helixArray as $label=>$record){
 			$outItemArray=array();
 			foreach ($record as $fieldName=>$data2){
-				if (isset($propertyList[$fieldName])){
+				if (isset($propertyList[$fieldName])  || in_array($fieldName, $manyToOneMappingArray)){
 					$outItemArray[$fieldName]=$data2;
 				}
 			}
@@ -277,6 +280,7 @@ private function updateDb($recList){
 					$data=$this->convertHelixData($data);
 			}
 		
+error_log(\Q\Utils::dumpCliString($data, "updating $tableName"));
 			$db->update($tableName, $data, "refId = '{$data['refId']}'");
 		}
 \Q\Utils::dumpWeb($recList, "update existing in $tableName");
@@ -294,6 +298,7 @@ private function insertDb($recList){
 					$data=$this->convertHelixData($data);
 			}
 			
+error_log(\Q\Utils::dumpCliString($data, "inserting $tableName"));
 			$db->insert($tableName, $data);
 
 		}
