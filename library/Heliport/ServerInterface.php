@@ -161,11 +161,9 @@ class ServerInterface
 
 	private $displayFieldsReport=false;
 private $className;
-private $showDebug;
 
 public function __construct(){
 
-		$this->showDebug=Zend_Registry::get('showHelixDebug');
 
 		$this->className=get_class($this);
 
