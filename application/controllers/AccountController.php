@@ -135,7 +135,7 @@ class AccountController extends Zend_Controller_Action
 		$mail->setSubject("Good Earth: Lunch Program Email Address Confirmation ".$userObj->userName);
 
 		$mail->addTo($userObj->emailAdr, $userObj->firstName.' '.$userObj->lastName);
-//		$mail->send();
+		$mail->send();
 
 		return true;
     }
