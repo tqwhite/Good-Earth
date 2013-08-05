@@ -1141,8 +1141,21 @@ echo "=======================<br/>";
 	
 //	$inputManager->releasePoolUsers();
 	
-echo "<div style='color:black;'>threshold={$threshold}</div>";
+	echo "<div style='color:black;'>threshold={$threshold}</div>";
 	exit;
+	}
+	
+	
+	public function batchAction(){
+	
+	echo "Batch Timestamp Tester<br/>";
+	$outputManager=new \Heliport\OutputManager();
+	
+	$batchId=$outputManager->setBatchId();
+	
+	echo "DONE batchId=$batchId<BR>";
+	exit;
+	
 	}
 }
 

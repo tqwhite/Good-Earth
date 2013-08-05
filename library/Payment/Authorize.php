@@ -37,7 +37,7 @@ public function setPurchaseData($inData){
 		'last_name'=>$lastName,
 	
 	
-		'amount' => 1.00,// $inData['cardData']['chargeTotal'],
+		'amount' => $inData['cardData']['chargeTotal'],
 		'card_num' => $inData['cardData']['cardNumber'],
 		'exp_date' => $inData['cardData']['expMonth'].$inData['cardData']['expYear']
 		);

@@ -25,10 +25,10 @@ private function initHelix(){
 public function setBatchId(){
 	$batchId=time();
 	$this->connection->store(
-					'  inert process',
-					'exportBatchTimestamp',
-					array('exportBatchTimestamp'=>$batchId)
-				);
+		'  inert process',
+		'exportBatchTimestampNew',
+		array('exportBatchTimestamp'=>$batchId, 'blank2'=>'goodbye')
+	);
 	return $batchId;
 }
 
