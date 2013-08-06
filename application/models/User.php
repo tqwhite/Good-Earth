@@ -235,7 +235,8 @@ $exempt=(in_array($datum, array('sherry@genatural.com', 'tq@justkidding.com')) |
 	
 		if (!isset($this->tmpStamp)){$this->tmpStamp=time();}
 	
-		$data['isActiveFlag']=$data['active?']; unset($data['active?']); unset($data['active?']);
+		$data['isActiveFlag']=($data['active?']=='Yes')?1:0; unset($data['active?']);
+
 		
 		$this->tmpStamp=$this->tmpStamp+1;
 		

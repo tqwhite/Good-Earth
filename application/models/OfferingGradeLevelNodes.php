@@ -31,7 +31,8 @@ class Application_Model_OfferingGradeLevelNodes extends Application_Model_Base
 	}
 	
 	protected function convertHelixData($data){
-		$data['isActiveFlag']=$data['active?']; unset($data['active?']); unset($data['active?']);
+		$data['isActiveFlag']=($data['active?']=='Yes')?1:0; unset($data['active?']);
+
 		return $data;
 	}
 
