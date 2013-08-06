@@ -1,7 +1,7 @@
 #!/bin/bash
 
 backupDir="//home/websites/com.goodearthorganiclunches.sales/"
-dirname="backup_"`eval date +%Y%m%d`
+dirname="backup_"`eval date +%Y%m%d%H%M`
 mkdir $backupDir/backups/$dirname
 mysqldump -ugoodearthsite -pglory*snacks  goodEarthProductionData > $backupDir/backups/$dirname/goodEarthProductionData.sql
 

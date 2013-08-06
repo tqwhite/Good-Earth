@@ -1,7 +1,7 @@
 #!/bin/bash
 
 backupDir="/home/tqwhite/clients/goodearth"
-dirname="backup_"`eval date +%Y%m%d`
+dirname="backup_"`eval date +%Y%m%d%H%M`
 mkdir $backupDir/backups/$dirname
 mysqldump -utqorg -pmoney*pie  goodearthStore > $backupDir/backups/$dirname/goodEarthProductionData.sql
 
