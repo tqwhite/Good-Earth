@@ -1289,9 +1289,12 @@ public function ihr190()
         if (!$this->fileSocket) {
 
 //debug//echo "NO FILE SOCKET<br>";
-            $this->set_error('retrieve',
-              ($func_name . ' - No valid socket available'),
-              $this->ihr190Relation, $this->ihr190View);
+$this->set_error(
+	'retrieve',
+  ($func_name . ' - No valid socket available'),
+  $this->ihr190Relation, 
+  $this->ihr190View
+  );
             $retVal = false;
         } else {
 //debug//echo "FOUND FILE SOCKET<br>";
