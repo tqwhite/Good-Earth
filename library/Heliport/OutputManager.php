@@ -24,21 +24,30 @@ private function initHelix(){
 
 public function setBatchId(){
 	$batchId=time();
+	
+	error_log("OutputManager::setBatchId() - STARTING - batchId=$batchId");	
+
 	$this->connection->store(
 		'  inert process',
 		'exportBatchTimestampNew',
 		array('exportBatchTimestamp'=>$batchId, 'blank2'=>'goodbye')
 	);
+	error_log("OutputManager::setBatchId() - ENDING - batchId=$batchId");	
 	return $batchId;
 }
 
 public function writeAndValidate($tableName, $inData){
  		$outString="<div style='color:blue;margin:5px 0px;' tqdebug>{$this->className} says,</div>";  
 
+	error_log("OutputManager::writeAndValidate() - STARTING write - tableName=$tableName");	
 		$writeResult=$this->write($tableName, $inData);
-		$writeStatusDetails=$writeResult['statusDetails'];
+	error_log("OutputManager::writeAndValidate() - ENDING write - tableName=$tableName");	
 		
+		$writeStatusDetails=$writeResult['statusDetails'];
+	
+		error_log("OutputManager::writeAndValidate() - STARTING getValidationList - tableName=$tableName");
 		$validationList=$this->getValidationList($tableName);
+		error_log("OutputManager::writeAndValidate() - STARTING getValidationList - tableName=$tableName");	
 		
 // if (true && $tableName=='purchaseOrderNodes'){
 // 	unset($validationList[0]);

@@ -96,6 +96,8 @@ class DataController extends Zend_Controller_Action
 			<div style='color:red;'>end transcript</div>\n";
 		
 		$this->view->message=$outString;
+		error_log("Data/ExportAction() - FINISHED================================");	
+
     }
 
     public function importAction()
@@ -108,6 +110,7 @@ class DataController extends Zend_Controller_Action
 		
 		
         $this->view->message=$resultData;
+		error_log("Data/importAction() - FINISHED================================");	
     }
     
     private function sendFailedTransmissionEmail($mailFailList){
