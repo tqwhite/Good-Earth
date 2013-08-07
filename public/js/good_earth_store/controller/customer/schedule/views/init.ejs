@@ -35,10 +35,13 @@ qtools.validateProperties({
 		
 	for (var i=0, len=list.length; i<len; i++){
 		var element=list[i];
+		begin=element.dateOrderingBegin.replace(/-/g, '/');
+		end=element.dateOrderingEnd.replace(/-/g, '/');
+		;
 		
-		beginThreshold=new Date(element.dateOrderingBegin); //this represents midnight of that day
+		beginThreshold=new Date(begin); //this represents midnight of that day
 		
-		endThreshold=new Date(element.dateOrderingEnd);
+		endThreshold=new Date(end);
 		endThreshold.setTime(endThreshold.getTime() + (twentyFourHours-1000)); //one second before midnight
 			
 		suppressFlag=!(nowDate>beginThreshold && nowDate<endThreshold);
