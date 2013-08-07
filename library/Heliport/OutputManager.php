@@ -122,7 +122,7 @@ public function write($tableName, $inData)
 				'recordData'=>$data
 			);
 			
-			$outString.=\Q\Utils::dumpWebString($data, "tableName=$tableName, writeStatus=$result");;
+			$outString.=\Q\Utils::dumpWebString($data, "tableName=$tableName, ".count($data)." records, writeStatus=$result");;
 			
 		if (isset($result)){
 			$outResult=$outResults&&$result;

@@ -86,7 +86,9 @@ class DataController extends Zend_Controller_Action
 			$outString.="HELIX ERROR, purchases will all be resent next time<p/>\n\n";
 		}
 		
-		$mailResult=$this->sendFailedTransmissionEmail($mailFailList);
+		if (count($mailFailList)>0){
+			$mailResult=$this->sendFailedTransmissionEmail($mailFailList);
+		}
 
 		$outString="<div style='color:red;'>start transcript</div>\n\n
 			sent email concering $mailResult failed purchase transmissions<br/>
