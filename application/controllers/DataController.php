@@ -152,6 +152,21 @@ class DataController extends Zend_Controller_Action
     
     	return count($mailFailList);
     }
+	
+	public function thresholdAction(){
+	
+	$inputManager=new \Heliport\InputManager();
+	
+	$threshold='7-1-10  20:29:27';
+	$threshold='7-1-13  20:29:27';
+	$threshold='8-4-13  20:29:27';
+	$inputManager->setHelixExportThreshold($threshold);
+	
+//	$inputManager->releasePoolUsers();
+	
+	echo "<div style='color:black;'>threshold={$threshold}</div>";
+	exit;
+	}
 
 
 }

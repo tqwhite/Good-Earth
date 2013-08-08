@@ -61,7 +61,7 @@ public function tickle($whichSide){
 public function read($args){
 
 	
-	error_log("inputManager::read() - STARTING - {$args['relationName']} {$args['viewName']} logEnd");	
+	error_log("inputManager::read() - STARTING - {$args['relationName']} {$args['viewName']}");	
 	if (gettype($args['queryData'])=='Array'){
 			$resultSet = $this->connection->hc->store(
 				$args['queryData']['relationName'],
@@ -69,17 +69,62 @@ public function read($args){
 				$args['queryData']['argsArray']
 			);
 	}
+	
+	$startTime=time();
 
 	$outResult = $this->connection->retrieve(
 		$args['relationName'],
 		$args['viewName']
 	);
 	
-	error_log("inputManager::read() - ENDING - {$args['relationName']} {$args['viewName']} logEnd");
+	$endTime=time();
+	
+	if ($endTime-$startTime>20 && count($outResult['data'])==0){
+		$this->connection->releasePoolUser();
+		$message="<div style='color:red;font-size:24pt;margin:36px 0px;'>InputManager::read() says, {$args['relationName']}/{$args['viewName']} took too long (".($endTime-$startTime)." seconds) and didn't return any data.</div>";
+		error_log($message);
+		$this->sendDeathEmail($message);
+		die($message);
+	}
+	
+	error_log("inputManager::read() - ENDING - {$args['relationName']} {$args['viewName']} ".count($outResult)." records ".($endTime-$startTime)." seconds");
 	
 	return $outResult['data'];
 
 }//end of method
+
+private function sendDeathEmail(){
+
+$tr=new \Zend_Mail_Transport_Sendmail($message);
+		\Zend_Mail::setDefaultTransport($tr);
+		\Zend_Mail::setDefaultFrom('school@genatural.com', "Good Earth Lunch Program");
+		\Zend_Mail::setDefaultReplyTo('school@genatural.com', "Good Earth Lunch Program");
+
+//			$addressList[]=array('name'=>'Good Earth Organic School Lunch Program', 'address'=>'school@genatural.com', 'type'=>'accounting');
+
+		$addressList[]=array('name'=>'Website Programmer', 'address'=>'tq@justkidding.com', 'type'=>'accounting');
+
+
+		$emailMessage=$message;
+		$emailSubject="Good Earth Website Import Error Notification";
+
+
+		for ($i=0, $len=count($addressList); $i<$len; $i++){
+			$element=$addressList[$i];
+			$mail = new \Zend_Mail();
+			$mail->setSubject($emailSubject);
+			$mail->setBodyHtml($emailMessage);
+
+			$mail->addTo($element['address'], $element['name']);
+
+			$mail->send($tr);
+
+		}
+
+
+		\Zend_Mail::clearDefaultFrom();
+		\Zend_Mail::clearDefaultReplyTo();
+}
 
 }//end of class
     
