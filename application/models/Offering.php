@@ -18,6 +18,7 @@ class Application_Model_Offering extends Application_Model_Base
 					'refId'=>$inData->refId,
 					'created'=>$inData->created,
 					'price'=>$inData->price,
+					'isOfferingFlag'=>$inData->isOfferingFlag,
 					'test'=>$inData->gradeLevelNodes->temp,
 					'meal'=>\Application_Model_Meal::formatOutput($inData->meal),
 					'gradeLevels'=>array(
@@ -47,6 +48,7 @@ class Application_Model_Offering extends Application_Model_Base
 					'refId'=>$inData->refId,
 					'created'=>$inData->created,
 					'price'=>$inData->price,
+					'isOfferingFlag'=>$inData->isOfferingFlag,
 					'perYearFull'=>$inData->perYearFull,
 					'test'=>$inData->gradeLevelNodes->temp,
 					'meal'=>\Application_Model_Meal::formatOutput($inData->meal),

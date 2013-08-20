@@ -434,7 +434,7 @@ public function retrieve($rel, $view, $include_outer_data = false)
 
                 if ($fieldNameResult) {
 
-              		$getRecordResult=$this->getRecords();
+              		$getRecordResult=$this->getRecords(); //==========================
 
                     if ($getRecordResult) {
                         $varrReturn['f_sep'] = $this->fieldDelimiter;
@@ -819,7 +819,7 @@ private function rgc140()
                     $tmpNumRecs = 0;
                     $retVal = false;
                 } else {
- $output = str_replace($this->commandTerminator, '', $output);
+					$output = str_replace($this->commandTerminator, '', $output);
                     $varrOut = explode($this->commandDelimiter, $output);
 
                     $varrRecs = explode(chr($this->recordDelimiter), base64_decode(trim($varrOut[1])));
@@ -1564,5 +1564,77 @@ public function isDebug($level = 'debug')
     {
         return false !== strpos($this->debug, $level);
     }
+    
+public function clearAllPoolUsers(){
+
+
+//debug//echo "clearAllPoolUsers<br/>";
+        $func_name = 'clearAllPoolUsers';
+
+        $retVal = true;
+
+        if (!$this->fileSocket) {
+
+//debug//echo "NO FILE SOCKET<br>";
+			$this->set_error(
+				'retrieve',
+				($func_name . ' - No valid socket available'),
+				$this->ihr190Relation, 
+				$this->ihr190View
+			);
+			$retVal = false;
+        } else {
+//debug//echo "FOUND FILE SOCKET<br>";
+            $cmdParams = array(
+                $this->collection_name,
+                $this->adminUser->getUserName(),
+                $this->adminUser->getPassword(),
+                "  user pool global",
+                "Release All Pool Users"
+            );
+
+            $encodedIhr190Cmd = base64_encode(
+                implode(
+                  $this->commandDelimiter,
+                  $cmdParams
+                )
+            );
+
+            $ihr190 = 'IHR190' . $this->commandDelimiter . $encodedIhr190Cmd . $this->commandTerminator;
+
+            $status=fwrite($this->fileSocket, $ihr190, strlen($ihr190));
+
+//debug//echo "190 FWRITE STATUS=$status<br>";
+
+            $output = $this->read_socket();
+
+//debug//echo "190 READ RESULT=$output<br>";
+
+            if ($this->isDebug('msg')) {
+                $tmp = $output;
+                $tmp = str_replace(('OK IHR190 ' . $this->commandDelimiter), '', $output);
+            }
+            if (substr($output, 0, 10) == 'ERR IHR190') {
+                $this->set_error('util',
+                  ($func_name . '-_collection (' . $this->collection_name . ') not loaded')
+                );
+                $retVal = false;
+            } else {
+                if (!preg_match('/^OK IHR190/', $output)) {
+                    $this->set_error('util', ($func_name . '-' . $this->aeeaErrors[(str_replace(('OK IHR190 ' . $this->commandDelimiter), '', $output))]['desc'] . ' (' . $this->collection_name . '-' . $this->ihr190Relation . ')'));
+                    $retVal = false;
+                } else {
+                    $this->set_msg($func_name . ' :: _collection: ' . $this->collection_name . ' is loaded');
+                    $retVal = true;
+                }
+            }
+        }
+
+        $this->lastihr190Stat = $retVal;
+
+        return $retVal;
+    
+
+}
 
 }

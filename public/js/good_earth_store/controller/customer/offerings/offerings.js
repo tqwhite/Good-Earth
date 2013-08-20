@@ -59,6 +59,18 @@ initControlProperties:function(){
 
 initDisplay:function(inData){
 
+	var outArray=[];
+	var list=this.offerings;
+	for (var i=0, len=list.length; i<len; i++){
+		var element=list[i];
+
+		if (!element.name.match(/saus/i)){
+			outArray.push(element);
+		}
+		
+	}
+	this.offerings=outArray;
+
 	var html=$.View('//good_earth_store/controller/customer/offerings/views/init.ejs',
 		$.extend(inData, {
 			displayParameters:this.displayParameters,

@@ -1145,6 +1145,18 @@ echo "=======================<br/>";
 	exit;
 	}
 	
+	public function releaseAction(){
+	$this->connection=new \Heliport\ServerInterface();
+	$helix_status = $this->connection->clearAllPoolUsers();
+	
+	
+// 	$helix_status = $this->connection->ihr190();
+// 	$this->connection->leasePoolUser();
+// 	\Q\Utils::dumpWeb($this->connection, "this->connection");exit;
+	
+echo "<div style='color:black;'>helix_status={$helix_status}</div>";
+	exit;
+	}
 	
 	public function batchAction(){
 	
