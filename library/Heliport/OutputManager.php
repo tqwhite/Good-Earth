@@ -19,6 +19,9 @@ public function __destruct(){
 private function initHelix(){
 	$this->connection=new ServerInterface();
 	$helix_status = $this->connection->ihr190();
+	if (!$this->helix_status){
+		die("<div style='color:red;font-size:24pt;'>OutputManager says: Helix is down</div>");
+	}
 	$this->connection->leasePoolUser();
 }
 
