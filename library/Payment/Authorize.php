@@ -54,12 +54,12 @@ public function executeCharge(){
 
 public function mapResult($result){
 
-	$outArray=array(
+				
+	$name='approved'; $outArray[$name]=$result->$name;
+	$name='transaction_id'; $outArray[$name]=$result->$name;
+	$name='response_reason_text'; $outArray[$name]=$result->$name;
+	$name='authorization_code'; $outArray[$name]=$result->$name;
 	
-		'approved'=>($result->response_code==1)?true:false,
-		'explanation'=>$result->response_reason_text,
-		'transactionId'=>$result->transaction_id
-	);
 	return $outArray;
 }
 

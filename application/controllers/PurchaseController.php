@@ -116,15 +116,17 @@ Zend_Registry::set('debugObject', $debugObject);
 
 				$purchase->deferredPaymentPreference=$processResult['deferredPaymentPreference'];
 
-				$purchase->fdTransactionTime=$processResult['FDGGWSAPI:TRANSACTIONTIME'];
+				$msg=$processResult['approved']?'APPROVED':'REJECTED';
+				$purchase->fdProcessorResponseMessage=$msg;
+				
 				$purchase->fdProcessorReferenceNumber=$processResult['transaction_id'];
-				$purchase->fdProcessorResponseMessage=$processResult['explanation'];
-				$purchase->fdProcessorResponseCode=$processResult['response_code'];
-				$purchase->fdProcessorApprovalCode=$processResult['authorization_code'];
-				$purchase->fdErrorMessage=$processResult['explanation'];
-				$purchase->fdOrderId=$inData['purchase']['refId'];
+				$purchase->fdErrorMessage=$processResult['response_reason_text'];
 				$purchase->fdApprovalCode=$processResult['authorization_code'];
-
+				
+				$date=new \DateTime(date("Y-m-d H:i:s"));
+				$date=$date->format('Y-m-d H:i:s');
+				$purchase->fdTransactionTime=$date;
+				$purchase->fdOrderId=$inData['purchase']['refId'];
 
 				$accountObj=new \Application_Model_Account();
 				$account=$accountObj->getByRefId($inData['account']['refId']);
