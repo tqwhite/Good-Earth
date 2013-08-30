@@ -27,6 +27,7 @@ class DataController extends Zend_Controller_Action
 
     public function exportAction()
     {
+		error_log("Data/ExportAction() - STARTING ================================");	
     
     	$outString='';
     
@@ -42,7 +43,8 @@ class DataController extends Zend_Controller_Action
 		if (count($dataList)>0){
 		
 
-			$result=$exportObj->writeAndValidate($dataList);		
+			$result=$exportObj->writeAndValidate($dataList);	
+	
 			$outString.=$result['messages'];
 			
 			$failedListString=\Q\Utils::dumpWebString($result['failedTwice'], "result['failedTwice']");
@@ -50,6 +52,7 @@ class DataController extends Zend_Controller_Action
 		}
 		else{
 			$outString.="NO NEW DATA IS READY FOR HELIX. NOTHING SENT.<p/>\n\n";
+		error_log("Data/ExportAction() - NO NEW DATA IS READY FOR HELIX. NOTHING SENT.");	
 			$result=true;
 		}
 

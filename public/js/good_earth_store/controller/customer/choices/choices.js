@@ -195,8 +195,8 @@ deleteButtonHandler:function(control, parameter){
 deletePurchase:function(purchaseRefId){
 	var deletableInx;
 
-	for (var i=0, len=this.purchases.length; i<len; i++){
-		if (this.purchases.refId==purchaseRefId){
+	for (var i=0, len=this.purchases.orders.length; i<len; i++){
+		if (this.purchases.orders[i].refId==purchaseRefId){
 			deletableInx=i;
 		}
 	}
