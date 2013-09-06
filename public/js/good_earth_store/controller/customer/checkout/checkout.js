@@ -163,7 +163,7 @@ catchProcessResult:function(inData){
 		var list=inData.messages;
 		for (var i=0, len=list.length; i<len; i++){
 			var element=list[i];
-			$message=element[1]?element[1]:'Unknown processor error, contact tech support'; //element[0] is fieldname or category, element[1] is message
+			$message=element[1]?element[1]:'Unknown internet error, please try again later<br/> (Grab a screenshot of this, please, if it persists and you are contacting us'+element[0]+', '+new Date()+')'; //element[0] is fieldname or category, element[1] is message
 			statusDomObj.append("<div style=color:red;margin-left:4px;'>"+$message+"</div>");
 		}
 	}
