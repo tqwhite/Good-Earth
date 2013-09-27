@@ -320,7 +320,7 @@ private function insertDb($recList){
 			$db->insert($tableName, $data);
 
 		}
-\Q\Utils::dumpWeb($recList, "insert new into $tableName");
+\Q\Utils::dumpCli($recList, "insert new into $tableName")." <hr> ";
 
 }
 
