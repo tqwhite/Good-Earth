@@ -12,7 +12,10 @@
 
 	error_log("ZEND ERROR PAGE ========================================================================================");
 if (isset($debugObject)){
-	error_log($this->exception->getMessage());
+
+	\Q\Utils::dumpCli($debugObject, "debugObject");
+	error_log(\Q\Utils::callStack(false));
+//	error_log($this->exception->getMessage());
 	}
 	else{
 		error_log('no debug object');
@@ -49,7 +52,7 @@ if (isset($debugObject)){
 
   <h3>Exception information:</h3>
   <p>
-      <b>Message:</b> <?php echo $this->exception->getMessage() ?>
+      <b>Message:</b> <?php /*echo $this->exception->getMessage()*/ \Q\Utils::callStack(false); ?>
   </p>
 
   <h3>Stack trace:</h3>

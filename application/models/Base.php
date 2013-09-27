@@ -283,6 +283,7 @@ private function updateDb($recList){
 
 		$db=$this->getDbConnection();
 		$tableName=$this->getTableName();
+		$logString='';
 		
 		foreach ($recList as $label=>$data){
 			if (method_exists($this, 'convertHelixData')){
@@ -291,14 +292,14 @@ private function updateDb($recList){
 
 			}
 			
-			$logString=\Q\Utils::dumpCLIString($data, "Base::updateDb() - $tableName:");
-			error_log($logString);
+			$logString.="$tableName/{$data['refId']}; ";
 			
 			
 			$db->update($tableName, $data, "refId = '{$data['refId']}'");
 			
 		}
-\Q\Utils::dumpWeb($recList, "update existing in $tableName");
+
+\Q\Utils::dumpCli($recList, "update existing in $tableName")." <hr> ";
 
 }
 
