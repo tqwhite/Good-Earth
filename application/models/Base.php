@@ -283,7 +283,6 @@ private function updateDb($recList){
 
 		$db=$this->getDbConnection();
 		$tableName=$this->getTableName();
-		$logString='';
 		
 		foreach ($recList as $label=>$data){
 			if (method_exists($this, 'convertHelixData')){
@@ -292,7 +291,6 @@ private function updateDb($recList){
 
 			}
 			
-			$logString.="$tableName/{$data['refId']}; ";
 			
 			
 			$db->update($tableName, $data, "refId = '{$data['refId']}'");
@@ -315,7 +313,6 @@ private function insertDb($recList){
 					$data=$this->convertHelixData($data);
 
 			}
-			error_log($logString);
 			
 			$db->insert($tableName, $data);
 

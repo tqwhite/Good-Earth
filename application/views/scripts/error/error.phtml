@@ -11,6 +11,9 @@
 	$debugObject=Zend_Registry::get('debugObject');
 
 	error_log("ZEND ERROR PAGE ========================================================================================");
+
+error_log("mysql_error=".mysql_error());
+
 if (isset($debugObject)){
 
 	\Q\Utils::dumpCli($debugObject, "debugObject");
