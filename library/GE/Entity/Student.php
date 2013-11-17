@@ -38,6 +38,13 @@ class Student /*extends Base*/{
 	 **/
 	private $vegetarianFlag;
 
+
+	/**
+	 * @column(type="boolean", nullable=true)
+	 * @var string
+	 **/
+	private $isTeacherFlag;
+
 	/**
 	 * @column(type="boolean", nullable=true)
 	 * @var string

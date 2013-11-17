@@ -71,7 +71,9 @@ class StudentController extends Zend_Controller_Action
 					"identity"=>array(
 						'firstName'=>$inData['firstName'],
 						'lastName'=>$inData['lastName'],
-						'vegetarianFlag'=>$inData['vegetarianFlag']
+						'vegetarianFlag'=>$inData['vegetarianFlag'],
+						'isTeacherFlag'=>$inData['isTeacherFlag'],
+						'allergyFlag'=>$inData['allergyFlag']
 					)
 				)
 			));

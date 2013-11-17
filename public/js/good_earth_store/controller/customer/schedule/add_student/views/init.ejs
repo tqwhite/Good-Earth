@@ -30,6 +30,7 @@ qtools.validateProperties({
  source:'session.dashboard.dashboardMain' });
 
 var vegetarianSelected=this.formData.student.vegetarianFlag?'checked':'';
+var isTeacherSelected=this.formData.student.isTeacherFlag?'checked':'';
 var allergySelected=this.formData.student.allergyFlag?'checked':'';
 
  var lastName=this.formData.student.lastName?this.formData.student.lastName:this.formData.account.familyName;
@@ -80,10 +81,10 @@ else{
 	<span class='smallButton' style='margin-left:20px;' id='<%=this.displayParameters.saveButton.divId%>'></span>
 	<span title='Cancel' class='smallButton' style='margin-left:10px;' id='<%=this.displayParameters.cancelButton.divId%>'></span>
 </div>
-<div style='text-align:right;padding-right:100px;padding-top:5px;'>
+<div style='text-align:right;padding-right:80px;padding-top:5px;'>
 	
-	 Are there any allergy issues? Check here and we will follow up via email. <input type='checkbox' name='allergyFlag' value='1' <%=allergySelected%>>
-	Vegetarian? <input type='checkbox' name='vegetarianFlag' value='1' <%=vegetarianSelected%>><br/>
+	 Allergy issues? Check here and we will follow up via email. <input type='checkbox' name='allergyFlag' value='1' <%=allergySelected%>>
+	| Vegetarian? <input type='checkbox' name='vegetarianFlag' value='1' <%=vegetarianSelected%>> | Teacher? <input type='checkbox' name='isTeacherFlag' value='1' <%=vegetarianSelected%>><br/>
 
 </div>
 
