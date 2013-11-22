@@ -61,6 +61,7 @@ class Application_Model_Student extends Application_Model_Base
 				$outArray=array(
 					'firstName'=>$inData->firstName,
 					'lastName'=>$inData->lastName,
+					'isActiveFlag'=>$inData->isActiveFlag,
 					'refId'=>$inData->refId,
 					'vegetarianFlag'=>$inData->vegetarianFlag,
 					'isTeacherFlag'=>$inData->isTeacherFlag,
