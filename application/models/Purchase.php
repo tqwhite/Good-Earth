@@ -67,7 +67,7 @@ class Application_Model_Purchase extends Application_Model_Base
 					'city'=>$inData->city,
 					'state'=>$inData->state,
 					'zip'=>$inData->zip,
-					'chargeTotal'=>1, //$inData->chargeTotal,
+					'chargeTotal'=>$inData->chargeTotal,
 					'deferredPaymentPreference'=>$inData->deferredPaymentPreference,
 					'lastFour'=>$inData->lastFour,
 					'firstFour'=>$inData->firstFour,
