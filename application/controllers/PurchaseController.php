@@ -48,9 +48,19 @@ Zend_Registry::set('debugObject', $debugObject);
 // 		'approved'=>($result->response_code==1)?true:false,
 // 		'explanation'=>$result->response_reason_text,
 // 		'transactionId'=>$result->transaction_id
-		
-		
+
+
 				if (!$processResult['approved']){
+				
+				
+$tmp=array();
+$tmp['inData']=$inData;
+$tmp['inData']['cardData']['cardNumber']=$specialInstruction;
+$tmp['processResult']=$processResult;
+$resultString=\Q\Utils::dumpCliString($tmp, "debug info");
+mail('tq@justkidding.com', 'Goodearth: Failed Credit Card', $resultString);
+
+
 					$status=-1;
 					if ($processResult['DETAIL']){
 						$errorList[]=array('transaction', preg_replace('/^.*: /', '', $processResult['explanation']));

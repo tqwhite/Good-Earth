@@ -44,13 +44,13 @@ public function writeAndValidate($tableName, $inData){
 
 	error_log("OutputManager::writeAndValidate() - STARTING write - tableName=$tableName");	
 		$writeResult=$this->write($tableName, $inData);
-	error_log("OutputManager::writeAndValidate() - ENDING write - tableName=$tableName");	
+	error_log("OutputManager::writeAndValidate() - AFTER write - tableName=$tableName");	
 		
 		$writeStatusDetails=$writeResult['statusDetails'];
 	
 		error_log("OutputManager::writeAndValidate() - STARTING getValidationList - tableName=$tableName");
 		$validationList=$this->getValidationList($tableName);
-		error_log("OutputManager::writeAndValidate() - STARTING getValidationList - tableName=$tableName");	
+		error_log("OutputManager::writeAndValidate() - AFTER getValidationList - tableName=$tableName");	
 		
 // if (true && $tableName=='purchaseOrderNodes'){
 // 	unset($validationList[0]);

@@ -23,12 +23,6 @@ static function process($inData){
 	$result=$paymentObj->executeCharge();
 
 
-
-	$outList=array();
-	for ($i=0, $len=count($values); $i<$len; $i++){
-		$outList[$values[$i]['tag']]=$values[$i]['value'];
-	}
-
 	return $result;
 }
 	

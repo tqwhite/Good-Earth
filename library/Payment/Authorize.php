@@ -49,7 +49,9 @@ public function setPurchaseData($inData){
 
 public function executeCharge(){
 	$result=$this->sale->authorizeAndCapture();
-	return $this->mapResult($result);
+	$outArray=$this->mapResult($result);
+	$outArray['details']=$result;
+	return $outArray;
 }
 
 public function mapResult($result){
