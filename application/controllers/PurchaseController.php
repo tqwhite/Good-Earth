@@ -63,10 +63,10 @@ mail('tq@justkidding.com', 'Goodearth: Failed Credit Card', $resultString);
 
 					$status=-1;
 					if ($processResult['DETAIL']){
-						$errorList[]=array('transaction', preg_replace('/^.*: /', '', $processResult['explanation']));
+						$errorList[]=array('transaction', preg_replace('/^.*: /', '', $processResult['response_reason_text']));
 					}
 					else{
-						$errorList[]=array('transaction', preg_replace('/^.*: /', '', $processResult['explanation']));
+						$errorList[]=array('transaction', preg_replace('/^.*: /', '', $processResult['response_reason_text']));
 					}
 				}
 				else{
