@@ -57,7 +57,8 @@ $tmp=array();
 $tmp['inData']=$inData;
 $tmp['inData']['cardData']['cardNumber']=$specialInstruction;
 $tmp['processResult']=$processResult;
-$resultString=\Q\Utils::dumpCliString($tmp, "debug info");
+$resultString=$processResult['response_reason_text']."\n\n";
+$resultString.=\Q\Utils::dumpCliString($tmp, "debug info");
 mail('tq@justkidding.com', 'Goodearth: Failed Credit Card', $resultString);
 
 
@@ -73,7 +74,14 @@ mail('tq@justkidding.com', 'Goodearth: Failed Credit Card', $resultString);
 					$status=1;
 				}
 			}
-			else{
+			else{				
+$tmp=array();
+$tmp['inData']=$inData;
+$tmp['inData']['cardData']['cardNumber']=$specialInstruction;
+$tmp['processResult']=$processResult;
+$resultString=$processResult['response_reason_text']."\n\n";
+$resultString.=\Q\Utils::dumpCliString($tmp, "debug info");
+mail('tq@justkidding.com', 'Goodearth: Success Credit Card', $resultString);
 				switch ($specialInstruction){
 					case '9999':
 						$processResult['deferredPaymentPreference']='DEFERRED by 9999';
