@@ -182,7 +182,7 @@ class Application_Model_Offering extends Application_Model_Base
 		$tmp=implode("','", $periodList);
 		$sqlString='(\''.$tmp.'\')';
 		
-		$query = $this->entityManager->createQuery("SELECT u from GE\\Entity\\{$this->entityName} u WHERE u.perYearFull in $sqlString");
+		$query = $this->entityManager->createQuery("SELECT u from GE\\Entity\\{$this->entityName} u WHERE u.perYearFull in $sqlString and  u.isActiveFlag=1");
 
 		switch ($hydrationMode){
 			default:
