@@ -18,6 +18,12 @@ class Day /*extends Base*/{
 	* @Id
 	**/
 	private $refId;
+	
+	/**
+	* @var string
+	* @column(name="helixId", type="string", length=36, nullable=true)
+	**/
+	private $helixId;
 
 	/**
 	 * @column(type="string", length=60, nullable=false)
@@ -40,6 +46,14 @@ class Day /*extends Base*/{
 	 **/
 
 	private $created;
+
+
+	/**
+	 * @column(type="datetime", nullable=false)
+	 * @var datetime
+	 **/
+
+	private $modified;
 
 	/**
 	 * @column(type="boolean", nullable=true)
@@ -73,6 +87,7 @@ class Day /*extends Base*/{
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
 	$this->created=new \DateTime(date("Y-m-d H:i:s"));
+	$this->modified=new \DateTime(date("Y-m-d H:i:s"));
 
 	$this->offeringDayNodes = new \Doctrine\Common\Collections\ArrayCollection();
 	$this->orders = new \Doctrine\Common\Collections\ArrayCollection();
@@ -90,6 +105,9 @@ public function __get($property){
 }
 
 public function __set($property, $value){
+	
 	$this->$property=$value;
+
+	$this->modified=new \DateTime(date("Y-m-d H:i:s"));
 }
 }

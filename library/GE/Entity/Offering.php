@@ -18,6 +18,12 @@ class Offering /*extends Base*/{
 	* @Id
 	**/
 	private $refId;
+	
+	/**
+	* @var string
+	* @column(name="helixId", type="string", length=36, nullable=true)
+	**/
+	private $helixId;
 
 	/**
 	 * @column(type="string", length=100, nullable=false)
@@ -94,6 +100,14 @@ class Offering /*extends Base*/{
 
 	private $created;
 
+
+	/**
+	 * @column(type="datetime", nullable=false)
+	 * @var datetime
+	 **/
+
+	private $modified;
+
 	/**
 	 * @column(type="boolean", nullable=true)
 	 * @var integer
@@ -113,6 +127,7 @@ class Offering /*extends Base*/{
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
 	$this->created=new \DateTime(date("Y-m-d H:i:s"));
+	$this->modified=new \DateTime(date("Y-m-d H:i:s"));
 
 	$this->schoolNodes = new \Doctrine\Common\Collections\ArrayCollection();
 	$this->dayNodes = new \Doctrine\Common\Collections\ArrayCollection();
@@ -134,6 +149,7 @@ public function __get($property){
 }
 
 public function __set($property, $value){
+	
 	switch($property){
 		case 'price':
 			$this->$property=$value*100;
@@ -142,6 +158,8 @@ public function __set($property, $value){
 			$this->$property=$value;
 			break;
 	}
+
+	$this->modified=new \DateTime(date("Y-m-d H:i:s"));
 }
 
 }

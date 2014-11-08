@@ -1,15 +1,8 @@
 select 
-
-eaters.firstName,
-gl.title as gradeLevel,
-u.userName,
-s.name,
-o.created as orderDate,
-p.chargeTotal as purchaseTotal,
-m.name as meal,
-d.title as day,
-p.chargeTotal,
-apn.refId
+#apn.purchaseRefId, apn.accountRefId, a.familyName, o.created as 'order', 
+eaters.lastName, eaters.firstName, a.familyName, p.created, 
+(select count(*) from students where accountRefId=eaters.accountRefId and firstName=eaters.firstName) as count
+, a.refId
 
 from accounts as a
 
@@ -32,6 +25,11 @@ left join purchases as p on p.refId=pon.purchaseRefId
 left join accountPurchaseNodes as apn on apn.purchaseRefId=p.refId
 
 where not isnull(p.refId)
+and (select count(*) from students where accountRefId=eaters.accountRefId and firstName=eaters.firstName)>1
+and p.refId>'2014-07-01'
 
-order by s.name, d.title, m.name, eaters.lastName, eaters.firstName
+
+group by eaters. firstName, eaters.refId, p.refId
+
+order by a.familyName, eaters.firstName, p.created
 limit 100000

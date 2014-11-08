@@ -51,6 +51,14 @@ class OfferingGradeLevelNode /*extends Base*/{
 
 	private $created;
 
+
+	/**
+	 * @column(type="datetime", nullable=false)
+	 * @var datetime
+	 **/
+
+	private $modified;
+
 	/**
 	 * @column(type="boolean", nullable=true)
 	 * @var integer
@@ -69,6 +77,7 @@ class OfferingGradeLevelNode /*extends Base*/{
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
 	$this->created=new \DateTime(date("Y-m-d H:i:s"));
+	$this->modified=new \DateTime(date("Y-m-d H:i:s"));
 }
 
 public function __get($property){
@@ -83,6 +92,9 @@ public function __get($property){
 }
 
 public function __set($property, $value){
+	
 	$this->$property=$value;
+
+	$this->modified=new \DateTime(date("Y-m-d H:i:s"));
 }
 }
