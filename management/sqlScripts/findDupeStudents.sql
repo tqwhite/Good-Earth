@@ -25,7 +25,7 @@ left join purchases as p on p.refId=pon.purchaseRefId
 left join accountPurchaseNodes as apn on apn.purchaseRefId=p.refId
 
 where not isnull(p.refId)
-and (select count(*) from students where accountRefId=eaters.accountRefId and firstName=eaters.firstName)>1
+and (select count(*) from students where accountRefId=eaters.accountRefId and firstName=eaters.firstName and isActiveFlag=true)>1
 and p.refId>'2014-07-01'
 
 
