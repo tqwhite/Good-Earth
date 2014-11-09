@@ -120,6 +120,8 @@ class Application_Model_Student extends Application_Model_Base
 	
 		$data['firstName']=(isset($data['First Name']))?$data['First Name']:$data['firstName'];
 		$data['lastName']=(isset($data['Last Name']))?$data['Last Name']:$data['lastName'];
+		$data['auditInfo']=\Q\Utils::dumpWebString($this->getAuditInfo(), "auditInfo");
+		$data['helixId']=$data['helix id']; unset($data['helix id']);
 
 
 		return $data;

@@ -1,11 +1,12 @@
 <?php
 
-class StudentController extends Zend_Controller_Action
+class StudentController extends Q_Controller_Base
 {
 
     public function init()
     {
-        /* Initialize action controller here */
+        
+        parent::updateAuditInfo($this->getFileName());
     }
 
     public function indexAction()

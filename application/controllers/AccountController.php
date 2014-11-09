@@ -1,13 +1,13 @@
 <?php
 
-class AccountController extends Zend_Controller_Action
+class AccountController extends  Q_Controller_Base
 {
 
     private $newPassword = '';
-
+    
     public function init()
     {
-        /* Initialize action controller here */
+        parent::updateAuditInfo('AccountController');
     }
 
     public function indexAction()

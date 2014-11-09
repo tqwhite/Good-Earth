@@ -1,8 +1,3 @@
-.DS_Store
-._.DS_Store
-
-/application/configs/*
-/library/Credentials/*
 
 INSTALL.txt
 LICENSE.txt
@@ -11,3 +6,28 @@ demos/
 extras/documentation
 application/configs/application.ini
 /nbproject/private/
+
+.DS_Store
+._.DS_Store
+._*
+Icon?
+._Icon\r
+/tmp/*
+
+/configs/*
+*/configs/*
+/config/*
+*/config/*
+/tmp/*
+*/tmp/*
+/tmp/*
+*/tmp/*
+
+.~lock*
+
+
+*.log
+
+/application/configs/*
+/library/Credentials/*
+public/media/hash/*

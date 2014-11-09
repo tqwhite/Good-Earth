@@ -1,11 +1,11 @@
 <?php
 
-class SessionController extends Zend_Controller_Action
+class SessionController extends  Q_Controller_Base
 {
 
-    public function indexAction()
+    public function init()
     {
-        /* Initialize action controller here */
+        parent::updateAuditInfo($this->getFileName());
     }
 
     public function checkAction()

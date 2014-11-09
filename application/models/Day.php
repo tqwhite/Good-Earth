@@ -22,6 +22,8 @@ class Application_Model_Day extends Application_Model_Base
 	
 	protected function convertHelixData($data){
 		$data['isActiveFlag']=($data['active?']=='Yes')?1:0; unset($data['active?']);
+		$data['auditInfo']=\Q\Utils::dumpWebString($this->getAuditInfo(), "auditInfo");
+		$data['helixId']=$data['helix id']; unset($data['helix id']);
 
 		return $data;
 	}

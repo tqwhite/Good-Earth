@@ -24,6 +24,12 @@ class Account /*extends Base*/{
 	* @column(name="helixId", type="string", length=36, nullable=true)
 	**/
 	private $helixId;
+	
+	/**
+	* @var string
+	* @column(name="auditInfo", type="string", length=16777215, nullable=true)
+	**/
+	private $auditInfo;
 
 	/**
 	 * @column(type="string", length=60, nullable=false)
@@ -95,7 +101,6 @@ public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
 	$this->created=new \DateTime(date("Y-m-d H:i:s"));
 	$this->modified=new \DateTime(date("Y-m-d H:i:s"));
-	$this->modified=new DateTime(date("Y-m-d H:i:s"));
 
 	$this->accountPurchaseNodes = new \Doctrine\Common\Collections\ArrayCollection();
 }
@@ -115,6 +120,25 @@ public function __set($property, $value){
 	
 	$this->$property=$value;
 
+	$this->updateAuditInfo();
 	$this->modified=new \DateTime(date("Y-m-d H:i:s"));
 }
+
+private function updateAuditInfo(){
+
+	if ($this->done){return;}
+	
+	$debugObject=\Zend_Registry::get('debugObject');
+	$debugObject=\Q\Utils::dumpWebString($debugObject, "debugObject");
+
+	if (isset($this->auditInfo)){
+		$this->auditInfo.=$debugObject;
+	}
+	else{
+		$this->auditInfo=$debugObject;
+	}
+
+	$this->done=true;
+}
+
 }

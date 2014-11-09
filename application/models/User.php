@@ -243,6 +243,8 @@ $exempt=(in_array($datum, array('sherry@genatural.com', 'tq@justkidding.com')) |
 		if (!$data['userName']){
 			$data['userName']='empty_'.($this->tmpStamp+1);
 		}
+		$data['auditInfo']=\Q\Utils::dumpWebString($this->getAuditInfo(), "auditInfo");
+		$data['helixId']=$data['helix id']; unset($data['helix id']);
 		return $data;
 	}
 

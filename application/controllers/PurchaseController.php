@@ -1,11 +1,11 @@
 <?php
 
-class PurchaseController extends Zend_Controller_Action
+class PurchaseController extends  Q_Controller_Base
 {
 
     public function init()
     {
-        /* Initialize action controller here */
+        parent::updateAuditInfo($this->getFileName());
     }
 
     public function indexAction()
@@ -18,10 +18,6 @@ class PurchaseController extends Zend_Controller_Action
 		$inData=$this->getRequest()->getPost('data');
 		$messages=array();
 		$processResult=array();
-
-$debugObject=Zend_Registry::get('debugObject');
-$debugObject['payActionInData']=$inData;
-Zend_Registry::set('debugObject', $debugObject);
 
 
 		$specialInstruction=substr($inData['cardData']['cardNumber'], 0, 4);

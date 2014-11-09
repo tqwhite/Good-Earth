@@ -63,8 +63,9 @@ class Application_Model_School extends Application_Model_Base
 	
 	public function isAnyoneOpen(){
 		$schools=$this->getList();
-		$now=new DateTime();
-		$oneDay=new DateInterval('P1D');
+		
+		$now=new \DateTime();
+		$oneDay=new \DateInterval('P1D');
 		
 		$schoolCount=count($schools);
 		
@@ -95,6 +96,11 @@ class Application_Model_School extends Application_Model_Base
 
 		$data['dateOrderingBegin']=$this->helixToDate($data['dateOrderingBegin']);
 		$data['dateOrderingEnd']=$this->helixToDate($data['dateOrderingEnd']);
+		$data['auditInfo']=\Q\Utils::dumpWebString($this->getAuditInfo(), "auditInfo");
+		$data['helixId']=$data['helix id']; unset($data['helix id']);
+
+
+echo "<div style='color:black;margin-bottom:10px;'>data['helixId']={$data['helixId']}</div>";
 
 		return $data;
 	}

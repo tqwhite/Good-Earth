@@ -1,12 +1,15 @@
 <?php
 
-class DataController extends Zend_Controller_Action
+class DataController extends Q_Controller_Base
 {
 
     public function init()
-    {
+    { 
+        parent::updateAuditInfo($this->getFileName());
         $this->_helper->_layout->setLayout('not_store');
-        /* Initialize action controller here */
+        
+        $tmp=parent::getAuditInfo();
+
     }
 
     public function indexAction()

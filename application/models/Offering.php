@@ -174,6 +174,9 @@ class Application_Model_Offering extends Application_Model_Base
 		$data['perYearFull']=$data['perYear full']; unset($data['perYear full']);
 		
 		$data['price']=$data['price']*100;
+		
+		$data['auditInfo']=\Q\Utils::dumpWebString($this->getAuditInfo(), "auditInfo");
+		$data['helixId']=$data['helix id']; unset($data['helix id']);
 
 		return $data;
 	}

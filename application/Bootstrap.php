@@ -26,7 +26,12 @@ error_reporting(E_ERROR | E_PARSE & ~E_WARNING & ~E_NOTICE); //error_reporting(E
 	$config=$this->getOptions();
 	Zend_Registry::set('helixConfiguration', $config['helix']['configuration']);
 
-Zend_Registry::set('debugObject', array('initialized'=>time()));
+	Zend_Registry::set('debugObject', array(
+	'initialized'=>new \DateTime(date("Y-m-d H:i:s")),
+	'transactionId'=>Zend_Session::getId(),
+	'origination'=>$_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF']
+	
+	));
 }
 public function _initRouting(){
 

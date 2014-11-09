@@ -188,6 +188,7 @@ class Application_Model_Base
 		$entityObject=$this->generate();
 
 		$propertyList=$this->extractProperties($entityObject);
+
 		$specialFieldNameList=array(
 			'perYear full',
 			'active?','accountRefId',
@@ -199,7 +200,8 @@ class Application_Model_Base
 			'purchaseRefId',
 			'schoolRefId',
 			'studentRefId',
-			'userRefId'
+			'userRefId',
+			'helix id'
 		); //these are weird helix names that don't match anything
 
 		foreach ($helixArray as $label=>$record){
@@ -266,7 +268,9 @@ public function updateOrInsert($recArray){
 	$stmt = $db->query($select);
 	$result = $stmt->fetchAll();
 	
+
 	$alreadyInDbRefIdList=\Q\Utils::intoSimpleArray($result, 'refId');
+
 	$notInDbRefIdList=array_diff($helixRefIdList, $alreadyInDbRefIdList);
 
 	$updateList=\Q\Utils::filterAllowed($recArray, 'refId', $alreadyInDbRefIdList);
@@ -291,6 +295,10 @@ private function updateDb($recList){
 
 			}
 			
+		//	$data['created']=new \DateTime(date("Y-m-d H:i:s"));
+			
+			$tmp=new \DateTime(date("Y-m-d H:i:s"));
+			$data['modified']=$tmp->format("Y-m-d H:i:s");
 			
 			
 			$db->update($tableName, $data, "refId = '{$data['refId']}'");
@@ -313,6 +321,12 @@ private function insertDb($recList){
 					$data=$this->convertHelixData($data);
 
 			}
+			
+			$tmp=new \DateTime(date("Y-m-d H:i:s"));
+			$data['modified']=$tmp->format("Y-m-d H:i:s");
+			
+			$tmp=new \DateTime(date("Y-m-d H:i:s"));
+			$data['created']=$tmp->format("Y-m-d H:i:s");
 			
 			$db->insert($tableName, $data);
 
@@ -366,6 +380,13 @@ public function purgeInactive(){
 		$entity=$this->entity;
 		return $entity::tableName;
 	}
+	
+
+	
+protected function getAuditInfo(){
+	$debugObject=\Zend_Registry::get('debugObject');
+	return $debugObject;
+}
 
 }//end of class
 

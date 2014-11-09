@@ -24,6 +24,12 @@ class Offering /*extends Base*/{
 	* @column(name="helixId", type="string", length=36, nullable=true)
 	**/
 	private $helixId;
+	
+	/**
+	* @var string
+	* @column(name="auditInfo", type="string", length=16777215, nullable=true)
+	**/
+	private $auditInfo;
 
 	/**
 	 * @column(type="string", length=100, nullable=false)
@@ -159,7 +165,25 @@ public function __set($property, $value){
 			break;
 	}
 
+	$this->updateAuditInfo();
 	$this->modified=new \DateTime(date("Y-m-d H:i:s"));
+}
+
+private function updateAuditInfo(){
+
+	if ($this->done){return;}
+	
+	$debugObject=\Zend_Registry::get('debugObject');
+	$debugObject=\Q\Utils::dumpWebString($debugObject, "debugObject");
+
+	if (isset($this->auditInfo)){
+		$this->auditInfo.=$debugObject;
+	}
+	else{
+		$this->auditInfo=$debugObject;
+	}
+
+	$this->done=true;
 }
 
 }
