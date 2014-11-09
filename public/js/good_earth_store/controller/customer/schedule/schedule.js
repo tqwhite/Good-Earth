@@ -75,6 +75,28 @@ initDisplay:function(inData){
 },
 
 initDomElements:function(){
+
+
+
+
+var cookieData=GoodEarthStore.Models.LocalStorage.getCookieData('gradeLevelNotification').data;
+
+if (typeof(cookieData)=='undefined'){
+
+	$('#notification').show();
+	$('body')
+	.click(function(){
+	$('#notification').fadeOut(3000);
+	});
+
+	GoodEarthStore.Models.LocalStorage.setCookie('gradeLevelNotification', true, { expires: 7, path: '/'});
+}
+
+
+
+
+
+
 	this.displayParameters.newButton.domObj=$('#'+this.displayParameters.newButton.divId);
 
 	this.displayParameters.newButton.domObj.good_earth_store_tools_ui_button2({

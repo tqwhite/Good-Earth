@@ -75,7 +75,32 @@ var headingString=qtools.templateReplaceArray({replaceArray:headings, template:h
 
 %>
 <table class='schedule'>
-<tr style='color:gray;'><%==headingString%></tr>
+<tr style='color:gray;'>
+<div style='font-size:10pt;position:relative;'>
+Click on the Student's name to change information.
+
+
+
+<div id='notification' style='
+display:none;
+background: none repeat scroll 0 0 #A0F4F7;
+border: 1pt solid gray;
+bottom: 40px;
+color: red;
+height: 90px;
+padding: 10px;
+position: absolute;
+top: 40px;
+left:30px;
+width: 400px;'>
+We have had some trouble with our database  having incorrect grade levels for students. Please click on each student name and confirm that the grade level specified is correct.
+<div style='position:absolute;bottom:10px;color:gray;'>Click anywhere to dismiss this panel. It will not show up again.</div>
+</div>
+
+
+
+</div>
+<%==headingString%></tr>
 <%==rowString%>
 <tr><td colspan='<%=headings.length%>' style='text-align:left;'><div class='smallButton' id='<%=this.displayParameters.newButton.divId%>'>hello</div></td></tr>
 </table>
