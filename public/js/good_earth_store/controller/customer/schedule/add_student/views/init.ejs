@@ -40,7 +40,7 @@ var schoolString=this.viewHelper.makeSelectTag({
 		selectedValue:this.formData.student.schoolRefId,
 		selectVarName:'schoolRefId',
 		sourceObj:this.formData.schools.sort(qtools.byObjectProperty('name')),
-		filterFunction:function(inData){return !inData.suppressDisplay;},
+		filterFunction:function(inData){return inData.isActiveFlag;},
 		valuePropertyName:'refId',
 		labelPropertyName:'name',
 		firstItemLabel:'Select School',

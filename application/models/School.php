@@ -42,6 +42,7 @@ class Application_Model_School extends Application_Model_Base
 				'dateOrderingEnd'=>$inData->school->dateOrderingEnd,
 				'dateOrderingBegin'=>$inData->school->dateOrderingBegin,
 				
+				'isActiveFlag'=>$inData->isActiveFlag,
 				'suppressDisplay'=>$inData->school->suppressDisplay,
 				'gradeLevels'=>\Application_Model_GradeLevel::formatOutput($inData->school->gradeLevelNodes)
 			);
@@ -55,6 +56,7 @@ class Application_Model_School extends Application_Model_Base
 				'dateOrderingEnd'=>$inData->dateOrderingEnd,
 				'dateOrderingBegin'=>$inData->dateOrderingBegin,
 				
+				'isActiveFlag'=>$inData->isActiveFlag,
 				'suppressDisplay'=>$inData->suppressDisplay,
 				'gradeLevels'=>\Application_Model_GradeLevel::formatOutput($inData->gradeLevelNodes)
 			);
