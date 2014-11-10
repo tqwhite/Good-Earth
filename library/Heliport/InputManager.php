@@ -81,7 +81,6 @@ public function read($args){
 		$args['viewName']
 	);
 	
-
 	$endTime=time();
 	
 	if ($endTime-$startTime>20 && count($outResult['data'])==0){

@@ -11,6 +11,8 @@ class Application_Model_Base
 	private $helixImportSpecs;
 	protected $entity;
 	
+	private $specialFieldNameList;
+	
 	public static $dbConnection;
 
 	public function __construct(){
@@ -188,8 +190,7 @@ class Application_Model_Base
 		$entityObject=$this->generate();
 
 		$propertyList=$this->extractProperties($entityObject);
-
-		$specialFieldNameList=array(
+		$this->specialFieldNameList=array(
 			'perYear full',
 			'active?','accountRefId',
 			'dayRefId',
@@ -202,13 +203,13 @@ class Application_Model_Base
 			'studentRefId',
 			'userRefId',
 			'helix id'
-		); //these are weird helix names that don't match anything
+		); //these are weird helix names that don't match anything but that we want to let through for further processing
 
 		foreach ($helixArray as $label=>$record){
 			$outItemArray=array();
 			foreach ($record as $fieldName=>$data2){
 		
-				if (isset($propertyList[$fieldName]) || in_array($fieldName, $specialFieldNameList)){
+				if (isset($propertyList[$fieldName]) || in_array($fieldName, $this->specialFieldNameList)){
 					$outItemArray[$fieldName]=$data2;
 				}
 			}			
@@ -217,6 +218,16 @@ class Application_Model_Base
 		
 		return $outArray;
 	} //end of method
+
+	private function unsetSpecialFieldNames($inData){
+		$outArrau=array();
+		foreach ($inData as $label=>$data){
+			if (!in_array($label, $this->specialFieldNameList)){
+				$outArray[$label]=$data;
+			}
+		}
+		return $outArray;
+	}
 	
 	
 	public function extractProperties($inObj){
@@ -301,6 +312,7 @@ private function updateDb($recList){
 			$data['modified']=$tmp->format("Y-m-d H:i:s");
 			
 			
+			$data=$this->unsetSpecialFieldNames($data);
 			$db->update($tableName, $data, "refId = '{$data['refId']}'");
 			
 		}
@@ -328,6 +340,7 @@ private function insertDb($recList){
 			$tmp=new \DateTime(date("Y-m-d H:i:s"));
 			$data['created']=$tmp->format("Y-m-d H:i:s");
 			
+			$data=$this->unsetSpecialFieldNames($data);
 			$db->insert($tableName, $data);
 
 		}
