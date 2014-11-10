@@ -1,3 +1,7 @@
+
+#update offerings set isActiveFlag=0 where created='0000-00-00 00:00:00'
+
+
 ALTER TABLE accounts ADD helixId VARCHAR(36) DEFAULT NULL,
      ADD auditInfo MEDIUMTEXT DEFAULT NULL,
      ADD modified DATETIME NOT NULL;

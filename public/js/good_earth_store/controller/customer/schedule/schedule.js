@@ -81,7 +81,7 @@ initDomElements:function(){
 
 var cookieData=GoodEarthStore.Models.LocalStorage.getCookieData('gradeLevelNotification').data;
 
-if (typeof(cookieData)=='undefined'){
+if (!GLOBALS.done && typeof(cookieData)=='undefined'){
 
 	$('#notification').show();
 	$('body')
@@ -89,6 +89,7 @@ if (typeof(cookieData)=='undefined'){
 	$('#notification').fadeOut(3000);
 	});
 
+	GLOBALS.done=true;
 	GoodEarthStore.Models.LocalStorage.setCookie('gradeLevelNotification', true, { expires: 7, path: '/'});
 }
 
