@@ -1,5 +1,10 @@
-use test1;
-select o.name, s.name as 'school', gl.title as 'grade level', d.title as 'day', m.name as 'meal', o.created
+
+select o.name,
+ s.name as 'school',
+ gl.title as 'grade level',
+ d.title as 'day',
+ m.name as 'meal',
+ o.created
 from offerings as o
 left join offeringSchoolNodes as osl on osl.offeringRefId=o.refId
 left join offeringDayNodes as odl on odl.offeringRefId=o.refId
