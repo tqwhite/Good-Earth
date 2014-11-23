@@ -192,7 +192,8 @@ class Application_Model_Base
 		$propertyList=$this->extractProperties($entityObject);
 		$this->specialFieldNameList=array(
 			'perYear full',
-			'active?','accountRefId',
+			'active?',
+			'accountRefId',
 			'dayRefId',
 			'gradeLevelRefId',
 			'mealRefId',
@@ -222,7 +223,7 @@ class Application_Model_Base
 	private function unsetSpecialFieldNames($inData){
 		$outArrau=array();
 		foreach ($inData as $label=>$data){
-			if (!in_array($label, $this->specialFieldNameList)){
+			if (strstr($data, 'RefId') || !in_array($label, $specialFieldNameList)){
 				$outArray[$label]=$data;
 			}
 		}
@@ -253,11 +254,6 @@ public function writeDb($recListArray){
 
 
 		$dbResult=$this->updateOrInsert($recListArray);
-
-		
-// 		$query='select * from accounts';
-// 		$stmt = $db->query($query);
-// 		Zend_Debug::dump($stmt->fetchAll());
 		
 	
 	return $dbResult;
@@ -267,6 +263,7 @@ public function writeDb($recListArray){
 public function updateOrInsert($recArray){
 	//http://framework.zend.com/manual/1.12/en/zend.db.select.html
 	//echo "get_class=".get_class($select)."<br>";
+	
 	
 	$db=$this->getDbConnection();
 
@@ -317,7 +314,8 @@ private function updateDb($recList){
 			
 		}
 
-\Q\Utils::dumpCli($recList, "update existing in $tableName")." <hr> ";
+\Q\Utils::dumpCli($recList, "update existing in $tableName");
+echo " <hr> ";
 
 }
 
@@ -344,7 +342,8 @@ private function insertDb($recList){
 			$db->insert($tableName, $data);
 
 		}
-\Q\Utils::dumpCli($recList, "insert new into $tableName")." <hr> ";
+\Q\Utils::dumpCli($recList, "insert new into $tableName");
+echo " <hr> ";
 
 }
 
