@@ -205,6 +205,11 @@ class Application_Model_Base
 			'userRefId',
 			'helix id'
 		); //these are weird helix names that don't match anything but that we want to let through for further processing
+		$this->deleteFieldNameList=array(
+			'perYear full',
+			'active?',
+			'helix id'
+		); //these are weird helix names that don't match anything but that we want to let through for further processing
 
 		foreach ($helixArray as $label=>$record){
 			$outItemArray=array();
@@ -223,7 +228,7 @@ class Application_Model_Base
 	private function unsetSpecialFieldNames($inData){
 		$outArrau=array();
 		foreach ($inData as $label=>$data){
-			if (strstr($data, 'RefId') || !in_array($label, $specialFieldNameList)){
+			if (!in_array($label, $this->deleteFieldNameList)){
 				$outArray[$label]=$data;
 			}
 		}
