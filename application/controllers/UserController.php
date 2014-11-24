@@ -34,7 +34,7 @@ public function resetpwAction()
 		if (!$user){
 			$this->_helper->json(array(
 				status=>-1,
-				messages=>array('identifier', "No user with that identifier found"),
+				messages=>array(array('identifier', "No user with that identifier found")),
 				data=>array()
 			));
 		}

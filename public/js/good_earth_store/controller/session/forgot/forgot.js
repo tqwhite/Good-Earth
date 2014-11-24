@@ -170,8 +170,12 @@ resetAfterSave:function(inData){
 	}
 	else{
 					var outMessage='';
-					for (var i=1, len=inData.messages.length; i<len; i++){
-						outMessage+=inData.messages[i]+'<br/>';
+					for (var i=0, len=inData.messages.length; i<len; i++){
+						var mainMessage=inData.messages[i][1];
+						if (mainMessage=="Reset email sent"){
+							mainMessage+="<div style='font-size:70%;'>Check spam filter.<br/>Reset message only good for fifteen minutes.</div>";
+							}
+						outMessage+=mainMessage+'<br/>';
 					}
 				$('#'+this.displayParameters.status.divId).html(outMessage).removeClass('good').addClass('bad');
 	}
