@@ -197,28 +197,48 @@ limit 100000";
     
     public function pinghelixAction(){
     $ipAddress=$this->getRequest()->getQuery('helixIp');
-
     	$helixConfiguration=\Zend_Registry::get('helixConfiguration');
+
+	if ($ipAddress){
+
     	$helixConfiguration['hostIp']=$ipAddress;
 
     	\Zend_Registry::set('helixConfiguration', $helixConfiguration);
     	$helixConfiguration2=\Zend_Registry::get('helixConfiguration');
+    	$serverMessage="<div style='color:black;margin-bottom:10px;'>IP Address (from URL)={$ipAddress}</div>";
+    }
+    else{
+
+    	$serverMessage="<div style='background:yellow;margin-bottom:10px;'>IP Address (from configuration file)={$helixConfiguration['hostIp']}</div>";
+    }
 
 	$this->connection=new \Heliport\ServerInterface();
 	$helix_status = $this->connection->ihr190();
 	$releaseStatus=$this->connection->releasePoolUser();
 
 if ($helix_status){
-echo "<div style='color:black;background:#9f6;font-weight:bold;'>Helix Accessed Successfully</div>";
+echo "<div style='color:black;background:#9f6;font-weight:bold;margin:10px 0px;'>Helix Accessed Successfully</div>";
 }
 else{
-echo "<div style='color:black;background:#f96;font-weight:bold;'>Fail. Helix not responding.</div>";
+echo "<div style='color:black;background:#f96;font-weight:bold;margin:10px 0px;'>Fail. Helix not responding.</div>";
 }
-echo "<div style='color:black;margin-bottom:10px;'>ipAddress={$ipAddress}</div>";
+echo $serverMessage;
 	
 echo "<div style='color:black;margin-bottom:10px;'>helix_status (ihr190)={$helix_status}</div>";
 
-echo "<div style='color:black;margin-bottom:10px;'>releaseStatus={$releaseStatus}</div>";
+echo "<div style='color:black;margin-bottom:10px;'>pool user releaseStatus={$releaseStatus}</div>";
+
+
+if ($_SERVER['SERVER_PORT']=='80'){
+$scheme='http';
+}
+else{
+
+$scheme='https';
+}
+$url="$scheme://{$_SERVER['HTTP_HOST']}/utility/pingHelix?ipAddress={$helixConfiguration['hostIp']}";
+
+echo "<div style='margin:35px 0px;'><a href='$url'>$url</a></div>";
 
 exit;
     }
