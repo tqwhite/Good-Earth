@@ -194,6 +194,34 @@ limit 100000";
 	
 	
     }
+    
+    public function pinghelixAction(){
+    $ipAddress=$this->getRequest()->getQuery('helixIp');
+
+    	$helixConfiguration=\Zend_Registry::get('helixConfiguration');
+    	$helixConfiguration['hostIp']=$ipAddress;
+
+    	\Zend_Registry::set('helixConfiguration', $helixConfiguration);
+    	$helixConfiguration2=\Zend_Registry::get('helixConfiguration');
+
+	$this->connection=new \Heliport\ServerInterface();
+	$helix_status = $this->connection->ihr190();
+	$releaseStatus=$this->connection->releasePoolUser();
+
+if ($helix_status){
+echo "<div style='color:black;background:#9f6;font-weight:bold;'>Helix Accessed Successfully</div>";
+}
+else{
+echo "<div style='color:black;background:#f96;font-weight:bold;'>Fail. Helix not responding.</div>";
+}
+echo "<div style='color:black;margin-bottom:10px;'>ipAddress={$ipAddress}</div>";
+	
+echo "<div style='color:black;margin-bottom:10px;'>helix_status (ihr109)={$helix_status}</div>";
+
+echo "<div style='color:black;margin-bottom:10px;'>releaseStatus={$releaseStatus}</div>";
+
+exit;
+    }
 
 
 }
