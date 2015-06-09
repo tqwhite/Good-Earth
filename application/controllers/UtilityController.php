@@ -216,7 +216,7 @@ echo "<div style='color:black;background:#f96;font-weight:bold;'>Fail. Helix not
 }
 echo "<div style='color:black;margin-bottom:10px;'>ipAddress={$ipAddress}</div>";
 	
-echo "<div style='color:black;margin-bottom:10px;'>helix_status (ihr109)={$helix_status}</div>";
+echo "<div style='color:black;margin-bottom:10px;'>helix_status (ihr190)={$helix_status}</div>";
 
 echo "<div style='color:black;margin-bottom:10px;'>releaseStatus={$releaseStatus}</div>";
 
