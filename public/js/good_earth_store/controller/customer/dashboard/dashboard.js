@@ -19,7 +19,7 @@ init: function(el, options) {
 	qtools.validateProperties({
 		targetObject:this,
 		propList:[],
-		source:'session.dashboard.dashboardMain'
+		source:this.constructor._fullName
  	});
  	this.startupOptions=options?options:{};
 
@@ -44,6 +44,11 @@ initDisplayProperties:function(){
 	name='accountSpace'; nameArray.push({name:name});
 	name='kidSpace'; nameArray.push({name:name});
 	name='purchaseSpace'; nameArray.push({name:name});
+	name = 'adminButton'; nameArray.push({
+		name: name,
+		handlerName: name + 'Handler',
+		targetDivId: name + 'Target'
+	});
 
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -53,11 +58,21 @@ initControlProperties:function(){
 	this.viewHelper=new viewHelper2();
 	this.loginUser=GoodEarthStore.Models.Session.get('user');
 	this.purchases=this.newPurchaseObj();
-AAA_purchases=this.purchases;
+	
+			
+			this.adminModeCookieName='adminMode';
 },
 
 initDisplay:function(inData){
+		
+	var adminMode=GoodEarthStore.Models.LocalStorage.getCookieData(this.adminModeCookieName);
+	console.log("adminMode="+adminMode.data);
+	if (adminMode.data=='true'){
+		this.adminButtonHandler('click');
+		return;
+	}
 
+			
 	var html=$.View('//good_earth_store/controller/customer/dashboard/views/dashboardMain.ejs',
 		$.extend(inData, {
 			displayParameters:this.displayParameters,
@@ -95,9 +110,31 @@ initDomElements:function(){
 		account:this.account,
 		purchases:this.purchases
 	});
+	
+	this.displayParameters.adminButton.domObj = $('#' + this.displayParameters.adminButton.divId);
+	if (this.loginUser.role == 'admin') {
+		this.displayParameters.adminButton.domObj.good_earth_store_tools_ui_button2({
+			ready: {
+				classs: 'basicReady'
+			},
+			hover: {
+				classs: 'basicHover'
+			},
+			clicked: {
+				classs: 'basicActive'
+			},
+			unavailable: {
+				classs: 'basicUnavailable'
+			},
+			accessFunction: this.displayParameters.adminButton.handler,
+			initialControl: 'setToReady', //initialControl:'setUnavailable'
+			label: "Admin"
+		});
+	} else {
+		this.displayParameters.adminButton.domObj.remove();
+	}
 
 },
-
 
 lunchButtonHandler:function(control, parameter){
 	var componentName='lunchButton';
@@ -196,6 +233,41 @@ newPurchaseObj:function(){
 
 	GoodEarthStore.Models.Session.keep('purchases', purchaseObj);
 	return purchaseObj;
+},
+
+adminButtonHandler: function(control, parameter) {
+	var componentName = 'adminButton';
+	switch (control) {
+		case 'click':
+			if (this.isAcceptingClicks()) {
+				this.turnOffClicksForAwhile();
+			}
+			else {
+				return;
+			}
+			
+			GoodEarthStore.Models.LocalStorage.setCookie(this.adminModeCookieName, 'true', { expires: 1, path: '/'});
+
+			this.element.good_earth_store_admin_admin({
+				'loginUser': this.loginUser,
+				'adminModeCookieName':this.adminModeCookieName,
+				'sessionActivationPackage':{
+					loginAccount:this.account,
+					schools:this.schools,
+					gradeLevels:this.gradeLevels,
+					lunchButtonHandler:this.callback('lunchButtonHandler')
+				}
+			});
+			break;
+		case 'setAccessFunction':
+			if (!this[componentName]) {
+				this[componentName] = {};
+			}
+			this[componentName].accessFunction = parameter;
+			break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
 }
 
 

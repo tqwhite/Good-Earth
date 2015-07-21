@@ -857,7 +857,8 @@ validateProperties:function(args){
 		source=args.source,
 		importance=args.importance,
 		showAlertFlag=false, //should be pointing to a global but I don't have one today
-		targetScope=args.targetScope?args.targetScope:'';
+		targetScope=args.targetScope?args.targetScope:'',
+		showOptionalMessages=args.showOptionalMessages;
 
 	if (typeof(qtools)=='undefined' && showAlertFlag){
 		alert("qtools.validateProperties did not get a source object");
@@ -898,7 +899,7 @@ validateProperties:function(args){
 	if (showAlertFlag && outMessage){
 		alert(outMessage);
 	}
-	else if(outMessage){
+	else if(outMessage && showOptionalMessages){
 		qtools.consoleMessage(outMessage);
 	}
 

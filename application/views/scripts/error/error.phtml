@@ -1,85 +1,50 @@
-<?php /*require_once($_SERVER['DOCUMENT_ROOT'].'/tools/mailNotificationInclude.php');*/?>
-<?php
-	if (isset($this->exception)){
-		$getMessage=$this->exception->getMessage();
-	}
-	else{
-		$getMessage='no exception object';
-	}
-
-
-	$debugObject=Zend_Registry::get('debugObject');
-
-	error_log("ZEND ERROR PAGE ========================================================================================");
-
-error_log("mysql_error=".mysql_error());
-
-if (isset($debugObject)){
-
-	\Q\Utils::dumpCli($debugObject, "debugObject");
-	error_log(\Q\Utils::callStack(false));
-//	error_log($this->exception->getMessage());
-	}
-	else{
-		error_log('no debug object');
-	}
-
-//	error_log("ZEND ERROR PAGE ========================================================================================: $getMessage STACK TRACE  ".Q\Utils::callStack(true));
-	exit;
-?>
+<?/*php require_once($_SERVER['DOCUMENT_ROOT'].'/tools/mailNotificationInclude.php');*/?>
 <!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
    'http://www.w3.org/TR/html4/strict.dtd'>
 <html>
 <head>
-<title>Error "<?php echo $this->message ?>"</title>
+<title>Generic White: Error "<?php echo $this->message ?>"</title>
 
 <script type='text/javascript' src='http://code.jquery.com/jquery-1.6.1.min.js'></script>
 <!--link rel='stylesheet' type='text/css' href='css/main.css' /-->
 
 <style type='text/css'>
-
-	body {color:orange;font-family:sans-serif;}
-
+	body {color:orange;font-family:sans-serif;font-size:12pt;}
+	
 </style>
 
 </head>
 <body>
+<div style='padding:30px;'>
+	<div style='font-size:12pt;color:black;line-height:1.5;'>
+	  <h1>An error occurred</h1>
+	  <h2><?php echo $this->message ?></h2>
 
+	  <?php if (isset($this->exception)): ?>
+  
+	  <h3>Exception information:</h3>
+	  <p style='color:red;font-weight:bold;font-size:125%;'>
+		  <b>Message:</b> <?php echo $this->exception->getMessage() ?>
+	  </p>
 
+	  <h3>Stack trace:</h3>
+	  <pre><?php echo $this->exception->getTraceAsString() ?>
+	  </pre>
 
-<div style='font-size:8pt;color:gray;'>
-  <h1>An error occurred</h1>
-  <h2><?php echo $this->message ?></h2>
+	  <h3>Request Parameters:</h3>
+	  <pre><?php echo $this->escape(var_export($this->request->getParams(), true)) ?>
+	  </pre>
 
-  <?php if (isset($this->exception)): ?>
-
-  <h3>Exception information:</h3>
-  <p>
-      <b>Message:</b> <?php /*echo $this->exception->getMessage()*/ \Q\Utils::callStack(false); ?>
-  </p>
-
-  <h3>Stack trace:</h3>
-  <pre><?php echo $this->exception->getTraceAsString() ?>
-  </pre>
-
-  <h3>Request Parameters:</h3>
-  <pre><?php echo $this->escape(var_export($this->request->getParams(), true)) ?>
-  </pre>
-
-  <?php endif ?>
+	  <?php endif ?>
+	</div>
 </div>
-
 </body>
 
 <script type='text/javascript'>
 /* <![CDATA[ */
-$(document).ready(function(){
-
-
-	$('body').append("<div style='z-index:200;position:absolute;left:100px;top:150px;'><?php echo $this->message ?><br/><?php echo $getMessage ?></div>");
-
-
-});
+// $(document).ready(function(){
+// 	$('body').append("<div style='z-index:200;position:absolute;left:100px;top:150px;'><?php echo $this->message ?><br/><?php echo $this->exception->getMessage() ?></div>");
+// });
 /* ]]> */
 </script>
 

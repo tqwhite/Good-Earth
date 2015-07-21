@@ -149,7 +149,22 @@ validate:function(inData){
 	name='password';
 	datum=inData[name];
 	if (!datum || datum.length<6)
-	{errors.push([name, "Password must be six or more characters"]);}
+	{
+	
+console.log("inData.admin="+inData.admin);
+console.log("datum="+datum);
+
+
+
+
+	if (inData.adminFlag && !datum){
+		//if an admin doesn't enter a password, it says 'no change' and is valid
+	}
+	else{
+	errors.push([name, "Password must be six or more characters"]);
+	}
+	
+	}
 
 	name='emailAdr';
 	datum=inData[name];
@@ -202,6 +217,38 @@ validate:function(inData){
 
 
 	return errors;
+},
+
+searchByFragment:function(data, success, error){
+
+		success=success?success:function(){alert('success');};
+		error=error?error:this.defaultError;
+
+		var errors=(function(data){
+			if (!data.searchFragment){
+			return [
+				['searchFragment', "No search term supplied"]
+			];
+			}
+			return [];
+		})(data);
+		
+		
+		if (errors.length>0){
+			success({status:-1, messages:errors, data:{}});
+			return;
+		}
+
+		$.ajax({
+				url: '/user/search',
+				type: 'get',
+				dataType: 'json',
+				data: {data:data},
+				success: success,
+				error: error,
+				fixture: false
+			});
+
 }
 
 },

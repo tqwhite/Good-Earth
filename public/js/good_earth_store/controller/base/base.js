@@ -128,6 +128,29 @@ startProgressIndicator:function(args){
 
 	var spinner = new Spinner(opts).spin();
 	$('#'+divId).append(spinner.el);
+},
+
+toggleSpinner:function(){
+if (!this.spinner){
+	var opts={
+	  lines: 7, // The number of lines to draw
+	  length: 20, // The length of each line
+	  width: 4, // The line thickness
+	  radius: 10, // The radius of the inner circle
+	  color: '#436235', // #rbg or #rrggbb
+	  speed: 1, // Rounds per second
+	  trail: 60, // Afterglow percentage
+	  shadow: true // Whether to render a shadow
+	};
+
+	var spinner = new Spinner(opts).spin();
+		this.element.append(spinner.el);
+		this.spinner=spinner;
+	}
+	else{
+	$(this.spinner.el).remove();
+		this.spinner=false;
+	}
 }
 
 })

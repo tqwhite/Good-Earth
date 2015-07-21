@@ -3,59 +3,24 @@ qtools.validateProperties({
 	targetObject:this,
 	propList:[
 		{name:'displayParameters'},
-		{name:'viewHelper'},
-		{name:'emailOverride'}
+		{name:'viewHelper'}
 	],
  source:'session.register.mainPanel' });
 
 qtools.validateProperties({
 	targetObject:displayParameters,
 	propList:[
-		{name:'saveButton'},
 		{name:'loginButton'},
 		{name:'forgotButton'},
+		{name:'loginForm'},
 		{name:'status'}
 	],
  source:'session.register.mainPanel' });
 
-if (window.location.host=='store.goodearth.local' || window.location.hash=='#tq'){
-	var firstName='tq',
-		lastName='white',
-		userName='tqwhite'+Math.floor((Math.random()*1000)+1),
-		password='123123',
-		emailAdr='tq@justkidding.com',
-		confirmEmail='tq@justkidding.com',
-		phoneNumber='999-999-9999',
-		street='5004 Three Points Blvd',
-		city='Mound',
-		state='MN',
-		zip='55364';
-}
-else{
-	var firstName='',
-		lastName='',
-		userName='',
-		password='',
-		emailAdr='',
-		confirmEmail='',
-		phoneNumber='',
-		street='',
-		city='',
-		state='',
-		zip='';
-}
-
-if (this.emailOverride){
-var emailOverrideString="<input type='hidden' name='emailOverride' value='true'>";
-}
-else{
-var emailOverrideString="";
-}
 
 %>
 <div class='entryBox' style='margin-left:100px;height:380px;width:533px;'>
 
-<%== emailOverrideString %>
 
 <div class='entryPanelErrorList' style='margin-top:25px;height:30px;width:100%' id='<%==displayParameters.status.divId%>'>
 	<div style='font-size:10pt;width:485px'>
@@ -66,56 +31,8 @@ var emailOverrideString="";
 	</div>
 </div>
 
-<table style='border:none;font-size:10pt;margin-top:65px;border:1pt solid gray;font-size:60%;'>
-
-	<tr>
-		<td style='width:70px;'>User Name:</td>
-			<td><input prompt='required' name='userName' value='<%=userName%>'></td>
-		<td style='width:10px;'>&nbsp;</td>
-		<td style='width:70px;'>Password:</td>
-			<td><input type='password' name='password' value='<%=password%>'></td>
-	</tr>
-
-
-
-	<tr><td>Email Address:</td><td><input prompt='required' name='emailAdr' value='<%=emailAdr%>'></td>
-		<td>&nbsp;</td>
-		<td>Confirm Email:</td><td><input prompt='required' name='confirmEmail' value='<%=confirmEmail%>'></td>
-	</tr>
-
-<tr><td style='height:15px;' colspan='5'>&nbsp;</td></tr>
-
-	<tr  style='height:25px;'>
-		<td>Parent First:</td>
-			<td><input prompt='required' name='firstName' value='<%=firstName%>'></td>
-		<td>&nbsp;</td>
-		<td>Last Name:</td>
-			<td><input prompt='required' name='lastName' value='<%=lastName%>'></td>
-	</tr>
-
-	<tr  style='height:25px;'>
-		<td>Street:</td><td colspan='4'><input style='width:395px;' prompt='required' name='street' value='<%=street%>'></td></tr>
-
-
-	<tr  style='height:25px;'>
-		<td>City, ST zip</td>
-			<td colspan='4'>
-				<input prompt='required' style='width:170px;' name='city' value='<%=city%>'> <span style='font-size:200%;color:gray;'>,</span>
-				<input style='width:35px;' prompt='CA' name='state' value='<%=state%>'>
-				<input style='width:75px;' prompt='00000' name='zip' value='<%=zip%>'>
-
-			</td>
-	</tr>
-
-
-
-	<tr  style='height:25px;'>
-		<td>Phone:</td><td><input name='phoneNumber'  value='<%=phoneNumber%>' prompt='000-000-0000'></td></tr>
-</table>
-
-
-
-<div class='basicButton' style='margin-right:100px;margin-top:20px;float:right;' id='<%==displayParameters.saveButton.divId%>'></div>
+<div id='<%==displayParameters.loginForm.divId%>' style='padding-top:65px;'>
+</div>
 
 <div class='smallButton' style='margin-right:30px;margin-top:27px;float:right;' id='<%==displayParameters.loginButton.divId%>'></div>
 <div class='smallButton' style='margin-right:20px;margin-top:27px;float:right;' id='<%==this.displayParameters.forgotButton.divId%>'></div>

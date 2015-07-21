@@ -35,7 +35,11 @@ steal(
 	'./controller/customer/child/child.js',
 	'./controller/customer/offerings/offerings.js',
 	'./controller/customer/choices/choices.js',
-
+	
+	'./controller/admin/admin/admin.js',
+	'./controller/admin/control/control.js',
+	'./controller/session/user_editor/user_editor.js',
+	'./controller/admin/user_selector/user_selector.js',
 
 	'./controller/tools/ui/button2/button2.js',
 	'./controller/tools/ui/modal_screen/modal_screen.js',

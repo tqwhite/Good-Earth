@@ -6,6 +6,10 @@ body {
 
 
 .basicButton{
+  transition-property: background-color, color;
+  transition-duration: .5s;
+  transition-timing-function: ease-out;
+  
   	font-weight:bold;
 	border-top:1pt solid gray;
 	cursor:pointer;
@@ -70,6 +74,11 @@ body {
 }
 
 .smallButton{
+
+  transition-property: background-color, color;
+  transition-duration: .5s;
+  transition-timing-function: ease-out;
+  
   	font-weight:normal;
 	border-top:1pt solid gray;
 	cursor:pointer;
@@ -157,9 +166,10 @@ font-size:10pt;
 }
 
 .mainContainer{
+position:relative;
 	background:#a0f4f7;
 	margin:20px 0px 0px 50px;
-	height:400px;
+	min-height:400px;
 	width:700px;
 	border-right:4pt solid #ADA081;
 	border-bottom:4pt solid #ADA081;
@@ -168,6 +178,10 @@ font-size:10pt;
 	-webkit-box-shadow:5px 8px 20px rgba(0, 0, 0, .5);
 	   -moz-box-shadow:5px 8px 20px rgba(0, 0, 0, .5);
 	        box-shadow:5px 8px 20px rgba(0, 0, 0, .5);
+}
+
+.adminPanelBase{
+	width:900px;
 }
 
 .entryBox{
@@ -200,11 +214,11 @@ margin:50px 0px 0px 200px;padding-left:25px;border:1pt solid gray;
 	border-bottom:2pt solid gray;
 }
 
-.kidSpace .schedule td{
-	width: 80px;
+.schedule td{
 	height:25px;
 	text-align:center;
 	border:none;
+	width:80px;
 }
 
 .purchaseSpace{

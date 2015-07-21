@@ -19,6 +19,7 @@ class PurchaseController extends  Q_Controller_Base
 		$messages=array();
 		$processResult=array();
 
+		$this->emailLogList="process start == ";
 
 		$specialInstruction=substr($inData['cardData']['cardNumber'], 0, 4);
 
@@ -198,15 +199,18 @@ Zend_Registry::set('debugObject', $debugObject);
 
 //error_log("<!--startDebug!-->".\Q\Utils::dumpWebString($debugObject)."<!--endDebug!-->");
 
+    echo $this->emailLogList;
+    error_log($this->emailLogList."=== process end");
+    exit;
 			$this->_helper->json(array(
 				status=>$status,
-				'tmp'=>'hello',
 				messages=>$messages,
 				data=>array(tmp=>'test')
 			));
 
 
     }
+    
     }
 
     public function emailReceipt($purchaseRefId, $orderEntityList, $status)
@@ -271,6 +275,7 @@ Zend_Registry::set('debugObject', $debugObject);
 			$mail->setBodyHtml($emailMessage);
 
 			$mail->addTo($element['address'], $element['name']);
+			$this->emailLogList.="({$element['address']} {$element['name']}) ";
 
 			$mail->send($tr);
 

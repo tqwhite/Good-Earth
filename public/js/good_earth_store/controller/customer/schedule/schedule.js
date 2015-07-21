@@ -14,6 +14,8 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Customer.Schedu
 
 init: function(el, options) {
 	this.baseInits();
+	
+	this.options=options;
 
 	qtools.validateProperties({
 		targetObject:options,
@@ -22,7 +24,22 @@ init: function(el, options) {
 			{name:'account'},
 			{name:'schools'},
 			{name:'gradeLevels'},
-			{name:'lunchButtonHandler'}
+			{name:'lunchButtonHandler', optional:true},
+			{name:'adminFlag', optional:true}
+		],
+		source:this.constructor._fullName
+ 	});
+ 	
+ 	if (!this.lunchButtonHandler && !this.adminFlag){
+ 		qtools.consoleMessage("schedule/schedule.js says, '!this.lunchButtonHandler && !this.adminFlag'");
+ 	}
+
+	qtools.validateProperties({
+		targetObject:this.account,
+		targetScope: this, //will add listed items to targetScope
+		propList:[
+			{name:'users'},
+			{name:'students'}
 		],
 		source:this.constructor._fullName
  	});
@@ -38,8 +55,8 @@ init: function(el, options) {
 
 },
 
-update:function(){
-	this.init(this.element, this.options);
+update:function(options){
+	this.init(this.element, options || this.options);
 },
 
 initDisplayProperties:function(){
@@ -47,15 +64,21 @@ initDisplayProperties:function(){
 	nameArray=[];
 
 	name='newButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
-	name='lunchButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 	name='editButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 
+	if (!this.adminFlag){
+	name='lunchButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+	}
+
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
+
 
 },
 
 initControlProperties:function(){
 	this.viewHelper=new viewHelper2();
+	
+	
 },
 
 initDisplay:function(inData){
@@ -123,7 +146,7 @@ if (!GLOBALS.done && typeof(cookieData)=='undefined'){
 	});
 
 
-
+if (!this.adminFlag && this.lunchButtonHandler){
 	$('.'+this.displayParameters.lunchButton.divId).good_earth_store_tools_ui_button2({
 		ready:{classs:'basicReady'},
 		hover:{classs:'basicHover'},
@@ -133,6 +156,7 @@ if (!GLOBALS.done && typeof(cookieData)=='undefined'){
 		initialControl:'setToReady', //initialControl:'setUnavailable'
 		label:"Buy Lunches"
 	});
+	}
 },
 
 
@@ -148,7 +172,8 @@ newButtonHandler:function(control, parameter){
 				'account':this.account,
 				'redrawSchedule':this.callback('update'),
 				schools:this.schools,
-				gradeLevels:this.gradeLevels
+				gradeLevels:this.gradeLevels,
+				adminFlag:this.adminFlag
 				//studentRefId empty signals new in add_student()
 			});
 		break;

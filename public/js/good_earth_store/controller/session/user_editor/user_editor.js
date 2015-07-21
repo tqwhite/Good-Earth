@@ -1,32 +1,43 @@
-steal( 'jquery/controller','jquery/view/ejs' )
-	.then( './views/form.ejs', function($){
+steal('jquery/controller', 'jquery/view/ejs')
+	.then('./views/form.ejs', function($) {
 
-/**
- * @class GoodEarthStore.Controller.Session.Register
- */
-GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Register',
-/** @Static */
-{
-	defaults : {}
-},
-/** @Prototype */
-{
+	/**
+	 * @class GoodEarthStore.Controller.Admin.User
+	 */
+	GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.UserEditor',
+	/** @Static */
+	{
+		defaults: {}
+	},
+	/** @Prototype */
+	{
 
 init: function(el, options) {
 	this.baseInits();
-	this.directory = "//good_earth_store/controller/session/register/";
+	this.directory = "//good_earth_store/controller/session/user_editor/";
+	
+	qtools.validateProperties({
+		targetObject:options || {},
+		targetScope: this, //will add listed items to targetScope
+		propList:[
+			{name:'statusDomObject'},
+			{name:'subjectUser'},
+			{name:'accessFunction', optional:true},
+			{name:'adminFlag', optional:true}
+		],
+		source:this.constructor._fullName
+ 	});
 	
 	this.initControlProperties();
 	this.initDisplayProperties();
 	if (options && options.initialStatusMessage){this.initialStatusMessage=options.initialStatusMessage;}
 
-
 	this.getReferenceData(this.callback('initDisplay'));
 
 },
 
-update:function(){
-	this.init();
+update:function(options){
+	this.init(this.element, options);
 },
 
 initDisplayProperties:function(){
@@ -34,9 +45,7 @@ initDisplayProperties:function(){
 	nameArray=[];
 
 	name='status'; nameArray.push({name:name});
-	name='loginForm'; nameArray.push({name:name});
-	name='loginButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
-	name='forgotButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+	name='saveButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -53,7 +62,8 @@ initDisplay:function(inData){
 		$.extend(inData, {
 			displayParameters:this.displayParameters,
 			viewHelper:this.viewHelper,
-			emailOverride:(window.location.search=='?rulesDontApplyToSherry')?true:false
+			subjectUser:this.subjectUser,
+			adminFlag:this.adminFlag
 		})
 		);
 	this.element.html(html);
@@ -63,42 +73,24 @@ initDisplay:function(inData){
 initDomElements:function(){
 
 
-
-	this.displayParameters.loginButton.domObj=$('#'+this.displayParameters.loginButton.divId);
-			this.displayParameters.loginButton.domObj.good_earth_store_tools_ui_button2({
-				ready:{classs:'smallReady'},
-				hover:{classs:'smallHover'},
-				clicked:{classs:'smallActive'},
-				unavailable:{classs:'smallUnavailable'},
-				accessFunction:this.displayParameters.loginButton.handler,
+	this.displayParameters.saveButton.domObj=$('#'+this.displayParameters.saveButton.divId);
+			this.displayParameters.saveButton.domObj.good_earth_store_tools_ui_button2({
+				ready:{classs:'basicReady'},
+				hover:{classs:'basicHover'},
+				clicked:{classs:'basicActive'},
+				unavailable:{classs:'basicUnavailable'},
+				accessFunction:this.displayParameters.saveButton.handler,
 				initialControl:'setToReady', //initialControl:'setUnavailable'
-				label:"<div>Login Instead</div>"
-			});
-
-			this.displayParameters.forgotButton.domObj=$('#'+this.displayParameters.forgotButton.divId);
-			this.displayParameters.forgotButton.domObj.good_earth_store_tools_ui_button2({
-				ready:{classs:'smallReady'},
-				hover:{classs:'smallHover'},
-				clicked:{classs:'smallActive'},
-				unavailable:{classs:'smallUnavailable'},
-				accessFunction:this.displayParameters.forgotButton.handler,
-				initialControl:'setToReady', //initialControl:'setUnavailable'
-				label:"<div>Forgot Password</div>"
+				label:"<div style='margin-top:5px;'>Save</div>"
 			});
 
 	$($('.schoolIdClassString').find('option')[1]).attr('selected', 'selected'); //for debugg only, see form.ejs
 	this.element.find('input').qprompt();
 
-	if (this.initialStatusMessage){
-		$('#'+this.displayParameters.status.divId).html(this.initialStatusMessage).removeClass('bad').addClass('good');
-	}
-	
-	this.statusDomObject=$('#'+this.displayParameters.status.divId);
 
+	this.setupEnterKey(this.displayParameters.saveButton.handler);
 
-	this.displayParameters.loginForm.domObj=$('#'+this.displayParameters.loginForm.divId);
-	this.displayParameters.loginForm.domObj.good_earth_store_session_user_editor({statusDomObject:this.statusDomObject});
-
+	this.element.find('input').qprompt();
 },
 
 //BUTTON HANDLERS =========================================================================================================
@@ -112,9 +104,12 @@ saveButtonHandler:function(control, parameter){
 
 			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
 			else{return;}
-
-		GoodEarthStore.Models.User.register(this.element.formParams(), this.callback('resetAfterSave'));
-
+		var formParams=this.element.formParams();
+		formParams.adminFlag=this.adminFlag;
+		formParams=this.manageConfirmationEmail(formParams);
+		
+		GoodEarthStore.Models.User.register(formParams, this.callback('resetAfterSave'));
+		this.toggleSpinner();
 		break;
 		case 'setAccessFunction':
 			if (!this[componentName]){this[componentName]={};}
@@ -127,57 +122,45 @@ saveButtonHandler:function(control, parameter){
 
 resetAfterSave:function(inData){
 	var errorString=this.listMessages(inData.messages);
+		this.toggleSpinner();
+		$('body').trigger('userSaveComplete');
 	if (inData.status<1){
-		$('#'+this.displayParameters.status.divId).html(errorString).removeClass('good').addClass('bad');
+		this.statusDomObject.html(errorString).removeClass('good').addClass('bad');
 	}
 	else{
+	
+	this.completionCallback=(this.accessFunction)?this.accessFunction:this.completionCallback;
+	this.completionCallback('saveResult', inData);
+	}
+},
+
+completionCallback:function(unused, inData){
 			var html=$.View(this.directory+'views/confirmEmail.ejs',
 		$.extend(inData, {
 			displayParameters:this.displayParameters,
 			viewHelper:this.viewHelper
 		})
 		);
-	this.element.html(html);
-	}
+	this.element.parent().html(html);
 },
 
-loginButtonHandler:function(control, parameter){
-	var componentName='loginButton';
-	switch(control){
-		case 'click':
+manageConfirmationEmail:function(formParams){
+formParams=qtools.passByValue(formParams);
 
-			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
-			else{return;}
+formParams.preExistingEmailAddress=false;
 
-			this.element.good_earth_store_session_login();
-		break;
-		case 'setAccessFunction':
-			if (!this[componentName]){this[componentName]={};}
-			this[componentName].accessFunction=parameter;
-		break;
-	}
-	//change dblclick mousedown mouseover mouseout dblclick
-	//focusin focusout keydown keyup keypress select
-},
+if (!formParams.previousEmailAddress){
+	formParams.preExistingEmailAddress=true;
+}
+if (formParams.previousEmailAddress!=formParams.emailAdr){
+	formParams.preExistingEmailAddress=true;
+}
+else{
+	
+	formParams.preExistingEmailAddress=false;
+}
 
-forgotButtonHandler:function(control, parameter){
-	var componentName='forgotButton';
-	switch(control){
-		case 'click':
-
-			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
-			else{return;}
-
-		this.element.good_earth_store_session_forgot({selector:'password'});
-
-		break;
-		case 'setAccessFunction':
-			if (!this[componentName]){this[componentName]={};}
-			this[componentName].accessFunction=parameter;
-		break;
-	}
-	//change dblclick mousedown mouseover mouseout dblclick
-	//focusin focusout keydown keyup keypress select
+return formParams;
 },
 
 //ENTER KEY =========================================================================================================
@@ -223,7 +206,6 @@ lastFieldHandler:function(eventObj){
 },
 
 getReferenceData:function(callback){
-
 
 		var controlObj={
 			calls:{

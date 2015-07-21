@@ -6,16 +6,16 @@ qtools.validateProperties({
 		{name:'viewHelper'},
 		{name:'formData'}
 	],
- source:'session.dashboard.dashboardMain' });
+ source:'customer.schedule.views.init' });
 
 qtools.validateProperties({
 	targetObject:this.displayParameters,
 	propList:[
 		{name:'newButton'},
-		{name:'lunchButton'},
+		{name:'lunchButton', optional:true},
 		{name:'editButton'}
 	],
- source:'session.dashboard.dashboardMain' });
+ source:'customer.schedule.views.init' });
 
 qtools.validateProperties({
 	targetObject:this.formData,
@@ -23,7 +23,7 @@ qtools.validateProperties({
 		{name:'account'},
 		{name:'schools'}
 	],
- source:'session.dashboard.dashboardMain' });
+ source:'customer.schedule.views.init' });
 
 
 	var list=this.formData.schools;
@@ -52,55 +52,39 @@ qtools.validateProperties({
 		}
 	}
 
-var students=this.formData.account.students;
+var students=this.formData.account.students || {};
+
 var rowString='';
 for (var i=0, len=students.length; i<len; i++){
 
 	if (students[i].isActiveFlag===false){continue;}
-
-	if (!suppressObject[students[i].schoolRefId]){
-	rowString+="<tr style='background:#AAE6E7;vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' title='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+"</td><td></td><td></td><td></td><td></td><td></td><td><div class='smallButton "+this.displayParameters.lunchButton.divId+"'  refId='"+students[i].refId+"'>"+students[i].refId+"</div></td></tr>";
+	
+	if (!this.adminFlag && this.displayParameters.lunchButton){
+	var lunchButtonString="<div class='smallButton "+this.displayParameters.lunchButton.divId+"'  refId='"+students[i].refId+"'>"+students[i].refId+"</div>";
 	}
 	else{
-		rowString+="<tr style='background:#AAE6E7;vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' title='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+"</td><td></td><td></td><td></td><td></td><td></td><td><div class='smallButton   refId='"+students[i].refId+"' title='For this term, new lunch sales for this school are closed'>Closed</div></td></tr>";
+	var lunchButtonString="";
+	}
+
+	if (!suppressObject[students[i].schoolRefId]){
+	rowString+="<tr style='vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' title='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+"</td><td></td><td></td><td></td><td></td><td></td><td>"+lunchButtonString+"</td></tr>";
+	}
+	else{
+		rowString+="<tr style='vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' title='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+"</td><td></td><td></td><td></td><td></td><td></td><td><div class='smallButton   refId='"+students[i].refId+"' title='For this term, new lunch sales for this school are closed'>Closed</div></td></tr>";
 	}
 }
 
+// don't have the ability to show the kids' stuff yet
 var headings=[{name:''}, {name:'Mon'}, {name:'Tues'}, {name:'Weds'}, {name:'Thurs'}, {name:'Fri'}, {name:''}];
-var headingTemplate="<td><!name!></td>";
-
-var headingTemplate="<td>&nbsp;</td>"; //don't have the ability to show the kids' stuff yet
-
-var headingString=qtools.templateReplaceArray({replaceArray:headings, template:headingTemplate});
+// var headingTemplate="<td><!name!></td>";
+// var headingTemplate="<td>&nbsp;</td>"; 
+// var headingString=qtools.templateReplaceArray({replaceArray:headings, template:headingTemplate});
+var headingString='';
 
 %>
-<table class='schedule'>
+<table class='schedule' style='width:100%;'>
 <tr style='color:gray;'>
-<div style='font-size:10pt;position:relative;'>
-Click on the Student's name to change information.
-
-
-
-<div id='notification' style='
-display:none;
-background: none repeat scroll 0 0 #A0F4F7;
-border: 1pt solid gray;
-bottom: 40px;
-color: red;
-height: 90px;
-padding: 10px;
-position: absolute;
-top: 40px;
-left:30px;
-width: 400px;'>
-We have had some trouble with our database  having incorrect grade levels for students. Please click on each student name and confirm that the grade level specified is correct.
-<div style='position:absolute;bottom:10px;color:gray;'>Click anywhere to dismiss this panel. It will not show up again.</div>
-</div>
-
-
-
-</div>
 <%==headingString%></tr>
 <%==rowString%>
-<tr><td colspan='<%=headings.length%>' style='text-align:left;'><div class='smallButton' id='<%=this.displayParameters.newButton.divId%>'>hello</div></td></tr>
+<tr><td colspan='7' style='text-align:left;'><div class='smallButton' id='<%=this.displayParameters.newButton.divId%>'>hello</div></td></tr>
 </table>

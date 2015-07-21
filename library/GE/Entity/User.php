@@ -169,6 +169,15 @@ class User /*extends Base*/{
 
 	private $isActiveFlag;
 
+
+
+	/**
+	 * @column(type="string", length=10, nullable=true)
+	 * @var string
+	 **/
+
+	private $role;
+
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
 	$this->created=new \DateTime(date("Y-m-d H:i:s"));

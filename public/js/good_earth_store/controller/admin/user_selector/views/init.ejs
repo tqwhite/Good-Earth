@@ -1,0 +1,39 @@
+<%
+
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'},
+		{name:'userList'}
+	],
+ source:this.formData.source+"_views_init.js" });
+
+qtools.validateProperties({
+	targetObject:this.displayParameters,
+	propList:[
+		{name:'chooseName'}
+	],
+ source:this.formData.source+"_views_init.js" });
+ 
+var listString="<div style='color:gray;margin-bottom:5px;'>Click to Edit</div>";
+
+	for (var i=0, len=this.userList.length; i<len; i++){
+		var element=userList[i];
+	//	listString+="<div style='margin-left:3px;'>"+element.lastName+', '+element.firstName+', '+element.emailAdr+"</div>";
+		listString+="<div data-refId='"+element.refId+"' class='"+this.displayParameters.chooseName.divId+"' >"+element.lastName+', '+element.firstName+', '+element.userName+"</div>";
+	//	listString+="<div style='margin-left:3px;'>"+element.lastName+', '+element.firstName+"</div>";
+	}
+
+
+%>
+<style>
+.<%=this.displayParameters.chooseName.divId%> {
+cursor:pointer;
+margin-left:3px;
+margin-bottom:5px;
+}
+</style>
+<div style='font-size:10pt;'>
+<%== listString %>
+</div>

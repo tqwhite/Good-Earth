@@ -6,15 +6,17 @@ qtools.validateProperties({
 		{name:'viewHelper'},
 		{name:'formData'}
 	],
- source:'session.dashboard.dashboardMain' });
+ source:'customer.parent.views.init' });
 
 qtools.validateProperties({
 	targetObject:this.displayParameters,
 	propList:[
 		{name:'logoutButton'}
 	],
- source:'session.dashboard.dashboardMain' });
+ source:'customer.parent.views.init' });
 
-%><table style='width:100%;'><tr><td style='text-align:left;'><%=this.formData.user.account.familyName%> Family Lunches <span class='subTitle'>(current user: <%=this.formData.user.firstName%> <%=this.formData.user.lastName%>)</span>
+%><table style='width:100%;'>
+<tr>
+<td style='text-align:left;'><%=this.formData.user.account.familyName%> Family Lunches <span class='subTitle'>(current user: <%=this.formData.user.firstName%> <%=this.formData.user.lastName%>)</span>
 </td>
-<td style='text-align:left;'><div class='smallButton' id='<%=this.displayParameters.logoutButton.divId%>'></div></td></tr></table>
+<td style='text-align:left;'><div class='smallButton' style='float:right;' id='<%=this.displayParameters.logoutButton.divId%>'></div></td></tr></table>

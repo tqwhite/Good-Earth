@@ -66,7 +66,7 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 					this.element.good_earth_store_session_login({initialStatusMessage:this.userConfirmMessage, newUsername:this.newUsername});
 					break;
 				case 'none':
-					this.serverDataDomObj.html('<div style="color:white;background:#cc9999;">aborting store app</div>').show();
+					this.serverDataDomObj.html('<div style="color:white;background:#cc9999;padding:10px;font-weight:bold;">Aborting Store App</div>').show();
 					break;
 				case 'closed':
 					var message='';

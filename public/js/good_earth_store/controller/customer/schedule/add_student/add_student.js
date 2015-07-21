@@ -210,11 +210,13 @@ saveStudent:function(){
 	if (!this.formParams.vegetarianFlag){this.formParams.vegetarianFlag=0;}
 	if (!this.formParams.isTeacherFlag){this.formParams.isTeacherFlag=0;}
 	if (!this.formParams.allergyFlag){this.formParams.allergyFlag=0;}
+		this.toggleSpinner();
 	GoodEarthStore.Models.Student.add(this.formParams, this.callback('catchSave'));
 },
 
 catchSave:function(inData){
 	var errorString=this.listMessages(inData.messages);
+		this.toggleSpinner();
 	if (inData.status<1){
 		this.element.find('.errorMsg').remove();
 		this.element.prepend("<div class='errorMsg'>"+errorString+"</div>").removeClass('good').addClass('bad');
