@@ -157,6 +157,8 @@ if (!this.adminFlag && this.lunchButtonHandler){
 		label:"Buy Lunches"
 	});
 	}
+	
+
 },
 
 
@@ -197,9 +199,7 @@ editButtonHandler:function(control, parameter){
 
 			var studentRefId=parameter.thisDomObj.attr('refId');
 
-			$(parameter.thisDomObj.parent()).html("<td colspan=7 id='editLine'><span style='font-size:80%;'>Only one student can be edited at a time</span></td>");
-
-			$('#editLine').good_earth_store_customer_schedule_add_student({
+			$(parameter.thisDomObj.parent()).good_earth_store_customer_schedule_add_student({
 				'account':this.account,
 				'redrawSchedule':this.callback('update'),
 				studentRefId:studentRefId,

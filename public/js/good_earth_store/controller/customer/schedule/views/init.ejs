@@ -60,31 +60,24 @@ for (var i=0, len=students.length; i<len; i++){
 	if (students[i].isActiveFlag===false){continue;}
 	
 	if (!this.adminFlag && this.displayParameters.lunchButton){
-	var lunchButtonString="<div class='smallButton "+this.displayParameters.lunchButton.divId+"'  refId='"+students[i].refId+"'>"+students[i].refId+"</div>";
+	var lunchButtonString="<div style='float:right;' class='smallButton "+this.displayParameters.lunchButton.divId+"'  refId='"+students[i].refId+"'>"+students[i].refId+"</div>";
 	}
 	else{
 	var lunchButtonString="";
 	}
 
 	if (!suppressObject[students[i].schoolRefId]){
-	rowString+="<tr style='vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' title='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+"</td><td>"+lunchButtonString+"</td></tr>";
+	rowString+="<tr style='vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' title='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+lunchButtonString+"</td></tr>";
 	}
 	else{
-		rowString+="<tr style='vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' title='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+"</td><td><div class='smallButton   refId='"+students[i].refId+"' title='For this term, new lunch sales for this school are closed'>Closed</div></td></tr>";
+		rowString+="<tr style='vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' title='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+"<div style='float:right;' class='smallButton   refId='"+students[i].refId+"' title='For this term, new lunch sales for this school are closed'>Closed</div></td></tr>";
 	}
 }
 
-// don't have the ability to show the kids' stuff yet
-var headings=[{name:''}, {name:'Mon'}, {name:'Tues'}, {name:'Weds'}, {name:'Thurs'}, {name:'Fri'}, {name:''}];
-// var headingTemplate="<td><!name!></td>";
-// var headingTemplate="<td>&nbsp;</td>"; 
-// var headingString=qtools.templateReplaceArray({replaceArray:headings, template:headingTemplate});
-var headingString='';
 
 %>
 <table class='schedule' style='width:100%;'>
-<tr style='color:gray;'>
-<%==headingString%></tr>
+
 <%==rowString%>
 <tr><td colspan='2' style='text-align:left;'><div class='smallButton' id='<%=this.displayParameters.newButton.divId%>'>hello</div></td></tr>
 </table>
