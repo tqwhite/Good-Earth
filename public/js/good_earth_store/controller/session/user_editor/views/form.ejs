@@ -30,7 +30,7 @@ if (!this.subjectUser && window.location.host=='store.goodearth.local' || window
 		zip='55364',
 		refId=qtools.newGuid();
 }
-else if (this.subjectUser.refId){
+else if (this.subjectUser && this.subjectUser.refId){
 var 
  		firstName=this.subjectUser.firstName,
  		lastName=this.subjectUser.lastName,
@@ -68,8 +68,14 @@ if (this.adminFlag){
 else{
 	var emailOverrideCheckbox="";
 }
-
+if (this.subjectUser && this.subjectUser.emailAdr){
 var previousEmailAddress="<input type='hidden' name='previousEmailAddress' value='"+this.subjectUser.emailAdr+"'>";
+}
+else{
+
+var previousEmailAddress="<input type='hidden' name='previousEmailAddress' value=''>";
+}
+
 %>
 
 <%== previousEmailAddress %>
