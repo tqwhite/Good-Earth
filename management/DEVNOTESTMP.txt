@@ -1,0 +1,45 @@
+next:
+
+DONE make it so that adminFlag is validated on the server against the login account
+DONE make it so that the password is allowed to be blank when adminFlag is true
+DONE also, make sure it doesn't overwrite the previous one
+DONE change !lunchButton to adminFlag in student editor
+DONE add spinner for saving, etc
+
+
+
+DONE add New Customer feature (update data flow, DONE add new button and DONE handler)
+DONE get refId into form after create so changes can be made immediately
+
+DONE fix Add Student column problem
+
+DONE make user selector refresh after after save to get good data structures for further editing
+
+DONE implement the no confirmation email override (checkbox, control flow)
+
+DONE show password as plain text for admin (not public)
+DONE remove the extraneous save button at the bottom
+DONE pretty up the userInfo save button
+DONE cause the spinner to show in the middle of the affected domObj
+
+DONE prevent opening more than one student for editing (longstanding, unnoticed bug)
+DONE disable add student button when a student is open for editing
+
+save button position is weird for user_editor
+add school and gradelevel to student non-edit display
+add ability to open more than one student for editing
+make student editor be in edit mode always for admin
+cause saveButton to be active only when changes have been made
+implement dirty notification on unload
+choose correct activation button for enter based on previous typing
+
+make it so that when an admin edits own info it refreshes if you go back to buy lunches
+
+===
+
+update SYNC to send new and changed users who are not purchasing
+Adam's UI detail list
+
+===
+
+track down and improve on master.css (in layout.phtml), other XXX things, too.

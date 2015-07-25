@@ -59,7 +59,6 @@ initDisplayProperties:function(){
 	nameArray=[];
 
 	name='status'; nameArray.push({name:name});
-	name='saveButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 	name='closeButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 	name='userEditor'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 	name='studentEditor'; nameArray.push({name:name});
@@ -94,17 +93,6 @@ initDomElements:function(){
 	this.statusDomObject=$('#'+this.displayParameters.status.divId);
 
 	this.element.addClass('adminPanelBase');
-
-	this.displayParameters.saveButton.domObj=$('#'+this.displayParameters.saveButton.divId);
-	this.displayParameters.saveButton.domObj.good_earth_store_tools_ui_button2({
-		ready:{classs:'basicReady'},
-		hover:{classs:'basicHover'},
-		clicked:{classs:'basicActive'},
-		unavailable:{classs:'basicUnavailable'},
-		accessFunction:this.displayParameters.saveButton.handler,
-		initialControl:'setToReady', //initialControl:'setUnavailable'
-		label:"Save"
-	});
 	
 
 	this.displayParameters.closeButton.domObj=$('#'+this.displayParameters.closeButton.divId);
@@ -169,35 +157,8 @@ initEditors:function(){
 	},
 
 
-saveButtonHandler:function(control, parameter){
-	var componentName='saveButton';
-	switch(control){
-		case 'click':
-
-			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
-			else{return;}
-			
-			//obviously, this is a dummy call to prove the button works.
-			this.catchSave(); //GoodEarthStore.Models.Session.logout({}, this.callback('catchSave'));
-			
-		break;
-		case 'setAccessFunction':
-			if (!this[componentName]){this[componentName]={};}
-			this[componentName].accessFunction=parameter;
-		break;
-	}
-	//change dblclick mousedown mouseover mouseout dblclick
-	//focusin focusout keydown keyup keypress select
-},
-
-catchSave:function(){
-	//window.location.reload()
-	alert('save happened');
-},
-
-
 closeButtonHandler:function(control, parameter){
-	var componentName='saveButton';
+	var componentName='closeButton';
 	switch(control){
 		case 'click':
 

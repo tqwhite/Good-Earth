@@ -64,9 +64,12 @@ else{
 if (this.adminFlag){
 	var checkString='';
 	var emailOverrideCheckbox="Suppress Confirmation Email <input type='checkbox' name='emailOverride' "+checkString+">";
+	
+	var passwordTypeString='text';
 }
 else{
 	var emailOverrideCheckbox="";
+	var passwordTypeString='password';
 }
 if (this.subjectUser && this.subjectUser.emailAdr){
 var previousEmailAddress="<input type='hidden' name='previousEmailAddress' value='"+this.subjectUser.emailAdr+"'>";
@@ -87,7 +90,7 @@ var previousEmailAddress="<input type='hidden' name='previousEmailAddress' value
 			<td><input prompt='required' name='userName' value='<%=userName%>'></td>
 		<td style='width:10px;'>&nbsp;</td>
 		<td style='width:70px;'>Password:</td>
-			<td><input type='password' name='password' value='<%=password%>'></td>
+			<td><input type='<%== passwordTypeString %>' name='password' value='<%=password%>'></td>
 	</tr>
 
 

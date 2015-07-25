@@ -94,7 +94,7 @@ initDomElements:function(){
 		unavailable:{classs:'basicUnavailable'},
 		accessFunction:this.displayParameters[name].handler,
 		initialControl:'setToReady', //initialControl:'setUnavailable'
-		label:'NEW'
+		label:'NEW USER'
 		//label:name
 	});
 	

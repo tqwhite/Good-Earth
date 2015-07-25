@@ -57,20 +57,14 @@ class Application_Model_User extends Application_Model_Base
 	
 		$exempt = (in_array($datum, array(
 			'sherry@genatural.com',
+			$inData['previousEmailAddress'],
 			'tq@justkidding.com'
-		)) || $inData['emailOverride'] || ($inData['preExistingEmailAddress']=='true'));
-
-// echo "\n\ndatum={$datum}\n\n";
-// 
-// echo "inArray=".in_array($datum, array(
-// 			'sherry@genatural.com',
-// 			'tq@justkidding.com'
-// 		))."\n\n";
+		)) || $inData['emailOverride']);
 
 		if (count($user) > 0 && !$exempt) {
 			$errorList[] = array(
 				$name,
-				"That {$exempt} email address is already associated with an account. Use 'Forgot Password' if you need to."
+				"That email address is already associated with an account. Use 'Forgot Password' if you need to."
 			);
 		}
 

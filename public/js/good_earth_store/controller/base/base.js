@@ -15,6 +15,7 @@ $.Controller('GoodEarthStore.Controller.Base',
 baseInits: function(params) {
 	this.options=params;
 	this.divPrefix=qtools.divPrefix(this.constructor._fullName);
+	this.uniquePrefix=this.divPrefix+Math.floor(Math.random()*100000);
 	this.acceptClicks=true;
 },
 
@@ -144,7 +145,10 @@ if (!this.spinner){
 	};
 
 	var spinner = new Spinner(opts).spin();
-		this.element.append(spinner.el);
+		var spinnerContainer=$("<div style='height: 100%; left: 50%; position: absolute; top: 50%; width: 100%;'></div>")
+		.append(spinner.el);
+		
+		this.element.append(spinnerContainer);
 		this.spinner=spinner;
 	}
 	else{

@@ -77,7 +77,7 @@ initDisplayProperties:function(){
 
 initControlProperties:function(){
 	this.viewHelper=new viewHelper2();
-	
+	this.lockAddStudent=false;
 	
 },
 
@@ -170,6 +170,14 @@ newButtonHandler:function(control, parameter){
 			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
 			else{return;}
 
+					
+			if (this.lockAddStudent) {
+				$($('#' + this.displayParameters.newButton.divId).parent()).append('Cannot add/edit another student when one is open for change');
+				return;
+			}
+			
+			this.lockAddStudent=true;
+
 			$($('#'+this.displayParameters.newButton.divId).parent()).good_earth_store_customer_schedule_add_student({
 				'account':this.account,
 				'redrawSchedule':this.callback('update'),
@@ -190,6 +198,52 @@ newButtonHandler:function(control, parameter){
 
 
 editButtonHandler:function(control, parameter){
+	/*
+	this has a bug. If you open a second editor, it shows the message.
+	if you open a third, it opens the editor. Not sure why.
+	*/
+	var componentName='newButton';
+	switch(control){
+		case 'click':
+
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+
+			var studentRefId=parameter.thisDomObj.attr('refId'),
+				rowObject=$(parameter.thisDomObj.parent());
+
+			rowObject.html("<td colspan=7><span style='font-size:80%;'>Only one student can be edited at a time</span></td>");
+			if (this.lockAddStudent){
+			return;
+			}
+			
+			this.lockAddStudent=true;
+			
+			
+			rowObject.find('td').good_earth_store_customer_schedule_add_student({
+				'account':this.account,
+				'redrawSchedule':this.callback('update'),
+				studentRefId:studentRefId,
+				schools:this.schools,
+				gradeLevels:this.gradeLevels
+			});
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
+},
+
+
+editButtonHandlerALLOWSOPENINGTWOORMORE:function(control, parameter){
+/*
+the reason I mothballed this is that the callback from the student redraws the entire schedule.
+this closes all of the opened editors but only saves the one whose button was pressed.
+making it so that the editors are independent is out of scope for now.
+*/
 	var componentName='newButton';
 	switch(control){
 		case 'click':

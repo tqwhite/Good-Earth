@@ -27,9 +27,15 @@ steal('jquery/controller', 'jquery/view/ejs')
 				targetObject: options || {},
 				targetScope: this, //will add listed items to targetScope
 				propList: [
-						{name: 'parentAccessFunction'},
-						{name: 'parameters'},
-						{name: 'statusDomObject'}],
+					{
+						name: 'parentAccessFunction'
+					},
+					{
+						name: 'parameters'
+					},
+					{
+						name: 'statusDomObject'
+					}],
 				source: this.constructor._fullName
 			});
 
@@ -50,7 +56,11 @@ steal('jquery/controller', 'jquery/view/ejs')
 
 			nameArray = [];
 
-			name='chooseName'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+			name = 'chooseName'; nameArray.push({
+				name: name,
+				handlerName: name + 'Handler',
+				targetDivId: name + 'Target'
+			});
 
 			this.displayParameters = $.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -68,9 +78,11 @@ steal('jquery/controller', 'jquery/view/ejs')
 			qtools.validateProperties({
 				targetObject: inData || {},
 				propList: [
-						{name: 'userList'}
-						],
-				source: this.constructor._fullName+'/initDisplay()'
+					{
+						name: 'userList'
+					}
+				],
+				source: this.constructor._fullName + '/initDisplay()'
 			});
 
 			var html = $.View(this.directory + 'views/init.ejs',
@@ -87,18 +99,20 @@ steal('jquery/controller', 'jquery/view/ejs')
 		},
 
 		initDomElements: function() {
-			var name='chooseName'; //this.displayParameters.saveButton
-			this.displayParameters[name].domObj=$('.'+this.displayParameters[name].divId);
+			var name = 'chooseName'; //this.displayParameters.saveButton
+			this.displayParameters[name].domObj = $('.' + this.displayParameters[name].divId);
 			this.displayParameters[name].domObj.bind('click', this.displayParameters[name].handler);
-			
+
 			$('body').bind('userSaveComplete', this.callback('getUserList'));
 		},
 
 		getUserList: function(eventObj) {
 
-	if (eventObj){
-		eventObj.stopPropagation(); //this acts a jquery event callback, too
-	}
+			if (eventObj && typeof (eventObj.stopPropagation) == 'function') {
+				eventObj.stopPropagation(); //this acts a jquery event callback, too
+			}
+
+			$('body').unbind('userSaveComplete');
 
 			this.toggleSpinner();
 			GoodEarthStore.Models.User.searchByFragment(this.parameters, this.callback('userListCallback'));
@@ -110,23 +124,29 @@ steal('jquery/controller', 'jquery/view/ejs')
 			if (inData.status < 1) {
 				this.statusDomObject.html(errorString).removeClass('good').addClass('bad');
 			} else {
-				this.userList=inData.data;
-				this.initDisplay({userList:this.userList});
+				this.userList = inData.data;
+				this.initDisplay({
+					userList: this.userList
+				});
 			}
 		},
 
-chooseNameHandler:function(eventObj){
-	var componentName='chooseName';
-	if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
-	else{return;}
-	
-	var refId=$(eventObj.target).attr('data-refId');
-	
-	var selectedUser=qtools.getByProperty(this.userList, 'refId', refId);
-	this.parentAccessFunction('setUser', selectedUser);
+		chooseNameHandler: function(eventObj) {
+			var componentName = 'chooseName';
+			if (this.isAcceptingClicks()) {
+				this.turnOffClicksForAwhile(); //turn off clicks for awhile and continue, default is 500ms
+			} else {
+				return;
+			}
 
-}
+			var refId = $(eventObj.target).attr('data-refId');
+
+			var selectedUser = qtools.getByProperty(this.userList, 'refId', refId);
+			this.parentAccessFunction('setUser', selectedUser);
+
+		}
 	})
 
 });
+
 

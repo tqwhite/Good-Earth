@@ -123,6 +123,7 @@ saveButtonHandler:function(control, parameter){
 resetAfterSave:function(inData){
 	var errorString=this.listMessages(inData.messages);
 		this.toggleSpinner();
+		console.log('triggering userSaveComplete');
 		$('body').trigger('userSaveComplete');
 	if (inData.status<1){
 		this.statusDomObject.html(errorString).removeClass('good').addClass('bad');
@@ -147,13 +148,11 @@ completionCallback:function(unused, inData){
 manageConfirmationEmail:function(formParams){
 formParams=qtools.passByValue(formParams);
 
-formParams.preExistingEmailAddress=false;
-
-if (!formParams.previousEmailAddress){
+if (formParams.previousEmailAddress){
 	formParams.preExistingEmailAddress=true;
 }
 if (formParams.previousEmailAddress!=formParams.emailAdr){
-	formParams.preExistingEmailAddress=true;
+	formParams.preExistingEmailAddress=false;
 }
 else{
 	
