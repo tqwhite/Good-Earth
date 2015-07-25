@@ -18,13 +18,20 @@ $orderObject=array();
 		$orderString.="<td style='padding-right:15px;'>".$element->offering->name."</td>";
 		$orderString.="<td>\$$price</td</tr>\n";
 
-		$schoolList[$element->student->refId]=array('firstName'=>$element->student->firstName, 'lastName'=>$element->student->lastName, 'school'=>$element->student->school->name);
-$orderObject[]=array(
-'firstName'=>$element->student->firstName,
-'lastName'=>$element->student->lastName,
-'offering'=>$element->offering->name,
-'offeringRefId'=>$element->offering->refId,
-);
+		$schoolList[$element->student->refId]=array(
+		'firstName'=>$element->student->firstName, 
+		'lastName'=>$element->student->lastName, 
+		'school'=>$element->student->school->name,
+		'periodStart'=>$element->student->school->datePeriodBegin,
+		'periodEnd'=>$element->student->school->datePeriodEnd
+		);
+		
+		$orderObject[]=array(
+		'firstName'=>$element->student->firstName,
+		'lastName'=>$element->student->lastName,
+		'offering'=>$element->offering->name,
+		'offeringRefId'=>$element->offering->refId,
+		);
 	}
 	$orderString="<table style='margin:15px 0px 15px 20px;color:#385B2B;'>$orderString</table>\n\n";
 
@@ -32,7 +39,7 @@ $orderObject[]=array(
 
 	$schoolString='';
 	foreach ($schoolList as $element){
-		$schoolString.="<div>{$element['firstName']} {$element['lastName']} at {$element['school']} school</div>";
+		$schoolString.="<div>{$element['firstName']} {$element['lastName']} at {$element['school']} school (session: {$element['periodStart']} to {$element['periodEnd']})</div>";
 	}
 
 $debugObject=Zend_Registry::get('debugObject');

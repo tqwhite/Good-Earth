@@ -25,6 +25,8 @@ DONE cause the spinner to show in the middle of the affected domObj
 DONE prevent opening more than one student for editing (longstanding, unnoticed bug)
 DONE disable add student button when a student is open for editing
 
+add admin checkbox to user editor
+
 save button position is weird for user_editor
 add school and gradelevel to student non-edit display
 add ability to open more than one student for editing
@@ -43,3 +45,12 @@ Adam's UI detail list
 ===
 
 track down and improve on master.css (in layout.phtml), other XXX things, too.
+
+
+=====
+
+ALTER TABLE users ADD role VARCHAR(10) DEFAULT NULL;
+ALTER TABLE schools ADD datePeriodBegin DATE NOT NULL, ADD datePeriodEnd DATE NOT NULL;
+
+update schools set dateOrderingEnd='2015-09-15';
+update users set role='admin' where userName='lennyTheGreat' or userName like '%tq%' or userName='testgoodearth';

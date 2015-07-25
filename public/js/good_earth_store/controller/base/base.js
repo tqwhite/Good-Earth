@@ -149,10 +149,10 @@ if (!this.spinner){
 		.append(spinner.el);
 		
 		this.element.append(spinnerContainer);
-		this.spinner=spinner;
+		this.spinner=spinnerContainer;
 	}
 	else{
-	$(this.spinner.el).remove();
+	$(this.spinner).remove();
 		this.spinner=false;
 	}
 }

@@ -233,10 +233,13 @@ selectionControlHandler:function(control, parameter){
 
 
 userEditorHandler:function(control, parameter){
+console.dir({"parameter":parameter});
+
+
 	var componentName='userEditor';
 	switch(control){
 		case 'saveResult':
-				this.writeStatus("<span style='color:green;font-weight:bold;'>User Info Saved</span>");
+				this.writeStatus("<span style='color:green;font-weight:bold;'>User Info Saved</span><div style='font-size:80%;'>"+parameter.messages[0][1]+"</div>");
 			break;
 		case 'setAccessFunction':
 			if (!this[componentName]){this[componentName]={};}

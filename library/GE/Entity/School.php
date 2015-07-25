@@ -67,6 +67,21 @@ class School /*extends Base*/{
 
 	private $dateOrderingEnd;
 
+	/**
+	 * @column(type="date", nullable=false)
+	 * @var date
+	 **/
+
+	private $datePeriodBegin;
+
+
+	/**
+	 * @column(type="date", nullable=false)
+	 * @var date
+	 **/
+
+	private $datePeriodEnd;
+
 
 
 	/**
@@ -146,6 +161,8 @@ public function __construct(){
 
 public function __get($property){
 	switch($property){
+		case 'datePeriodBegin':
+		case 'datePeriodEnd':
 		case 'dateOrderingBegin':
 		case 'dateOrderingEnd':
 			return $this->$property->format("Y-m-d");
@@ -162,6 +179,8 @@ public function __get($property){
 public function __set($property, $value){
 	
 	switch($property){
+		case 'datePeriodBegin':
+		case 'datePeriodEnd':
 		case 'dateOrderingBegin':
 		case 'dateOrderingEnd':
 			$this->$property=$this->helixToDate($value);

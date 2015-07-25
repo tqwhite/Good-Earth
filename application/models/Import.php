@@ -105,7 +105,9 @@ public function execute(){
 	
 	\Q\Utils::dumpWeb($dbResultArray, "dbResultArray");
 
-	$inputManager->tickle('end');
+//	$inputManager->tickle('end');
+
+
 }//end of method
 
 }//end of class

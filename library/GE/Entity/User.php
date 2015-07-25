@@ -182,6 +182,7 @@ public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
 	$this->created=new \DateTime(date("Y-m-d H:i:s"));
 	$this->modified=new \DateTime(date("Y-m-d H:i:s"));
+	$this->alreadyInHelix=0;
 }
 
 public function __get($property){
@@ -208,6 +209,7 @@ public function __set($property, $value){
 
 	$this->updateAuditInfo();
 	$this->modified=new \DateTime(date("Y-m-d H:i:s"));
+	$this->alreadyInHelix=0;
 }
 
 private function updateAuditInfo(){

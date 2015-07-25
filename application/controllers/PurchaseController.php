@@ -199,9 +199,9 @@ Zend_Registry::set('debugObject', $debugObject);
 
 //error_log("<!--startDebug!-->".\Q\Utils::dumpWebString($debugObject)."<!--endDebug!-->");
 
-    echo $this->emailLogList;
-    error_log($this->emailLogList."=== process end");
-    exit;
+//     echo $this->emailLogList;
+//     error_log($this->emailLogList."=== process end");
+//     exit;
 			$this->_helper->json(array(
 				status=>$status,
 				messages=>$messages,

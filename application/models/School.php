@@ -41,6 +41,8 @@ class Application_Model_School extends Application_Model_Base
 				'currPeriod'=>$inData->school->currPeriod,
 				'dateOrderingEnd'=>$inData->school->dateOrderingEnd,
 				'dateOrderingBegin'=>$inData->school->dateOrderingBegin,
+				'datePeriodEnd'=>$inData->school->datePeriodEnd,
+				'datePeriodBegin'=>$inData->school->datePeriodBegin,
 				
 				'isActiveFlag'=>$inData->isActiveFlag,
 				'suppressDisplay'=>$inData->school->suppressDisplay,
@@ -55,6 +57,8 @@ class Application_Model_School extends Application_Model_Base
 				'currPeriod'=>$inData->currPeriod,
 				'dateOrderingEnd'=>$inData->dateOrderingEnd,
 				'dateOrderingBegin'=>$inData->dateOrderingBegin,
+				'datePeriodEnd'=>$inData->datePeriodEnd,
+				'datePeriodBegin'=>$inData->datePeriodBegin,
 				
 				'isActiveFlag'=>$inData->isActiveFlag,
 				'suppressDisplay'=>$inData->suppressDisplay,
@@ -98,6 +102,8 @@ class Application_Model_School extends Application_Model_Base
 
 		$data['dateOrderingBegin']=$this->helixToDate($data['dateOrderingBegin']);
 		$data['dateOrderingEnd']=$this->helixToDate($data['dateOrderingEnd']);
+		$data['datePeriodBegin']=$this->helixToDate($data['datePeriodBegin']);
+		$data['datePeriodEnd']=$this->helixToDate($data['datePeriodEnd']);
 		$data['auditInfo']=\Q\Utils::dumpWebString($this->getAuditInfo(), "auditInfo");
 		$data['helixId']=$data['helix id']; unset($data['helix id']);
 
