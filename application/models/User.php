@@ -60,19 +60,12 @@ class Application_Model_User extends Application_Model_Base
 			'tq@justkidding.com'
 		)) || $inData['emailOverride'] || ($inData['preExistingEmailAddress']=='true'));
 
-echo "\n\ndatum={$datum}\n\n";
-
-echo "inArray=".in_array($datum, array(
-			'sherry@genatural.com',
-			'tq@justkidding.com'
-		))."\n\n";
-echo "\n\ninData['emailOverride']={$inData['emailOverride']}\n\n";
-echo "\n\ninData['preExistingEmailAddress']={$inData['preExistingEmailAddress']}\n\n";
-
-
-echo "\n\nexempt={$exempt}\n\n";
-echo "\n\ncount(user)=".count($user)."\n\n";
-echo "{$user->refId}!={$inData['refId']}\n\n";
+// echo "\n\ndatum={$datum}\n\n";
+// 
+// echo "inArray=".in_array($datum, array(
+// 			'sherry@genatural.com',
+// 			'tq@justkidding.com'
+// 		))."\n\n";
 
 		if (count($user) > 0 && !$exempt) {
 			$errorList[] = array(
@@ -81,12 +74,6 @@ echo "{$user->refId}!={$inData['refId']}\n\n";
 			);
 		}
 
-
-\Q\Utils::dumpCli($errorList, "errorList");
-
- 
-		exit;		
-		
 		$name  = 'userName';
 		$datum = $inData[$name];
 		
