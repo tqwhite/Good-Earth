@@ -43,10 +43,27 @@ qtools.validateProperties({
 		
 		endThreshold=new Date(end);
 		endThreshold.setTime(endThreshold.getTime() + (twentyFourHours-1000)); //one second before midnight
-			
+	
+console.log("beginThreshold="+beginThreshold);
+
+
+
+console.log("endThreshold="+endThreshold);
+
+console.log("nowDate="+nowDate);
+
+
+
+		
 		suppressFlag=!(nowDate>beginThreshold && nowDate<endThreshold);
+
+console.log("suppressFlag="+suppressFlag);
+
 		
 		if (suppressFlag){
+console.log("\n=-=============   suppressFlag  =========================\n");
+
+
 			suppressObject[element.refId]=true;
 			openSchoolCount--;
 		}

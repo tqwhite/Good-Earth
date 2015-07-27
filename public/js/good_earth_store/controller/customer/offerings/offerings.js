@@ -112,6 +112,8 @@ chooseOfferingButtonClassIdHandler:function(control, parameter){
 
 			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
 			else{return;}
+			
+			$(window).bind('beforeunload', function(){ return 'LUNCHES WERE SELECTED AND NOT ORDERED. ARE YOU SURE YOU WANT TO LEAVE THE STORE?';});
 
 			var dayRefId=parameter.thisDomObj.attr('dayRefId'),
 				offeringRefId=parameter.thisDomObj.attr('offeringRefId');

@@ -44,7 +44,9 @@ validate:function(inData){
 	name='userName';
 	datum=inData[name];
 	if (!datum || datum.length<6)
-	{errors.push([name, "User Name too short"]);}
+	{errors.push([name, "Login Name too short"]);}
+	if (datum && datum.match(/ /))
+	{errors.push([name, "Login Name cannot contain spaces"]);}
 	name='password';
 	datum=inData[name];
 	if (!datum || datum.length<6)

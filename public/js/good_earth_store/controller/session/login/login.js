@@ -95,7 +95,7 @@ initDomElements:function(){
 				unavailable:{classs:'smallUnavailable'},
 				accessFunction:this.displayParameters.forgotButton.handler,
 				initialControl:'setToReady', //initialControl:'setUnavailable'
-				label:"<div>Forgot Password</div>"
+				label:"<div>Forgot Password/Login</div>"
 			});
 
 			if (this.initialStatusMessage){
@@ -168,7 +168,7 @@ resetAfterSave:function(inData){
 
 				break;
 			default:
-				$('#'+this.displayParameters.status.divId).html("Invalid User Name/Password").removeClass('good').addClass('bad');
+				$('#'+this.displayParameters.status.divId).html("Invalid Login Name/Password").removeClass('good').addClass('bad');
 
 				break;
 

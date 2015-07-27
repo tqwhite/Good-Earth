@@ -168,6 +168,7 @@ catchProcessResult:function(inData){
 		}
 	}
 	else{
+		$(window).unbind('beforeunload');
 		if (true){ //this can go away as soon as debugging is well into the past. 'false' makes it so that the payment process can run repeatedly.
 
 			switch(inData.status.toString()){

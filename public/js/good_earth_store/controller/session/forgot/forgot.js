@@ -123,8 +123,6 @@ initDomElements:function(){
 
 saveButtonHandler:function(control, parameter){
 
-
-
 	var componentName='saveButton';
 	if (control.which=='13'){control='click';}; //enter key
 	switch(control){
@@ -132,7 +130,8 @@ saveButtonHandler:function(control, parameter){
 
 			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
 			else{return;}
-
+			this[componentName].accessFunction('setLabel', 'Sending...');
+			this[componentName].accessFunction('setUnavailable');
 			GoodEarthStore.Models.User.resetPassword(this.element.formParams(), this.callback('resetAfterSave'));
 		break;
 		case 'setAccessFunction':

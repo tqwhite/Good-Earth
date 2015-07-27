@@ -144,25 +144,20 @@ validate:function(inData){
 	name='userName';
 	datum=inData[name];
 	if (!datum || datum.length<6 || datum.toLowerCase()=='required')
-	{errors.push([name, "User Name must be six or more characters"]);}
+	{errors.push([name, "Login Name must be six or more characters"]);}
+	if (datum && datum.match(/\s/))
+	{errors.push([name, "Login Name cannot contain spaces"]);}
 
 	name='password';
 	datum=inData[name];
 	if (!datum || datum.length<6)
 	{
-	
-console.log("inData.admin="+inData.admin);
-console.log("datum="+datum);
-
-
-
-
-	if (inData.adminFlag && !datum){
-		//if an admin doesn't enter a password, it says 'no change' and is valid
-	}
-	else{
-	errors.push([name, "Password must be six or more characters"]);
-	}
+		if (inData.adminFlag && !datum){
+			//if an admin doesn't enter a password, it says 'no change' and is valid
+		}
+		else{
+		errors.push([name, "Password must be six or more characters"]);
+		}
 	
 	}
 

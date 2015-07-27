@@ -83,7 +83,7 @@ initDomElements:function(){
 				unavailable:{classs:'smallUnavailable'},
 				accessFunction:this.displayParameters.forgotButton.handler,
 				initialControl:'setToReady', //initialControl:'setUnavailable'
-				label:"<div>Forgot Password</div>"
+				label:"<div>Forgot Password/Login</div>"
 			});
 
 	$($('.schoolIdClassString').find('option')[1]).attr('selected', 'selected'); //for debugg only, see form.ejs
