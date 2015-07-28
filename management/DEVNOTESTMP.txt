@@ -25,8 +25,20 @@ DONE cause the spinner to show in the middle of the affected domObj
 DONE prevent opening more than one student for editing (longstanding, unnoticed bug)
 DONE disable add student button when a student is open for editing
 
-add admin checkbox to user editor
+DONE make sure that a legal account is being created when a new user is entered
 
+DONE suppress lunch button 'closed' display for admin
+DONE admin override for closed schools use: http://store.goodearth.local/#login
+
+
+bug: something is screwy with confirmation email in admin
+don't allow Add Student if no user is active (ie, before save on new)
+
+
+FIX tickle is off in import.php
+
+
+add admin checkbox to user editor
 save button position is weird for user_editor
 add school and gradelevel to student non-edit display
 add ability to open more than one student for editing
@@ -37,9 +49,11 @@ choose correct activation button for enter based on previous typing
 
 make it so that when an admin edits own info it refreshes if you go back to buy lunches
 
+
 ===
 
-update SYNC to send new and changed users who are not purchasing
+DONE update SYNC to send new and changed users who are not purchasing
+DONE add session dates to system and customer email messages
 Adam's UI detail list
 
 ===

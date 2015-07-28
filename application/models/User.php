@@ -29,7 +29,15 @@ class Application_Model_User extends Application_Model_Base
 		if (strlen($datum) < 6) {
 			$errorList[] = array(
 				$name,
-				"User Name too short"
+				"Login Name too short"
+			);
+		}
+		
+
+		if (preg_match('/\s/', $datum)) {
+			$errorList[] = array(
+				$name,
+				"Spaces are not allowed in the Login Name"
 			);
 		}
 		
@@ -76,7 +84,7 @@ class Application_Model_User extends Application_Model_Base
 		if (count($user) > 0 && $user->refId!=$inData['refId']) {
 			$errorList[] = array(
 				$name,
-				"That User Name is already in use. User 'Forgot Password' if you need to."
+				"That Login Name is already in use. Use 'Forgot Password' if you need to."
 			);
 		}
 		
@@ -316,6 +324,12 @@ class Application_Model_User extends Application_Model_Base
 	}
 	
 	
+	public function searchByUserId($userName){
+		$user=$this->getUserByUserId($userName);
+		$outUser=$this->formatDetail($user);
+		
+		return $outUser;
+	}
 	
 	public function searchByUserName($userName)
 	{

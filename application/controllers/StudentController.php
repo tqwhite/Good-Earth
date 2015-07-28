@@ -60,10 +60,20 @@ class StudentController extends Q_Controller_Base
 					$studentObj->updateFromArray($student, $inData);
 				}
 			}
+		
+		
 			catch(Exception $e){
 				$status=-1;
 				$messages[]=array('server_error', $e->errorInfo);
 			}
+			
+		$student->account->alreadyInHelix=false;
+
+					$this->doctrineContainer = Zend_Registry::get('doctrine');
+					$em = $this->doctrineContainer->getEntityManager();
+					$em->persist($student);
+					$em->flush();
+		
 
 			$this->_helper->json(array(
 				status=>$status,

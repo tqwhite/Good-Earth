@@ -123,7 +123,6 @@ saveButtonHandler:function(control, parameter){
 resetAfterSave:function(inData){
 	var errorString=this.listMessages(inData.messages);
 		this.toggleSpinner();
-		console.log('triggering userSaveComplete');
 		$('body').trigger('userSaveComplete');
 	if (inData.status<1){
 		this.statusDomObject.html(errorString).removeClass('good').addClass('bad');

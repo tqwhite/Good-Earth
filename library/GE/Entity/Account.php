@@ -101,7 +101,6 @@ public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
 	$this->created=new \DateTime(date("Y-m-d H:i:s"));
 	$this->modified=new \DateTime(date("Y-m-d H:i:s"));
-	$this->alreadyInHelix=0;
 
 	$this->accountPurchaseNodes = new \Doctrine\Common\Collections\ArrayCollection();
 }
@@ -118,12 +117,10 @@ public function __get($property){
 }
 
 public function __set($property, $value){
-	
 	$this->$property=$value;
 
 	$this->updateAuditInfo();
 	$this->modified=new \DateTime(date("Y-m-d H:i:s"));
-	$this->alreadyInHelix=0;
 }
 
 private function updateAuditInfo(){

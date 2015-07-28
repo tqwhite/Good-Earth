@@ -28,86 +28,6 @@ class DataController extends Q_Controller_Base
         $this->view->message=$resultData;
     }
 
-    public function exportAction()
-    {
-		error_log("Data/ExportAction() - STARTING ================================");	
-    
-    	$outString='';
-    
-		$doctrineContainer=Zend_Registry::get('doctrine');
-		$em=$doctrineContainer->getEntityManager();
-		$entityManager=$em;
-
-
-    	$exportObj=new \Application_Model_Export();
-		$purchaseData=$exportObj->collectPurchases();
-		$dataList=$purchaseData['exportData'];
-
-		if (count($dataList)>0){
-		
-
-			$result=$exportObj->writeAndValidate($dataList);	
-	
-			$outString.=$result['messages'];
-			
-			$failedListString=\Q\Utils::dumpWebString($result['failedTwice'], "result['failedTwice']");
-
-		}
-		else{
-			$outString.="NO NEW DATA IS READY FOR HELIX. NOTHING SENT.<p/>\n\n";
-		error_log("Data/ExportAction() - NO NEW DATA IS READY FOR HELIX. NOTHING SENT.");	
-			$result=true;
-		}
-
-
-		if ($result){
-			$outString.="Exported to helix ".date("Y-m-d H:i:s")."<p/>\n\n\n";
-			$outString.="start of purchaseId list <br/>\n";
-			$sucessListString='';
-			
-			$mailFailList=array();
-
-			foreach ($purchaseData['entityList'] as $purchase){
-
-					if (isset($result['failedTwice'][$purchase->refId])){
-						continue;
-					}
-
-  					$purchase->alreadyInHelix=true;
-  					$entityManager->persist($purchase);
-  					$sucessListString.="{$purchase->refId}<br/>\n";
- 					$outString.="purchaseRefId {$purchase->refId}<br/>\n";
-			}
-			$entityManager->flush();
-
-			foreach ($purchaseData['exportData'] as $purchase){
-					if (isset($result['failedTwice'][$purchase['refId']])){
-						$mailFailList[]=$purchase;
-					}
-			}
-
-			$outString.="end of purchaseId list <p/>\n\n\n";
-		}
-		else{
-			$outString.="HELIX ERROR, purchases will all be resent next time<p/>\n\n";
-		}
-		
-		if (count($mailFailList)>0){
-			$mailResult=$this->sendFailedTransmissionEmail($mailFailList);
-		}
-
-		$outString="<div style='color:red;'>start transcript</div>\n\n
-			sent email concering $mailResult failed purchase transmissions<br/>
-			failedListString=$failedListString
-			sucessListString=$sucessListString
-			outString=$outString
-			<div style='color:red;'>end transcript</div>\n";
-		
-		$this->view->message=$outString;
-		error_log("Data/ExportAction() - FINISHED================================");	
-
-    }
-
     public function importAction()
     {
         $this->_helper->_layout->setLayout('not_store');
@@ -174,6 +94,189 @@ class DataController extends Q_Controller_Base
 	exit;
 	}
 
+
+    public function exportAction()
+    {
+    	$outString='';
+    	$outString.=$this->exportPurchases();
+    	$outString.=$this->exportAccounts();
+    	
+    	
+		$this->view->message=$outString;
+    }
+	private function exportAccounts(){
+		
+		error_log("Data/exportAccounts() - STARTING ================================");	
+
+    	$outString='';
+    
+		$doctrineContainer=Zend_Registry::get('doctrine');
+		$em=$doctrineContainer->getEntityManager();
+		$entityManager=$em;
+
+
+//     	$exportObj=new \Application_Model_Export();
+// 		$exportableObject=$exportObj->collectPurchases('Application_Model_Purchase');
+// 		$dataList=$exportableObject['exportData'];
+
+    	$exportObj=new \Application_Model_Export();
+		$exportableObject=$exportObj->collectPurchases('Application_Model_Account');
+		$dataList=$exportableObject['exportData'];
+
+		if (count($dataList)>0){
+		
+
+			$result=$exportObj->writeAndValidate($dataList, 'accounts');
+	
+			$writeMessages=$result['messages'];
+			
+			$failedListString=\Q\Utils::dumpWebString($result['failedTwice'], "result['failedTwice']");
+
+		}
+		else{
+			$outString.="NO NEW DATA IS READY FOR HELIX. NOTHING SENT.<p/>\n\n";
+		error_log("Data/exportAccounts() - NO NEW DATA IS READY FOR HELIX. NOTHING SENT.");	
+			$result=true;
+		}
+
+
+		if ($result){
+			$outString.="export date".date("Y-m-d H:i:s")."<p/>\n\n\n";
+			$outString.="start of accountId list <br/>\n";
+			$sucessListString='';
+			
+			$mailFailList=array();
+
+			foreach ($exportableObject['entityList'] as $exportItem){
+
+					if (isset($result['failedTwice'][$exportItem->refId])){
+						continue;
+					}
+
+
+  					$exportItem->alreadyInHelix=true;
+  					$entityManager->persist($exportItem);
+  					$sucessListString.="{$exportItem->refId}<br/>\n";
+ 					$outString.="exportRefId {$exportItem->refId}<br/>\n";
+			}
+			$entityManager->flush();
+
+			foreach ($exportableObject['exportData'] as $exportItem){
+					if (isset($result['failedTwice'][$exportItem['refId']])){
+						$mailFailList[]=$exportItem;
+					}
+			}
+
+			$outString.="end of accountId list <p/>\n\n\n";
+		}
+		else{
+			$outString.="HELIX ERROR, purchases will all be resent next time<p/>\n\n";
+		}
+		
+		if (count($mailFailList)>0){
+			$mailResult=$this->sendFailedTransmissionEmail($mailFailList);
+		}
+
+		$outString="<DIV style='font-size:200%;color:red;'>EXPORTING ACCOUNTS===================</div>
+			sent email concering $mailResult failed purchase transmissions<br/>
+			failedListString=$failedListString
+			sucessListString=$sucessListString
+			outString=$outString
+			$writeMessages
+			<div style='color:red;'>end ACCOUNTS transcript</div>\n";
+		
+		error_log("Data/exportAccounts() - FINISHED================================");	
+		return $outString;
+
+    
+	}
+
+	private function exportPurchases(){
+		
+		error_log("Data/exportPurchases() - STARTING ================================");	
+
+    	$outString='';
+    
+		$doctrineContainer=Zend_Registry::get('doctrine');
+		$em=$doctrineContainer->getEntityManager();
+		$entityManager=$em;
+
+
+    	$exportObj=new \Application_Model_Export();
+		$exportableObject=$exportObj->collectPurchases('Application_Model_Purchase');
+		$dataList=$exportableObject['exportData'];
+
+//     	$exportObj=new \Application_Model_Export();
+// 		$exportableObject=$exportObj->collectPurchases('Application_Model_Account');
+// 		$dataList=$exportableObject['exportData'];
+
+		if (count($dataList)>0){
+		
+
+			$result=$exportObj->writeAndValidate($dataList, 'purchases');	
+	
+			$writeMessages=$result['messages'];
+			
+			$failedListString=\Q\Utils::dumpWebString($result['failedTwice'], "result['failedTwice']");
+
+		}
+		else{
+			$outString.="NO NEW DATA IS READY FOR HELIX. NOTHING SENT.<p/>\n\n";
+		error_log("Data/exportPurchases() - NO NEW DATA IS READY FOR HELIX. NOTHING SENT.");	
+			$result=true;
+		}
+
+
+		if ($result){
+			$outString.="export date".date("Y-m-d H:i:s")."<p/>\n\n\n";
+			$outString.="start of purchaseId list <br/>\n";
+			$sucessListString='';
+			
+			$mailFailList=array();
+
+			foreach ($exportableObject['entityList'] as $exportItem){
+
+					if (isset($result['failedTwice'][$exportItem->refId])){
+						continue;
+					}
+
+  					$exportItem->alreadyInHelix=true;
+  					$entityManager->persist($exportItem);
+  					$sucessListString.="{$exportItem->refId}<br/>\n";
+ 					$outString.="exportRefId {$exportItem->refId}<br/>\n";
+			}
+			$entityManager->flush();
+
+			foreach ($exportableObject['exportData'] as $exportItem){
+					if (isset($result['failedTwice'][$exportItem['refId']])){
+						$mailFailList[]=$exportItem;
+					}
+			}
+
+			$outString.="end of purchaseId list <p/>\n\n\n";
+		}
+		else{
+			$outString.="HELIX ERROR, purchases will all be resent next time<p/>\n\n";
+		}
+		
+		if (count($mailFailList)>0){
+			$mailResult=$this->sendFailedTransmissionEmail($mailFailList);
+		}
+
+		$outString="<DIV style='font-size:200%;color:red;'>EXPORTING PURCHASES===================</div>
+			sent email concering $mailResult failed purchase transmissions<br/>
+			failedListString=$failedListString
+			sucessListString=$sucessListString
+			outString=$outString
+			$writeMessages
+			<div style='color:red;'>end PURCHASES transcript</div>\n";
+		
+		error_log("Data/exportPurchases() - FINISHED================================");	
+		
+		return $outString;
+
+    
+	}
 
 }
 

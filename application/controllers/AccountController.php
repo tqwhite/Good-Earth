@@ -38,18 +38,22 @@ class AccountController extends Q_Controller_Base {
 				$this->_helper->json(array(status => - 1, messages => $errorList, data => array()));
 			} else {
 
-				$account = new GE\Entity\Account();
-				$account->familyName = $inData['lastName'];
-
 				$this->newPassword = $inData['password'];
 
 					$user = $userObj->getByRefId($inData['refId']);
 
 					if (!$user){
-					$user = new GE\Entity\User();
-					$user->refId = $inData['refId'];
-					}
+						$user = new GE\Entity\User();
+						$user->refId = $inData['refId'];
+					
+						$account = new GE\Entity\Account();
+						$account->familyName = $inData['lastName'];
 
+						$user->account = $account;
+					}
+				
+				$user->account->alreadyInHelix=0;
+				
 				$user->firstName = $inData['firstName'];
 				$user->lastName = $inData['lastName'];
 				$user->userName = $inData['userName'];
@@ -70,7 +74,6 @@ class AccountController extends Q_Controller_Base {
 
 				$user->phoneNumber = $inData['phoneNumber'];
 				$user->confirmationCode = md5($user->refId);
-				$user->account = $account;
 
 				if ($inData['emailOverride']) {
 					$user->emailStatus = 1;
@@ -91,7 +94,6 @@ class AccountController extends Q_Controller_Base {
 				$userObj = new \Application_Model_User();
 				$user = $userObj->getUserByUserId($inData['userName']);
 				$user->emailStatus = md5($user->refId);
-
 
 				if (!$inData['emailOverride'] && $inData['preExistingEmailAddress']!='true') {
 					$mailStatus = $this->sendEmailConfirmation($user);

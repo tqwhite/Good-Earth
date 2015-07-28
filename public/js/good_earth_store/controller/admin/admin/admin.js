@@ -233,8 +233,6 @@ selectionControlHandler:function(control, parameter){
 
 
 userEditorHandler:function(control, parameter){
-console.dir({"parameter":parameter});
-
 
 	var componentName='userEditor';
 	switch(control){

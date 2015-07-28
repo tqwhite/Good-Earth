@@ -72,7 +72,7 @@ class UserController extends Q_Controller_Base {
 
 		Thank You,<br/>
 		Your Friends at Good Earth Natural Foods
-			<div style='font-size:10pt;margin-top:20px;'>PS, User ID: {$userObj->userName}</div>
+			<div style='font-size:10pt;margin-top:20px;'>PS, Login ID: {$userObj->userName}</div>
 		</div></body>";
 
 		$mail->setBodyHtml($emailMessage);

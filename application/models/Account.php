@@ -19,7 +19,7 @@ class Application_Model_Account extends Application_Model_Base
 		$name='userName';
 		$datum=$inData[$name];
 		if (strlen($datum)<6){
-			$errorList[]=array($name, "User Name too short");
+			$errorList[]=array($name, "Login Name too short");
 		}
 
 		$name='password';

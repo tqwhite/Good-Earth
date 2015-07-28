@@ -205,7 +205,7 @@ Zend_Registry::set('debugObject', $debugObject);
 			$this->_helper->json(array(
 				status=>$status,
 				messages=>$messages,
-				data=>array(tmp=>'test')
+				data=>array(emailMessage=>$this->emailMessage)
 			));
 
 
@@ -267,7 +267,7 @@ Zend_Registry::set('debugObject', $debugObject);
 				$emailSubject="Good Earth Lunch Program Notification";
 				break;
 		}
-
+$this->emailMessage=$emailMessage;
 		for ($i=0, $len=count($addressList); $i<$len; $i++){
 			$element=$addressList[$i];
 			$mail = new Zend_Mail();

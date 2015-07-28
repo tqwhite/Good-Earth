@@ -9,10 +9,17 @@ public function __construct(){
 	$this->className=get_class($this);
 }
 
-public function collectPurchases(){
+public function collectPurchases($entityName){
 error_reporting(E_ALL && ~E_NOTICE); //error_reporting(E_ERROR | E_WARNING | E_PARSE); //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 
+switch($entityName){
+case 'Application_Model_Purchase':
 	$dataObj=new \Application_Model_Purchase();
+break;
+case 'Application_Model_Account':
+	$dataObj=new \Application_Model_Account();
+break;
+}
 	$outList=array();
 		$dataList=$dataObj->getHelixSendList('record');
 
@@ -26,7 +33,16 @@ error_reporting(E_ALL && ~E_NOTICE); //error_reporting(E_ERROR | E_WARNING | E_P
 	$i=0;
 	foreach($dataList as $label=>$element){
 		if ($i++>$len){break;}
+		
+		
+switch($entityName){
+case 'Application_Model_Purchase':
 		$item=\Application_Model_Purchase::formatOutput($element, 'export', 'purchase');
+break;
+case 'Application_Model_Account':
+		$item=\Application_Model_Account::formatOutput($element, 'export', 'purchase');
+break;
+}
 		$outList[]=$item;
 
 	}
@@ -37,7 +53,32 @@ error_reporting(E_ALL && ~E_NOTICE); //error_reporting(E_ERROR | E_WARNING | E_P
 	);
 }
 
-private function getTableData($purchaseList, $tableListString){
+private function explodeAccountsList($accountList, $tableListString){
+
+	$tableList=explode(' ', $tableListString);
+	foreach ($accountList as $accountRec){
+		$purchaseRefId=$accountRec['refId'];
+		foreach ($tableList as $tableName){
+			switch ($tableName){
+				case 'accounts':
+					$path=''; //there is a database design error that makes this purchase to accounts be many-to-many
+					$this->extractScalars($outList[$tableName], $accountRec, $path, $purchaseRefId);
+				break;
+				case 'users':
+					$path='users';
+					$this->extractScalars($outList[$tableName], $accountRec, $path, $purchaseRefId);
+				break;
+				case 'students':
+					$path='students';
+					$this->extractScalars($outList[$tableName], $accountRec, $path, $purchaseRefId);
+				break;
+			}
+		}
+	}
+	return $outList;
+}
+
+private function explodePurchasesList($purchaseList, $tableListString){
 
 	$tableList=explode(' ', $tableListString);
 	foreach ($purchaseList as $purchaseRec){
@@ -145,15 +186,29 @@ static function formatOutput($inData, $outputType, $flag){
 	return $newRec;
 }
 
-public function writeAndValidate($dataList){
+public function writeAndValidate($dataList, $explosionName){
 
-	$tableArray=$this->getTableData($dataList, 'accounts users students orders purchases accountPurchaseNodes purchaseOrderNodes');
+$sourceList=\Q\Utils::dumpWebString($dataList, "$explosionName sourceList");
+
+switch ($explosionName){
+case 'purchases':
+	$tableArray=$this->explodePurchasesList($dataList, 'accounts users students orders purchases accountPurchaseNodes purchaseOrderNodes');
+break;
+case 'accounts':
+	$tableArray=$this->explodeAccountsList($dataList, 'accounts users students');
+break;
+}
+
+$explodedList=\Q\Utils::dumpWebString($tableArray, "$explosionName explodedList");
+
+
+
 	$resultArray=$this->executeWriteAndValidate($tableArray);
 
 	
 	
 	$listingString=$this->generateListings($tableArray);
-	$resultArray['messages'].=$resultArray['messages'].$listingString;
+	$resultArray['messages'].=$resultArray['messages'].$listingString.$sourceList.$explodedList;
 	
 	return $resultArray;
 }
@@ -194,7 +249,6 @@ private function generateListings($tableArray){
 			$outString.="purchaseCount=".count($tableArray['purchases'])."<BR>";
 			$outString.="purchaseOrderNodeCount=".count($tableArray['purchaseOrderNodes'])."<BR>";
 			$outString.="orderCount=".count($tableArray['orders'])."<BR>";
-			$outString.=\Q\Utils::dumpWebString($tableArray, 'tableArray');
 			
 			return $outString;
 }

@@ -43,27 +43,10 @@ qtools.validateProperties({
 		
 		endThreshold=new Date(end);
 		endThreshold.setTime(endThreshold.getTime() + (twentyFourHours-1000)); //one second before midnight
-	
-console.log("beginThreshold="+beginThreshold);
-
-
-
-console.log("endThreshold="+endThreshold);
-
-console.log("nowDate="+nowDate);
-
-
-
 		
-		suppressFlag=!(nowDate>beginThreshold && nowDate<endThreshold);
+		suppressFlag=!(beginThreshold<nowDate && nowDate<endThreshold);
 
-console.log("suppressFlag="+suppressFlag);
-
-		
 		if (suppressFlag){
-console.log("\n=-=============   suppressFlag  =========================\n");
-
-
 			suppressObject[element.refId]=true;
 			openSchoolCount--;
 		}
@@ -78,16 +61,18 @@ for (var i=0, len=students.length; i<len; i++){
 	
 	if (!this.adminFlag && this.displayParameters.lunchButton){
 	var lunchButtonString="<div style='float:right;' class='smallButton "+this.displayParameters.lunchButton.divId+"'  refId='"+students[i].refId+"'>"+students[i].refId+"</div>";
+	var closedButtonString="<div style='float:right;' class='smallButton   refId='"+students[i].refId+"' title='For this term, new lunch sales for this school are closed'>Closed</div>";
 	}
 	else{
 	var lunchButtonString="";
+	var closedButtonString="";
 	}
 
 	if (!suppressObject[students[i].schoolRefId]){
 	rowString+="<tr style='vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' title='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+lunchButtonString+"</td></tr>";
 	}
 	else{
-		rowString+="<tr style='vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' title='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+"<div style='float:right;' class='smallButton   refId='"+students[i].refId+"' title='For this term, new lunch sales for this school are closed'>Closed</div></td></tr>";
+		rowString+="<tr style='vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' title='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+closedButtonString+"</td></tr>";
 	}
 }
 

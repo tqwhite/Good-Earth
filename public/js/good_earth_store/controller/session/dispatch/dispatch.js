@@ -48,7 +48,6 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 	receiveSessionStartup:function(inData){
 		var userIdCookie=GoodEarthStore.Models.LocalStorage.getCookieData(GoodEarthStore.Models.LocalStorage.getConstant('loginCookieName')).data;
 
-
 		if (inData.status<1 || this.initialController=='none' || this.initialController=='closed'){
 			if (!this.initialController && !this.startingHash && userIdCookie){this.initialController='login';}
 			switch (this.startingHash || this.initialController){

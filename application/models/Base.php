@@ -63,6 +63,8 @@ class Application_Model_Base
 	}
 
 	public function getHelixSendList($hydrationMode){
+echo "<div style='color:black;margin-bottom:10px;'>this->entityName={$this->entityName}</div>";
+
 
 		$query = $this->entityManager->createQuery("SELECT u from GE\\Entity\\{$this->entityName} u WHERE u.alreadyInHelix IS NULL or u.alreadyInHelix=0");
 
