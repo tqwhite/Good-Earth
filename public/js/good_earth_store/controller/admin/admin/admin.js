@@ -241,9 +241,7 @@ userEditorHandler:function(control, parameter){
 	var componentName='userEditor';
 	switch(control){
 		case 'saveResult':
-				if (!this.subjectUser){
-					this.subjectUser=parameter.data.user;
-				}
+				this.subjectUser=parameter.data.user;
 				this.initEditors();
 				this.writeStatus("<span style='color:green;font-weight:bold;'>User Info Saved</span><div style='font-size:80%;'>"+parameter.messages[0][1]+"</div>");
 			break;

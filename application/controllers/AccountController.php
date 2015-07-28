@@ -95,10 +95,10 @@ class AccountController extends Q_Controller_Base {
 				$user = $userObj->getUserByUserId($inData['userName']);
 				$user->emailStatus = md5($user->refId);
 
-				if (!$inData['emailOverride'] && $inData['preExistingEmailAddress']!='true') {
+				if (!$inData['emailOverride'] && $inData['previousEmailAddress']!=$inData['emailAdr']) {
 					$mailStatus = $this->sendEmailConfirmation($user);
 					if ($mailStatus) {
-						$messages[] = array('registration', 'Confirmation email sent');
+						$messages[] = array('registration', 'ConfirmationXX email sent');
 					}
 				} else {
 					$status = - 1;
