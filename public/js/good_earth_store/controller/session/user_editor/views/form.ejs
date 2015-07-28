@@ -16,7 +16,7 @@ qtools.validateProperties({
 	],
  source:'session.userEditor.mainPanel' });
 
-if (!this.subjectUser && window.location.host=='store.goodearth.local' || window.location.hash=='#tq'){
+if (!this.subjectUser && window.location.host=='store.goodearth.local' || (!this.subjectUser && window.location.hash=='#tq')){
 	var firstName='tq',
 		lastName='white',
 		userName='tqwhite'+Math.floor((Math.random()*1000)+1),
