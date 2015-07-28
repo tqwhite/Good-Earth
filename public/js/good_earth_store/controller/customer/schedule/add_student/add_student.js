@@ -217,6 +217,7 @@ saveStudent:function(){
 catchSave:function(inData){
 	var errorString=this.listMessages(inData.messages);
 		this.toggleSpinner();
+		$('body').trigger('userSaveComplete');
 	if (inData.status<1){
 		this.element.find('.errorMsg').remove();
 		this.element.prepend("<div class='errorMsg'>"+errorString+"</div>").removeClass('good').addClass('bad');
