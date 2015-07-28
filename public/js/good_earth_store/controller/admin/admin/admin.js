@@ -241,9 +241,6 @@ userEditorHandler:function(control, parameter){
 	var componentName='userEditor';
 	switch(control){
 		case 'saveResult':
-console.dir({"parameter":parameter});
-
-
 				if (!this.subjectUser){
 					this.subjectUser=parameter.data.user;
 				}
