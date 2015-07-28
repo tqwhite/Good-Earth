@@ -69,10 +69,10 @@ class StudentController extends Q_Controller_Base
 			
 		$student->account->alreadyInHelix=false;
 
-					$this->doctrineContainer = Zend_Registry::get('doctrine');
-					$em = $this->doctrineContainer->getEntityManager();
-					$em->persist($student);
-					$em->flush();
+// 					$this->doctrineContainer = Zend_Registry::get('doctrine');
+// 					$em = $this->doctrineContainer->getEntityManager();
+// 					$em->persist($student);
+// 					$em->flush();
 		
 
 			$this->_helper->json(array(

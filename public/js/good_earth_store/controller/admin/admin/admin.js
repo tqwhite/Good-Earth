@@ -145,6 +145,7 @@ initEditors:function(){
 	
 	this.displayParameters.studentEditor.domObj=$('#'+this.displayParameters.studentEditor.divId);
 
+	if (this.subjectUser.account){
 	this.displayParameters.studentEditor.domObj.good_earth_store_customer_schedule({
 	account:this.subjectUser.account || emptySubjectUser.account,
 	schools:this.sessionActivationPackage.schools,
@@ -153,7 +154,10 @@ initEditors:function(){
 	
 	});	
 	this.displayParameters.studentEditor.domObj.find('.basicButton').css({float:'none'});
-	
+	}
+	else{
+		this.displayParameters.studentEditor.domObj.html('');
+	}
 	},
 
 
@@ -237,6 +241,13 @@ userEditorHandler:function(control, parameter){
 	var componentName='userEditor';
 	switch(control){
 		case 'saveResult':
+console.dir({"parameter":parameter});
+
+
+				if (!this.subjectUser){
+					this.subjectUser=parameter.data.user;
+				}
+				this.initEditors();
 				this.writeStatus("<span style='color:green;font-weight:bold;'>User Info Saved</span><div style='font-size:80%;'>"+parameter.messages[0][1]+"</div>");
 			break;
 		case 'setAccessFunction':

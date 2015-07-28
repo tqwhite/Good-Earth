@@ -104,8 +104,19 @@ class AccountController extends Q_Controller_Base {
 					$status = - 1;
 					$messages[] = array('registration', "No confirmation email was sent.<br/>The account is confirmed. You can login at any time.<br/> {$inData['userName']}/{$inData['password']}");
 				}
+				
+				//For the admin panel, I need to receive the entire user object
+				//I don't know why but when I retrieve this, it doesn't have the users property filled
+				//even though I saved a user. I tried flushing and such. No dice. So, it's a hack. I build it the hard way.
+				$refreshUser = $userObj->searchByUserId($inData['userName']);
+				$count=count($refreshUser['account']['users']);
+				if ($count==0){
+				$tmp=$refreshUser;
+				unset($tmp['account']); //reduce this copy to user data only
+				$refreshUser['account']['users'][]=$tmp;
+				}
 
-				$this->_helper->json(array(status => $status, messages => $messages, data => array('firstName' => $inData['firstName'], 'lastName' => $inData['lastName'], 'emailAdr' => $inData['emailAdr'], 'userName' => $inData['userName'])));
+				$this->_helper->json(array(status => $status, messages => $messages, data => array('user'=>$refreshUser, 'firstName' => $inData['firstName'], 'lastName' => $inData['lastName'], 'emailAdr' => $inData['emailAdr'], 'userName' => $inData['userName'])));
 
 			}
 		}
