@@ -87,7 +87,7 @@ var previousEmailAddress="<input type='hidden' name='previousEmailAddress' value
 
 	<tr>
 		<td style='width:70px;'>Login Name:</td>
-			<td><input prompt='required' name='userName' value='<%=userName%>'></td>
+			<td><input prompt='required' title='required' name='userName' value='<%=userName%>'></td>
 		<td style='width:10px;'>&nbsp;</td>
 		<td style='width:70px;'>Password:</td>
 			<td><input type='<%== passwordTypeString %>' name='password' value='<%=password%>'></td>
@@ -95,31 +95,31 @@ var previousEmailAddress="<input type='hidden' name='previousEmailAddress' value
 
 
 
-	<tr><td>Email Address:</td><td><input prompt='required' name='emailAdr' value='<%=emailAdr%>'></td>
+	<tr><td>Email Address:</td><td><input prompt='required' title='required' name='emailAdr' value='<%=emailAdr%>'></td>
 		<td>&nbsp;</td>
-		<td>Confirm Email:</td><td><input prompt='required' name='confirmEmail' value='<%=emailAdr%>'></td>
+		<td>Confirm Email:</td><td><input prompt='required' title='required' name='confirmEmail' value='<%=emailAdr%>'></td>
 	</tr>
 
 <tr><td style='height:15px;' colspan='5'>&nbsp;</td></tr>
 
 	<tr  style='height:25px;'>
 		<td>Parent First:</td>
-			<td><input prompt='required' name='firstName' value='<%=firstName%>'></td>
+			<td><input prompt='required' title='required' name='firstName' value='<%=firstName%>'></td>
 		<td>&nbsp;</td>
 		<td>Last Name:</td>
-			<td><input prompt='required' name='lastName' value='<%=lastName%>'></td>
+			<td><input prompt='required' title='required' name='lastName' value='<%=lastName%>'></td>
 	</tr>
 
 	<tr  style='height:25px;'>
-		<td>Street:</td><td colspan='4'><input style='width:395px;' prompt='required' name='street' value='<%=street%>'></td></tr>
+		<td>Street:</td><td colspan='4'><input style='width:395px;' prompt='required' title='required' name='street' value='<%=street%>'></td></tr>
 
 
 	<tr  style='height:25px;'>
 		<td>City, ST zip</td>
 			<td colspan='4'>
-				<input prompt='required' style='width:170px;' name='city' value='<%=city%>'> <span style='font-size:200%;color:gray;'>,</span>
-				<input style='width:35px;' prompt='CA' name='state' value='<%=state%>'>
-				<input style='width:75px;' prompt='00000' name='zip' value='<%=zip%>'>
+				<input prompt='required' title='required' style='width:170px;' name='city' value='<%=city%>'> <span style='font-size:200%;color:gray;'>,</span>
+				<input style='width:35px;' prompt='CA' title='CA' name='state' value='<%=state%>'>
+				<input style='width:75px;' prompt='00000' title='00000' name='zip' value='<%=zip%>'>
 
 			</td>
 	</tr>
@@ -127,7 +127,7 @@ var previousEmailAddress="<input type='hidden' name='previousEmailAddress' value
 
 
 	<tr  style='height:25px;'>
-		<td>Phone:</td><td><input name='phoneNumber'  value='<%=phoneNumber%>' prompt='000-000-0000'></td>
+		<td>Phone:</td><td><input name='phoneNumber'  value='<%=phoneNumber%>' prompt='000-000-0000' title='000-000-0000'></td>
 		<td><input type='hidden' name='refId'  value='<%=refId%>'></td><td colspan='4'><%== emailOverrideCheckbox %></td></tr>
 </table>
 

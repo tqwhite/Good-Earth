@@ -7,6 +7,7 @@ steal(
 	'./resources/jqueryPlugins/jquery.cookie.js',
 	'./resources/jqueryPlugins/jquery.md5.js',
 	'./resources/jqueryPlugins/jquery.qprompt.js',
+	'./resources/jqueryPlugins/jquery.qtip.min.js',
 	'./resources/jqueryPlugins/spin.js',
 
 	'./resources/other/json2.js',

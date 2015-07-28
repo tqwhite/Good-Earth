@@ -169,14 +169,7 @@ length:function(inObj){
 
 timeoutProxy: function(func, milliseconds, scope, args) {
 var timeoutId;
-if ($.browser.msie == true) {
-		timeoutId=setTimeout(function() {
-		func(scope, args)
-		}, milliseconds);
-	}
-	else {
-		timeoutId=setTimeout(func, milliseconds, scope, args);
-	}
+timeoutId=setTimeout(func, milliseconds, scope, args)
 return timeoutId;
 },
 
