@@ -180,9 +180,9 @@ validate:function(inData){
 	if (!datum || datum.toLowerCase()=='000-000-0000')
 	{errors.push([name, "Phone Number is required"]);}
 		else if (datum.length!=12)
-		{errors.push([name, "Phone Number must be 000-000-0000"]);}
+		{errors.push([name, "Phone number must be formatted like this: 000-000-0000"]);}
 		else if (!datum.match(/\d{3}[ -]\d{3}[- ]\d{4}/))
-		{errors.push([name, "Phone Number must be 000-000-0000"]);}
+		{errors.push([name, "Phone number must be formatted like this: 000-000-0000"]);}
 
 	name='street';
 	datum=inData[name];

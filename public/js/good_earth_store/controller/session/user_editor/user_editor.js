@@ -91,7 +91,23 @@ initDomElements:function(){
 	this.setupEnterKey(this.displayParameters.saveButton.handler);
 
 	this.element.find('input').qprompt();
-	
+//contentText:function(domObj, argName, replacementObject){return 'hello';},		
+	$('input').html5tooltips({
+	  metaParameters:{
+	  requiredAttributeNames:['title'],
+	  requiredPropertyNames:['name'],
+	  },
+	//animateFunction:'asdfsda',
+	color:'tangerine',
+	contentText:'<!title!>',
+	//contentMore:function(domObj, argName, replacementObject){return 'hello';},
+	//disableAnimation:'asdfsda',
+	stickTo:'top',
+	//stickDistance:'asdfsda',
+	targetSelector:"input[name='<!name!>']",
+	//targetXPath:'asdfsda',
+	//maxWidth:'asdfsda'
+	})
 },
 
 //BUTTON HANDLERS =========================================================================================================
@@ -142,6 +158,7 @@ completionCallback:function(unused, inData){
 			viewHelper:this.viewHelper
 		})
 		);
+	$('.html5tooltip-box').hide();
 	this.element.parent().html(html);
 },
 

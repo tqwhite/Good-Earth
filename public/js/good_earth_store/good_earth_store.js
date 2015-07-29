@@ -7,8 +7,13 @@ steal(
 	'./resources/jqueryPlugins/jquery.cookie.js',
 	'./resources/jqueryPlugins/jquery.md5.js',
 	'./resources/jqueryPlugins/jquery.qprompt.js',
-	'./resources/jqueryPlugins/jquery.qtip.min.js',
 	'./resources/jqueryPlugins/spin.js',
+	
+	
+	'./resources/jqueryPlugins/html5tooltipsjs/html5tooltips.css',
+	'./resources/jqueryPlugins/html5tooltipsjs/html5tooltips.animation.css',
+	'./resources/jqueryPlugins/html5tooltipsjs/html5tooltips.js',
+	'./resources/jqueryPlugins/jquery.html5tooltips.js',
 
 	'./resources/other/json2.js',
 	'./resources/other/mousetrap.js',

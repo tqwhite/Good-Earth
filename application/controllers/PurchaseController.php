@@ -83,22 +83,32 @@ mail('tq@justkidding.com', 'Goodearth: Success Credit Card', $resultString);
 					case '9999':
 						$processResult['deferredPaymentPreference']='DEFERRED by 9999';
 						$status=2;
+// 						$emailMessage=$view->render('deferred-email-receipt.phtml');
+// 						$emailSubject="Good Earth Lunch Program Invoice";
 						break;
 					case '9012':
 						$processResult['deferredPaymentPreference']='DEFERRED by 9012';
 						$status=2;
+// 						$emailMessage=$view->render('deferred-email-receipt.phtml');
+// 						$emailSubject="Good Earth Lunch Program Invoice";
 						break;
 					case '8888':
 						$processResult['deferredPaymentPreference']='DEFERRED by 8888';
 						$status=3;
+// 						$emailMessage=$view->render('deferred-email-receipt.phtml');
+// 						$emailSubject="Good Earth Lunch Program Invoice";
 						break;
 					case '9022':
 						$processResult['deferredPaymentPreference']='DEFERRED by 9022';
 						$status=4;
+// 						$emailMessage=$view->render('fr-email-receipt.phtml');
+// 						$emailSubject="Good Earth Lunch Program Notification";
 						break;
 				}
 			}
 		}
+		
+
 		if (count($errorList)>0){
 			$this->_helper->json(array(
 				status=>-1,

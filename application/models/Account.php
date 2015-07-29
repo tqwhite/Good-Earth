@@ -84,9 +84,6 @@ class Application_Model_Account extends Application_Model_Base
 		return $data;
 	}
 	
-	
-	
-	
 	public function getByRefId($refId)
 	{
 		$query = $this->entityManager->createQuery('SELECT u from GE\Entity\Account u WHERE u.refId = :refId');
