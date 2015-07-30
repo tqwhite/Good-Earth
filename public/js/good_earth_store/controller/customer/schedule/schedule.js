@@ -100,7 +100,7 @@ initDisplay:function(inData){
 initDomElements:function(){
 
 
-
+/*
 
 var cookieData=GoodEarthStore.Models.LocalStorage.getCookieData('gradeLevelNotification').data;
 
@@ -116,6 +116,25 @@ if (!GLOBALS.done && typeof(cookieData)=='undefined'){
 	GoodEarthStore.Models.LocalStorage.setCookie('gradeLevelNotification', true, { expires: 7, path: '/'});
 }
 
+sample notification =====
+
+<div id='notification' style='
+display:none;
+background: none repeat scroll 0 0 #A0F4F7;
+border: 1pt solid gray;
+bottom: 40px;
+color: red;
+height: 90px;
+padding: 10px;
+position: absolute;
+top: 40px;
+left:30px;
+width: 400px;'>
+We have had some trouble with our database  having incorrect grade levels for students. Please click on each student name and confirm that the grade level specified is correct.
+<div style='position:absolute;bottom:10px;color:gray;'>Click anywhere to dismiss this panel. It will not show up again.</div>
+</div>
+
+*/
 
 
 

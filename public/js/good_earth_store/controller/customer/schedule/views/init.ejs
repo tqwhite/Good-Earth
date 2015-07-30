@@ -58,7 +58,7 @@ var rowString='';
 for (var i=0, len=students.length; i<len; i++){
 
 	if (students[i].isActiveFlag===false){continue;}
-	
+
 	if (!this.adminFlag && this.displayParameters.lunchButton){
 	var lunchButtonString="<div style='float:right;' class='smallButton "+this.displayParameters.lunchButton.divId+"'  refId='"+students[i].refId+"'>"+students[i].refId+"</div>";
 	var closedButtonString="<div style='float:right;' class='smallButton   refId='"+students[i].refId+"' title='For this term, new lunch sales for this school are closed'>Closed</div>";
@@ -67,12 +67,14 @@ for (var i=0, len=students.length; i<len; i++){
 	var lunchButtonString="";
 	var closedButtonString="";
 	}
+	
+	var studentInfoString=students[i].school.name+", grade "+students[i].gradeLevel.title;
 
 	if (!suppressObject[students[i].schoolRefId]){
-	rowString+="<tr style='vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' title='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+lunchButtonString+"</td></tr>";
+	rowString+="<tr style='vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' title='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+"</td><td style='font-size:80%;color:#666;text-align:left;width:70%;'>&nbsp;&nbsp;&nbsp;"+studentInfoString+"</td><td>"+lunchButtonString+"</td></tr>";
 	}
 	else{
-		rowString+="<tr style='vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' title='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+closedButtonString+"</td></tr>";
+		rowString+="<tr style='vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' title='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+"</td><td style='font-size:80%;color:#666;text-align:left;width:70%;'>&nbsp;&nbsp;&nbsp;"+studentInfoString+"</td><td>"+closedButtonString+"</td></tr>";
 	}
 }
 

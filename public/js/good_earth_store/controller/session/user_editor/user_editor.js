@@ -23,7 +23,8 @@ init: function(el, options) {
 			{name:'statusDomObject'},
 			{name:'subjectUser'},
 			{name:'accessFunction', optional:true},
-			{name:'adminFlag', optional:true}
+			{name:'adminFlag', optional:true},
+			{name:'instantiationCallback', optional:true}
 		],
 		source:this.constructor._fullName
  	});
@@ -108,6 +109,10 @@ initDomElements:function(){
 	//targetXPath:'asdfsda',
 	//maxWidth:'asdfsda'
 	})
+	
+	if (typeof(this.instantiationCallback)=='function'){
+		this.instantiationCallback(this.element);
+	}
 },
 
 //BUTTON HANDLERS =========================================================================================================

@@ -116,7 +116,7 @@ initDomElements:function(){
 	
 
 	
-	this.element.find('.mainContainer').css({width:'1200px'}).find('td').css({width:'100px'}).find('.smallButton').hide();
+	this.element.find('.mainContainer').css({width:'1120px'}).find('td').css({width:'100px'}).find('.smallButton').hide();
 
 },
 
@@ -130,6 +130,15 @@ initEditors:function(){
 		}
 	}
 
+var reviseUserEditor=function(editorDomObj){
+	editorDomObj.find('.basicButton').css({
+	'float':'left',
+'margin':'2px 100px 0px 300px',
+'height':'21px',
+'border':'1pt solid red'})
+.find('div').css({'margin':'2px auto'});
+
+};
 
 	var name='userEditor'; //this.displayParameters.userSelector
 	this.displayParameters[name].domObj=$('#'+this.displayParameters[name].divId);
@@ -137,11 +146,9 @@ initEditors:function(){
 				subjectUser:this.subjectUser,
 				accessFunction:this.displayParameters[name].handler,
 				adminFlag:true,
-		statusDomObject:this.statusDomObject
+		statusDomObject:this.statusDomObject,
+		instantiationCallback:reviseUserEditor
 	});
-	
-	this.displayParameters.userEditor.domObj.find('.basicButton').css({float:'none', width:'65%'});
-	
 	
 	this.displayParameters.studentEditor.domObj=$('#'+this.displayParameters.studentEditor.divId);
 

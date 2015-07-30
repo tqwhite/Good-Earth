@@ -23,5 +23,9 @@ qtools.validateProperties({
 
 	],
  source:'customer.child.views.init' });
+ 
+ 
+	var studentInfoString="<span style='color:#666;font-size:80%;'>&nbsp;&nbsp;&nbsp;"+this.formData.student.school.name+", grade "+this.formData.student.gradeLevel.title+", session "+this.formData.student.school.datePeriodBegin+" - "+this.formData.student.school.datePeriodEnd+"</span>";
+	
 %>
-<div class='nameString'><%=this.formData.student.firstName%></div><div class='smallButton' style='float:right;' id='<%= displayParameters.doneButton.divId %>'></div>
+<div class='nameString'><%=this.formData.student.firstName%><%==studentInfoString%></div><div class='smallButton' style='float:right;' id='<%= displayParameters.doneButton.divId %>'></div>
