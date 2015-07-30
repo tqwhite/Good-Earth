@@ -134,8 +134,7 @@ var reviseUserEditor=function(editorDomObj){
 	editorDomObj.find('.basicButton').css({
 	'float':'left',
 'margin':'2px 100px 0px 300px',
-'height':'21px',
-'border':'1pt solid red'})
+'height':'21px'
 .find('div').css({'margin':'2px auto'});
 
 };
