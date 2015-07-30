@@ -68,7 +68,11 @@ class Application_Model_Student extends Application_Model_Base
 					'allergyFlag'=>$inData->allergyFlag,
 					'schoolRefId'=>$inData->school->refId,
 					'accountRefId'=>$inData->account->refId,
-					'gradeLevelRefId'=>$inData->gradeLevel->refId
+					'gradeLevelRefId'=>$inData->gradeLevel->refId,
+					
+						'gradeLevel'=>\Application_Model_GradeLevel::formatOutput($inData->gradeLevel, $outputType),
+						
+						'school'=>\Application_Model_School::formatOutput($inData->school, $outputType)
 				);
 				break;
 		case 'export':
