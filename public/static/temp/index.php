@@ -4,7 +4,7 @@
 <HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
 <TITLE>Organic School Lunches: Schools</TITLE>
-<LINK HREF="http://goodearthorganiclunches.com/master.css" REL="stylesheet" TYPE="text/css">
+<LINK HREF="/master.css" REL="stylesheet" TYPE="text/css">
 <SCRIPT LANGUAGE="JavaScript" TYPE="text/JavaScript">
 <!--
 function MM_preloadImages() { //v3.0
