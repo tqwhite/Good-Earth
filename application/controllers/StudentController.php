@@ -67,8 +67,10 @@ class StudentController extends Q_Controller_Base
 				$messages[]=array('server_error', $e->errorInfo);
 			}
 			
+		$student=$studentObj->getByRefId($inData['refId']);
 		$student->account->alreadyInHelix=false;
-
+		$studentOut=$studentObj->formatOutput($student);
+				
 			$this->_helper->json(array(
 				status=>$status,
 				messages=>$messages,
@@ -80,7 +82,7 @@ class StudentController extends Q_Controller_Base
 						'isTeacherFlag'=>$inData['isTeacherFlag'],
 						'allergyFlag'=>$inData['allergyFlag']
 					),
-					"student"=>$studentObj->formatOutput($student)
+					"student"=>$studentOut
 				)
 			));
 

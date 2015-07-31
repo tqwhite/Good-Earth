@@ -101,7 +101,6 @@ class AccountController extends Q_Controller_Base {
 						$messages[] = array('registration', 'Confirmation email sent');
 					}
 				} else {
-					$status = - 1;
 					$messages[] = array('registration', "No confirmation email was sent.<br/>The account is confirmed. You can login at any time.<br/> {$inData['userName']}/{$inData['password']}");
 				}
 				
