@@ -210,7 +210,7 @@ saveStudent:function(){
 	if (!this.formParams.vegetarianFlag){this.formParams.vegetarianFlag=0;}
 	if (!this.formParams.isTeacherFlag){this.formParams.isTeacherFlag=0;}
 	if (!this.formParams.allergyFlag){this.formParams.allergyFlag=0;}
-		this.toggleSpinner();
+	this.toggleSpinner();
 	GoodEarthStore.Models.Student.add(this.formParams, this.callback('catchSave'));
 },
 
@@ -223,10 +223,11 @@ catchSave:function(inData){
 		this.element.prepend("<div class='errorMsg'>"+errorString+"</div>").removeClass('good').addClass('bad');
 	}
 	else{
-		if (this.isNew) {this.account.students.push(this.formParams);}
+
+		if (this.isNew) {this.account.students.push(inData.data.student);}
 		else{
-			for (var i in this.student){
-				this.student[i]=this.formParams[i];
+			for (var i in inData.data.student){
+				this.student[i]=inData.data.student[i]; //need to write through to parent object list for redraw
 			}
 		}
 		this.element.parent().height(this.savedOrigParentHeight);

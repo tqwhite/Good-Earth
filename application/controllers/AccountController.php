@@ -98,7 +98,7 @@ class AccountController extends Q_Controller_Base {
 				if (!$inData['emailOverride'] && $inData['previousEmailAddress']!=$inData['emailAdr']) {
 					$mailStatus = $this->sendEmailConfirmation($user);
 					if ($mailStatus) {
-						$messages[] = array('registration', 'ConfirmationXX email sent');
+						$messages[] = array('registration', 'Confirmation email sent');
 					}
 				} else {
 					$status = - 1;

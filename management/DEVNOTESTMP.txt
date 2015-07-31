@@ -35,14 +35,20 @@ DONE admin override for closed schools use: http://store.goodearth.local/#login
 DONE bug: something is screwy with confirmation email in admin
 
 DONE don't allow Add Student if no user is active (ie, before save on new)
+DONE save button position is weird for user_editor
+DONE add school and gradelevel to student non-edit display
+
+Lenny's deactivate file
+change helix IP address
+
+remove Sherry
+
 
 
 FIX tickle is off in import.php
 
 
 add admin checkbox to user editor
-save button position is weird for user_editor
-add school and gradelevel to student non-edit display
 add ability to open more than one student for editing
 make student editor be in edit mode always for admin
 cause saveButton to be active only when changes have been made

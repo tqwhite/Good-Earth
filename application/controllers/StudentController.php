@@ -85,7 +85,8 @@ class StudentController extends Q_Controller_Base
 						'vegetarianFlag'=>$inData['vegetarianFlag'],
 						'isTeacherFlag'=>$inData['isTeacherFlag'],
 						'allergyFlag'=>$inData['allergyFlag']
-					)
+					),
+					"student"=>$studentObj->formatOutput($student)
 				)
 			));
 

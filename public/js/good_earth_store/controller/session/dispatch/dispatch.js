@@ -81,7 +81,7 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 					message+="We deeply appreciate your business and look forward to serving you.<p/>"
 
 					message+="Sincerely,<p/>"
-					message+="<span style='font-style:italic;font-size:110%;'>&nbsp;&nbsp;&nbsp;Sherry</span><p/>"
+					message+="<span style='font-style:italic;font-size:110%;'>&nbsp;&nbsp;&nbsp;Adam</span><p/>"
 					message+="Program Manager<br/>";
 					message+="Good Earth School Lunch Program</div>";
 
