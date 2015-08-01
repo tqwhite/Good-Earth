@@ -41,11 +41,11 @@ DONE add school and gradelevel to student non-edit display
 Lenny's deactivate file
 change helix IP address
 
-remove Sherry
+DONE remove Sherry
 
 
 
-FIX tickle is off in import.php
+DONE fix tickle is off in import.php
 
 
 add admin checkbox to user editor
@@ -75,5 +75,5 @@ track down and improve on master.css (in layout.phtml), other XXX things, too.
 ALTER TABLE users ADD role VARCHAR(10) DEFAULT NULL;
 ALTER TABLE schools ADD datePeriodBegin DATE NOT NULL, ADD datePeriodEnd DATE NOT NULL;
 
-update schools set dateOrderingEnd='2015-09-15';
 update users set role='admin' where userName='lennyTheGreat' or userName like '%tq%' or userName='testgoodearth';
+update schools set dateOrderingEnd='2015-09-15';

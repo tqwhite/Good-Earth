@@ -82,7 +82,7 @@ public function execute(){
 	$inputManager->tickle('start');
 
 	$importList=$this->importList(); //returns a literal array of Application_Model objects
-echo "<div style='font-size:50pt;color:red;'>tickle is off in import.php</div>";	
+
 	echo "The data shown below is THE DATA THAT AS IT WAS RECEIVED FROM HELIX. The names have been mapped but no data conversion has been done. To see what went to the database, look in the database.<br/><br/>\n\n";
 
 	
@@ -105,7 +105,7 @@ echo "<div style='font-size:50pt;color:red;'>tickle is off in import.php</div>";
 	
 	\Q\Utils::dumpWeb($dbResultArray, "dbResultArray");
 
-//	$inputManager->tickle('end');
+	$inputManager->tickle('end');
 
 
 }//end of method
