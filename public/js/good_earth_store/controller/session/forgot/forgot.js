@@ -176,7 +176,7 @@ resetAfterSave:function(inData){
 							}
 						outMessage+=mainMessage+'<br/>';
 					}
-				$('#'+this.displayParameters.status.divId).html(outMessage).removeClass('good').addClass('bad');
+				$('#'+this.displayParameters.status.divId).html(outMessage).removeClass('good').addClass('good'); //.addClass('bad');
 	}
 },
 
