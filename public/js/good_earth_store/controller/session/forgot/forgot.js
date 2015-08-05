@@ -172,7 +172,7 @@ resetAfterSave:function(inData){
 					for (var i=0, len=inData.messages.length; i<len; i++){
 						var mainMessage=inData.messages[i][1];
 						if (mainMessage=="Reset email sent"){
-							mainMessage+="<div style='font-size:70%;'>Check spam filter.<br/>Reset message only good for fifteen minutes.</div>";
+							mainMessage+="<div style='font-size:70%;'>Check spam filter at <span style='color:black;'>"+inData.data.emailAdr+"</span>.<br/>Reset message only good for fifteen minutes.</div>";
 							}
 						outMessage+=mainMessage+'<br/>';
 					}
