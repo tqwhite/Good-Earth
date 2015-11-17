@@ -38,7 +38,7 @@ class OfferingController extends Zend_Controller_Action
     
 		$accessObj=new \Application_Model_School();
 		$list=$accessObj->getList('record');
-		
+
 		for ($i=0, $len=count($list); $i<$len; $i++){
 			$element=$list[$i];
 				$outArray[$element->currPeriod]=$element->currPeriod;
