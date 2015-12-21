@@ -236,7 +236,7 @@ else{
 
 $scheme='https';
 }
-$url="$scheme://{$_SERVER['HTTP_HOST']}/utility/pingHelix?ipAddress={$helixConfiguration['hostIp']}";
+$url="$scheme://{$_SERVER['HTTP_HOST']}/utility/pingHelix?helixIp={$helixConfiguration['hostIp']}";
 
 echo "<div style='margin:35px 0px;'><a href='$url'>$url</a></div>";
 
