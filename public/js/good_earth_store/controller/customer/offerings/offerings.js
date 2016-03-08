@@ -64,9 +64,8 @@ initDisplay:function(inData){
 	for (var i=0, len=list.length; i<len; i++){
 		var element=list[i];
 
-		if (!element.name.match(/saus/i)){
+
 			outArray.push(element);
-		}
 		
 	}
 	this.offerings=outArray;
