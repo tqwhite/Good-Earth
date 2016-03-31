@@ -283,7 +283,7 @@ class Application_Model_User extends Application_Model_Base
 	
 	public function setEmailStatusConfirmed($confirmationCode)
 	{
-		$query = $this->entityManager->createQuery('UPDATE GE\Entity\User u Set u.emailStatus=1 WHERE u.confirmationCode = :confirmationCode');
+		$query = $this->entityManager->createQuery('UPDATE GE\Entity\User u Set u.emailStatus=1, u.isActiveFlag=1 WHERE u.confirmationCode = :confirmationCode');
 		$query->setParameters(array(
 			'confirmationCode' => $confirmationCode
 		));
