@@ -12,6 +12,8 @@ qtools.validateProperties({
 	propList:[
 		{name:'searchButton'},
 		{name:'newButton'},
+		{name:'importButton'},
+		{name:'exportButton'},
 		{name:'userSelector'}
 	],
  source:'admin.control.init' });
@@ -24,9 +26,10 @@ if (window.location.host=='store.goodearth.local' || window.location.hash=='#tq'
 else{
 	var searchFragment='';
 }
-
 %><div style='margin-bottom:10px;'>
-<div class='smallButton' id='<%=this.displayParameters.newButton.divId%>' style='margin:15px 1px 25px 0;'></div>
+<div class='smallButton' id='<%=this.displayParameters.newButton.divId%>' style='margin:15px 1px 25px 0;display:inline-block'></div>
+<div class='smallButton' id='<%=this.displayParameters.importButton.divId%>' style='margin:15px 1px 25px 150px;display:inline-block'></div>
+<div class='smallButton' id='<%=this.displayParameters.exportButton.divId%>' style='margin:15px 1px 25px 0;display:inline-block'></div>
 <div>Search (Enter Fragment: first, last, logon)</div>
 </div>
 <div style='height:60px;'>

@@ -47,6 +47,9 @@ initDisplayProperties:function(){
 	name='searchButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 	name='newButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 	name='userSelector'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+
+	name='importButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+	name='exportButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 	
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -98,6 +101,32 @@ initDomElements:function(){
 		//label:name
 	});
 	
+	var name='importButton'; //this.displayParameters.newButton
+	this.displayParameters[name].domObj=$('#'+this.displayParameters[name].divId);
+	this.displayParameters[name].domObj.good_earth_store_tools_ui_button2({
+		ready:{classs:'basicReady'},
+		hover:{classs:'basicHover'},
+		clicked:{classs:'basicActive'},
+		unavailable:{classs:'basicUnavailable'},
+		accessFunction:this.displayParameters[name].handler,
+		initialControl:'setToReady', //initialControl:'setUnavailable'
+		label:'Helix to Web'
+		//label:name
+	});
+	
+	var name='exportButton'; //this.displayParameters.newButton
+	this.displayParameters[name].domObj=$('#'+this.displayParameters[name].divId);
+	this.displayParameters[name].domObj.good_earth_store_tools_ui_button2({
+		ready:{classs:'basicReady'},
+		hover:{classs:'basicHover'},
+		clicked:{classs:'basicActive'},
+		unavailable:{classs:'basicUnavailable'},
+		accessFunction:this.displayParameters[name].handler,
+		initialControl:'setToReady', //initialControl:'setUnavailable'
+		label:'Orders into Helix'
+		//label:name
+	});
+	
 	var name='userSelector'; //this.displayParameters.userSelector
 	this.displayParameters[name].domObj=$('#'+this.displayParameters[name].divId);
 
@@ -134,6 +163,42 @@ newButtonHandler:function(control, parameter){
 			else{return;}
 			
 			this.parentAccessFunction('newUser', parameter);
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
+},
+
+importButtonHandler:function(control, parameter){
+	var componentName='importButton';
+	switch(control){
+		case 'click':
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+			
+			window.open('/data/import/')
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
+},
+
+exportButtonHandler:function(control, parameter){
+	var componentName='exportButton';
+	switch(control){
+		case 'click':
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+			
+			window.open('/data/export/')
 		break;
 		case 'setAccessFunction':
 			if (!this[componentName]){this[componentName]={};}
