@@ -142,7 +142,7 @@ class AccountController extends Q_Controller_Base {
 
 		Thank You,<br/>
 		Your Friends at Good Earth Natural Foods
-			<div style='font-size:10pt;margin-top:20px;'>PS, User ID/Password: {$userObj->userName}/{$this->newPassword}}</div>
+			<div style='font-size:10pt;margin-top:20px;'>PS, User ID: {$userObj->userName}</div>
 		</div></body>";
 
 			$mail->setBodyHtml($emailMessage);
