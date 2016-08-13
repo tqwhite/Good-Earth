@@ -246,7 +246,22 @@ Zend_Registry::set('debugObject', $debugObject);
 		$view->purchaseEntity=$purchaseEntity;
 		$view->orderEntityList=$orderEntityList;
 
-		$tr=new Zend_Mail_Transport_Sendmail();
+    	$emailSender=Zend_Registry::get('emailSender');
+    	
+    	if (!$emailSender){
+			$tr=new Zend_Mail_Transport_Sendmail();
+		}
+		else{
+			$tr=new Zend_Mail_Transport_Smtp($emailSender['hostName'], array(
+				'username'=>$emailSender['authSet']['username'],
+				'password'=>$emailSender['authSet']['password'],
+				'port'=>$emailSender['authSet']['port'],
+				'ssl'=>$emailSender['authSet']['ssl'],
+				'auth'=>$emailSender['authSet']['auth']
+			));
+
+		}
+		
 		Zend_Mail::setDefaultTransport($tr);
 		Zend_Mail::setDefaultFrom('school@genatural.com', "Good Earth Lunch Program");
 		Zend_Mail::setDefaultReplyTo('school@genatural.com', "Good Earth Lunch Program");
@@ -278,6 +293,7 @@ Zend_Registry::set('debugObject', $debugObject);
 				break;
 		}
 $this->emailMessage=$emailMessage;
+
 		for ($i=0, $len=count($addressList); $i<$len; $i++){
 			$element=$addressList[$i];
 			$mail = new Zend_Mail();
@@ -287,7 +303,7 @@ $this->emailMessage=$emailMessage;
 			$mail->addTo($element['address'], $element['name']);
 			$this->emailLogList.="({$element['address']} {$element['name']}) ";
 
-			$mail->send($tr);
+			$status=$mail->send($tr);
 
 		}
 

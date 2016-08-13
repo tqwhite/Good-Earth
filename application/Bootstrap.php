@@ -3,6 +3,20 @@
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 
+public function _initConfigAndRegistry(){
+	
+	$config=$this->getOptions();
+	
+	if (isset($config['emailSender'])){
+	Zend_Registry::set('emailSender', $config['emailSender']);
+	}
+	else{
+	
+	Zend_Registry::set('emailSender', '');
+	}
+
+}
+
 public function _initSession(){
 
 error_reporting(E_ERROR | E_PARSE & ~E_WARNING & ~E_NOTICE); //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
