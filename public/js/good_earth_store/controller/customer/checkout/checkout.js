@@ -117,8 +117,17 @@ submitButtonHandler:function(control, parameter){
 	switch(control){
 		case 'click':
 
-			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
-			else{return;}
+			if (this.displayParameters.submitButton.submitted){return;}
+			
+			$('#'+this.displayParameters.submitButton.divId).html('Processing');
+			this.displayParameters.submitButton.submitted=true;
+
+			this.displayParameters.submitButton.timeoutId=setTimeout(
+				function(){
+					$('#'+this.displayParameters.entryContainer.divId).html("<div style=color:red;margin:15px 4px;'>Server Timed Out: Your order is probably ok but you will need to confirm with the office.<p/>Email or call  office.sl@genatural.com or call 415-382-1334.<p/>Sorry.</div>");
+				}.bind(this),
+				30000
+			);
 
 			GoodEarthStore.Models.Purchase.process({
 					cardData:this.element.formParams(),
@@ -158,7 +167,15 @@ cancelButtonHandler:function(control, parameter){
 
 catchProcessResult:function(inData){
 		var statusDomObj=$('#'+this.displayParameters.status.divId);
+		
+		clearTimeout(this.displayParameters.submitButton.timeoutId);
+		
 	if (inData.status<0){
+	
+	
+		$('#'+this.displayParameters.submitButton.divId).html('Submit');
+		this.displayParameters.submitButton.submitted=false;
+		
 		statusDomObj.html('');
 		var list=inData.messages;
 		for (var i=0, len=list.length; i<len; i++){
@@ -171,6 +188,8 @@ catchProcessResult:function(inData){
 		$(window).unbind('beforeunload');
 		if (true){ //this can go away as soon as debugging is well into the past. 'false' makes it so that the payment process can run repeatedly.
 
+			$('#'+this.displayParameters.submitButton.divId).html('Approved');
+			
 			switch(inData.status.toString()){
 				case '1':
 					$('#'+this.displayParameters.submitButton.divId).remove();
