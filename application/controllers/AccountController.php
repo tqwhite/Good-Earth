@@ -165,7 +165,7 @@ class AccountController extends Q_Controller_Base {
 			$mail->setSubject("Good Earth: Lunch Program Email Address Confirmation " . $userObj->userName);
 
 			$mail->addTo($userObj->emailAdr, $userObj->firstName . ' ' . $userObj->lastName);
-			$mail->send();
+			$mail->send($tr);
 
 			return true;
 		}
