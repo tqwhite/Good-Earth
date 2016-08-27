@@ -53,7 +53,22 @@ class UserController extends Q_Controller_Base {
 
 		$showResetDate = $this->resetDate->format('h:i');
 		$mail = new Zend_Mail();
-		$tr = new Zend_Mail_Transport_Sendmail();
+		
+		$emailSender=Zend_Registry::get('emailSender');
+    	
+    	if (true || !$emailSender){
+			$tr=new Zend_Mail_Transport_Sendmail();
+		}
+		else{
+			$tr=new Zend_Mail_Transport_Smtp($emailSender['hostName'], array(
+				'username'=>$emailSender['authSet']['username'],
+				'password'=>$emailSender['authSet']['password'],
+				'port'=>$emailSender['authSet']['port'],
+				'ssl'=>$emailSender['authSet']['ssl'],
+				'auth'=>$emailSender['authSet']['auth']
+			));
+
+		}
 
 		$emailMessage = "<body style='background:#F5E4C6;'><div style='color:#385B2B;font-size:12pt;margin:20px 0px 20px 10px;'>
 			<div>Dear {$userObj->firstName}, <p/>
@@ -81,7 +96,8 @@ class UserController extends Q_Controller_Base {
 
 		$mail->addTo($userObj->emailAdr, $userObj->firstName . ' ' . $userObj->lastName);
 
-		$mail->send();
+		error_log($mail->send($tr));
+error_log("PW RESET: email server: {$emailSender['hostName']}, user: {$userObj->userName}, dest email: {$userObj->emailAdr}");
 
 		return true;
 	}
