@@ -166,12 +166,13 @@ class AccountController extends Q_Controller_Base {
 
 			$mail->addTo($userObj->emailAdr, $userObj->firstName . ' ' . $userObj->lastName);
 			$mail->send($tr);
-
+error_log("CONFIRMATION EMAIL SENT: email server: user: {$userObj->userName}, dest email: {$userObj->emailAdr}, {$emailSender['hostName']}, ");
 			return true;
 		}
 
 		public function confirmAction() {
 
+error_log("CONFIRMATION REDEEM START: {$_SERVER['REQUEST_URI']}");
 			$serverComm = array();
 
 			$store = Zend_Registry::get('store');
@@ -217,6 +218,8 @@ class AccountController extends Q_Controller_Base {
 				$message = "Sorry, your code is incorrect";
 				$serverComm[] = array("fieldName" => "assert_initial_controller", "value" => 'register');
 			}
+
+error_log("CONFIRMATION REDEEM COMPLETE: {$_SERVER['REQUEST_URI']} $message");
 
 			$serverComm[] = array("fieldName" => "user_confirm_message", "value" => $message);
 			$this->view->serverComm = $this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv

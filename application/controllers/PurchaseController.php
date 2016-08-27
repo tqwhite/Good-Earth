@@ -27,6 +27,8 @@ class PurchaseController extends  Q_Controller_Base
 		$inData['purchase']['refId']=$newPurchaseRefId;
 
 
+error_log("PURCHASE STARTED:  account: {$inData['account']['refId']} purchase: $newPurchaseRefId");
+
 		$errorList=\Application_Model_Purchase::validate($inData);
 
 		if (count($errorList)==0){
@@ -49,6 +51,7 @@ class PurchaseController extends  Q_Controller_Base
 
 				if (!$processResult['approved']){
 				
+error_log("PURCHASE PAYMENT COMPLETE:  account: {$inData['account']['refId']} purchase: $newPurchaseRefId FAILED {$processResult['response_reason_text']}");
 				
 $tmp=array();
 $tmp['inData']=$inData;
@@ -68,17 +71,19 @@ mail('tq@justkidding.com', 'Goodearth: Failed Credit Card', $resultString);
 					}
 				}
 				else{
+error_log("PURCHASE PAYMENT COMPLETE:  account: {$inData['account']['refId']} purchase: $newPurchaseRefId SUCCESS {$processResult['response_reason_text']}");
 					$status=1;
 				}
 			}
-			else{				
+			else{	
+
 $tmp=array();
 $tmp['inData']=$inData;
 $tmp['inData']['cardData']['cardNumber']=$specialInstruction;
 $tmp['processResult']=$processResult;
 $resultString=$processResult['response_reason_text']."\n\n";
 $resultString.=\Q\Utils::dumpCliString($tmp, "debug info");
-mail('tq@justkidding.com', 'Goodearth: Success Credit Card', $resultString);
+
 				switch ($specialInstruction){
 					case '9999':
 						$processResult['deferredPaymentPreference']='DEFERRED by 9999';
@@ -105,11 +110,18 @@ mail('tq@justkidding.com', 'Goodearth: Success Credit Card', $resultString);
 // 						$emailSubject="Good Earth Lunch Program Notification";
 						break;
 				}
+				
+
+error_log("PURCHASE PAYMENT COMPLETE:  account: {$inData['account']['refId']} purchase: $newPurchaseRefId FREE {$processResult['deferredPaymentPreference']}");
 			}
 		}
 		
 
 		if (count($errorList)>0){
+
+$collapsedErrors=join(', ', $errorList);
+
+error_log("PURCHASE COMPLETED WITH ERRORS:  account: {$inData['account']['refId']} purchase: $newPurchaseRefId $collapsedErrors");
 			$this->_helper->json(array(
 				status=>-1,
 				messages=>$errorList,
@@ -122,6 +134,7 @@ mail('tq@justkidding.com', 'Goodearth: Success Credit Card', $resultString);
 				$messages=Q\Utils::flattenToList($processResult); //mainly for debugging ease, maybe should be removed later
 
 
+error_log("PURCHASE DATABASE START: account: {$inData['account']['refId']} purchase: $newPurchaseRefId");
 
 
 
@@ -194,8 +207,12 @@ $debugElementArray[]=array(
 
 				$purchaseObj->persist(Application_Model_Base::yesFlush); //I put "$this->emailReceipt($purchaseObj);" ahead of this line and it stopped persisting!?
 
+error_log("PURCHASE DATABASE COMPLETE:  account: {$inData['account']['refId']} purchase: $newPurchaseRefId");
+
+error_log("PURCHASE EMAIL START:  account: {$inData['account']['refId']} purchase: $newPurchaseRefId");
 				$this->emailReceipt($purchaseObj->entity->refId, $orderEntityList, $status);
 
+error_log("PURCHASE EMAIL COMPLETE:  account: {$inData['account']['refId']} purchase: $newPurchaseRefId");
 
 $purchaseObj=array(
 	'chargeTotal'=>$inData['cardData']['chargeTotal'],
@@ -207,11 +224,9 @@ $debugObject['debugElementArray']=$debugElementArray;
 $debugObject['purchaseObj']=$purchaseObj;
 Zend_Registry::set('debugObject', $debugObject);
 
-//error_log("<!--startDebug!-->".\Q\Utils::dumpWebString($debugObject)."<!--endDebug!-->");
 
-//     echo $this->emailLogList;
-//     error_log($this->emailLogList."=== process end");
-//     exit;
+error_log("PURCHASE PROCESS COMPLETE: account: {$inData['account']['refId']} purchase: $newPurchaseRefId");
+
 			$this->_helper->json(array(
 				status=>$status,
 				messages=>$messages,
@@ -303,10 +318,13 @@ $this->emailMessage=$emailMessage;
 			$mail->addTo($element['address'], $element['name']);
 			$this->emailLogList.="({$element['address']} {$element['name']}) ";
 
+error_log("PURCHASE EMAIL SENDING: purchase: $purchaseRefId, user: {$user->userName}, dest email: {$element['address']}, server: {$emailSender['hostName']}, ");
 			$status=$mail->send($tr);
+error_log("PURCHASE EMAIL SENT: purchase: $purchaseRefId, user: {$user->userName}, dest email: {$element['address']}, server: {$emailSender['hostName']}, ");
 
 		}
 
+error_log("PURCHASE EMAIL COMPLETE: purchase: $purchaseRefId, user: {$user->userName}");
 
 		Zend_Mail::clearDefaultFrom();
 		Zend_Mail::clearDefaultReplyTo();

@@ -34,7 +34,7 @@ class SessionController extends  Q_Controller_Base
     {
     	$messageList=array();
 		$inData=$this->getRequest()->getPost('data');
-
+error_log("LOGIN: {$inData['userName']}");
         $check = new Q\Plugin\Authorize\Check();
 		$check->credentials($inData); //updates \Zend_Auth::getInstance()
 
