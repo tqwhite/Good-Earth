@@ -226,6 +226,7 @@ Zend_Registry::set('debugObject', $debugObject);
 
 
 error_log("PURCHASE PROCESS COMPLETE: account: {$inData['account']['refId']} purchase: $newPurchaseRefId");
+error_log("======================================================================");
 
 			$this->_helper->json(array(
 				status=>$status,
@@ -325,7 +326,6 @@ error_log("PURCHASE EMAIL SENT: purchase: $purchaseRefId, user: {$user->userName
 		}
 
 error_log("PURCHASE EMAIL COMPLETE: purchase: $purchaseRefId, user: {$user->userName}");
-error_log("======================================================================");
 
 		Zend_Mail::clearDefaultFrom();
 		Zend_Mail::clearDefaultReplyTo();
