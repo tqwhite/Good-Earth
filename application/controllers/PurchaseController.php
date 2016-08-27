@@ -325,6 +325,7 @@ error_log("PURCHASE EMAIL SENT: purchase: $purchaseRefId, user: {$user->userName
 		}
 
 error_log("PURCHASE EMAIL COMPLETE: purchase: $purchaseRefId, user: {$user->userName}");
+error_log("======================================================================");
 
 		Zend_Mail::clearDefaultFrom();
 		Zend_Mail::clearDefaultReplyTo();
