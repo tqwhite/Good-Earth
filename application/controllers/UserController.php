@@ -95,7 +95,7 @@ error_log("PW RESET EMAIL START: email server: user: {$userObj->userName}, dest 
 		</div></body>";
 
 		$mail->setBodyHtml($emailMessage);
-		$mail->setFrom('schoolLunch@goodearth.volunteersupport.org', "Good Earth Lunch Program");
+		$mail->setFrom('school@genatural.com', "Good Earth Lunch Program");
 		$mail->setSubject("Good Earth: Lunch Program Password Reset for " . $userObj->userName);
 
 		$mail->addTo($userObj->emailAdr, $userObj->firstName . ' ' . $userObj->lastName);
