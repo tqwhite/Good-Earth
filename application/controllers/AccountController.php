@@ -161,7 +161,7 @@ class AccountController extends Q_Controller_Base {
 		</div></body>";
 
 			$mail->setBodyHtml($emailMessage);
-			$mail->setFrom('school@genatural.com', "Good Earth Lunch Program");
+		$mail->setFrom($emailSender['fromAddress'], $emailSender['fromName']);
 			$mail->setSubject("Good Earth: Lunch Program Email Address Confirmation " . $userObj->userName);
 
 			$mail->addTo($userObj->emailAdr, $userObj->firstName . ' ' . $userObj->lastName);

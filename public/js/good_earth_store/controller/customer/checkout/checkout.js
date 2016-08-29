@@ -125,8 +125,22 @@ submitButtonHandler:function(control, parameter){
 			this.displayParameters.submitButton.timeoutId=setTimeout(
 				function(){
 					$('#'+this.displayParameters.entryContainer.divId).html("<div style=color:red;margin:15px 4px;'>Server Timed Out: Your order is probably ok but, if you don't get an email soon, you will need to confirm with the office.<p/>Email or call  office.sl@genatural.com or call 415-382-1334.<p/>Sorry.</div>");
+
+		$.ajax({
+				url: '/utility/timeout',
+				type: 'post',
+				dataType: 'json',
+				data: {
+					purchase:this.purchases,
+					account:this.account
+					},
+				success: function(){ return;},
+				error: function(){ return;}
+			});
+
+
 				}.bind(this),
-				30000
+				5000
 			);
 
 			GoodEarthStore.Models.Purchase.process({

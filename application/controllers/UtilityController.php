@@ -12,6 +12,50 @@ class UtilityController extends Zend_Controller_Action
 		$this->em=$this->doctrineContainer->getEntityManager();
 		$this->entityManager=$this->em;
     }
+    
+    public function timeoutAction(){
+    
+		
+		error_log("TIMEOUT: account: {$_POST['account']['refId']}, purchase: {$_POST['purchase']['refId']}, , familyName: {$_POST['account']['familyName']}");
+		
+		
+		
+
+		$mail = new Zend_Mail();
+		
+		$emailSender=Zend_Registry::get('emailSender');
+    	
+    	if (!$emailSender){
+			$tr=new Zend_Mail_Transport_Sendmail();
+		}
+		else{
+			$tr=new Zend_Mail_Transport_Smtp($emailSender['hostName'], array(
+				'username'=>$emailSender['authSet']['username'],
+				'password'=>$emailSender['authSet']['password'],
+				'port'=>$emailSender['authSet']['port'],
+				'ssl'=>$emailSender['authSet']['ssl'],
+				'auth'=>$emailSender['authSet']['auth']
+			));
+
+		}
+
+		$emailMessage = \Q\Utils::dumpWebString($_POST, "timeoutData");
+		$mail->setBodyHtml($emailMessage);
+		$mail->setFrom($emailSender['fromAddress'], $emailSender['fromName']);
+		$mail->setSubject("Good Earth: TIMEOUT Error Report");
+
+		$mail->addTo('tq@justkidding.com', 'tq white ii');
+
+		$mail->send($tr);
+
+		$this->_helper->json(array(status => 1, messages => $emailMessage, data => array()));
+
+	
+	
+	
+	
+	
+    }
 
 
     public function indexAction()

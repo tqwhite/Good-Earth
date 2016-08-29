@@ -279,8 +279,8 @@ error_log("=====================================================================
 		}
 		
 		Zend_Mail::setDefaultTransport($tr);
-		Zend_Mail::setDefaultFrom('school@genatural.com', "Good Earth Lunch Program");
-		Zend_Mail::setDefaultReplyTo('school@genatural.com', "Good Earth Lunch Program");
+		Zend_Mail::setDefaultFrom($emailSender['fromAddress'], $emailSender['fromName']);
+		Zend_Mail::setDefaultReplyTo($emailSender['fromAddress'], $emailSender['fromName']);
 
 		if ($status!=3){ //ie, payment code starts with '8888' for debugging
 			$addressList=$this->addSchoolAddresses($orderEntityList, $user);
