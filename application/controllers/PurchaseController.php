@@ -210,7 +210,7 @@ $debugElementArray[]=array(
 error_log("PURCHASE DATABASE COMPLETE:  account: {$inData['account']['refId']} purchase: $newPurchaseRefId");
 
 error_log("PURCHASE EMAIL START:  account: {$inData['account']['refId']} purchase: $newPurchaseRefId");
-				$this->emailReceipt($purchaseObj->entity->refId, $orderEntityList, $status);
+				$this->emailReceipt($purchaseObj->entity->refId, $orderEntityList, $status, $inData['account']['refId']);
 
 error_log("PURCHASE EMAIL COMPLETE:  account: {$inData['account']['refId']} purchase: $newPurchaseRefId");
 
@@ -239,7 +239,7 @@ error_log("=====================================================================
     
     }
 
-    public function emailReceipt($purchaseRefId, $orderEntityList, $status)
+    public function emailReceipt($purchaseRefId, $orderEntityList, $status, $accountRefId='n/a')
     {
         $auth = \Zend_Auth::getInstance();
 		$user=$auth->getIdentity();
@@ -319,13 +319,13 @@ $this->emailMessage=$emailMessage;
 			$mail->addTo($element['address'], $element['name']);
 			$this->emailLogList.="({$element['address']} {$element['name']}) ";
 
-error_log("PURCHASE EMAIL SENDING: purchase: $purchaseRefId, user: {$user->userName}, dest email: {$element['address']}, server: {$emailSender['hostName']}, ");
+error_log("PURCHASE EMAIL SENDING: purchase: $purchaseRefId, accountRefId:$accountRefId, user: {$user->userName}, dest email: {$element['address']}, server: {$emailSender['hostName']}, ");
 			$status=$mail->send($tr);
-error_log("PURCHASE EMAIL SENT: purchase: $purchaseRefId, user: {$user->userName}, dest email: {$element['address']}, server: {$emailSender['hostName']}, ");
+error_log("PURCHASE EMAIL SENT: purchase: $purchaseRefId, accountRefId:$accountRefId, user: {$user->userName}, dest email: {$element['address']}, server: {$emailSender['hostName']}, ");
 
 		}
 
-error_log("PURCHASE EMAIL COMPLETE: purchase: $purchaseRefId, user: {$user->userName}");
+error_log("PURCHASE EMAIL COMPLETE: purchase: $purchaseRefId, accountRefId:$accountRefId, user: {$user->userName}");
 
 		Zend_Mail::clearDefaultFrom();
 		Zend_Mail::clearDefaultReplyTo();
