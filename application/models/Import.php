@@ -12,6 +12,7 @@ private function importList(){
 	return array(
 		
 
+
  		new \Application_Model_Day(),
  		new \Application_Model_School(),
 		new \Application_Model_GradeLevel(),
@@ -19,14 +20,14 @@ private function importList(){
 		
 		new \Application_Model_Meal(),
 		
-		new \Application_Model_Account(),
-		new \Application_Model_User(),
-		new \Application_Model_Student(),
-		
 		new \Application_Model_Offering(),
 		new \Application_Model_OfferingDayNodes(),
 		new \Application_Model_OfferingGradeLevelNodes(),
-		new \Application_Model_OfferingSchoolNodes()
+		new \Application_Model_OfferingSchoolNodes(),
+		
+ 		new \Application_Model_Account(),
+ 		new \Application_Model_User(),
+ 		new \Application_Model_Student()
 
 	);
 }//end of method
