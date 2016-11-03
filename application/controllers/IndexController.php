@@ -14,6 +14,8 @@ class IndexController extends Zend_Controller_Action
         // which shows the common graphic context
         // and sends the javascript application call
         // which does the real work.
+        
+        //REMEMBER #tq overrides the closed message
 
 		$store=	Zend_Registry::get('store');
 		
