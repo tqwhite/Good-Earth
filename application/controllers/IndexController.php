@@ -19,15 +19,23 @@ class IndexController extends Zend_Controller_Action
 		
 		$schoolObj=new \Application_Model_School();
 		$takingOrders=$schoolObj->isAnyoneOpen();
+			
+			if ($store['status']=='closed'){		
+			if (isset($store['closedMessage'])){
+				//closed message doesn't seem to work. don't care right now.
+				$serverComm[]=array("fieldName"=>"closedMessage", "value"=>$store['closedMessage']);
+				}
+			$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'closed');
+			$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm);
 		
+			}
+		
+		
+
 		if (!$schoolObj->isAnyoneOpen()){
 			$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'closed');
-			if (isset($store['closedMessage'])){
-				$serverComm[]=array("fieldName"=>"closedMessage", "value"=>$store['closedMessage']);
-			}
 			$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
-
-  	  }
+	  	  }
 	}
     public function payAction()
     {
