@@ -44,7 +44,7 @@ class SessionController extends  Q_Controller_Base
         	$identity=$identity;
         	if($identity->emailStatus){
         		$status=1;
-				error_log("LOGIN: {$inData['userName']}, refId: {$inData['refId']}");
+				error_log("LOGIN: {$inData['userName']}, refId: {$identity->refId}");
         	}
         	else{
         		$status=-2;
