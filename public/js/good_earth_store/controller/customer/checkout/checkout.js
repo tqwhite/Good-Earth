@@ -140,7 +140,7 @@ submitButtonHandler:function(control, parameter){
 
 
 				}.bind(this),
-				30000
+				45000
 			);
 
 			GoodEarthStore.Models.Purchase.process({
