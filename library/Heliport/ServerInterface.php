@@ -197,18 +197,21 @@ public function __construct(){
 		$ihr190Relation=$helixConfiguration['test_rel'];
 		$ihr190View=$helixConfiguration['test_view'];
 		$userPool=$helixConfiguration['userpool'];
-/*
-\Q\Utils::dumpWeb(array(
-	'ipAddress'=>$ipAddress,
-	'port'=>$port,
-	'collection_name'=>$collection_name,
-	'adminUser'=>$adminUser,
-	'adminPassword'=>$adminPassword,
-	'ihr190Relation'=>$ihr190Relation,
-	'ihr190View'=>$ihr190View,
-'userPool'=>$userPool)
-);
-*/
+$hideDebug=false;
+
+error_log("ENTERING ServerInterface ===== ");
+
+// \Q\Utils::dumpWeb(array(
+// 	'ipAddress'=>$ipAddress,
+// 	'port'=>$port,
+// 	'collection_name'=>$collection_name,
+// 	'adminUser'=>$adminUser,
+// 	'adminPassword'=>$adminPassword,
+// 	'ihr190Relation'=>$ihr190Relation,
+// 	'ihr190View'=>$ihr190View,
+// 'userPool'=>$userPool)
+// );
+
         $func_name = 'helixUserConnection';
         $this->fileSocket = NULL;
         $this->ipAddress = $ipAddress;
@@ -274,21 +277,26 @@ protected function clearOverrideUser()
      */
 private function selectLoginUser()
     {
-//debug//echo "<hr/>entering selectLoginUser<br>";
+$hideDebug ||  "<hr/>entering selectLoginUser<br>";
+error_log("<hr/>entering selectLoginUser<br>");
     	$outUser='';
 
         if (!is_null($this->overrideUser)) {
-//debug//echo "using overrideUser<br>";
+$hideDebug ||  "using overrideUser<br>";
+error_log("using overrideUser<br>");
             $outUser=$this->overrideUser;
         } else if (!is_null($this->leasee)) {
-//debug//echo "using leasee<br>";
+$hideDebug ||  "using leasee<br>";
+error_log("using leasee<br>");
             $outUser=$this->leasee;
         } else {
-//debug//echo "using adminUser<br>";
+$hideDebug ||  "using adminUser<br>";
+error_log("using adminUser<br>");
             $outUser=$this->adminUser;
         }
-//debug//\Q\Utils::dumpWeb($outUser, 'hc.selectLoginUser.outUser'); //tqdebug
-//debug//echo "exiting selectLoginUser<br>";
+$hideDebug || \Q\Utils::dumpWeb($outUser, 'hc.selectLoginUser.outUser'); //tqdebug
+$hideDebug ||  "exiting selectLoginUser<br>";
+error_log("exiting selectLoginUser<br>");
         return $outUser;
     }
 
@@ -314,7 +322,8 @@ public function setPoolOptions(array $config)
      */
 public function leasePoolUser()
     {
-//debug//echo "<hr/>helix.leasePoolUser-entering<br>";
+$hideDebug ||  "<hr/>helix.leasePoolUser-entering<br>";
+error_log("<hr/>helix.leasePoolUser-entering<br>");
         $user_info = array();
 
         if ($this->lastihr190Stat) {
@@ -340,22 +349,26 @@ public function leasePoolUser()
                         $user_info ['data'] [0] ['user'],
                         $user_info ['data'] [0] ['pwd']
                     );
-//debug//\Q\Utils::dumpWeb($user_info, 'helix.heliport.user_info');
-//debug//\Q\Utils::dumpWeb($this->leasee, 'helix.heliport-this->leasee');
-//debug//echo "helix.leasePoolUser #1<br>";
+$hideDebug || \Q\Utils::dumpWeb($user_info, 'helix.heliport.user_info');
+$hideDebug || \Q\Utils::dumpWeb($this->leasee, 'helix.heliport-this->leasee');
+$hideDebug ||  "helix.leasePoolUser #1<br>";
+error_log("helix.leasePoolUser #1<br>");
                     return true;
                 } else {
                     $this->clearOverrideUser();
 
-//debug//echo "helix.leasePoolUser #2<br>";
+$hideDebug ||  "helix.leasePoolUser #2<br>";
+error_log("helix.leasePoolUser #2<br>");
                     throw new DataBright_Helix_HeliPort_UserPool_Exception(DataBright_Helix_HeliPort::LEASE_POOL_USER_FAILED);
                 }
             }
         } else {
-//debug//echo "helix.leasePoolUser #3<br>";
+$hideDebug ||  "helix.leasePoolUser #3<br>";
+error_log("helix.leasePoolUser #3<br>");
             return false;
         }
-//debug//echo "helix.leasePoolUser #4<br>";
+$hideDebug ||  "helix.leasePoolUser #4<br>";
+error_log("helix.leasePoolUser #4<br>");
     }
 
     /**
@@ -364,7 +377,8 @@ public function leasePoolUser()
      */
 public function releasePoolUser()
     {
-//debug//echo "<hr/>entering hc.releasePoolUser()<br>";
+$hideDebug ||  "<hr/>entering hc.releasePoolUser()<br>";
+error_log("<hr/>entering hc.releasePoolUser()<br>");
         if (!$this->lastihr190Stat) {
             return FALSE;
         }
@@ -395,7 +409,8 @@ public function releasePoolUser()
             $this->leasee = NULL;
         }
 
-//debug//echo "exit hc.releasePoolUser.result=$result<br>";
+$hideDebug ||  "exit hc.releasePoolUser.result=$result<br>";
+error_log("exit hc.releasePoolUser.result=$result<br>");
         return $result;
     }
 
@@ -407,7 +422,8 @@ public function hasPoolUserLeased()
 public function retrieve($rel, $view, $include_outer_data = false)
     {
 
-//debug//echo "<div style=color:red;font-size:14pt;margin-top:20px;>entering hc.retrieve</div>";
+$hideDebug ||  "<div style=color:red;font-size:14pt;margin-top:20px;>entering hc.retrieve</div>";
+error_log("<div style=color:red;font-size:14pt;margin-top:20px;>entering hc.retrieve</div>");
         $func_name = 'retrieve';
 
         $this->relationName = $rel;
@@ -458,12 +474,15 @@ public function retrieve($rel, $view, $include_outer_data = false)
         }
         $this->terminateHelixProcess();
         if ($retVal) {
-//debug//\Q\Utils::dumpWeb($varrReturn, 'hc.retrieve.varrReturn');
-//debug//echo "hc.retrieve.retVal=$retVal<br>";
-//debug//echo "exiting hc.retrieve<br";
+$hideDebug || \Q\Utils::dumpWeb($varrReturn, 'hc.retrieve.varrReturn');
+$hideDebug ||  "hc.retrieve.retVal=$retVal<br>";
+error_log("hc.retrieve.retVal=$retVal<br>");
+$hideDebug ||  "exiting hc.retrieve<br";
+error_log("exiting hc.retrieve<br");
             return $varrReturn;
         } else {
-//debug//echo "exiting hc.retrieve (using else clause)<br";
+$hideDebug ||  "exiting hc.retrieve (using else clause)<br";
+error_log("exiting hc.retrieve (using else clause)<br");
             return $retVal;
         }
     }
@@ -503,10 +522,11 @@ public function storeAndDisplayFieldsReport($rel, $view, $data, $displayFieldsRe
 
 public function store($rel, $view, $data)
     {
-//debug//echo "<hr/>entering hc.store<br>";
-//debug//\Q\Utils::dumpWeb($rel, "rel");
-//debug//\Q\Utils::dumpWeb($view, "view");
-//debug//\Q\Utils::dumpWeb($data, "data");
+$hideDebug ||  "<hr/>entering hc.store<br>";
+error_log("<hr/>entering hc.store<br>");
+$hideDebug || \Q\Utils::dumpWeb($rel, "rel");
+$hideDebug || \Q\Utils::dumpWeb($view, "view");
+$hideDebug || \Q\Utils::dumpWeb($data, "data");
         $func_name = 'store';
         $this->relationName = $rel;
         $this->viewName = $view;
@@ -515,7 +535,7 @@ public function store($rel, $view, $data)
         if ($this->initHelix()) {
             if ($this->initView()) {
                 $do_store = $this->getFieldNames(); //rgc141()
-//debug//\Q\Utils::dumpWeb($do_store, 'hc.store.getFieldNames');
+$hideDebug || \Q\Utils::dumpWeb($do_store, 'hc.store.getFieldNames');
             }
         }
 
@@ -533,9 +553,10 @@ public function store($rel, $view, $data)
         if ($this->displayFieldsReport){
 				\Zend_Debug::dump($data, "actual SENT data-tableName/view=$view");
 			}
-//debug//\Zend_Debug::dump($data, 'actual SENT data-tableName/view=$view');
+\Zend_Debug::dump($data, 'actual SENT data-tableName/view=$view');
         }
-//debug//echo "exit hc.store=$store_done<br>";
+$hideDebug ||  "exit hc.store=$store_done<br>";
+error_log("exit hc.store=$store_done<br>");
         return $store_done;
     }
 
@@ -606,7 +627,8 @@ private function initHelix(){
 private function rgc100()
     {
 
-//debug//echo "<hr/>entering initHelix<br>";
+$hideDebug ||  "<hr/>entering initHelix<br>";
+error_log("<hr/>entering initHelix<br>");
         $func_name = 'rgc100';
         $retVal = true;
 
@@ -635,7 +657,7 @@ private function rgc100()
                     $this->relationName,
                     $this->viewName
                 );
-//debug//\Q\Utils::dumpWeb($cmdParams,  'hc.initHelix.cmdParams');
+$hideDebug || \Q\Utils::dumpWeb($cmdParams,  'hc.initHelix.cmdParams');
                 $rgc100 = 'RGC100' .
                 	$this->commandDelimiter .
                 	base64_encode(implode($this->commandDelimiter, $cmdParams)) .
@@ -644,12 +666,14 @@ private function rgc100()
                 fwrite($this->fileSocket, $rgc100, strlen($rgc100));
 
 
-//debug//echo "<div style=background:black;color:white;>hc.initHelixhc (100). says: wrote to fileSocket, RGC100 said=".htmlentities(implode($this->commandDelimiter, $cmdParams))." (but was base64 encoded)</div>";
+$hideDebug ||  "<div style=background:black;color:white;>hc.initHelixhc (100). says: wrote to fileSocket, RGC100 said=".htmlentities(implode($this->commandDelimiter, $cmdParams))." (but was base64 encoded)</div>";
+error_log("<div style=background:black;color:white;>hc.initHelixhc (100). says: wrote to fileSocket, RGC100 said=".htmlentities(implode($this->commandDelimiter, $cmdParams))." (but was base64 encoded)</div>");
 
                 $output = $this->read_socket();
 
 
-//debug//echo "<div style=background:black;color:white;>hc.initHelixhc (100). says: read from fileSocket: $output</div>";
+$hideDebug ||  "<div style=background:black;color:white;>hc.initHelixhc (100). says: read from fileSocket: $output</div>";
+error_log("<div style=background:black;color:white;>hc.initHelixhc (100). says: read from fileSocket: $output</div>");
 
                 if (strpos($output, 'ERR RGC100') === 0) {
                     ereg('ERR RGC100' . $this->commandDelimiter . '([0-9]*)',
@@ -670,7 +694,8 @@ private function rgc100()
                 }
             }
         }
-//debug//echo "exiting hc.initHelix=$retval<br>";
+$hideDebug ||  "exiting hc.initHelix=$retval<br>";
+error_log("exiting hc.initHelix=$retval<br>");
         return $retVal;
     }
 
@@ -683,7 +708,8 @@ private function rgc100()
 
 private function rgc120()
     {
-//debug//echo "<hr/>entering hc.initView (120)<br>";
+$hideDebug ||  "<hr/>entering hc.initView (120)<br>";
+error_log("<hr/>entering hc.initView (120)<br>");
         $func_name = 'rgc120';
         $retVal = true;
         if (!$this->fileSocket) {
@@ -695,7 +721,8 @@ private function rgc120()
             $rgc120 = 'RGC120' . $this->commandDelimiter .
               $this->commandTerminator;
             fwrite($this->fileSocket, $rgc120, strlen($rgc120));
-//debug//echo "<div style=background:black;color:white;>hc.initView says: wrote to fileSocket, said=$rgc120</div>";
+$hideDebug ||  "<div style=background:black;color:white;>hc.initView says: wrote to fileSocket, said=$rgc120</div>";
+error_log("<div style=background:black;color:white;>hc.initView says: wrote to fileSocket, said=$rgc120</div>");
             $output = $this->read_socket();
             if (substr($output, 0, 10) == 'ERR RGC120') {
                 ereg('ERR RGC120' . $this->commandDelimiter . '([0-9]*)',
@@ -719,9 +746,11 @@ private function rgc120()
     'hc.initView.fieldDelimiter'=>$this->fieldDelimiter,
     'hc.initView.recordDelimiter'=>$this->recordDelimiter
     );
-//debug//\Q\Utils::dumpWeb($tmp, 'hc.initView.receivedVars');
-//debug//echo "hc.initView.retVal=$retVal<br>";
-//debug//echo "exiting hc.initView (120)<br>";
+$hideDebug || \Q\Utils::dumpWeb($tmp, 'hc.initView.receivedVars');
+$hideDebug ||  "hc.initView.retVal=$retVal<br>";
+error_log("hc.initView.retVal=$retVal<br>");
+$hideDebug ||  "exiting hc.initView (120)<br>";
+error_log("exiting hc.initView (120)<br>");
         return $retVal;
     }
 
@@ -734,7 +763,8 @@ private function rgc120()
 
 private function rgc130()
     {
-//debug//echo "<hr/>entering hc.terminateHelixProcess (130)<br>";
+$hideDebug ||  "<hr/>entering hc.terminateHelixProcess (130)<br>";
+error_log("<hr/>entering hc.terminateHelixProcess (130)<br>");
         $func_name = 'rgc130';
         $retVal = true;
         if (!$this->fileSocket) {
@@ -745,10 +775,12 @@ private function rgc130()
         } else {
             $rgc130 = 'RGC130' . $this->commandTerminator;
             fwrite($this->fileSocket, $rgc130, strlen($rgc130));
-//debug//echo "<div style=background:black;color:white;>hc.terminateHelixProcess says: wrote to fileSocket, said=$rgc130</div>";
+$hideDebug ||  "<div style=background:black;color:white;>hc.terminateHelixProcess says: wrote to fileSocket, said=$rgc130</div>";
+error_log("<div style=background:black;color:white;>hc.terminateHelixProcess says: wrote to fileSocket, said=$rgc130</div>");
 
             $output = $this->read_socket();
-//debug//echo "<div style=background:black;color:white;>hc.terminateHelixProcess says: read from fileSocket, output=$output</div>";
+$hideDebug ||  "<div style=background:black;color:white;>hc.terminateHelixProcess says: read from fileSocket, output=$output</div>";
+error_log("<div style=background:black;color:white;>hc.terminateHelixProcess says: read from fileSocket, output=$output</div>");
             if (substr($output, 0, 10) == 'ERR RGC130') {
                 ereg('ERR RGC130' . $this->commandDelimiter . '([0-9]*)',
                   $output, $regs);
@@ -762,7 +794,8 @@ private function rgc130()
             }
         }
 
-//debug//echo "exit hc.terminateHelixProcess (130)result=$retVal<br>";
+$hideDebug ||  "exit hc.terminateHelixProcess (130)result=$retVal<br>";
+error_log("exit hc.terminateHelixProcess (130)result=$retVal<br>");
         return $retVal;
     }
 
@@ -775,7 +808,8 @@ private function rgc130()
 
 private function rgc140()
     {
-//debug//echo "<hr/>entering hc.getRecords(140)<br>";
+$hideDebug ||  "<hr/>entering hc.getRecords(140)<br>";
+error_log("<hr/>entering hc.getRecords(140)<br>");
         $func_name = 'rgc140';
         $retVal = true;
         if (!$this->fileSocket) {
@@ -789,7 +823,8 @@ private function rgc140()
             $tmpNumRecs = $this->numRecs;
             $start = 0;
 
-//debug//echo "<div style=background:black;color:white;>hc.getRecords (140) says: tmpNumRecs=$tmpNumRecs</div>";
+$hideDebug ||  "<div style=background:black;color:white;>hc.getRecords (140) says: tmpNumRecs=$tmpNumRecs</div>";
+error_log("<div style=background:black;color:white;>hc.getRecords (140) says: tmpNumRecs=$tmpNumRecs</div>");
             while ($tmpNumRecs > 0) {
                 if ($tmpNumRecs > $this->batchCount) {
                     $rgc140 = 'RGC140 ' . $start . ' ' . $this->batchCount .
@@ -804,12 +839,14 @@ private function rgc140()
                 fwrite($this->fileSocket, $rgc140, strlen($rgc140));
 
 
-//debug//echo "<div style=background:black;color:white;>hc.getRecords (140) says: wrote to fileSocket, said=$rgc140</div>";
+$hideDebug ||  "<div style=background:black;color:white;>hc.getRecords (140) says: wrote to fileSocket, said=$rgc140</div>";
+error_log("<div style=background:black;color:white;>hc.getRecords (140) says: wrote to fileSocket, said=$rgc140</div>");
 
                 $output = $this->read_socket();
 
 
-//debug//echo "<div style=background:black;color:white;>hc.getRecords(140) says: read from fileSocket: $output</div>";
+$hideDebug ||  "<div style=background:black;color:white;>hc.getRecords(140) says: read from fileSocket: $output</div>";
+error_log("<div style=background:black;color:white;>hc.getRecords(140) says: read from fileSocket: $output</div>");
                 if (substr($output, 0, 10) == 'ERR RGC140') {
                     ereg('ERR RGC140' . $this->commandDelimiter . '([0-9]*)',
                       $output, $regs);
@@ -850,8 +887,9 @@ private function rgc140()
                 }
             }
         }
-//debug//\Q\Utils::dumpWeb($this->viewData, "hc.getRecords.this->viewData");
-//debug//echo "exiting hc.getRecords(140)=$retVal<br>";
+$hideDebug || \Q\Utils::dumpWeb($this->viewData, "hc.getRecords.this->viewData");
+$hideDebug ||  "exiting hc.getRecords(140)=$retVal<br>";
+error_log("exiting hc.getRecords(140)=$retVal<br>");
         return $retVal;
     }
 
@@ -876,12 +914,14 @@ private function rgc141()
             fwrite($this->fileSocket, $rgc141, strlen($rgc141));
 
 
-//debug//echo "<div style=background:black;color:white;>hc.getFieldNames (141) says: wrote to fileSocket, said=$rgc141</div>";
+$hideDebug ||  "<div style=background:black;color:white;>hc.getFieldNames (141) says: wrote to fileSocket, said=$rgc141</div>";
+error_log("<div style=background:black;color:white;>hc.getFieldNames (141) says: wrote to fileSocket, said=$rgc141</div>");
 
             $output = $this->read_socket();
 
 
-//debug//echo "<div style=background:black;color:white;>hc.getFieldNames (141) says: read from fileSocket: $output</div>";
+$hideDebug ||  "<div style=background:black;color:white;>hc.getFieldNames (141) says: read from fileSocket: $output</div>";
+error_log("<div style=background:black;color:white;>hc.getFieldNames (141) says: read from fileSocket: $output</div>");
 
 
             if (substr($output, 0, 10) == 'ERR RGC141') {
@@ -910,7 +950,8 @@ private function rgc141()
                 $retVal = true;
             }
         }
-//debug//echo "<div style='background:#ff6699;'>";\Q\Utils::dumpWeb($this->fieldNames, "hc.getFieldNames.this->fieldNames"); echo "</div>";
+$hideDebug ||  "<div style='background:#ff6699;'>";
+$hideDebug || \Q\Utils::dumpWeb($this->fieldNames, "hc.getFieldNames.this->fieldNames"); echo "</div>";
         return $retVal;
     }
 
@@ -970,8 +1011,9 @@ private function rgc142()
 
 private function ssc110($data)
     {
-//debug//echo "<hr/>entering hc.saveSingleRecord(rgc110)<br>";
-//debug//\Q\Utils::dumpWeb($data, 'hc.saveSingleRecord.inData');
+$hideDebug ||  "<hr/>entering hc.saveSingleRecord(rgc110)<br>";
+error_log("<hr/>entering hc.saveSingleRecord(rgc110)<br>");
+$hideDebug || \Q\Utils::dumpWeb($data, 'hc.saveSingleRecord.inData');
         $func_name = 'ssc110';
         $retVal = true;
         if (!$this->fileSocket) {
@@ -980,9 +1022,11 @@ private function ssc110($data)
               $this->viewName);
             $retVal = false;
         } else {
-//debug//echo "hc.saveSingleRecord(rgc110)-before selectLoginUser<br>";
+$hideDebug ||  "hc.saveSingleRecord(rgc110)-before selectLoginUser<br>";
+error_log("hc.saveSingleRecord(rgc110)-before selectLoginUser<br>");
             $user = $this->selectLoginUser();
-//debug//echo "hc.saveSingleRecord(rgc110)-after selectLoginUser<br>";
+$hideDebug ||  "hc.saveSingleRecord(rgc110)-after selectLoginUser<br>";
+error_log("hc.saveSingleRecord(rgc110)-after selectLoginUser<br>");
             if ($user->getUserName() == '') {
                 $this->set_error('retrieve',
                   ($func_name . ' - No authentication provided'),
@@ -1021,8 +1065,9 @@ private function ssc110($data)
                     $this->viewName . chr(13) /* TLS: hardcode to carriage-return. (dont use the record delimiter which can change!) $recordDelimiter */ .
                     implode($field_sep, $values);
 
-//debug//echo "<div style=background:black;color:white;>hc.saveSingleRecord (110) says: wrote to fileSocket, said=".urlencode($tmp)."</div>";
-//debug//\Q\Utils::dumpWeb($values, 'file socket wrote this data');
+$hideDebug ||  "<div style=background:black;color:white;>hc.saveSingleRecord (110) says: wrote to fileSocket, said=".urlencode($tmp)."</div>";
+error_log("<div style=background:black;color:white;>hc.saveSingleRecord (110) says: wrote to fileSocket, said=".urlencode($tmp)."</div>");
+$hideDebug || \Q\Utils::dumpWeb($values, 'file socket wrote this data');
                 fwrite($this->fileSocket, $ssc110, strlen($ssc110));
                 $output = $this->read_socket();
                 if (substr($output, 0, 10) == 'ERR SSC110') {
@@ -1035,7 +1080,8 @@ private function ssc110($data)
                 }
             }
         }
-//debug//echo "exiting hc.saveSingleRecord(rgc110)=$retVal<br>";
+$hideDebug ||  "exiting hc.saveSingleRecord(rgc110)=$retVal<br>";
+error_log("exiting hc.saveSingleRecord(rgc110)=$retVal<br>");
         return $retVal;
     }
 
@@ -1281,14 +1327,16 @@ public function encode()
 
 public function ihr190()
     {
-//debug//echo "ihr190<br/>";
+$hideDebug ||  "ihr190<br/>";
+error_log("ihr190<br/>");
         $func_name = 'ihr190';
 
         $retVal = true;
 
         if (!$this->fileSocket) {
 
-//debug//echo "NO FILE SOCKET<br>";
+$hideDebug ||  "NO FILE SOCKET<br>";
+error_log("NO FILE SOCKET<br>");
 $this->set_error(
 	'retrieve',
   ($func_name . ' - No valid socket available'),
@@ -1297,7 +1345,8 @@ $this->set_error(
   );
             $retVal = false;
         } else {
-//debug//echo "FOUND FILE SOCKET<br>";
+$hideDebug ||  "FOUND FILE SOCKET<br>";
+error_log("FOUND FILE SOCKET<br>");
             $ihr190CmdParams = array(
                 $this->collection_name,
                 $this->adminUser->getUserName(),
@@ -1317,11 +1366,13 @@ $this->set_error(
 
             $status=fwrite($this->fileSocket, $ihr190, strlen($ihr190));
 
-//debug//echo "190 FWRITE STATUS=$status<br>";
+$hideDebug ||  "190 FWRITE STATUS=$status<br>";
+error_log("190 FWRITE STATUS=$status<br>");
 
             $output = $this->read_socket();
 
-//debug//echo "190 READ RESULT=$output<br>";
+$hideDebug ||  "190 READ RESULT=$output<br>";
+error_log("190 READ RESULT=$output<br>");
 
             if ($this->isDebug('msg')) {
                 $tmp = $output;
@@ -1568,14 +1619,16 @@ public function isDebug($level = 'debug')
 public function clearAllPoolUsers(){
 
 
-//debug//echo "clearAllPoolUsers<br/>";
+$hideDebug ||  "clearAllPoolUsers<br/>";
+error_log("clearAllPoolUsers<br/>");
         $func_name = 'clearAllPoolUsers';
 
         $retVal = true;
 
         if (!$this->fileSocket) {
 
-//debug//echo "NO FILE SOCKET<br>";
+$hideDebug ||  "NO FILE SOCKET<br>";
+error_log("NO FILE SOCKET<br>");
 			$this->set_error(
 				'retrieve',
 				($func_name . ' - No valid socket available'),
@@ -1584,7 +1637,8 @@ public function clearAllPoolUsers(){
 			);
 			$retVal = false;
         } else {
-//debug//echo "FOUND FILE SOCKET<br>";
+$hideDebug ||  "FOUND FILE SOCKET<br>";
+error_log("FOUND FILE SOCKET<br>");
             $cmdParams = array(
                 $this->collection_name,
                 $this->adminUser->getUserName(),
@@ -1604,11 +1658,13 @@ public function clearAllPoolUsers(){
 
             $status=fwrite($this->fileSocket, $ihr190, strlen($ihr190));
 
-//debug//echo "190 FWRITE STATUS=$status<br>";
+$hideDebug ||  "190 FWRITE STATUS=$status<br>";
+error_log("190 FWRITE STATUS=$status<br>");
 
             $output = $this->read_socket();
 
-//debug//echo "190 READ RESULT=$output<br>";
+$hideDebug ||  "190 READ RESULT=$output<br>";
+error_log("190 READ RESULT=$output<br>");
 
             if ($this->isDebug('msg')) {
                 $tmp = $output;

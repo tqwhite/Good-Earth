@@ -24,10 +24,10 @@ private function importList(){
 		new \Application_Model_OfferingGradeLevelNodes(),
 		new \Application_Model_OfferingSchoolNodes()
 		
-// 		,
-//  		new \Application_Model_Account(),
-//  		new \Application_Model_User(),
-//  		new \Application_Model_Student()
+		,
+ 		new \Application_Model_Account(),
+ 		new \Application_Model_User(),
+ 		new \Application_Model_Student()
 
 	);
 }//end of method
@@ -85,7 +85,7 @@ public function execute(){
 	$importList=$this->importList(); //returns a literal array of Application_Model objects
 
 	echo "The data shown below is THE DATA THAT AS IT WAS RECEIVED FROM HELIX. The names have been mapped but no data conversion has been done. To see what went to the database, look in the database.<br/><br/>\n\n";
-
+error_log("Starting import->execute()");
 	
 	foreach ($importList as $modelObject){
 	

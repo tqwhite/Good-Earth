@@ -1,3 +1,12 @@
+Todo:
+
+change web->helix to notice admin edits without purchase record
+add isActiveFlag to admin panel
+add store on/off flag on admin to disable non-admin access to store (special url or something)
+make sure that store works when of flag is set
+
+
+
 next:
 
 DONE make it so that adminFlag is validated on the server against the login account
