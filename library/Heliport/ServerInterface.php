@@ -294,7 +294,7 @@ $hideDebug ||  "using adminUser<br>";
 error_log("using adminUser<br>");
             $outUser=$this->adminUser;
         }
-$hideDebug || \Q\Utils::dumpWeb($outUser, 'hc.selectLoginUser.outUser'); //tqdebug
+/*debug*/ //\Q\Utils::dumpWeb($outUser, 'hc.selectLoginUser.outUser'); //tqdebug
 $hideDebug ||  "exiting selectLoginUser<br>";
 error_log("exiting selectLoginUser<br>");
         return $outUser;
@@ -349,8 +349,8 @@ error_log("<hr/>helix.leasePoolUser-entering<br>");
                         $user_info ['data'] [0] ['user'],
                         $user_info ['data'] [0] ['pwd']
                     );
-$hideDebug || \Q\Utils::dumpWeb($user_info, 'helix.heliport.user_info');
-$hideDebug || \Q\Utils::dumpWeb($this->leasee, 'helix.heliport-this->leasee');
+/*debug*/ //\Q\Utils::dumpWeb($user_info, 'helix.heliport.user_info');
+/*debug*/ //\Q\Utils::dumpWeb($this->leasee, 'helix.heliport-this->leasee');
 $hideDebug ||  "helix.leasePoolUser #1<br>";
 error_log("helix.leasePoolUser #1<br>");
                     return true;
@@ -474,7 +474,7 @@ error_log("<div style=color:red;font-size:14pt;margin-top:20px;>entering hc.retr
         }
         $this->terminateHelixProcess();
         if ($retVal) {
-$hideDebug || \Q\Utils::dumpWeb($varrReturn, 'hc.retrieve.varrReturn');
+/*debug*/ //\Q\Utils::dumpWeb($varrReturn, 'hc.retrieve.varrReturn');
 $hideDebug ||  "hc.retrieve.retVal=$retVal<br>";
 error_log("hc.retrieve.retVal=$retVal<br>");
 $hideDebug ||  "exiting hc.retrieve<br";
@@ -524,9 +524,9 @@ public function store($rel, $view, $data)
     {
 $hideDebug ||  "<hr/>entering hc.store<br>";
 error_log("<hr/>entering hc.store<br>");
-$hideDebug || \Q\Utils::dumpWeb($rel, "rel");
-$hideDebug || \Q\Utils::dumpWeb($view, "view");
-$hideDebug || \Q\Utils::dumpWeb($data, "data");
+/*debug*/ //\Q\Utils::dumpWeb($rel, "rel");
+/*debug*/ //\Q\Utils::dumpWeb($view, "view");
+/*debug*/ //\Q\Utils::dumpWeb($data, "data");
         $func_name = 'store';
         $this->relationName = $rel;
         $this->viewName = $view;
@@ -535,7 +535,7 @@ $hideDebug || \Q\Utils::dumpWeb($data, "data");
         if ($this->initHelix()) {
             if ($this->initView()) {
                 $do_store = $this->getFieldNames(); //rgc141()
-$hideDebug || \Q\Utils::dumpWeb($do_store, 'hc.store.getFieldNames');
+/*debug*/ //\Q\Utils::dumpWeb($do_store, 'hc.store.getFieldNames');
             }
         }
 
@@ -657,7 +657,7 @@ error_log("<hr/>entering initHelix<br>");
                     $this->relationName,
                     $this->viewName
                 );
-$hideDebug || \Q\Utils::dumpWeb($cmdParams,  'hc.initHelix.cmdParams');
+/*debug*/ //\Q\Utils::dumpWeb($cmdParams,  'hc.initHelix.cmdParams');
                 $rgc100 = 'RGC100' .
                 	$this->commandDelimiter .
                 	base64_encode(implode($this->commandDelimiter, $cmdParams)) .
@@ -746,7 +746,7 @@ error_log("<div style=background:black;color:white;>hc.initView says: wrote to f
     'hc.initView.fieldDelimiter'=>$this->fieldDelimiter,
     'hc.initView.recordDelimiter'=>$this->recordDelimiter
     );
-$hideDebug || \Q\Utils::dumpWeb($tmp, 'hc.initView.receivedVars');
+/*debug*/ //\Q\Utils::dumpWeb($tmp, 'hc.initView.receivedVars');
 $hideDebug ||  "hc.initView.retVal=$retVal<br>";
 error_log("hc.initView.retVal=$retVal<br>");
 $hideDebug ||  "exiting hc.initView (120)<br>";
@@ -887,7 +887,7 @@ error_log("<div style=background:black;color:white;>hc.getRecords(140) says: rea
                 }
             }
         }
-$hideDebug || \Q\Utils::dumpWeb($this->viewData, "hc.getRecords.this->viewData");
+/*debug*/ //\Q\Utils::dumpWeb($this->viewData, "hc.getRecords.this->viewData");
 $hideDebug ||  "exiting hc.getRecords(140)=$retVal<br>";
 error_log("exiting hc.getRecords(140)=$retVal<br>");
         return $retVal;
@@ -951,7 +951,7 @@ error_log("<div style=background:black;color:white;>hc.getFieldNames (141) says:
             }
         }
 $hideDebug ||  "<div style='background:#ff6699;'>";
-$hideDebug || \Q\Utils::dumpWeb($this->fieldNames, "hc.getFieldNames.this->fieldNames"); echo "</div>";
+/*debug*/ //\Q\Utils::dumpWeb($this->fieldNames, "hc.getFieldNames.this->fieldNames"); echo "</div>";
         return $retVal;
     }
 
@@ -1013,7 +1013,7 @@ private function ssc110($data)
     {
 $hideDebug ||  "<hr/>entering hc.saveSingleRecord(rgc110)<br>";
 error_log("<hr/>entering hc.saveSingleRecord(rgc110)<br>");
-$hideDebug || \Q\Utils::dumpWeb($data, 'hc.saveSingleRecord.inData');
+/*debug*/ //\Q\Utils::dumpWeb($data, 'hc.saveSingleRecord.inData');
         $func_name = 'ssc110';
         $retVal = true;
         if (!$this->fileSocket) {
@@ -1067,7 +1067,7 @@ error_log("hc.saveSingleRecord(rgc110)-after selectLoginUser<br>");
 
 $hideDebug ||  "<div style=background:black;color:white;>hc.saveSingleRecord (110) says: wrote to fileSocket, said=".urlencode($tmp)."</div>";
 error_log("<div style=background:black;color:white;>hc.saveSingleRecord (110) says: wrote to fileSocket, said=".urlencode($tmp)."</div>");
-$hideDebug || \Q\Utils::dumpWeb($values, 'file socket wrote this data');
+/*debug*/ //\Q\Utils::dumpWeb($values, 'file socket wrote this data');
                 fwrite($this->fileSocket, $ssc110, strlen($ssc110));
                 $output = $this->read_socket();
                 if (substr($output, 0, 10) == 'ERR SSC110') {
