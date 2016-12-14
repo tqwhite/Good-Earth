@@ -197,7 +197,7 @@ public function __construct(){
 		$ihr190Relation=$helixConfiguration['test_rel'];
 		$ihr190View=$helixConfiguration['test_view'];
 		$userPool=$helixConfiguration['userpool'];
-$hideDebug=false;
+$hideDebug=true;
 
 error_log("ENTERING ServerInterface ===== ");
 
