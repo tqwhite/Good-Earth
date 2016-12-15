@@ -12,21 +12,21 @@ private function importList(){
 	return array(
 		
 
- 		new \Application_Model_Day(),
- 		new \Application_Model_School(),
-		new \Application_Model_GradeLevel(),
-		new \Application_Model_GradeSchoolNodes(),
-		
-		new \Application_Model_Meal(),
-		
-		new \Application_Model_Offering(),
-		new \Application_Model_OfferingDayNodes(),
-		new \Application_Model_OfferingGradeLevelNodes(),
-		new \Application_Model_OfferingSchoolNodes()
-		
-		,
- 		new \Application_Model_Account(),
- 		new \Application_Model_User(),
+//  		new \Application_Model_Day(),
+//  		new \Application_Model_School(),
+// 		new \Application_Model_GradeLevel(),
+// 		new \Application_Model_GradeSchoolNodes(),
+// 		
+// 		new \Application_Model_Meal(),
+// 		
+// 		new \Application_Model_Offering(),
+// 		new \Application_Model_OfferingDayNodes(),
+// 		new \Application_Model_OfferingGradeLevelNodes(),
+// 		new \Application_Model_OfferingSchoolNodes()
+// 		
+// 		,
+//   		new \Application_Model_Account(),
+//   		new \Application_Model_User(),
  		new \Application_Model_Student()
 
 	);
@@ -81,18 +81,30 @@ private function hold(){
 public function execute(){
 	$inputManager=new \Heliport\InputManager();
 	$inputManager->tickle('start');
+	
+	global $doNotFinishTickle;
+	$doNotFinishTickle=false;
+	
+	global $dbStatusMessages;
+	$dbStatusMessages='';
+	
+	global $dbWriteSuccessMessages;
+	$dbWriteSuccessMessages='';
+	
+	global $dbWriteErrorMessages;
+	$dbWriteErrorMessages='';
 
 	$importList=$this->importList(); //returns a literal array of Application_Model objects
 
-	echo "The data shown below is THE DATA THAT AS IT WAS RECEIVED FROM HELIX. The names have been mapped but no data conversion has been done. To see what went to the database, look in the database.<br/><br/>\n\n";
-error_log("Starting import->execute()");
+	echo "<div style='font-size:18pt;'>Starting Helix->Web data transfer.</div>";
+	error_log("Starting import->execute()");
 	
 	foreach ($importList as $modelObject){
 	
 		$cleanHelixData=$modelObject->import($inputManager);
 
-$tmp=\Q\Utils::dumpCliString($cleanHelixData, "cleanHelixData");
-error_log($tmp);
+// $tmp=\Q\Utils::dumpCliString($cleanHelixData, "cleanHelixData");
+// error_log($tmp);
 
 		$dbResult=$modelObject->writeDb($cleanHelixData);
 
@@ -106,10 +118,24 @@ error_log($tmp);
 			
 			echo "$result<br/>";
 		}
+		
+	if ($doNotFinishTickle){
+		echo "<div style='color:red;font-size:18pt;margin-top:18pt;'>There were errors. Helix->Web transfer will repeat</div>";
+		echo "<div style='color:green;font-size:12pt;margin-bottom:18pt;'>(Any records without errors were loaded into the website.)</div>";
+	}
 	
-	\Q\Utils::dumpWeb($dbResultArray, "dbResultArray");
+	echo "<div style='color:gray;font-size:14pt;margin:18pt;'>$dbStatusMessages</div>";
+	echo "<div style='color:green;font-size:14pt;margin:18pt;'>$dbWriteSuccessMessages</div>";
+		
+	if (!$doNotFinishTickle){
+		$inputManager->tickle('end');
+		error_log("SUCCESS: Helix->Web transfer is complete");
 
-	$inputManager->tickle('end');
+	}
+	else{
+		error_log("ERROR: There were errors. Helix->Web transfer will repeat");
+		echo "<div style='color:gray;font-size:14pt;margin:18pt;'>$dbWriteErrorMessages</div>";
+	}
 
 
 }//end of method

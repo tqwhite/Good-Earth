@@ -552,7 +552,7 @@ public function store($rel, $view, $data)
         if ($this->displayFieldsReport){
 				\Zend_Debug::dump($data, "actual SENT data-tableName/view=$view");
 			}
-\Zend_Debug::dump($data, 'actual SENT data-tableName/view=$view');
+
         }
 /*debug*/ //  "exit hc.store=$store_done<br>";
 /*debug*/ //  error_log("exit hc.store=$store_done<br>");

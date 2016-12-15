@@ -259,7 +259,6 @@ echo "<div style='color:black;margin-bottom:10px;'>this->entityName={$this->enti
 
 public function writeDb($recListArray){
 
-
 		$dbResult=$this->updateOrInsert($recListArray);
 		
 	
@@ -315,14 +314,28 @@ private function updateDb($recList){
 			$tmp=new \DateTime(date("Y-m-d H:i:s"));
 			$data['modified']=$tmp->format("Y-m-d H:i:s");
 			
-			
+
 			$data=$this->unsetSpecialFieldNames($data);
+			
+				global $doNotFinishTickle;
+				global $dbWriteErrorMessages;
+				global $dbWriteSuccessMessages;
+			
+			try{
 			$db->update($tableName, $data, "refId = '{$data['refId']}'");
+			}
+			catch(Exception $e){
+				error_log("BAD RECORD SKIPPED UPDATE $tableName ".$data['refId']." (".$e->getMessage().")");
+				$dbWriteErrorMessages.="<div>BAD RECORD SKIPPED (update) $tableName refId:".$data['refId']." <div style='margin-left:20pt;font-size:70%;'>(".$e->getMessage().")</div></div>";
+
+				$doNotFinishTickle=true;
+				
+			}
 			
 		}
 
-\Q\Utils::dumpCli($recList, "update existing in $tableName");
-echo " <hr> ";
+$dbWriteSuccessMessages.="<div>UPDATED ".count($recList)." records (minus any errors) in <b>$tableName</b><div>";
+
 
 }
 
@@ -345,12 +358,26 @@ private function insertDb($recList){
 			$tmp=new \DateTime(date("Y-m-d H:i:s"));
 			$data['created']=$tmp->format("Y-m-d H:i:s");
 			
+				
+				global $doNotFinishTickle;
+				global $dbWriteErrorMessages;
+				global $dbWriteSuccessMessages;
+
 			$data=$this->unsetSpecialFieldNames($data);
+			try{
 			$db->insert($tableName, $data);
+			}
+			catch(Exception $e){
+				error_log("BAD RECORD SKIPPED INSERT $tableName ".$data['refId']);
+				$dbWriteErrorMessages.="<div>BAD RECORD SKIPPED (insert) $tableName refId:".$data['refId']." <div style='margin-left:20pt;font-size:70%;'>(".$e->getMessage().")</div></div>";
+				echo("<div>BAD RECORD SKIPPED INSERT $tableName ".$data['refId']."</div>");
+				$doNotFinishTickle=true;
+				
+			}
 
 		}
-\Q\Utils::dumpCli($recList, "insert new into $tableName");
-echo " <hr> ";
+
+$dbWriteSuccessMessages.="<div style='color:green;font-size:18pt;'>INSERTED ".count($recList)." records (minus any errors) into <b>$tableName</b><div>";
 
 }
 

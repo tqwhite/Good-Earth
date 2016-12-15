@@ -64,6 +64,7 @@ public function tickle($whichSide){
 
 public function read($args){
 
+	global $dbStatusMessages;
 	
 	error_log("inputManager::read() - STARTING - {$args['relationName']} {$args['viewName']}");	
 	if (gettype($args['queryData'])=='Array'){
@@ -91,7 +92,9 @@ public function read($args){
 		die($message);
 	}
 	
-	error_log("inputManager::read() - ENDING - {$args['relationName']} {$args['viewName']} ".count($outResult)." records ".($endTime-$startTime)." seconds");
+	
+	$dbStatusMessages.="<div>Checked {$args['relationName']} ({$args['viewName']}) found ".count($outResult['data'])." records</div>";
+	error_log("inputManager::read() - ENDING - {$args['relationName']} {$args['viewName']} ".count($outResult['data'])." records ".($endTime-$startTime)." seconds");
 	
 	return $outResult['data'];
 
