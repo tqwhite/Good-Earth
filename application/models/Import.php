@@ -128,6 +128,7 @@ public function execute(){
 	echo "<div style='color:green;font-size:14pt;margin:18pt;'>$dbWriteSuccessMessages</div>";
 		
 	if (!$doNotFinishTickle){
+		echo "<div style='color:gray;font-size:14pt;margin:18pt;'>No errors found</div>";
 		$inputManager->tickle('end');
 		error_log("SUCCESS: Helix->Web transfer is complete");
 
