@@ -9,17 +9,18 @@ public function __construct(){
 	$this->className=get_class($this);
 }
 
-public function collectPurchases($entityName){
+public function collectPurchases($categoryName){
 error_reporting(E_ALL && ~E_NOTICE); //error_reporting(E_ERROR | E_WARNING | E_PARSE); //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 
-switch($entityName){
-case 'Application_Model_Purchase':
-	$dataObj=new \Application_Model_Purchase();
-break;
-case 'Application_Model_Account':
-	$dataObj=new \Application_Model_Account();
-break;
-}
+	switch($categoryName){
+	case 'purchases':
+		$dataObj=new \Application_Model_Purchase();
+	break;
+	case 'accounts':
+		$dataObj=new \Application_Model_Account();
+	break;
+	}
+	
 	$outList=array();
 		$dataList=$dataObj->getHelixSendList('record');
 
@@ -34,19 +35,16 @@ break;
 	foreach($dataList as $label=>$element){
 		if ($i++>$len){break;}
 		
-		
-switch($entityName){
-case 'Application_Model_Purchase':
-		$item=\Application_Model_Purchase::formatOutput($element, 'export', 'purchase');
-break;
-case 'Application_Model_Account':
-		$item=\Application_Model_Account::formatOutput($element, 'export', 'purchase');
-break;
-}
+		switch($categoryName){
+			case 'purchases':
+					$item=\Application_Model_Purchase::formatOutput($element, 'export', 'purchase');
+			break;
+			case 'accounts':
+					$item=\Application_Model_Account::formatOutput($element, 'export', 'purchase');
+			break;
+		}
 		$outList[]=$item;
-
 	}
-
 	return array(
 		'entityList'=>$dataList,
 		'exportData'=>$outList
@@ -186,71 +184,55 @@ static function formatOutput($inData, $outputType, $flag){
 	return $newRec;
 }
 
-public function writeAndValidate($dataList, $explosionName){
-
-$sourceList=\Q\Utils::dumpWebString($dataList, "$explosionName sourceList");
-
-switch ($explosionName){
-case 'purchases':
-	$tableArray=$this->explodePurchasesList($dataList, 'accounts users students orders purchases accountPurchaseNodes purchaseOrderNodes');
-break;
-case 'accounts':
-	$tableArray=$this->explodeAccountsList($dataList, 'accounts users students');
-break;
-}
-
-$explodedList=\Q\Utils::dumpWebString($tableArray, "$explosionName explodedList");
-
-
-
+public function writeAndValidate($dataList, $categoryName){
+	switch ($categoryName){
+	case 'purchases':
+		$tableArray=$this->explodePurchasesList($dataList, 'accounts users students orders purchases accountPurchaseNodes purchaseOrderNodes');
+	break;
+	case 'accounts':
+		$tableArray=$this->explodeAccountsList($dataList, 'accounts users students');
+	break;
+	}
 	$resultArray=$this->executeWriteAndValidate($tableArray);
-
 	
-	
-	$listingString=$this->generateListings($tableArray);
-	$resultArray['messages'].=$resultArray['messages'].$listingString.$sourceList.$explodedList;
+	$resultArray['recordsWrittenReport']=$resultArray['recordsWrittenReport'];
+	$summaryHeaderString=$this->generateListings($tableArray, $categoryName);
+	$resultArray['recordsWrittenSummaryReport']=$summaryHeaderString;
 	
 	return $resultArray;
 }
 
 private function executeWriteAndValidate($inData){
-	$outString='';
+
+	$recordsWrittenReport='';
 	$outputManager=new \Heliport\OutputManager();
 	$batchId=$outputManager->setBatchId();
-	
-	$failedTwice=array();
-
+	$failedTwiceRecordList=array();
 	foreach ($inData as $tableName=>$data){
-	
 		$result=$outputManager->writeAndValidate($tableName, $data);
-
-
-
-		$outString.=$result['messages'];
-		
-		if (is_array($result['failedTwice'])){
-			$failedTwice=array_merge($failedTwice, $result['failedTwice']);
+		$recordsWrittenReport.=$result['recordsWrittenReport'];
+		if (is_array($result['failedTwiceRecordList'])){
+			$failedTwiceRecordList=array_merge($failedTwiceRecordList, $result['failedTwiceRecordList']);
 		}
-
-
 	}
-
-	return array('messages'=>$outString, 'failedTwice'=>$failedTwice);
+	return array('recordsWrittenReport'=>$recordsWrittenReport, 'failedTwiceRecordList'=>$failedTwiceRecordList);
 }
 
-private function generateListings($tableArray){
-			
-
-			$outString="accountCount=".count($tableArray['accounts'])."<BR>";
-			$outString.="accountPurchaseNodeCount=".count($tableArray['accountPurchaseNodes'])."<BR>";
-			$outString.="userCount=".count($tableArray['users'])."<BR>";
-			$outString.="studentCount=".count($tableArray['students'])."<BR>";
-
-			$outString.="purchaseCount=".count($tableArray['purchases'])."<BR>";
-			$outString.="purchaseOrderNodeCount=".count($tableArray['purchaseOrderNodes'])."<BR>";
-			$outString.="orderCount=".count($tableArray['orders'])."<BR>";
-			
-			return $outString;
+private function generateListings($tableArray, $categoryName){
+	$outString="<div style='margin:15px 0px 0px 20px;color:gray;'>";
+	switch($categoryName){
+		case 'accounts':
+			$outString.="account records sent: ".count($tableArray['accounts'])."<BR>";
+			$outString.="user records sent: ".count($tableArray['users'])."<BR>";
+			$outString.="student records sent: ".count($tableArray['students'])."<BR>";
+		break;
+		case 'purchases':
+			$outString.="purchase records sent: ".count($tableArray['purchases'])."<BR>";
+			$outString.="order records sent: ".count($tableArray['orders'])."<BR>";
+		break;
+	}
+		$outString.="</div>";
+		return $outString;
 }
 
 }

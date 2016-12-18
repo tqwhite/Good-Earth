@@ -100,23 +100,14 @@ public function execute(){
 	error_log("Starting import->execute()");
 	
 	foreach ($importList as $modelObject){
-	
 		$cleanHelixData=$modelObject->import($inputManager);
-
-// $tmp=\Q\Utils::dumpCliString($cleanHelixData, "cleanHelixData");
-// error_log($tmp);
-
 		$dbResult=$modelObject->writeDb($cleanHelixData);
-
-		
 		$dbResultArray[$modelObject->entityName]=$dbResult;
 	}
 
 		for ($len=count($importList), $i=$len-1; $i>0; $i--){
 			$element=$importList[$i];
 //			$result=$element->purgeInactive();
-			
-			echo "$result<br/>";
 		}
 		
 	if ($doNotFinishTickle){

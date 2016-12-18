@@ -63,9 +63,6 @@ class Application_Model_Base
 	}
 
 	public function getHelixSendList($hydrationMode){
-echo "<div style='color:black;margin-bottom:10px;'>this->entityName={$this->entityName}</div>";
-
-
 		$query = $this->entityManager->createQuery("SELECT u from GE\\Entity\\{$this->entityName} u WHERE u.alreadyInHelix IS NULL or u.alreadyInHelix=0");
 
 		switch ($hydrationMode){
@@ -77,6 +74,7 @@ echo "<div style='color:black;margin-bottom:10px;'>this->entityName={$this->enti
 				$list = $query->getResult();
 				break;
 		}
+
 		return $list;
 
 	}
@@ -334,6 +332,7 @@ private function updateDb($recList){
 			
 		}
 
+error_log("UPDATED ".count($recList)." records (minus any errors) in $tableName<div>");
 $dbWriteSuccessMessages.="<div>UPDATED ".count($recList)." records (minus any errors) in <b>$tableName</b><div>";
 
 
@@ -376,7 +375,7 @@ private function insertDb($recList){
 			}
 
 		}
-
+error_log(" INSERTED ".count($recList)." records (minus any errors) into >$tableName");
 $dbWriteSuccessMessages.="<div style='color:green;font-size:18pt;'>INSERTED ".count($recList)." records (minus any errors) into <b>$tableName</b><div>";
 
 }

@@ -40,41 +40,27 @@ public function setBatchId(){
 }
 
 public function writeAndValidate($tableName, $inData){
- 		$outString="<div style='color:blue;margin:5px 0px;' tqdebug>{$this->className} says,</div>";  
+ 		$recordsWrittenReport="<div style='color:gray;margin:5px 0px;' tqdebug><b>$tableName</b> records processed:</div>";  
 
-	error_log("OutputManager::writeAndValidate() - STARTING write - tableName=$tableName");	
 		$writeResult=$this->write($tableName, $inData);
-	error_log("OutputManager::writeAndValidate() - AFTER write - tableName=$tableName");	
-		
-		$writeStatusDetails=$writeResult['statusDetails'];
-	
-		error_log("OutputManager::writeAndValidate() - STARTING getValidationList - tableName=$tableName");
 		$validationList=$this->getValidationList($tableName);
-		error_log("OutputManager::writeAndValidate() - AFTER getValidationList - tableName=$tableName");	
-		
-// if (true && $tableName=='purchaseOrderNodes'){
-// 	unset($validationList[0]);
-// 	unset($validationList[7]);
-// }
-		foreach ($writeStatusDetails as $label=>$data){	
+
+		foreach ($writeResult['statusDetails'] as $label=>$data){	
 			
 			if (in_array($data['recordData']['refId'], $validationList)){
-				$outString.="<div style='color:green;'>success on $tableName\[{$data['recordData']['refId']}] (purchaseRefId={$data['purchaseRefId']})</div>";
-
+				$recordsWrittenReport.="<div style='color:green;font-size:80%;margin-left:15px;'>success for \[{$data['recordData']['refId']}] (purchaseRefId={$data['purchaseRefId']})</div>";
 				continue;
 			}
 			
- 			$outString.="<div style='color:orange;'>second try on $tableName\[{$data['recordData']['refId']}] (purchaseRefId={$data['purchaseRefId']})</div>";
+ 			$recordsWrittenReport.="<div style='color:orange;font-size:80%;margin-left:15px;'>second try for\[{$data['recordData']['refId']}] (purchaseRefId={$data['purchaseRefId']})</div>";
 			
 			$secondTryResult=$this->write($tableName, array($data));
 			$validationList=$this->getValidationList($tableName);
 			
-// if (true && $tableName=='purchaseOrderNodes'){
-// 	unset($validationList[0]);
-// }
+
 			if (!in_array($data['recordData']['refId'], $validationList)){
- 				$outString.="<div style='color:red;'>FAILED TWICE on $tableName\[{$data['recordData']['refId']}] (purchaseRefId={$data['purchaseRefId']})</div>";
-				$failedTwice[$data['recordData']['purchaseRefId']]=$data;
+ 				$recordsWrittenReport.="<div style='color:red;margin-left:15px;font-size:80%;'>FAILED TWICE for\[{$data['recordData']['refId']}] (purchaseRefId={$data['purchaseRefId']})</div>";
+				$failedTwiceRecordList[$data['recordData']['purchaseRefId']]=$data;
 			}
 			
 			
@@ -82,8 +68,8 @@ public function writeAndValidate($tableName, $inData){
 		
 		return array(
 			'validationList'=>$validationList,
-			'messages'=>$outString,
-			'failedTwice'=>$failedTwice
+			'recordsWrittenReport'=>$recordsWrittenReport,
+			'failedTwiceRecordList'=>$failedTwiceRecordList
 		);
 }
 

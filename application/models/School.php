@@ -107,9 +107,6 @@ class Application_Model_School extends Application_Model_Base
 		$data['auditInfo']=\Q\Utils::dumpWebString($this->getAuditInfo(), "auditInfo");
 		$data['helixId']=$data['helix id']; unset($data['helix id']);
 
-
-echo "<div style='color:black;margin-bottom:10px;'>data['helixId']={$data['helixId']}</div>";
-
 		return $data;
 	}
 
