@@ -69,21 +69,20 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 					break;
 				case 'closed':
 					var message='';
-					message+="<div style='color:#436235;margin-top:10px;'>We are busy organizing delicious lunches for school children and can't take your order right now.<p/>"
-
-					if (typeof(this.serverData['closedMessage'])!='undefined' && this.serverData['closedMessage']){
-						message+=this.serverData['closedMessage']+'<p/>';
-					}
-					else{
-						message+="The store will be open again tomorrow morning, bright and early, for signups.<p/>"
-					}
 					
-					message+="We deeply appreciate your business and look forward to serving you.<p/>"
+					message+="<div style='color:#436235;margin-top:10px;'>";
 
-					message+="Sincerely,<p/>"
-					message+="<span style='font-style:italic;font-size:110%;'>&nbsp;&nbsp;&nbsp;Adam</span><p/>"
-					message+="Program Manager<br/>";
-					message+="Good Earth School Lunch Program</div>";
+					message+="We are busy in the kitchen preparing delicious lunches and the store is closed for online ordering.";
+					message+="<br/><br/>";
+					message+="Session 2:  November 14 - March 3 is closed for new orders.";
+					message+="<br/><br/>";
+					message+="Session 3:  Starts March 6 and we will open again on February 17.";
+					message+="<br/><br/>";
+					message+="We deeply appreciate your business and look forward to serving your students.";
+					message+="<br/><br/>";
+					message+="If you have questions or would like to learn more about the program please call 415-382-1334 or email us at school@genatural.com";
+
+					message+="</div>";
 
 					this.element.html("<div style='width:400px;margin-left:150px;margin-top:0px;'><img style='width:200px;' src='/media/business_closed_sign_page.png'>"+message+"</div>").show();
 					break;
