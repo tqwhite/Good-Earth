@@ -16,11 +16,12 @@ static function process($inData){
 	$cardNumber=preg_replace('/[^\S]/', '', $cardNumber);
 
 
-
+error_log("start Authorize ".microtime()." {$purchaseRefId}");
 	$paymentObj=new \Payment\Authorize();
 	$paymentObj->setPurchaseData($inData);
 	
 	$result=$paymentObj->executeCharge();
+error_log("end Authorize ".microtime()." {$purchaseRefId}");
 
 
 	return $result;

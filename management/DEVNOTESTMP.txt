@@ -5,6 +5,9 @@ add isActiveFlag to admin panel
 add store on/off flag on admin to disable non-admin access to store (special url or something)
 make sure that store works when of flag is set
 
+fix bad query in controller/offerings/list so that duplicate offerings doesn't happen when new ones are loaded
+make function that allows store to be closed even when schools are open
+
 
 
 next:
