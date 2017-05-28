@@ -27,24 +27,66 @@ qtools.validateProperties({
 
 	],
  source:'customer.checkout.ejs' });
+ 
+var newOrders = {};
+var schoolNameMap={};
 
- var purchases=this.formData.purchases.orders,
- 	outString='',
- 	total=0;
+for (var i = 0, merchAccountCount = this.formData.purchases.orders.length; i < merchAccountCount; i++) {
+	var order = this.formData.purchases.orders[i];
+	var merchantAccountId = order.student.school.merchantAccountId
+		? order.student.school.merchantAccountId
+		: 'default';
+	
+	if (merchantAccountId=='default'){
+		var schoolName = order.student.school.name;
+	}
+	else{
+		var schoolName = 'Good Earth';
+	}
+		
+	if (!newOrders[merchantAccountId]) {
+		newOrders[merchantAccountId] = [];
+	}
+	newOrders[merchantAccountId].push(order);
+	
+	if (!schoolNameMap[merchantAccountId]) {
+		schoolNameMap[merchantAccountId] = schoolName;
+	}
+}
 
- for (var i=0, len=purchases.length; i<len; i++){
- 	outString+="<tr style='border-bottom:1pt solid #aaa;'><td style='width:300px;border-bottom:1pt solid #aaa;vertical-align:top;'><b>";
- 	outString+=purchases[i].student.firstName+": ";
- 	outString+=purchases[i].offering.name;
- 	outString+="</b></td><td style='border-bottom:1pt solid #aaa;vertical-align:top;'>";
- 	outString+=purchases[i].day.title;
- 	outString+="</td><td style='width:100px;text-align:right;border-bottom:1pt solid #aaa;vertical-align:top;'>";
- 	outString+='$'+purchases[i].offering.price.toFixed(2);
- 	outString+="</td></tr>";
+var outString = '';
+var total = 0.0;
+for (var acctId in newOrders) {
+	var schoolOrderList = newOrders[acctId];
+	var orders = schoolOrderList;
+	var subTotal=0;
+	var padding='';
 
- 	total=total+purchases[i].offering.price;
- }
-	total=total.toFixed(2);
+	for (var i = 0, len = orders.length; i < len; i++) {
+		if (merchAccountCount>1 && i<1){
+			padding="padding-top:15px;";
+		}
+		else{
+			padding='';
+		}
+		subTotal+=orders[i].offering.price;
+		outString +=
+			"<tr style='border-bottom:1pt solid #aaa;'><td style='"+padding+"width:300px;vertical-align:top;'><b>";
+		outString += orders[i].student.firstName + ': ';
+		outString += orders[i].offering.name;
+		outString +=
+			"</b></td><td style='"+padding+"vertical-align:top;'>";
+		outString += orders[i].day.title;
+		outString +=
+			"</td><td style='"+padding+"width:100px;text-align:right;vertical-align:top;'>";
+		outString += '$' + orders[i].offering.price.toFixed(2);
+		outString += '</td></tr>';
+		total = total + orders[i].offering.price;
+	}
+		outString+="<tr><td colspan=3 style='text-align:right;border-bottom:2pt solid #666;vertical-align:top;font-style:italic;'>Payment due to "+schoolNameMap[acctId]+": $"+subTotal.toFixed(2)+"</td></tr>";
+
+}
+	total = total.toFixed(2);
 
 	var titleString='';
  	titleString+="<tr style='border-bottom:1pt solid #aaa;'><td colspan='3' style='font-size:12pt;width:100%;padding-left:5px;border-bottom:2pt solid #aaa;'><b>";
