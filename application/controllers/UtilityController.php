@@ -15,16 +15,13 @@ class UtilityController extends Zend_Controller_Action
     
     public function timeoutAction(){
     
-		
+
 		error_log("TIMEOUT: account: {$_POST['account']['refId']}, purchase: {$_POST['purchase']['refId']}, , familyName: {$_POST['account']['familyName']}");
-		
-		
-		
 
 		$mail = new Zend_Mail();
-		
+
 		$emailSender=Zend_Registry::get('emailSender');
-    	
+    
     	if (!$emailSender){
 			$tr=new Zend_Mail_Transport_Sendmail();
 		}
@@ -50,13 +47,7 @@ class UtilityController extends Zend_Controller_Action
 
 		$this->_helper->json(array(status => 1, messages => $emailMessage, data => array()));
 
-	
-	
-	
-	
-	
     }
-
 
     public function indexAction()
     {
@@ -75,7 +66,6 @@ class UtilityController extends Zend_Controller_Action
 		if (count($dataList)>0){
 			$tableArray=$dataObj->getTableData($dataList, 'accounts users students orders purchases accountPurchaseNodes purchaseOrderNodes');
 
-
 echo "accountCount=".count($tableArray['accounts'])."<BR>";
 echo "accountPurchaseNodeCount=".count($tableArray['accountPurchaseNodes'])."<BR>";
 echo "userCount=".count($tableArray['users'])."<BR>";
@@ -84,7 +74,6 @@ echo "studentCount=".count($tableArray['students'])."<BR>";
 echo "purchaseCount=".count($tableArray['purchases'])."<BR>";
 echo "purchaseOrderNodeCount=".count($tableArray['purchaseOrderNodes'])."<BR>";
 echo "orderCount=".count($tableArray['orders'])."<BR>";
-
 
 \Q\Utils::dumpWeb($tableArray, 'tableArray');
 
@@ -98,7 +87,6 @@ echo "orderCount=".count($tableArray['orders'])."<BR>";
 
 		$listing=ob_get_contents();
 			ob_end_clean();
-
 
 		if ($result){
 			echo "Exported to helix ".date("Y-m-d H:i:s")."<p/>\n\n\n";
@@ -124,13 +112,11 @@ echo "orderCount=".count($tableArray['orders'])."<BR>";
 		exit;
     }
 
-
     public function migrateAction()
     {
 		$updateSchema=$this->getRequest()->getParam('updateSchema');
 
 		if($updateSchema=='pleaseRiskMyHappiness'){
-
 
 			echo "Doing these things...<p/>";
 
@@ -142,7 +128,6 @@ echo "orderCount=".count($tableArray['orders'])."<BR>";
 			$out=str_replace(';', ';<p/>', $result);
 			$out=str_replace(',', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;', $out);
 			echo "<div style='font-family:sans-serif;font-size:10pt;margin:40px 0px 0px 50px;'>$out</div>";
-
 
 			//if you run the code below, it will actually change the database, SO DON'T
 
@@ -194,8 +179,8 @@ echo "orderCount=".count($tableArray['orders'])."<BR>";
 			'username' => $specs['user'],
 			'password' => $specs['password'],
 			'dbname'   => $specs['dbname']
-		));	
-		
+		));
+
 		$query="select 
 #apn.purchaseRefId, apn.accountRefId, a.familyName, o.created as 'order', 
 eaters.lastName, eaters.firstName, a.familyName, p.created, 
@@ -226,18 +211,15 @@ where not isnull(p.refId)
 and (select count(*) from students where accountRefId=eaters.accountRefId and firstName=eaters.firstName and isActiveFlag=true)>1
 and p.refId>'2014-07-01'
 
-
 group by eaters. firstName, eaters.refId, p.refId
 
 order by a.familyName, eaters.firstName, p.created
 limit 100000";
 		$stmt = $db->query($query);
 		Zend_Debug::dump($stmt->fetchAll());
-		
+
 		echo "<hr/>";exit;
-		
-	
-	
+
     }
     
     public function pinghelixAction(){
@@ -268,11 +250,10 @@ else{
 echo "<div style='color:black;background:#f96;font-weight:bold;margin:10px 0px;'>Fail. Helix not responding.</div>";
 }
 echo $serverMessage;
-	
+
 echo "<div style='color:black;margin-bottom:10px;'>helix_status (ihr190)={$helix_status}</div>";
 
 echo "<div style='color:black;margin-bottom:10px;'>pool user releaseStatus={$releaseStatus}</div>";
-
 
 if ($_SERVER['SERVER_PORT']=='80'){
 $scheme='http';
@@ -288,10 +269,5 @@ echo "<div style='margin:35px 0px;'><a href='$url'>$url</a></div>";
 exit;
     }
 
-
 }
-
-
-
-
 
