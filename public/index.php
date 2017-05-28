@@ -1,4 +1,5 @@
 <?php
+
 define('DOCROOT_DIRECTORY_PATH', realpath(dirname(__FILE__)).'/'); //needed for AJAX apps
 
 if (!defined('APPLICATION_PATH')){
