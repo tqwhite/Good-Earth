@@ -175,7 +175,6 @@ class Application_Model_Offering extends Application_Model_Base
 		
 		$data['price']=$data['price']*100;
 		
-		$data['auditInfo']=\Q\Utils::dumpWebString($this->getAuditInfo(), "auditInfo");
 		$data['helixId']=$data['helix id']; unset($data['helix id']);
 
 		return $data;

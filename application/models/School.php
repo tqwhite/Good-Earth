@@ -104,7 +104,6 @@ class Application_Model_School extends Application_Model_Base
 		$data['dateOrderingEnd']=$this->helixToDate($data['dateOrderingEnd']);
 		$data['datePeriodBegin']=$this->helixToDate($data['datePeriodBegin']);
 		$data['datePeriodEnd']=$this->helixToDate($data['datePeriodEnd']);
-		$data['auditInfo']=\Q\Utils::dumpWebString($this->getAuditInfo(), "auditInfo");
 		$data['helixId']=$data['helix id']; unset($data['helix id']);
 
 		return $data;

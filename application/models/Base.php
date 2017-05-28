@@ -425,13 +425,7 @@ public function purgeInactive(){
 		$entity=$this->entity;
 		return $entity::tableName;
 	}
-	
 
-	
-protected function getAuditInfo(){
-	$debugObject=\Zend_Registry::get('debugObject');
-	return $debugObject;
-}
 
 }//end of class
 

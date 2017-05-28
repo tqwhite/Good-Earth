@@ -6,7 +6,7 @@ class StudentController extends Q_Controller_Base
     public function init()
     {
         
-        parent::updateAuditInfo($this->getFileName());
+        
     }
 
     public function indexAction()

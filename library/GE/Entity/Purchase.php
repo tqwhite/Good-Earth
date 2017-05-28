@@ -24,12 +24,6 @@ class Purchase /*extends Base*/{
 	* @column(name="helixId", type="string", length=36, nullable=true)
 	**/
 	private $helixId;
-	
-	/**
-	* @var string
-	* @column(name="auditInfo", type="string", length=16777215, nullable=true)
-	**/
-	private $auditInfo;
 
 	/**
 	 * @column(type="string", length=20)
@@ -237,15 +231,6 @@ public function __set($property, $value){
 	}
 
 	$this->modified=new \DateTime(date("Y-m-d H:i:s"));
-}
-
-private function updateAuditInfo(){
-
-	if ($this->done){return;}
-	
-
-
-	$this->done=true;
 }
 
 }

@@ -5,10 +5,8 @@ class DataController extends Q_Controller_Base
 
     public function init()
     { 
-        parent::updateAuditInfo($this->getFileName());
-        $this->_helper->_layout->setLayout('not_store');
         
-        $tmp=parent::getAuditInfo();
+        $this->_helper->_layout->setLayout('not_store');
 
     }
 

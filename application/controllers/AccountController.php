@@ -5,7 +5,7 @@ class AccountController extends Q_Controller_Base {
 	private $newPassword = '';
 
 	public function init() {
-		parent::updateAuditInfo('AccountController');
+		
 	}
 
 	public function indexAction() {

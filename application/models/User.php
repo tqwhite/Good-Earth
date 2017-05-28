@@ -317,7 +317,6 @@ class Application_Model_User extends Application_Model_Base
 		if (!$data['userName']) {
 			$data['userName'] = 'empty_' . ($this->tmpStamp + 1);
 		}
-		$data['auditInfo'] = \Q\Utils::dumpWebString($this->getAuditInfo(), "auditInfo");
 		$data['helixId']   = $data['helix id'];
 		unset($data['helix id']);
 		return $data;

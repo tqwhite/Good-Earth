@@ -5,7 +5,7 @@ class UserController extends Q_Controller_Base {
 	private $resetDate;
 
 	public function init() {
-		parent::updateAuditInfo($this->getFileName());
+		
 	}
 
 	public function indexAction() {
