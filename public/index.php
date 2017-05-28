@@ -1,5 +1,4 @@
 <?php
-
 define('DOCROOT_DIRECTORY_PATH', realpath(dirname(__FILE__)).'/'); //needed for AJAX apps
 
 if (!defined('APPLICATION_PATH')){
@@ -33,7 +32,7 @@ require_once 'Zend/Application.php';
 // Create application, bootstrap, and run
 $application = new Zend_Application(
     APPLICATION_ENV,
-    APPLICATION_PATH . '/configs/application.ini'
+    APPLICATION_PATH . '/../../../configs/zendConfigs/application.ini'
 );
 $application->bootstrap()
             ->run();

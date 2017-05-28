@@ -172,6 +172,7 @@ echo "orderCount=".count($tableArray['orders'])."<BR>";
 		}
 		else{
 
+			//for future reference, doctrine.php has a literal path to application.ini specific to the current application file structure
 			$cmd="php ../scripts/doctrine.php orm:schema-tool:update --dump-sql;";
 			$result=shell_exec($cmd);
 

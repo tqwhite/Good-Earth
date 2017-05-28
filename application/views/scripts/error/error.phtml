@@ -1,51 +1,20 @@
-<?/*php require_once($_SERVER['DOCUMENT_ROOT'].'/tools/mailNotificationInclude.php');*/?>
-<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
-   'http://www.w3.org/TR/html4/strict.dtd'>
-<html>
-<head>
-<title>Generic White: Error "<?php echo $this->message ?>"</title>
 
-<script type='text/javascript' src='/js/jquery/jquery.js'></script>
-<!--link rel='stylesheet' type='text/css' href='css/main.css' /-->
+An error occurred
+<?php echo $this->message ?>
 
-<style type='text/css'>
-	body {color:orange;font-family:sans-serif;font-size:12pt;}
-	
-</style>
+<?php if (isset($this->exception)): ?>
 
-</head>
-<body>
-<div style='padding:30px;'>
-	<div style='font-size:12pt;color:black;line-height:1.5;'>
-	  <h1>An error occurred</h1>
-	  <h2><?php echo $this->message ?></h2>
+Exception information:
 
-	  <?php if (isset($this->exception)): ?>
-  
-	  <h3>Exception information:</h3>
-	  <p style='color:red;font-weight:bold;font-size:125%;'>
-		  <b>Message:</b> <?php echo $this->exception->getMessage() ?>
-	  </p>
+Message: <?php echo $this->exception->getMessage() ?>
 
-	  <h3>Stack trace:</h3>
-	  <pre><?php echo $this->exception->getTraceAsString() ?>
-	  </pre>
 
-	  <h3>Request Parameters:</h3>
-	  <pre><?php echo $this->escape(var_export($this->request->getParams(), true)) ?>
-	  </pre>
+Stack trace:
+<?php echo $this->exception->getTraceAsString() ?>
 
-	  <?php endif ?>
-	</div>
-</div>
-</body>
 
-<script type='text/javascript'>
-/* <![CDATA[ */
-// $(document).ready(function(){
-// 	$('body').append("<div style='z-index:200;position:absolute;left:100px;top:150px;'>php echo $this->message ?><br/>php echo $this->exception->getMessage() ?></div>");
-// });
-/* ]]> */
-</script>
+Request Parameters:
+<?php echo $this->escape(var_export($this->request->getParams(), true)) ?>
 
-</html>
+
+<?php endif ?>

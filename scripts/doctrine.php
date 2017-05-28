@@ -19,7 +19,7 @@ require_once 'Zend/Application.php';
 // Creating application
 $application = new Zend_Application(
     APPLICATION_ENV,
-    APPLICATION_PATH . '/configs/application.ini'
+    APPLICATION_PATH . '/../../../configs/zendConfigs/application.ini'
 );
 
 // Bootstrapping resources
