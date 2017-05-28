@@ -219,11 +219,6 @@ $purchaseObj=array(
 	'cardName'=>$inData['cardData']['cardName']
 );
 
-$debugObject=Zend_Registry::get('debugObject');
-$debugObject['debugElementArray']=$debugElementArray;
-$debugObject['purchaseObj']=$purchaseObj;
-Zend_Registry::set('debugObject', $debugObject);
-
 
 error_log("PURCHASE PROCESS COMPLETE: account: {$inData['account']['refId']} purchase: $newPurchaseRefId");
 error_log("======================================================================");

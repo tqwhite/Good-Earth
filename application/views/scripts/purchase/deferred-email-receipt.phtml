@@ -42,10 +42,6 @@ $orderObject=array();
 		$schoolString.="<div>{$element['firstName']} {$element['lastName']} at {$element['school']} school (session: {$element['periodStart']} to {$element['periodEnd']})</div>";
 	}
 
-$debugObject=Zend_Registry::get('debugObject');
-$debugObject['orderObject']=$orderObject;
-Zend_Registry::set('debugObject', $debugObject);
-
 ?>
 <body style='background:#F5E4C6;'><div style='color:#385B2B;font-size:12pt;margin:20px 0px 20px 10px;'>
 	<div>Dear <?php echo $user->firstName.' '.$user->lastName;?>,<p/>
