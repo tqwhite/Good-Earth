@@ -117,7 +117,8 @@ submitButtonHandler:function(control, parameter){
 	switch(control){
 		case 'click':
 
-			if (this.displayParameters.submitButton.submitted){return;}
+	//		if (this.displayParameters.submitButton.submitted){return;}
+	console.log("SUBMIT BUTTON LOCKOUT DISABLED IN /controller/customer/checkout/checkout.js");
 			
 			$('#'+this.displayParameters.submitButton.divId).html('Processing');
 			this.displayParameters.submitButton.submitted=true;
