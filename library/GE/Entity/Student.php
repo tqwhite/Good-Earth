@@ -151,7 +151,6 @@ public function __set($property, $value){
 	
 	$this->$property=$value;
 
-	$this->updateAuditInfo();
 	$this->modified=new \DateTime(date("Y-m-d H:i:s"));
 }
 
@@ -159,15 +158,7 @@ private function updateAuditInfo(){
 
 	if ($this->done){return;}
 	
-	$debugObject=\Zend_Registry::get('debugObject');
-	$debugObject=\Q\Utils::dumpWebString($debugObject, "debugObject");
 
-	if (isset($this->auditInfo)){
-		$this->auditInfo.=$debugObject;
-	}
-	else{
-		$this->auditInfo=$debugObject;
-	}
 
 	$this->done=true;
 }
