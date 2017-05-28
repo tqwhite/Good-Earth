@@ -24,6 +24,12 @@ class School /*extends Base*/{
 	* @column(name="helixId", type="string", length=36, nullable=true)
 	**/
 	private $helixId;
+	
+	/**
+	* @var string
+	* @column(type="string", length=36, nullable=true)
+	**/
+	private $merchantAccountId;
 
 	/**
 	 * @column(type="string", length=60, nullable=false)
