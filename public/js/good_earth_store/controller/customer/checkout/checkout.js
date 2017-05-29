@@ -67,6 +67,7 @@ initControlProperties:function(){
 },
 
 initDisplay:function(inData){
+
 	var html=$.View("//good_earth_store/controller/customer/checkout/views/init.ejs",
 		$.extend(inData, {
 			displayParameters:this.displayParameters,

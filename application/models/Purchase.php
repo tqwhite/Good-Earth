@@ -26,7 +26,7 @@ class Application_Model_Purchase extends Application_Model_Base
 		$name='expMonth';
 		$datum=$inData['cardData'][$name];
 		if (!$datum){
-			$errorList[]=array($name, "First name is required");
+			$errorList[]=array($name, "Month is required");
 		}
 		else if ($datum<1 || $datum>12){
 			$errorList[]=array($name, "Month is wrong");
