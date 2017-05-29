@@ -65,10 +65,7 @@ class PurchaseController extends Q_Controller_Base
 		
 		$sortKey = $student->firstName . $day->seqNum . $student->refId;
 		
-		return array(
-			sortKey => $sortKey,
-			order => $order
-		);
+		return $order;
 	}
 	
 	private function addPaymentResultToPurchase($purchase, $inData, $paymentProcessResult)
@@ -241,8 +238,8 @@ class PurchaseController extends Q_Controller_Base
 		
 		for ($i = 0, $len = count($inData['orders']); $i < $len; $i++) {
 			$result = $this->constructOrderObj($inData['orders'][$i]);
-			$purchaseObj->addOrder($result['order']);
-			$orderObjPersistList[] = $result['order']->baseEntity;
+			$purchaseObj->addOrder($result);
+			$orderObjPersistList[] = $result->baseEntity;
 		}
 		
 		$errorList  = \Application_Model_Purchase::validate($inData);
