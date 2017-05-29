@@ -2,7 +2,6 @@
 
 class PurchaseController extends Q_Controller_Base
 {
-	private $noCollectionFirstFour = array('9999' => 2, '8888' => 3, '9012' => 2, '9100' => 4);
 	private function processingParameters($selector)
 	{
 		$noCollectionFirstFour = array(
@@ -44,17 +43,6 @@ class PurchaseController extends Q_Controller_Base
 		);
 	}
 	
-	
-	public function init()
-	{
-		
-	}
-	
-	public function indexAction()
-	{
-		// action body
-	}
-	
 	private function constructOrderObj($element)
 	{
 		
@@ -81,88 +69,6 @@ class PurchaseController extends Q_Controller_Base
 			sortKey => $sortKey,
 			order => $order
 		);
-	}
-	
-	public function payAction()
-	{
-		$inData = $this->getRequest()->getPost('data');
-		
-		$inData['purchase']['refId'] = \Q\Utils::newGuid();
-		
-		$purchaseObj                = new \Application_Model_Purchase();
-		$purchase                   = $purchaseObj->generate();
-		$purchaseObj->entity->refId = $inData['purchase']['refId']; //created above so it could be given to credit card processor, overrides default gen'd by entity, ok because it's new
-		
-		$accountObj = new \Application_Model_Account();
-		$account    = $accountObj->getByRefId($inData['account']['refId']);
-		$purchaseObj->addAccount($account);
-		
-		$orderObjPersistList = array();
-		
-		for ($i = 0, $len = count($inData['orders']); $i < $len; $i++) {
-			$result = $this->constructOrderObj($inData['orders'][$i]);
-			$purchaseObj->addOrder($result['order']);
-			$orderObjPersistList[] = $result['order']->baseEntity;
-		}
-		
-		$errorList  = \Application_Model_Purchase::validate($inData);
-		$validOrder = count($errorList) == 0;
-		
-		//===========================
-		
-		$specialInstruction = substr($inData['cardData']['cardNumber'], 0, 4);
-		$processControl     = $this->processingParameters($specialInstruction);
-		
-		if ($validOrder) {
-			if ($processControl['processingRequired']) {
-				
-				$paymentProcessResult = \Application_Model_Payment::process($inData);
-				
-				if (!$paymentProcessResult['approved']) {
-					$errorList[] = array(
-						'transaction',
-						preg_replace('/^.*: /', '', $processResult['response_reason_text'])
-					);
-					error_log(preg_replace('/^.*: /', '', $paymentProcessResult['response_reason_text']));
-				}
-			} else {
-				$paymentProcessResult['deferredPaymentPreference'] = "DEFERRED by {$specialInstruction}";
-			}
-			$this->addPaymentResultToPurchase($purchase, $inData, $paymentProcessResult);
-		} else {
-			$paymentProcessResult = array();
-		}
-		
-		if (count($errorList) > 0) {
-			$status       = -1;
-			$messages     = $errorList;
-			$emailMessage = "no email message sent";
-		} else {
-			
-			for ($i = 0, $len = count($orderObjPersistList); $i < $len; $i++) {
-				$element = $orderObjPersistList[$i];
-				$element->persist(Application_Model_Base::noFlush);
-			}
-			$purchaseObj->persist(Application_Model_Base::yesFlush); //I put "$this->sendCustomerEmail($purchaseObj);" ahead of this line and it stopped persisting!?
-			
-			$status       = $processControl['code'] ? $processControl['code'] : 1;
-			$messages     = Q\Utils::flattenToList($paymentProcessResult); //mainly for debugging ease, maybe should be removed later
-			$emailMessage = $this->sendCustomerEmail($purchaseObj->entity->refId, $processControl, $inData['account']['refId']);
-		}
-		
-		$this->_helper->json(array(
-			status => $status,
-			messages => $messages,
-			data => array(
-				emailMessage => $emailMessage
-			)
-		));
-		
-	}
-	
-	private function requiresPaymentProcessing($firstFour)
-	{
-		return !isset($this->noCollectionFirstFour[$firstFour]);
 	}
 	
 	private function addPaymentResultToPurchase($purchase, $inData, $paymentProcessResult)
@@ -195,8 +101,6 @@ class PurchaseController extends Q_Controller_Base
 		
 	}
 	
-	//======================
-	
 	private function getOrderList($purchaseEntity){
 	$orderEntityList = array();
 		for ($i = 0, $len = count($purchaseEntity->purchaseOrderNodes); $i < $len; $i++) {
@@ -206,6 +110,28 @@ class PurchaseController extends Q_Controller_Base
 		}
 		ksort($orderEntityList);
 		return $orderEntityList;
+	}
+	
+	private function addSchoolAddresses($orderList)
+	{
+		$dupeSuppressList = array();
+		$addressList    = array();
+		$addresslist = array();
+		foreach ($orderList as $label => $element) {
+			$address=$element->student->school->emailAdr;
+			$name=$element->student->school->name;
+			if ($address) {
+				$dupeSuppressList[$address] = $name; //suppress duplicates if there are two kids for same school
+			}
+		}
+		foreach ($dupeSuppressList as $address => $name) {
+			$addressList[] = array(
+				'name' => $name . ' School Lunch Volunteer',
+				'address' => $address,
+				'type' => 'school'
+			);
+		}
+		return $addressList;
 	}
 	
 	private function setUpDestinationAddresses($processControl, $orderEntityList, $user){
@@ -258,7 +184,6 @@ class PurchaseController extends Q_Controller_Base
 		return array( 'addressList'=>$addressList, processControl=>$processControl, emailSendStatus=>$emailSendStatus);
 	}
 	
-	
 	private function initEmailSender()
 	{
 		$emailSender = Zend_Registry::get('emailSender');
@@ -298,26 +223,79 @@ class PurchaseController extends Q_Controller_Base
 		}
 	}
 	
-	private function addSchoolAddresses($orderList)
+	public function payAction()
 	{
-		$dupeSuppressList = array();
-		$addressList    = array();
-		$addresslist = array();
-		foreach ($orderList as $label => $element) {
-			$address=$element->student->school->emailAdr;
-			$name=$element->student->school->name;
-			if ($address) {
-				$dupeSuppressList[$address] = $name; //suppress duplicates if there are two kids for same school
+		$inData = $this->getRequest()->getPost('data');
+		
+		$inData['purchase']['refId'] = \Q\Utils::newGuid();
+		
+		$purchaseObj                = new \Application_Model_Purchase();
+		$purchase                   = $purchaseObj->generate();
+		$purchaseObj->entity->refId = $inData['purchase']['refId']; //created above so it could be given to credit card processor, overrides default gen'd by entity, ok because it's new
+		
+		$accountObj = new \Application_Model_Account();
+		$account    = $accountObj->getByRefId($inData['account']['refId']);
+		$purchaseObj->addAccount($account);
+		
+		$orderObjPersistList = array();
+		
+		for ($i = 0, $len = count($inData['orders']); $i < $len; $i++) {
+			$result = $this->constructOrderObj($inData['orders'][$i]);
+			$purchaseObj->addOrder($result['order']);
+			$orderObjPersistList[] = $result['order']->baseEntity;
+		}
+		
+		$errorList  = \Application_Model_Purchase::validate($inData);
+		$validOrder = count($errorList) == 0;
+		
+		$specialInstruction = substr($inData['cardData']['cardNumber'], 0, 4);
+		$processControl     = $this->processingParameters($specialInstruction);
+		
+		if ($validOrder) {
+			if ($processControl['processingRequired']) {
+				
+				$paymentProcessResult = \Application_Model_Payment::process($inData);
+				
+				if (!$paymentProcessResult['approved']) {
+					$errorList[] = array(
+						'transaction',
+						preg_replace('/^.*: /', '', $processResult['response_reason_text'])
+					);
+					error_log(preg_replace('/^.*: /', '', $paymentProcessResult['response_reason_text']));
+				}
+			} else {
+				$paymentProcessResult['deferredPaymentPreference'] = "DEFERRED by {$specialInstruction}";
 			}
+			$this->addPaymentResultToPurchase($purchase, $inData, $paymentProcessResult);
+		} else {
+			$paymentProcessResult = array();
 		}
-		foreach ($dupeSuppressList as $address => $name) {
-			$addressList[] = array(
-				'name' => $name . ' School Lunch Volunteer',
-				'address' => $address,
-				'type' => 'school'
-			);
+		
+		if (count($errorList) > 0) {
+			$status       = -1;
+			$messages     = $errorList;
+			$emailMessage = "no email message sent";
+		} else {
+			
+			for ($i = 0, $len = count($orderObjPersistList); $i < $len; $i++) {
+				$element = $orderObjPersistList[$i];
+				$element->persist(Application_Model_Base::noFlush);
+			}
+			$purchaseObj->persist(Application_Model_Base::yesFlush); //I put "$this->sendCustomerEmail($purchaseObj);" ahead of this line and it stopped persisting!?
+			
+			$status       = $processControl['code'] ? $processControl['code'] : 1;
+			$messages     = Q\Utils::flattenToList($paymentProcessResult); //mainly for debugging ease, maybe should be removed later
+			$emailMessage = $this->sendCustomerEmail($purchaseObj->entity->refId, $processControl, $inData['account']['refId']);
 		}
-		return $addressList;
+		
+		$this->_helper->json(array(
+			status => $status,
+			messages => $messages,
+			data => array(
+				emailMessage => $emailMessage
+			)
+		));
+		
 	}
 	
 }
