@@ -41,6 +41,7 @@ class Application_Model_Base
 	public function generate(){
 		$entityClassName="GE\\Entity\\{$this->entityName}";
 		$this->entity=new $entityClassName();
+		$this->entity->baseEntity=$this;
 		return $this->entity;
 	}
 
@@ -133,6 +134,7 @@ class Application_Model_Base
 		$this->entityManager->persist($this->entity);
 		if ($flushToo){
 			$this->entityManager->flush();
+			$this->entityManager->clear();
 		}
 	}
 
