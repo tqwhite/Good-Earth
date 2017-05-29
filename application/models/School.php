@@ -44,6 +44,7 @@ class Application_Model_School extends Application_Model_Base
 				'datePeriodEnd'=>$inData->school->datePeriodEnd,
 				'datePeriodBegin'=>$inData->school->datePeriodBegin,
 				'merchantAccountId'=>$inData->school->merchantAccountId,
+				'merchantIdOwnerName'=>$inData->school->merchantIdOwnerName,
 				
 				'isActiveFlag'=>$inData->isActiveFlag,
 				'suppressDisplay'=>$inData->school->suppressDisplay,
@@ -61,6 +62,7 @@ class Application_Model_School extends Application_Model_Base
 				'datePeriodEnd'=>$inData->datePeriodEnd,
 				'datePeriodBegin'=>$inData->datePeriodBegin,
 				'merchantAccountId'=>$inData->merchantAccountId,
+				'merchantIdOwnerName'=>$inData->merchantIdOwnerName,
 				
 				'isActiveFlag'=>$inData->isActiveFlag,
 				'suppressDisplay'=>$inData->suppressDisplay,

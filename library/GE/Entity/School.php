@@ -30,6 +30,12 @@ class School /*extends Base*/{
 	* @column(type="string", length=36, nullable=true)
 	**/
 	private $merchantAccountId;
+	
+	/**
+	* @var string
+	* @column(type="string", length=100, nullable=true)
+	**/
+	private $merchantIdOwnerName;
 
 	/**
 	 * @column(type="string", length=60, nullable=false)

@@ -37,11 +37,12 @@ for (var i = 0, merchAccountCount = this.formData.purchases.orders.length; i < m
 		? order.student.school.merchantAccountId
 		: 'default';
 	
-	if (merchantAccountId=='default'){
-		var schoolName = order.student.school.name;
+	if (merchantAccountId!='default'){
+		var schoolName = order.student.school.merchantIdOwnerName;
+		schoolName=schoolName?schoolName:order.student.school.name
 	}
 	else{
-		var schoolName = 'Good Earth';
+		var schoolName = 'Good Earth Organic Lunch Program';
 	}
 		
 	if (!newOrders[merchantAccountId]) {
@@ -54,6 +55,12 @@ for (var i = 0, merchAccountCount = this.formData.purchases.orders.length; i < m
 	}
 }
 
+if (merchAccountCount>1){
+var multipleDistrictNote="<div style='font-size:8pt;color:#666;margin-top:10px;padding:5px;'>You have ordered lunches for students in separate school(s) some of which collect lunch money directly. Your credit card will have a separate charge for each.</div>";
+}
+else{
+var multipleDistrictNote="";
+}
 var outString = '';
 var total = 0.0;
 for (var acctId in newOrders) {
@@ -143,6 +150,7 @@ if (window.location.host=='store.goodearth.local'){
 	<input type='hidden' name='chargeTotal' value='<%=total%>'>
 	</table>
 <div id='<%=this.displayParameters.status.divId%>' style='font-size:10pt;'></div>
+<%==multipleDistrictNote%>
 </div>
 
 </div>
