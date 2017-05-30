@@ -134,7 +134,6 @@ class Application_Model_Base
 		$this->entityManager->persist($this->entity);
 		if ($flushToo){
 			$this->entityManager->flush();
-			$this->entityManager->clear();
 		}
 	}
 
