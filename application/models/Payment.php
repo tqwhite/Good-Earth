@@ -4,22 +4,38 @@ class Application_Model_Payment
 {
 
 
-static function process($inData){
-
-	$cardNumber=$inData['cardData']['cardNumber']; //only approve for one dollar even, remember to void transaction
-	$expMonth=$inData['cardData']['expMonth'];
-	$expYear=$inData['cardData']['expYear'];
-	$chargeTotal=$inData['cardData']['chargeTotal'];
-
-	$purchaseRefId=$inData['purchase']['refId'];
-
-	$cardNumber=preg_replace('/[^\S]/', '', $cardNumber);
+static function process($purchaseModelList, $inData){
+		$paymentList=array();
+		
 
 
-	$paymentObj=new \Payment\Authorize();
-	$paymentObj->setPurchaseData($inData);
+		for ($i=0, $len=count($purchaseModelList); $i<$len; $i++){
+			$paymentData=$purchaseModelList[$i];
+		
+			switch ($paymentData->merchantAccountId){
+				case '10':
+					$paymentObj=new \Payment\Authorize();
+				break;
+				case '11':
+					$paymentObj=new \Payment\Authorize();
+				break;
+				default:
+					$paymentObj=new \Payment\Authorize();
+				break;
+			
+			}
+
+			$paymentObj->setPurchaseData($paymentData->entity, $inData['cardData'], $inData['account']);
+		}
+
+		
+	//$result=$paymentObj->executeCharge();
 	
-	$result=$paymentObj->executeCharge();
+	$result=array(
+	approved=>'APPROVED',
+	authorization_code=>'no processing occurs yet, payment.php'
+	
+	);
 
 
 	return $result;

@@ -266,7 +266,9 @@ class PurchaseController extends Q_Controller_Base
 		foreach ($merchantAccountOrders as $merchantAccountId => $orderList) {
 				$purchaseModel                = new \Application_Model_Purchase();
 				$purchaseGenerated                   = $purchaseModel->generate();
+				
 				$purchaseModel->entity->refId = \Q\Utils::newGuid();
+				$purchaseModel->entity->merchantAccountId=$merchantAccountId;
 				$this->copyInDataToPurchase($purchaseGenerated, $inData); //for some reason this has to be here, not later in the text
 				$purchaseModel->addAccount($account);
 				
@@ -300,7 +302,7 @@ class PurchaseController extends Q_Controller_Base
 		$processControl     = $this->processingParameters($specialInstruction);
 			if ($processControl['processingRequired']) {
 
-				$paymentProcessResult = \Application_Model_Payment::process($inData);
+				$paymentProcessResult = \Application_Model_Payment::process($purchaseModelList, $inData);
 
 				if (!$paymentProcessResult['approved']) {
 					$errorList[] = array(

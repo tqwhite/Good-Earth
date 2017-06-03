@@ -19,36 +19,38 @@ $this->sale->setSandbox(false); //false means use the real server
 
 }
 
-public function setPurchaseData($inData){
+public function setPurchaseData($purchaseEntity, $cardData, $accountData){
 
-	$nameArray=explode(' ',$inData['cardData']['cardName']);
+	$nameArray=explode(' ',$cardData['cardName']);
 	$firstName=$nameArray[0];
 	$lastName=$nameArray[1];
 
 	$outArray=array(
-		'address'=>$inData['cardData']['street'],
-		'city'=>$inData['cardData']['city'],
-		'state'=>$inData['cardData']['state'],
-		'zip'=>$inData['cardData']['zip'],
-	//    'trans_id'=> $inData['purchase']['refId'],
-		'cust_id'=>$inData['account']['refId'],
+		'address'=>$cardData['street'],
+		'city'=>$cardData['city'],
+		'state'=>$cardData['state'],
+		'zip'=>$cardData['zip'],
+	//    'trans_id'=> $purchaseEntity->refId,
+		'cust_id'=>$accountData['refId'],
 	
 		'first_name'=>$firstName,
 		'last_name'=>$lastName,
 	
 	
-		'amount' => $inData['cardData']['chargeTotal'],
-		'card_num' => $inData['cardData']['cardNumber'],
-		'exp_date' => $inData['cardData']['expMonth'].$inData['cardData']['expYear']
+		'amount' => $purchaseEntity->chargeTotal,
+		'card_num' => $cardData['cardNumber'],
+		'exp_date' => $cardData['expMonth'].$cardData['expYear']
 		);
-
+		
 	$this->sale->setFields($outArray);
 
 
 }
 
 public function executeCharge(){
+	
 	$result=$this->sale->authorizeAndCapture();
+	
 	$outArray=$this->mapResult($result);
 	$outArray['details']=$result;
 	return $outArray;
