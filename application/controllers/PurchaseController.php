@@ -66,22 +66,6 @@ class PurchaseController extends Q_Controller_Base
 
 		return $order;
 	}
-	
-	/*
-	NEXT:
-		it saves the three purchases successfully but they 
-		each get the full price of the deal. I need
-		to calculate the sum of the orders for each deal.
-		Probably make the $merchantAccountOrders return a sum
-		as well as a list of orders and put that into the purchase 
-		when it is created.
-		
-		Once done, it's on to payment.
-	
-	
-	
-	
-	*/
 
 	private function copyInDataToPurchase($purchaseGenerated, $inData){
 
@@ -276,6 +260,7 @@ class PurchaseController extends Q_Controller_Base
 					$order = $orderList[$i];
 					$chargeAmount+=$order->offering->price;
 					$purchaseModel->addOrder($order);
+					
 				}
 				
 				$purchaseModelList[] = $purchaseModel;
@@ -333,7 +318,7 @@ class PurchaseController extends Q_Controller_Base
 			$status       = $processControl['code'] ? $processControl['code'] : 1;
 			$messages     = Q\Utils::flattenToList($paymentProcessResult); //mainly for debugging ease, maybe should be removed later
 		}
-
+		
 		$this->_helper->json(array(
 			status => $status,
 			messages => $messages,

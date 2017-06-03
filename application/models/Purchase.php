@@ -104,7 +104,7 @@ class Application_Model_Purchase extends Application_Model_Base
 		$node=new GE\Entity\PurchaseOrderNode();
 		$node->order=$order;
 		$node->purchase=$this->entity;
-		$node->purchase->chargeTotal=$this->purchase->chargeTotal+$order->offering->price;
+		$node->purchase->chargeTotal=$node->purchase->chargeTotal+$order->offering->price;
 		$this->entityManager->persist($node);
 	}
 
