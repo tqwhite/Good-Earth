@@ -72,7 +72,7 @@ class PurchaseController extends Q_Controller_Base
 		it saves the three purchases successfully but they 
 		each get the full price of the deal. I need
 		to calculate the sum of the orders for each deal.
-		Probably make the $merchantAccountGroupings return a sum
+		Probably make the $merchantAccountOrders return a sum
 		as well as a list of orders and put that into the purchase 
 		when it is created.
 		
@@ -85,7 +85,7 @@ class PurchaseController extends Q_Controller_Base
 
 	private function copyInDataToPurchase($purchaseGenerated, $inData){
 
-		$purchaseGenerated->chargeTotal = $inData['cardData']['chargeTotal'];
+		$purchaseGenerated->chargeTotal = 0;
 		$purchaseGenerated->cardName    = $inData['cardData']['cardName'];
 		$purchaseGenerated->street      = $inData['cardData']['street'];
 		$purchaseGenerated->city        = $inData['cardData']['city'];
@@ -174,7 +174,7 @@ class PurchaseController extends Q_Controller_Base
 		return $addressList;
 	}
 
-	private function sendCustomerEmail($purchaseRefId, $processControl, $accountRefId = 'n/a')
+	private function sendCustomerEmail($purchaseRefId, $processControl)
 	{
 		$auth = \Zend_Auth::getInstance();
 		$user = $auth->getIdentity();
@@ -242,54 +242,62 @@ class PurchaseController extends Q_Controller_Base
 			return $emailSendStatus;
 		}
 	}
+	
+	private function organizeIntoPaymentGroups($orders){
+		$merchantAccountOrders = array();
 
-	public function payAction()
-	{
-		$inData = $this->getRequest()->getPost('data');
-
-		$merchantAccountGroupings = array();
-
-		for ($i = 0, $len = count($inData['orders']); $i < $len; $i++) {
-			$order             = $this->constructOrderObj($inData['orders'][$i]);
+		for ($i = 0, $len = count($orders); $i < $len; $i++) {
+			$order             = $this->constructOrderObj($orders[$i]);
+			
 			$merchantAccountId = $order->student->school->merchantAccountId;
 			$merchantAccountId = $merchantAccountId ? $merchantAccountId : 'default';
 
-			if (!$merchantAccountGroupings[$merchantAccountId]) {
-				$merchantAccountGroupings[$merchantAccountId] = array();
+			if (!$merchantAccountOrders[$merchantAccountId]) {
+				$merchantAccountOrders[$merchantAccountId] = array();
 			}
-			$merchantAccountGroupings[$merchantAccountId][] = $order;
+			$merchantAccountOrders[$merchantAccountId][] = $order;
 		}
+			
+		return $merchantAccountOrders;
+	}
+
+	private function assemblePurchases($merchantAccountOrders, $account, $inData){
+		$purchaseModelList=array();
+		foreach ($merchantAccountOrders as $merchantAccountId => $orderList) {
+				$purchaseModel                = new \Application_Model_Purchase();
+				$purchaseGenerated                   = $purchaseModel->generate();
+				$purchaseModel->entity->refId = \Q\Utils::newGuid();
+				$this->copyInDataToPurchase($purchaseGenerated, $inData); //for some reason this has to be here, not later in the text
+				$purchaseModel->addAccount($account);
+				
+				for ($i = 0, $len = count($orderList); $i < $len; $i++) {
+					$order = $orderList[$i];
+					$chargeAmount+=$order->offering->price;
+					$purchaseModel->addOrder($order);
+				}
+				
+				$purchaseModelList[] = $purchaseModel;
+	
+			}
+			return $purchaseModelList;
+	}
+	
+	public function payAction()
+	{
+		$inData = $this->getRequest()->getPost('data');
+		
+		$errorList  = \Application_Model_Purchase::validate($inData);
+
+		if (count($errorList) == 0)  {
+
+		$merchantAccountOrders = $this->organizeIntoPaymentGroups($inData['orders']);
 
 		$inData['purchase']['refId'] = \Q\Utils::newGuid();
 
-		$orderObjPersistList    = array();
-		$purchaseModelList = array();
-
-		$purchaseGeneratedList = array();
-		foreach ($merchantAccountGroupings as $merchantAccountId => $orderList) {
-			$purchaseModel                = new \Application_Model_Purchase();
-			$purchaseGenerated                   = $purchaseModel->generate();
-			$purchaseModel->entity->refId = \Q\Utils::newGuid();
-			$this->copyInDataToPurchase($purchaseGenerated, $inData); //for some reason this has to be here, not later in the text
-			$purchaseModel->addAccount($account);
-
-			for ($i = 0, $len = count($orderList); $i < $len; $i++) {
-				$order = $orderList[$i];
-				$purchaseModel->addOrder($order);
-				$orderObjPersistList[] = $order->baseEntity;
-			}
-			$purchaseGeneratedList[]           = $purchaseGenerated->baseEntity;
-			$purchaseModelList[] = $purchaseModel;
-
-		}
-
-		$errorList  = \Application_Model_Purchase::validate($inData);
-		$validOrder = count($errorList) == 0;
+		$purchaseModelList = $this->assemblePurchases($merchantAccountOrders, $account, $inData);
 
 		$specialInstruction = substr($inData['cardData']['cardNumber'], 0, 4);
 		$processControl     = $this->processingParameters($specialInstruction);
-
-		if ($validOrder) {
 			if ($processControl['processingRequired']) {
 
 				$paymentProcessResult = \Application_Model_Payment::process($inData);
@@ -304,8 +312,6 @@ class PurchaseController extends Q_Controller_Base
 			} else {
 				$paymentProcessResult['deferredPaymentPreference'] = "DEFERRED by {$specialInstruction}";
 			}
-		} else {
-			$paymentProcessResult = array();
 		}
 
 		if (count($errorList) > 0) {
@@ -314,23 +320,16 @@ class PurchaseController extends Q_Controller_Base
 			$emailMessage = "no email message sent";
 		} else {
 
-		for ($i = 0, $len = count($orderObjPersistList); $i < $len; $i++) {
-			$element = $orderObjPersistList[$i];
-			$element->persist(Application_Model_Base::noFlush);
-		}
-		for ($i=0, $len=count($purchaseGeneratedList); $i<$len; $i++){
-			$purchaseGenerated=$purchaseGeneratedList[$i];
-			$this->addPaymentResultToPurchase($purchaseGenerated, $inData, $paymentProcessResult);
-
-		}
-		for ($i=0, $len=count($purchaseModelList); $i<$len; $i++){
-			$purchaseModel=$purchaseModelList[$i];
-			$purchaseModel->persist(Application_Model_Base::yesFlush); //I put "$this->sendCustomerEmail($purchaseObj);" ahead of this line and it stopped persisting!?
-		}
-
-		$status       = $processControl['code'] ? $processControl['code'] : 1;
-		$messages     = Q\Utils::flattenToList($paymentProcessResult); //mainly for debugging ease, maybe should be removed later
-		$emailMessage = $this->sendCustomerEmail($purchaseObj->entity->refId, $processControl, $inData['account']['refId']);
+			for ($i=0, $len=count($purchaseModelList); $i<$len; $i++){
+				$purchaseModel=$purchaseModelList[$i];
+				$this->addPaymentResultToPurchase($purchaseGenerated, $inData, $paymentProcessResult);
+				$purchaseModel->persist(Application_Model_Base::yesFlush);
+			}
+			
+			$emailMessage = $this->sendCustomerEmail($purchaseObj->entity->refId, $processControl);
+	
+			$status       = $processControl['code'] ? $processControl['code'] : 1;
+			$messages     = Q\Utils::flattenToList($paymentProcessResult); //mainly for debugging ease, maybe should be removed later
 		}
 
 		$this->_helper->json(array(

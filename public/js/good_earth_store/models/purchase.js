@@ -36,6 +36,8 @@ steal('jquery/model', function() {
 						merchantAccountId: element.student.school.merchantAccountId
 					});
 				}
+				
+				delete data.cardData.chargeTotal; //don't care what the hackers change it to
 
 				var outObj = {};
 				outObj.refId = data.purchase.refId;

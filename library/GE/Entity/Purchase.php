@@ -208,7 +208,12 @@ public function __construct(){
 public function __get($property){
 	switch($property){
 		case 'chargeTotal':
+		if ($this->$property){
 			return $this->$property/100;
+		}
+		else{
+			return 0;
+		}
 			break;
 		case 'created':
 			return $this->created->format("Y-m-d H:i:s");
