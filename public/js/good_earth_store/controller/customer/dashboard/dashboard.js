@@ -66,7 +66,6 @@ initControlProperties:function(){
 initDisplay:function(inData){
 		
 	var adminMode=GoodEarthStore.Models.LocalStorage.getCookieData(this.adminModeCookieName);
-	console.log("adminMode="+adminMode.data);
 	if (adminMode.data=='true'){
 		this.adminButtonHandler('click');
 		return;

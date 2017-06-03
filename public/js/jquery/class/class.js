@@ -616,9 +616,10 @@ steal("jquery","jquery/lang/string",function( $ ) {
 				if (!Class.nameOk ) {
 					//steal.dev.isHappyName(fullName)
 				}
-				if(current[shortName]){
-					steal.dev.warn("class.js There's already something called "+fullName)
-				}
+//shows this message for subdirectroeis and I'm tired of it. tqii
+// 				if(current[shortName]){
+// 					steal.dev.warn("class.js There's already something called "+fullName)
+// 				}
 				//@steal-remove-end
 				current[shortName] = Class;
 			}
