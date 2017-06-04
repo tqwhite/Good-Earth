@@ -2,101 +2,6 @@
 
 class PurchaseController extends Q_Controller_Base
 {
-	private function processingParameters($selector)
-	{
-		$noCollectionFirstFour = array(
-			'9999' => array(
-				'templateName' => "deferred-email-receipt.phtml",
-				'code' => 2,
-				'emailSubject' => "Good Earth Lunch Program Invoice",
-				'processingRequired' => false
-			),
-			'9012' => array(
-				'templateName' => "deferred-email-receipt.phtml",
-				'code' => 2,
-				'emailSubject' => "Good Earth Lunch Program Invoice",
-				'processingRequired' => false
-			),
-			'8888' => array(
-				'tqOnly' => true,
-				'templateName' => "deferred-email-receipt.phtml",
-				'code' => 3,
-				'emailSubject' => "Good Earth Lunch Program Invoice",
-				'processingRequired' => false
-			),
-			'9100' => array(
-				'templateName' => "fr-email-receipt.phtml",
-				'code' => 4,
-				'emailSubject' => "Good Earth Lunch Program Notification",
-				'processingRequired' => false
-			)
-		);
-
-		if (isset($noCollectionFirstFour[$selector])) {
-			return $noCollectionFirstFour[$selector];
-		}
-		return array(
-			'templateName' => "email-receipt.phtml",
-			'code' => '1',
-			'emailSubject' => "Good Earth Lunch Program Purchase Receipt",
-			'processingRequired' => true
-		);
-	}
-
-	private function constructOrderObj($element)
-	{
-
-		$studentObj = new \Application_Model_Student();
-		$student    = $studentObj->getByRefId($element['student']['refId']);
-
-		$offeringObj = new \Application_Model_Offering();
-		$offering    = $offeringObj->getByRefId($element['offer']['refId']);
-
-		$dayObj = new \Application_Model_Day();
-		$day    = $dayObj->getByRefId($element['day']['refId']);
-
-		$orderObj              = new \Application_Model_Order();
-		$order                 = $orderObj->generate();
-		$order->currPeriodFull = $offering->perYearFull;
-		$order->student        = $student;
-		$order->offering       = $offering;
-		$order->day            = $day;
-
-		$sortKey = $student->firstName . $day->seqNum . $student->refId;
-
-		return $order;
-	}
-
-	private function copyInDataToPurchase($purchaseGenerated, $inData){
-
-		$purchaseGenerated->chargeTotal = 0;
-		$purchaseGenerated->cardName    = $inData['cardData']['cardName'];
-		$purchaseGenerated->street      = $inData['cardData']['street'];
-		$purchaseGenerated->city        = $inData['cardData']['city'];
-		$purchaseGenerated->state       = $inData['cardData']['state'];
-		$purchaseGenerated->zip         = $inData['cardData']['zip'];
-		$purchaseGenerated->phoneNumber = $inData['cardData']['phoneNumber'];
-		$purchaseGenerated->lastFour    = substr($inData['cardData']['cardNumber'], strlen($inData['cardData']['cardNumber']) - 4, 4);
-		$purchaseGenerated->firstFour   = substr($inData['cardData']['cardNumber'], 0, 4);
-
-		}
-
-	private function addPaymentResultToPurchase($purchase, $inData, $paymentProcessResult)
-	{
-
-		$purchase->deferredPaymentPreference = $paymentProcessResult['deferredPaymentPreference'];
-
-		$purchase->fdProcessorResponseMessage = $paymentProcessResult['approved'] ? 'APPROVED' : 'REJECTED';
-
-		$purchase->fdProcessorReferenceNumber = $paymentProcessResult['transaction_id'];
-		$purchase->fdErrorMessage             = $paymentProcessResult['response_reason_text'];
-		$purchase->fdApprovalCode             = $paymentProcessResult['authorization_code'];
-
-		$date                        = new \DateTime(date("Y-m-d H:i:s"));
-		$date                        = $date->format('Y-m-d H:i:s');
-		$purchase->fdTransactionTime = $date;
-		$purchase->fdOrderId         = $inData['purchase']['refId'];
-	}
 
 	private function getOrderList($purchaseEntity)
 	{
@@ -225,6 +130,102 @@ class PurchaseController extends Q_Controller_Base
 
 			return $emailSendStatus;
 		}
+	}
+	
+	private function processingParameters($selector)
+	{
+		$noCollectionFirstFour = array(
+			'9999' => array(
+				'templateName' => "deferred-email-receipt.phtml",
+				'code' => 2,
+				'emailSubject' => "Good Earth Lunch Program Invoice",
+				'processingRequired' => false
+			),
+			'9012' => array(
+				'templateName' => "deferred-email-receipt.phtml",
+				'code' => 2,
+				'emailSubject' => "Good Earth Lunch Program Invoice",
+				'processingRequired' => false
+			),
+			'8888' => array(
+				'tqOnly' => true,
+				'templateName' => "deferred-email-receipt.phtml",
+				'code' => 3,
+				'emailSubject' => "Good Earth Lunch Program Invoice",
+				'processingRequired' => false
+			),
+			'9100' => array(
+				'templateName' => "fr-email-receipt.phtml",
+				'code' => 4,
+				'emailSubject' => "Good Earth Lunch Program Notification",
+				'processingRequired' => false
+			)
+		);
+
+		if (isset($noCollectionFirstFour[$selector])) {
+			return $noCollectionFirstFour[$selector];
+		}
+		return array(
+			'templateName' => "email-receipt.phtml",
+			'code' => '1',
+			'emailSubject' => "Good Earth Lunch Program Purchase Receipt",
+			'processingRequired' => true
+		);
+	}
+
+	private function constructOrderObj($element)
+	{
+
+		$studentObj = new \Application_Model_Student();
+		$student    = $studentObj->getByRefId($element['student']['refId']);
+
+		$offeringObj = new \Application_Model_Offering();
+		$offering    = $offeringObj->getByRefId($element['offer']['refId']);
+
+		$dayObj = new \Application_Model_Day();
+		$day    = $dayObj->getByRefId($element['day']['refId']);
+
+		$orderObj              = new \Application_Model_Order();
+		$order                 = $orderObj->generate();
+		$order->currPeriodFull = $offering->perYearFull;
+		$order->student        = $student;
+		$order->offering       = $offering;
+		$order->day            = $day;
+
+		$sortKey = $student->firstName . $day->seqNum . $student->refId;
+
+		return $order;
+	}
+
+	private function copyInDataToPurchase($purchaseGenerated, $inData){
+
+		$purchaseGenerated->chargeTotal = 0;
+		$purchaseGenerated->cardName    = $inData['cardData']['cardName'];
+		$purchaseGenerated->street      = $inData['cardData']['street'];
+		$purchaseGenerated->city        = $inData['cardData']['city'];
+		$purchaseGenerated->state       = $inData['cardData']['state'];
+		$purchaseGenerated->zip         = $inData['cardData']['zip'];
+		$purchaseGenerated->phoneNumber = $inData['cardData']['phoneNumber'];
+		$purchaseGenerated->lastFour    = substr($inData['cardData']['cardNumber'], strlen($inData['cardData']['cardNumber']) - 4, 4);
+		$purchaseGenerated->firstFour   = substr($inData['cardData']['cardNumber'], 0, 4);
+
+		}
+
+	private function addPaymentResultToPurchase($purchase, $inData, $paymentProcessResult)
+	{
+
+		$purchase->deferredPaymentPreference = $paymentProcessResult['deferredPaymentPreference'];
+
+		$purchase->fdProcessorResponseMessage = $paymentProcessResult['approved'] ? 'APPROVED' : 'REJECTED';
+
+		$purchase->fdProcessorReferenceNumber = $paymentProcessResult['transaction_id'];
+		$purchase->fdErrorMessage             = $paymentProcessResult['response_reason_text'];
+		$purchase->fdApprovalCode             = $paymentProcessResult['authorization_code'];
+
+		$date                        = new \DateTime(date("Y-m-d H:i:s"));
+		$date                        = $date->format('Y-m-d H:i:s');
+		$purchase->fdTransactionTime = $date;
+		$purchase->fdOrderId         = $inData['purchase']['refId'];
 	}
 	
 	private function organizeIntoPaymentGroups($orders){
