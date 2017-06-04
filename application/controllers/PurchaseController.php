@@ -2,6 +2,8 @@
 
 class PurchaseController extends Q_Controller_Base
 {
+	
+	// invoice email functions =======================
 
 	private function getOrderList($purchaseEntity)
 	{
@@ -63,36 +65,6 @@ class PurchaseController extends Q_Controller_Base
 		return $addressList;
 	}
 
-	private function sendCustomerEmail($purchaseRefId, $processControl)
-	{
-		$auth = \Zend_Auth::getInstance();
-		$user = $auth->getIdentity();
-
-		$doctrineContainer = \Zend_Registry::get('doctrine');
-		$entityManager     = $doctrineContainer->getEntityManager();
-		$entityManager->clear();
-		$purchaseEntity    = $entityManager->find('GE\Entity\Purchase', $purchaseRefId); 
-
-		$orderEntityList = $this->getOrderList($purchaseEntity);
-
-		$view = new Zend_View();
-		$view->setScriptPath(APPLICATION_PATH . '/views/scripts/purchase');
-		$view->user            = $user;
-		$view->purchaseEntity  = $purchaseEntity;
-		$view->orderEntityList = $orderEntityList;
-
-		$renderedMessage = $view->render($processControl['templateName']);
-		$emailSubject    = $processControl['emailSubject'];
-		$addressList     = $this->setUpDestinationAddresses($processControl, $orderEntityList, $user);
-		$emailSendStatus = $this->transmitEmail($addressList, $emailSubject, $renderedMessage);
-
-		return array(
-			'addressList' => $addressList,
-			processControl => $processControl,
-			emailSendStatus => $emailSendStatus
-		);
-	}
-
 	private function initEmailSender()
 	{
 		$emailSender = Zend_Registry::get('emailSender');
@@ -131,14 +103,62 @@ class PurchaseController extends Q_Controller_Base
 			return $emailSendStatus;
 		}
 	}
+
+	private function sendCustomerEmail($purchaseRefId, $processControl, $purchaseModelList)
+	{
+		$auth = \Zend_Auth::getInstance();
+		$user = $auth->getIdentity();
+
+		$doctrineContainer = \Zend_Registry::get('doctrine');
+		$entityManager     = $doctrineContainer->getEntityManager();
+		$entityManager->clear();
+		
+		$renderedMessage='';
+		$purchasesViewData=array();
+		
+		for ($i=0, $len=count($purchaseModelList); $i<$len; $i++){
+			$purchaseRefId=$purchaseModelList[$i]->entity->refId;
+		
+			$purchaseEntity    = $entityManager->find('GE\Entity\Purchase', $purchaseRefId);
+			
+			$orderEntityList = $this->getOrderList($purchaseEntity);
+			$purchasesViewData[]=array(
+				purchaseEntity=>$purchaseEntity,
+				orderEntityList=>$orderEntityList
+			);
+			
+		}
+
+
+		$view = new Zend_View();
+		$view->setScriptPath(APPLICATION_PATH . '/views/scripts/purchase');
+		$view->user            = $user;
+		$view->purchasesViewData=$purchasesViewData;
+			
+		$renderedMessage .= $view->render($processControl['templateName']);
+
+		$emailSubject    = $processControl['emailSubject'];
+		$addressList     = $this->setUpDestinationAddresses($processControl, $orderEntityList, $user);
+		$emailSendStatus = $this->transmitEmail($addressList, $emailSubject, $renderedMessage);
+
+		return array(
+			'addressList' => $addressList,
+			processControl => $processControl,
+			emailSendStatus => $emailSendStatus,
+			renderedMessage=>$renderedMessage
+		);
+	}
+	
+	// payment processing functions =======================
 	
 	private function processingParameters($selector)
 	{
 		$noCollectionFirstFour = array(
 			'9999' => array(
-				'templateName' => "deferred-email-receipt.phtml",
-				'code' => 2,
-				'emailSubject' => "Good Earth Lunch Program Invoice",
+				'tqOnly' => true,
+				'templateName' => "email-receipt.phtml",
+				'code' => 3,
+				'emailSubject' => "Good Earth Lunch Program Receipt",
 				'processingRequired' => false
 			),
 			'9012' => array(
@@ -314,7 +334,7 @@ class PurchaseController extends Q_Controller_Base
 				$purchaseModel->persist(Application_Model_Base::yesFlush);
 			}
 			
-			$emailMessage = $this->sendCustomerEmail($purchaseObj->entity->refId, $processControl);
+			$emailMessage = $this->sendCustomerEmail($purchaseObj->entity->refId, $processControl, $purchaseModelList);
 	
 			$status       = $processControl['code'] ? $processControl['code'] : 1;
 			$messages     = Q\Utils::flattenToList($paymentProcessResult); //mainly for debugging ease, maybe should be removed later

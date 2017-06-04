@@ -1,80 +1,122 @@
 <?php
-$user=$this->user;
-$purchaseEntity=$this->purchaseEntity;
-$orderEntityList=$this->orderEntityList;
+$user = $this->user;
 
+$purchasesViewData  = $this->purchasesViewData;
+$orderDisplayString = "";
 
-//\Doctrine\Common\Util\Debug::dump($orderEntityList[0]->student->school);
-
-$orderObject=array();
-
-	$list=$orderEntityList;
-	$schoolList=array();
-	$orderString='';
-	foreach ($list as $label=>$element){
-		$price=number_format($element->offering->price, 2);
-		$orderString.="\n<tr><td style='padding-right:15px;'>".$element->student->firstName."</td>";
-		$orderString.="<td style='padding-right:15px;'>".$element->day->title."</td>";
-		$orderString.="<td style='padding-right:15px;'>".$element->offering->name."</td>";
-		$orderString.="<td>\$$price</td</tr>\n";
-
-		$schoolList[$element->student->refId]=array(
-		'firstName'=>$element->student->firstName, 
-		'lastName'=>$element->student->lastName, 
-		'school'=>$element->student->school->name,
-		'periodStart'=>$element->student->school->datePeriodBegin,
-		'periodEnd'=>$element->student->school->datePeriodEnd
+for ($i = 0, $purchaseCount = count($purchasesViewData); $i < $purchaseCount; $i++) {
+	$element = $purchasesViewData[$i];
+	
+	$purchaseEntity  = $element['purchaseEntity'];
+	$orderEntityList = $element['orderEntityList'];
+	
+	$orderObject = array();
+	
+	$list        = $orderEntityList;
+	$schoolList  = array();
+	$orderString = '';
+	foreach ($list as $label => $element) {
+		$price = number_format($element->offering->price, 2);
+		$orderString .= "\n<tr><td style='padding-right:15px;'>" . $element->student->firstName . "</td>";
+		$orderString .= "<td style='padding-right:15px;'>" . $element->day->title . "</td>";
+		$orderString .= "<td style='padding-right:15px;'>" . $element->offering->name . "</td>";
+		$orderString .= "<td>\$$price</td</tr>\n";
+		
+		$schoolList[$element->student->refId] = array(
+			'firstName' => $element->student->firstName,
+			'lastName' => $element->student->lastName,
+			'school' => $element->student->school->name,
+			'periodStart' => $element->student->school->datePeriodBegin,
+			'periodEnd' => $element->student->school->datePeriodEnd
 		);
 		
-		$orderObject[]=array(
-		'firstName'=>$element->student->firstName,
-		'lastName'=>$element->student->lastName,
-		'offering'=>$element->offering->name,
-		'offeringRefId'=>$element->offering->refId,
+		$merchantIdOwnerName                  = $element->student->school->merchantIdOwnerName; //by definition, all purchases in this group have the same merchantIdOwnerName
+		$merchantIdOwnerName=$merchantIdOwnerName?$merchantIdOwnerName:"Good Earth";
+		
+		$orderObject[]                        = array(
+			'firstName' => $element->student->firstName,
+			'lastName' => $element->student->lastName,
+			'offering' => $element->offering->name,
+			'offeringRefId' => $element->offering->refId
 		);
 	}
-	$orderString="<table style='margin:15px 0px 15px 20px;color:#385B2B;'>$orderString</table>\n\n";
-
-
-
-	$schoolString='';
-	foreach ($schoolList as $element){
-		$schoolString.="<div>{$element['firstName']} {$element['lastName']} at {$element['school']} school (session: {$element['periodStart']} to {$element['periodEnd']})</div>";
+	$orderString = "<table style='margin:15px 0px 15px 20px;color:#385B2B;'>$orderString</table>\n\n";
+	
+	
+	
+	$schoolString = '';
+	foreach ($schoolList as $element) {
+		$schoolString .= "<div>{$element['firstName']} {$element['lastName']} at {$element['school']} school (session: {$element['periodStart']} to {$element['periodEnd']})</div>";
 	}
+	
+	$shortRefId   = substr($purchaseEntity->refId, 0, 8);
+	$showTotal    = number_format($purchaseEntity->chargeTotal, 2);
+	$shortRefId = substr($purchaseEntity->refId, 0, 8);
+	$schoolString = '';
+	foreach ($schoolList as $element) {
+		$schoolString .= "<div>{$element['firstName']} {$element['lastName']} at {$element['school']} school (session: {$element['periodStart']} to {$element['periodEnd']})</div>";
+	}
+	
+	$dealSubjectString="
+		A payment was made to {$merchantIdOwnerName} for <span style='font-size:85%'>&dollar;{$showTotal}</span> on your credit card <span style='font-size:85%'>(...{$purchaseEntity->lastFour})</span>
+		for the following lunches:
+	";
+	
+// 	$dealSubjectString="
+// 		Following is a recap of your order:
+// 	";
+	
+	$orderDisplayString .= "
+		{$dealSubjectString}
+				{$orderString}
+		<div>
+			The lunches were for ...
+			<div style='margin:15px 0px 15px 20px;font-size:10pt;'>
+				{$schoolString}
+			</div>
+		</div>
+	";
+}
 
-?>
-<body style='background:#F5E4C6;'><div style='color:#385B2B;font-size:12pt;margin:20px 0px 20px 10px;'>
-	<div>Dear <?php echo $user->firstName.' '.$user->lastName;?>,<p/>
-		Thank you for participation in the Good Earth School Lunch Program.<p/>
-		Following is a recap of your order:
-<?php echo $orderString;?>
-<div>
-	Lunches for ...
-	<div style='margin:15px 0px 15px 20px;font-size:10pt;'>
-		<?php echo $schoolString;?>
-	</div>
-</div>
+	
+	
+	$extraMessage="
 		You elected to pay for this purchase by check:
+		<div style='margin:15px 0px 15px 20px;font-size:10pt;'>
+				Please make check payable to<p/>
+				<b>Good Earth</b> for {$showTotal}<br/>
+				with the invoice #{$shortRefId} in the memo line<p/>
+				and mail it to:<p/>
+				Good Earth School Lunches<br/>
+				11 Digital Drive<br/>
+				Suite C<br/>
+				Novato, CA 94949<br/><p/>
+				If you have questions, please call Customer Service at 415/382-1334
+		</div>
+	";
+	
+//	$extraMessage="";
 
-	<div style='margin:15px 0px 15px 20px;font-size:10pt;'>
-			Please make check payable to
-<p/>
-			<b>Good Earth</b> for $<?php echo number_format($purchaseEntity->chargeTotal, 2);?>
 
-<br/>		with the invoice #$<?php echo substr($purchaseEntity->refId, 0, 8);?> in the memo line
+if ($purchaseCount > 1) {
+	$multipleDealNotice = "
+		<br/><br/>You have ordered lunches for students in separate schools some of which collect lunch money directly. The sections below reflect separate payments that will appear on your credit card statement.
+	";
+}
 
-<p/>			and mail it to:
-<p/>
-			Good Earth School Lunches<br/>
-			11 Digital Drive<br/>
-			Suite C<br/>
-			Novato, CA 94949<br/>
-<p/>
-			If you have questions, please call Sherry at 415/382-1334
-</div>
-
-Thank You,<br/>
-Your Friends at Good Earth Natural Foods
-	<div style='font-size:10pt;color:#e2be83;margin-top:20px;'>PS, The order process reference ID is: <?php echo $purchaseEntity->fdOrderId;?></div>
-	<div style='font-size:10pt;color:#e2be83;margin-top:20px;'>The email address on this order is: <?php echo $user->emailAdr;?>, Login Name: <?php echo $user->userName;?></div>
-</div></body>
+echo "
+	<body style='background:#F5E4C6;'><div style='color:#385B2B;font-size:12pt;margin:20px 0px 20px 10px;'>
+		<div>
+			Dear {$user->firstName} {$user->lastName},<p/>
+				Thank you for participation in the Good Earth School Lunch Program. {$multipleDealNotice}<p/>
+			{$orderDisplayString}
+			
+			{$extraMessage}
+			
+			Thank You,<br/>
+				Your Friends at Good Earth Natural Foods
+			<div style='font-size:10pt;color:#e2be83;margin-top:20px;'>PS, The order process reference ID is: {$purchaseEntity->fdOrderId}</div>
+			<div style='font-size:10pt;color:#e2be83;margin-top:20px;'>The email address on this order is: {$user->emailAdr}, Login Name: {$user->userName}</div>
+		</div>
+	</body>
+	";
