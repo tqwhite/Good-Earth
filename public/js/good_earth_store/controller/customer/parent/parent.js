@@ -14,13 +14,16 @@ steal('jquery/controller', 'jquery/view/ejs')
 
 		init: function(el, options) {
 			this.baseInits();
-
 			qtools.validateProperties({
 				targetObject: options,
 				targetScope: this, //will add listed items to targetScope
 				propList: [
 					{
 						name: 'loginUser'
+					},
+					{
+						name: 'templateName',
+						optional:true
 					}
 				],
 				source: this.constructor._fullName
@@ -65,8 +68,8 @@ steal('jquery/controller', 'jquery/view/ejs')
 		},
 
 		initDisplay: function(inData) {
-
-			var html = $.View('//good_earth_store/controller/customer/parent/views/init.ejs',
+			this.templateName=this.templateName?this.templateName:'init';
+			var html = $.View('//good_earth_store/controller/customer/parent/views/'+this.templateName+'.ejs',
 			$.extend(inData, {
 				displayParameters: this.displayParameters,
 				viewHelper: this.viewHelper,

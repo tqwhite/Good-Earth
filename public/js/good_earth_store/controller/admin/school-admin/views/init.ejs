@@ -1,0 +1,43 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'},
+		{name:'formData'}
+	],
+ source:this.formData.source+"_views_init.js" });
+
+qtools.validateProperties({
+	targetObject:this.displayParameters,
+	propList:[
+		{name:'userEditor'},
+		{name:'studentEditor'},
+		{name:'selectionControl'}
+	],
+ source:this.formData.source+"_views_init.js" });
+
+%><div class='mainContainer'>
+	<div style='width:1100px;min-height:500px;'>
+		<div id='<%=this.displayParameters.selectionControl.divId%>' style='min-height:500px;float:left;position:relative;'>
+			control
+		</div>
+
+		<div style='min-height:500px;float:left;position:relative;float:right;min-width:53%;'>
+			<div id='<%=this.displayParameters.status.divId%>' style='text-align:center;'>
+				Good Earth Customer Center
+			</div>
+
+			<div id='<%=this.displayParameters.closeButton.divId%>' style='position:absolute;top:0%;right:0%;height:15px;width:15px;' title='Cancel Admin Mode'>
+			</div>
+
+			<div id='<%=this.displayParameters.userEditor.divId%>' style='min-height:200px;background:#C0F9FA;padding:10px;position:relative;'>
+			</div>
+
+			<div id='<%=this.displayParameters.studentEditor.divId%>' style='clear:both;margin-top:15px;min-height:200px;background:#C0F9FA;position:relative;'>
+			</div>
+
+			</div>
+		</div>
+	</div>
+</div>

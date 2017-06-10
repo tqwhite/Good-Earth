@@ -1,0 +1,44 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'},
+		{name:'formData'}
+	],
+ source:'session.dashboard.dashboardMainX' });
+
+qtools.validateProperties({
+	targetObject:displayParameters,
+	propList:[
+		{name:'myId'},
+		{name:'accountSpace'},
+		{name:'studentList'},
+		{name:'purchaseSpace'}
+
+	],
+ source:'session.dashboard.dashboardMainY' });
+
+%><div class='mainContainer' id='<%= displayParameters.myId.divId %>' style='width:auto;'>
+
+
+	<div class='accountSpace' id='<%= displayParameters.accountSpace.divId %>' style='width:auto;'></div>
+	
+	<div style='font-size:10pt;position:relative;color:gray;margin:10px 50px;'>Click on the Student's name to change information.</div>
+	
+	<div class='schoolAdminActionRow'>
+	
+		<div id='<%= displayParameters.studentList.divId %>'>studentListx</div>
+	
+		<div class='editColumn'>
+		
+			<div class='studentEditor' id='<%= displayParameters.studentEditor.divId %>'>studentEditor</div>
+			<div class='lunchEditor' id='<%= displayParameters.lunchEditor.divId %>'>lunchEditor</div>
+		
+		</div>
+	
+	</div>
+	</div>
+	
+
+</div>

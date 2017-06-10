@@ -1,0 +1,27 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'},
+		{name:'formData'}
+	],
+ source:'customer.parent.views.init' });
+
+qtools.validateProperties({
+	targetObject:this.displayParameters,
+	propList:[
+		{name:'logoutButton'}
+	],
+ source:'customer.parent.views.init' });
+
+%><table style='width:100%;'>
+<tr>
+<td style='text-align:left;'><%=this.formData.user.school.name%> F&R Lunch Administration <span class='subTitle'>(<%=this.formData.user.userName%>, <%=this.formData.user.emailAdr%>)</span>
+</td>
+<td style='text-align:left;'>
+	<div class='smallButton' style='float:right;' id='<%=this.displayParameters.logoutButton.divId%>'>
+	</div>
+</td>
+</tr>
+</table>

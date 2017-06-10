@@ -1,341 +1,361 @@
 body {
-	font-family:Lucida Sans,Lucida Grande,Arial,sans-serif;
-	margin:-1px 0px 0px -1px;
+	font-family: Lucida Sans, Lucida Grande, Arial, sans-serif;
+	margin: -1px 0px 0px -1px;
+}
+.basicButton {
+	transition-property: background-color, color;
+	transition-duration: .5s;
+	transition-timing-function: ease-out;
+	font-weight: bold;
+	border-top: 1pt solid gray;
+	cursor: pointer;
+	border-left: 1pt solid gray;
+	border-right: 1pt solid black;
+	border-bottom: 1pt solid black;
+	text-align: center;
+	padding-left: 2px;
+	padding-right: 2px;
+	width: 120px;
+	height: 30px;
+	margin-right: 10px;
+	-moz-border-radius: 4px;
+	/* Firefox */
+	/* Safari, Chrome */
+	border-radius: 4px;
+	/* CSS3 */
+	-moz-box-shadow: 2px 3px 5px rgba(0, 0, 0, .5);
+	box-shadow: 2px 3px 5px rgba(0, 0, 0, .5);
+}
+.basicReady {
+	background: #D2E6D2;
+	color: black;
+	-moz-border-radius: 4px;
+	/* Firefox */
+	/* Safari, Chrome */
+	border-radius: 4px;
+	/* CSS3 */
+}
+.basicHover {
+	background: none;
+	color: red;
+	-moz-border-radius: 4px;
+	/* Firefox */
+	/* Safari, Chrome */
+	border-radius: 4px;
+	/* CSS3 */
+}
+.basicActive {
+	/*clicked*/
+	background: #ddd;
+	color: red;
+	-moz-border-radius: 4px;
+	/* Firefox */
+	/* Safari, Chrome */
+	border-radius: 4px;
+	/* CSS3 */
+}
+.basicUnavailable {
+	background: #aaa;
+	color: #ddd;
+	-moz-border-radius: 0px;
+	/* Firefox */
+	/* Safari, Chrome */
+	border-radius: 0px;
+	/* CSS3 */
+}
+.basicUnavailableHidden {
+	display: none;
+	background: #aaa;
+	color: #ddd;
+	-moz-border-radius: 0px;
+	/* Firefox */
+	/* Safari, Chrome */
+	border-radius: 0px;
+	/* CSS3 */
+}
+.smallButton {
+	transition-property: background-color, color;
+	transition-duration: .5s;
+	transition-timing-function: ease-out;
+	font-weight: normal;
+	border-top: 1pt solid gray;
+	cursor: pointer;
+	border-left: 1pt solid gray;
+	border-right: 1pt solid black;
+	border-bottom: 1pt solid black;
+	text-align: center;
+	padding-left: 2px;
+	padding-right: 2px;
+	width: 90px;
+	height: 15px;
+	margin-right: 10px;
+	-moz-border-radius: 2px;
+	/* Firefox */
+	/* Safari, Chrome */
+	border-radius: 2px;
+	/* CSS3 */
+	font-size: 8pt;
+	-moz-box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+	box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+}
+.smallReady {
+	background: #D2E6D2;
+	color: black;
+	-moz-border-radius: 2px;
+	/* Firefox */
+	/* Safari, Chrome */
+	border-radius: 2px;
+	/* CSS3 */
+}
+.smallHover {
+	background: none;
+	color: red;
+	-moz-border-radius: 2px;
+	/* Firefox */
+	/* Safari, Chrome */
+	border-radius: 2px;
+	/* CSS3 */
+}
+.smallActive {
+	/*clicked*/
+	background: #ddd;
+	color: red;
+	-moz-border-radius: 2px;
+	/* Firefox */
+	/* Safari, Chrome */
+	border-radius: 2px;
+	/* CSS3 */
+}
+.smallUnavailable {
+	background: #aaa;
+	color: #ddd;
+	-moz-border-radius: 0px;
+	/* Firefox */
+	/* Safari, Chrome */
+	border-radius: 0px;
+	/* CSS3 */
+	px;
+	/* CSS3 */
+}
+.textButton {
+	cursor: pointer;
+}
+.textHover {
+	-moz-box-shadow: 1px 2px 4px rgba(0, 0, 0, .5) inset;
+	box-shadow: 1px 2px 4px rgba(0, 0, 0, .5) inset;
+	-moz-border-radius: 4px;
+	/* Firefox */
+	/* Safari, Chrome */
+	border-radius: 4
+}
+.textActive {
+	color: blue;
+}
+.textUnavailable {
+	color: orange;
+}
+.entryPanelErrorList {
+	font-size: 10pt;
+}
+.bad {
+	color: red;
+}
+.good {
+	color: green;
+}
+.mainContainer {
+	position: relative;
+	background: #a0f4f7;
+	margin: 20px 0px 0px 50px;
+	min-height: 400px;
+	width: 700px;
+	border-right: 4pt solid #ADA081;
+	border-bottom: 4pt solid #ADA081;
+	border-top: 2pt solid #fcf7e8;
+	border-left: 2pt solid #fcf7e8;
+	-moz-box-shadow: 5px 8px 20px rgba(0, 0, 0, .5);
+	box-shadow: 5px 8px 20px rgba(0, 0, 0, .5);
+}
+.adminPanelBase {
+	width: 900px;
+}
+.entryBox {
+	margin: 50px 0px 0px 200px;
+	padding-left: 25px;
+	border: 1pt solid gray;
+	-moz-box-shadow: 5px 8px 20px rgba(0, 0, 0, .5);
+	box-shadow: 5px 8px 20px rgba(0, 0, 0, .5);
+}
+.accountSpace {
+	width: 630px;
+	height: 20px;
+	margin-left: 25px;
+	padding: 10px 0px 10px 20px;
+	color: #426134;
+	border-bottom: 2pt solid gray;
+}
+.accountSpace .subTitle {
+	font-size: 70%;
+	color: gray;
+}
+.kidSpace {
+	min-height: 200px;
+	width: 630px;
+	margin-left: 25px;
+	padding: 10px 0px 10px 20px;
+	color: #426134;
+	border-bottom: 2pt solid gray;
+}
+.schedule td {
+	height: 25px;
+	text-align: center;
+	border: none;
+	width: 80px;
+}
+.purchaseSpace {
+	min-height: 200px;
+	width: 630px;
+	margin-left: 25px;
+	padding: 10px 0px 10px 20px;
+	color: #426134;
+}
+.childNameSpace {
+	width: 630px;
+	height: 20px;
+	margin-left: 25px;
+	padding: 10px 0px 10px 20px;
+	color: #426134;
+	border-bottom: 2pt solid gray;
+	clear: both;
+}
+.childNameSpace .nameString {
+	float: left;
+}
+.offeringSpace {
+	float: left;
+	width: 300px;
+	min-height: 200px;
+	background: #c7f8f9;
+	margin-left: 25px;
+	padding: 10px 0px 10px 20px;
+}
+.selectedSpace {
+	float: left;
+	width: 300px;
+	min-height: 200px;
+	background: #c7f8f9;
+	padding: 10px 0px 10px 20px;
+	margin-left: 10px;
+}
+.schoolIdClassString {}
+.offeringTitle {
+	font-size: 8pt;
+	font-weight: bold;
+}
+.purchaseTitle {
+	font-size: 8pt;
+	margin-top: 4px;
+	font-weight: bold;
+}
+.tinyButton {
+	font-weight: normal;
+	border-top: 1pt solid gray;
+	cursor: pointer;
+	border-left: 1pt solid gray;
+	border-right: 1pt solid black;
+	border-bottom: 1pt solid black;
+	text-align: center;
+	padding-left: 2px;
+	padding-right: 2px;
+	height: 15px;
+	margin-right: 10px;
+	-moz-border-radius: 2px;
+	/* Firefox */
+	/* Safari, Chrome */
+	border-radius: 2px;
+	/* CSS3 */
+	font-size: 8pt;
+	-moz-box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+	box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+}
+.tinyReady {
+	background: #D2E6D2;
+	color: black;
+	-moz-border-radius: 2px;
+	/* Firefox */
+	/* Safari, Chrome */
+	border-radius: 2px;
+	/* CSS3 */
+}
+.tinyHover {
+	background: none;
+	color: red;
+	-moz-border-radius: 2px;
+	/* Firefox */
+	/* Safari, Chrome */
+	border-radius: 2px;
+	/* CSS3 */
+}
+.tinyActive {
+	/*clicked*/
+	background: #ddd;
+	color: red;
+	-moz-border-radius: 2px;
+	/* Firefox */
+	/* Safari, Chrome */
+	border-radius: 2px;
+	/* CSS3 */
+}
+.tinyUnavailable {
+	background: #aaa;
+	color: #ddd;
+	-moz-border-radius: 0px;
+	/* Firefox */
+	/* Safari, Chrome */
+	border-radius: 0px;
+	/* CSS3 */
+	px;
+	/* CSS3 */
+}
+.checkoutTotal {
+	font-size: 14pt;
+	font-weight: bold;
+}
+.gradeLevelSelect {
+	width: 140px;
+}
+.schoolSelect {
+	width: 140px;
 }
 
 
 
-.basicButton{
-  transition-property: background-color, color;
-  transition-duration: .5s;
-  transition-timing-function: ease-out;
-  
-  	font-weight:bold;
-	border-top:1pt solid gray;
-	cursor:pointer;
-	border-left:1pt solid gray;
-	border-right:1pt solid black;
-	border-bottom:1pt solid black;
-	text-align:center;
-	padding-left:2px;
-	padding-right:2px;
-	width:120px;
-	height:30px;
-	margin-right:10px;
-  -moz-border-radius: 4px; /* Firefox */
-  -webkit-border-radius: 4px; /* Safari, Chrome */
-  border-radius: 4px; /* CSS3 */
-	-webkit-box-shadow:2px 3px 5px rgba(0, 0, 0, .5);
-	   -moz-box-shadow:2px 3px 5px rgba(0, 0, 0, .5);
-	        box-shadow:2px 3px 5px rgba(0, 0, 0, .5);
+.schoolAdminActionRow {
+	/* distribute horizontally */
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	padding-bottom:10px;
 }
-
-.basicReady{
-	background:#D2E6D2;
-	color:black;
-  -moz-border-radius: 4px; /* Firefox */
-  -webkit-border-radius: 4px; /* Safari, Chrome */
-  border-radius: 4px; /* CSS3 */
+.schoolAdminActionRow .studentList {
+	min-height: 50vh;
+	width: 25vw;
+	padding: 10px 0px 10px 20px;
+	color: #426134;
+	background:rgba(255,255,255,.6);
 }
-
-.basicHover{
-	background:none;
-	color:red;
-  -moz-border-radius: 4px; /* Firefox */
-  -webkit-border-radius: 4px; /* Safari, Chrome */
-  border-radius: 4px; /* CSS3 */
+.schoolAdminActionRow .editColumn {}
+.schoolAdminActionRow .editColumn .editorContainer {
+	min-width: 40vw;
+	;
+	padding: 10px 15px;
+	padding: 10px 0px 10px 20px;
+	color: #426134;
+	background:rgba(255,255,255,.6);
 }
-
-.basicActive{ /*clicked*/
-	background:#ddd;
-	color:red;
-  -moz-border-radius: 4px; /* Firefox */
-  -webkit-border-radius: 4px; /* Safari, Chrome */
-  border-radius: 4px; /* CSS3 */
+.schoolAdminActionRow .editColumn .studentEditor {
+min-height:20vh;
 }
-
-.basicUnavailable{
-	background:#aaa;
-	color:#ddd;
-  -moz-border-radius: 0px; /* Firefox */
-  -webkit-border-radius: 0px; /* Safari, Chrome */
-  border-radius: 0px; /* CSS3 */
-}
-
-
-
-.basicUnavailableHidden{
-	display:none;
-	background:#aaa;
-	color:#ddd;
-  -moz-border-radius: 0px; /* Firefox */
-  -webkit-border-radius: 0px; /* Safari, Chrome */
-  border-radius: 0px; /* CSS3 */
-}
-
-.smallButton{
-
-  transition-property: background-color, color;
-  transition-duration: .5s;
-  transition-timing-function: ease-out;
-  
-  	font-weight:normal;
-	border-top:1pt solid gray;
-	cursor:pointer;
-	border-left:1pt solid gray;
-	border-right:1pt solid black;
-	border-bottom:1pt solid black;
-	text-align:center;
-	padding-left:2px;
-	padding-right:2px;
-	width:90px;
-	height:15px;
-	margin-right:10px;
-  -moz-border-radius: 2px; /* Firefox */
-  -webkit-border-radius: 2px; /* Safari, Chrome */
-  border-radius: 2px; /* CSS3 */
-  font-size:8pt;
-	-webkit-box-shadow:1px 2px 4px rgba(0, 0, 0, .5);
-	   -moz-box-shadow:1px 2px 4px rgba(0, 0, 0, .5);
-	        box-shadow:1px 2px 4px rgba(0, 0, 0, .5);
-}
-
-.smallReady{
-	background:#D2E6D2;
-	color:black;
-  -moz-border-radius: 2px; /* Firefox */
-  -webkit-border-radius: 2px; /* Safari, Chrome */
-  border-radius: 2px; /* CSS3 */
-}
-
-.smallHover{
-	background:none;
-	color:red;
-  -moz-border-radius: 2px; /* Firefox */
-  -webkit-border-radius: 2px; /* Safari, Chrome */
-  border-radius: 2px; /* CSS3 */
-}
-
-.smallActive{ /*clicked*/
-	background:#ddd;
-	color:red;
-  -moz-border-radius: 2px; /* Firefox */
-  -webkit-border-radius: 2px; /* Safari, Chrome */
-  border-radius: 2px; /* CSS3 */
-}
-
-.smallUnavailable{
-	background:#aaa;
-	color:#ddd;
-  -moz-border-radius: 0px; /* Firefox */
-  -webkit-border-radius: 0px; /* Safari, Chrome */
-  border-radius: 0px; /* CSS3 */px; /* CSS3 */
-}
-
-.textButton{
-	cursor:pointer;
-}
-
-.textHover{
-	-webkit-box-shadow:1px 2px 4px rgba(0, 0, 0, .5) inset;
-	   -moz-box-shadow:1px 2px 4px rgba(0, 0, 0, .5) inset;
-	        box-shadow:1px 2px 4px rgba(0, 0, 0, .5) inset;
-  -moz-border-radius: 4px; /* Firefox */
-  -webkit-border-radius: 4px; /* Safari, Chrome */
-  border-radius: 4
-}
-
-.textActive{
-color:blue;
-}
-
-.textUnavailable{
-color:orange;
-}
-
-.entryPanelErrorList{
-font-size:10pt;
-}
-
-.bad{
-	color:red;
-}
-
-.good{
-	color:green;
-}
-
-.mainContainer{
-position:relative;
-	background:#a0f4f7;
-	margin:20px 0px 0px 50px;
-	min-height:400px;
-	width:700px;
-	border-right:4pt solid #ADA081;
-	border-bottom:4pt solid #ADA081;
-	border-top:2pt solid #fcf7e8;
-	border-left:2pt solid #fcf7e8;
-	-webkit-box-shadow:5px 8px 20px rgba(0, 0, 0, .5);
-	   -moz-box-shadow:5px 8px 20px rgba(0, 0, 0, .5);
-	        box-shadow:5px 8px 20px rgba(0, 0, 0, .5);
-}
-
-.adminPanelBase{
-	width:900px;
-}
-
-.entryBox{
-margin:50px 0px 0px 200px;padding-left:25px;border:1pt solid gray;
-	-webkit-box-shadow:5px 8px 20px rgba(0, 0, 0, .5);
-	   -moz-box-shadow:5px 8px 20px rgba(0, 0, 0, .5);
-	        box-shadow:5px 8px 20px rgba(0, 0, 0, .5);
-}
-
-.accountSpace{
-	width:630px;
-	height:20px;
-	margin-left:25px;
-	padding:10px 0px 10px 20px;
-	color:#426134;
-	border-bottom:2pt solid gray;
-}
-
-.accountSpace .subTitle{
-	font-size:70%;
-	color:gray;
-}
-
-.kidSpace{
-	min-height:200px;
-	width:630px;
-	margin-left:25px;
-	padding:10px 0px 10px 20px;
-	color:#426134;
-	border-bottom:2pt solid gray;
-}
-
-.schedule td{
-	height:25px;
-	text-align:center;
-	border:none;
-	width:80px;
-}
-
-.purchaseSpace{
-	min-height:200px;
-	width:630px;
-	margin-left:25px;
-	padding:10px 0px 10px 20px;
-	color:#426134;
-}
-
-.childNameSpace{
-	width:630px;
-	height:20px;
-	margin-left:25px;
-	padding:10px 0px 10px 20px;
-	color:#426134;
-	border-bottom:2pt solid gray;
-	clear:both;
-}
-
-.childNameSpace .nameString{
-	float:left;
-}
-
-.offeringSpace{
-	float:left;
-	width:300px;
-	min-height:200px;
-	background:#c7f8f9;
-	margin-left:25px;
-	padding:10px 0px 10px 20px;
-}
-.selectedSpace{
-	float:left;
-	width:300px;
-	min-height:200px;
-	background:#c7f8f9;
-	padding:10px 0px 10px 20px;
-	margin-left:10px;
-}
-
-.schoolIdClassString{
-}
-
-.offeringTitle{
-	font-size:8pt;
-	font-weight:bold;
-}
-
-.purchaseTitle{
-	font-size:8pt;
-	margin-top:4px;
-	font-weight:bold;
-}
-
-.tinyButton{
-  	font-weight:normal;
-	border-top:1pt solid gray;
-	cursor:pointer;
-	border-left:1pt solid gray;
-	border-right:1pt solid black;
-	border-bottom:1pt solid black;
-	text-align:center;
-	padding-left:2px;
-	padding-right:2px;
-	height:15px;
-	margin-right:10px;
-  -moz-border-radius: 2px; /* Firefox */
-  -webkit-border-radius: 2px; /* Safari, Chrome */
-  border-radius: 2px; /* CSS3 */
-  font-size:8pt;
-	-webkit-box-shadow:1px 2px 4px rgba(0, 0, 0, .5);
-	   -moz-box-shadow:1px 2px 4px rgba(0, 0, 0, .5);
-	        box-shadow:1px 2px 4px rgba(0, 0, 0, .5);
-}
-
-.tinyReady{
-	background:#D2E6D2;
-	color:black;
-  -moz-border-radius: 2px; /* Firefox */
-  -webkit-border-radius: 2px; /* Safari, Chrome */
-  border-radius: 2px; /* CSS3 */
-}
-
-.tinyHover{
-	background:none;
-	color:red;
-  -moz-border-radius: 2px; /* Firefox */
-  -webkit-border-radius: 2px; /* Safari, Chrome */
-  border-radius: 2px; /* CSS3 */
-}
-
-.tinyActive{ /*clicked*/
-	background:#ddd;
-	color:red;
-  -moz-border-radius: 2px; /* Firefox */
-  -webkit-border-radius: 2px; /* Safari, Chrome */
-  border-radius: 2px; /* CSS3 */
-}
-
-.tinyUnavailable{
-	background:#aaa;
-	color:#ddd;
-  -moz-border-radius: 0px; /* Firefox */
-  -webkit-border-radius: 0px; /* Safari, Chrome */
-  border-radius: 0px; /* CSS3 */px; /* CSS3 */
-}
-
-.checkoutTotal{
-	font-size:14pt;
-	font-weight:bold;
-}
-
-.gradeLevelSelect{
-	width:140px;
-}
-
-.schoolSelect{
-	width:140px;
-}
+.schoolAdminActionRow .editColumn .lunchEditor {
+border-top:2pt solid rgb(160, 244, 247);
+min-height:40vh;}

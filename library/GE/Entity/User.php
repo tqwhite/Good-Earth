@@ -172,6 +172,15 @@ class User /*extends Base*/{
 
 	private $role;
 
+
+	/**
+	 *
+	 * @ManyToOne(targetEntity="School", cascade={"all"}, fetch="EAGER")
+	 * @JoinColumn(name="schoolRefId", referencedColumnName="refId", nullable=true)
+	 *
+	 **/
+	private $school;
+
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
 	$this->created=new \DateTime(date("Y-m-d H:i:s"));

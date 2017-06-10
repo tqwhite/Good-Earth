@@ -1,0 +1,24 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'},
+		{name:'formData'}
+	],
+ source:'session.dashboard.dashboardMainX' });
+
+qtools.validateProperties({
+	targetObject:displayParameters,
+	propList:[
+		{name:'myId'},
+		{name:'accountSpace'},
+		{name:'kidSpace'},
+		{name:'purchaseSpace'}
+
+	],
+ source:'session.dashboard.dashboardMainY' });
+
+%><div class='studentList'  id='<%= displayParameters.kidSpace.divId %>'>
+student list 
+</div>

@@ -57,14 +57,14 @@ for ($i = 0, $purchaseCount = count($purchasesViewData); $i < $purchaseCount; $i
 		$schoolString .= "<div>{$element['firstName']} {$element['lastName']} at {$element['school']} school (session: {$element['periodStart']} to {$element['periodEnd']})</div>";
 	}
 	
-	$dealSubjectString="
-		A payment was made to {$merchantIdOwnerName} for <span style='font-size:85%'>&dollar;{$showTotal}</span> on your credit card <span style='font-size:85%'>(...{$purchaseEntity->lastFour})</span>
-		for the following lunches:
-	";
-	
 // 	$dealSubjectString="
-// 		Following is a recap of your order:
+// 		<b>A payment was made to {$merchantIdOwnerName} for <span style='font-size:85%'>&dollar;{$showTotal}</span> on your credit card <span style='font-size:85%'>(...{$purchaseEntity->lastFour})</span>
+// 		for the following lunches:</b>
 // 	";
+	
+	$dealSubjectString="
+		Following is a recap of your order:
+	";
 	
 	$orderDisplayString .= "
 		{$dealSubjectString}

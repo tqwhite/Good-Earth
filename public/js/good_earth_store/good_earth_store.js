@@ -46,6 +46,8 @@ steal(
 	'./controller/admin/control/control.js',
 	'./controller/session/user_editor/user_editor.js',
 	'./controller/admin/user_selector/user_selector.js',
+	
+	'./controller/school_admin/dashboard/dashboard.js',
 
 	'./controller/tools/ui/button2/button2.js',
 	'./controller/tools/ui/modal_screen/modal_screen.js',

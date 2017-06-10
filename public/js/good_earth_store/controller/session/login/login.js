@@ -139,8 +139,13 @@ resetAfterSave:function(inData){
 		$('#'+this.displayParameters.status.divId).html("Welcome back, "+inData.data.firstName+" <span style=color:gray;font-size:6pt'>("+inData.data.school+")</span>").removeClass('bad').addClass('good');
 		GoodEarthStore.Models.LocalStorage.setCookie(GoodEarthStore.Models.LocalStorage.getConstant('loginCookieName'), inData.data.userName);
 
+		if (inData.data.role=='schoolRep'){
+		this.element.html("<div style='margin-left:450px;margin-top:200px;' id='spinner'></div>").good_earth_store_school_admin_dashboard();
+		}
+		else{
 		this.element.html("<div style='margin-left:450px;margin-top:200px;' id='spinner'></div>").good_earth_store_customer_dashboard();
-
+		}
+		
 	var opts={
 	  lines: 7, // The number of lines to draw
 	  length: 20, // The length of each line

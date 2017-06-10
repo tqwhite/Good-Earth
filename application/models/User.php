@@ -181,7 +181,9 @@ class Application_Model_User extends Application_Model_Base
 						'phoneNumber' => $inData->phoneNumber,
 						'refId' => $inData->refId,
 						
-						'account' => \Application_Model_Account::formatOutput($inData->account, $outputType)
+						'account' => \Application_Model_Account::formatOutput($inData->account, $outputType),
+						
+						'school' => \Application_Model_School::formatOutput($inData->school, $outputType)
 					);
 					break;
 				case 'export':
@@ -202,6 +204,7 @@ class Application_Model_User extends Application_Model_Base
 						'confirmationCode' => $inData->confirmationCode,
 						'phoneNumber' => $inData->phoneNumber,
 						'accountRefId' => $inData->account->refId,
+						'schoolRefId' => $inData->school->refId,
 						'created' => $inData->created
 					);
 					break;
