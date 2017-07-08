@@ -12,13 +12,12 @@ qtools.validateProperties({
 	targetObject:displayParameters,
 	propList:[
 		{name:'myId'},
-		{name:'accountSpace'},
-		{name:'kidSpace'},
-		{name:'purchaseSpace'}
+		{name:'students'}
 
 	],
  source:'session.dashboard.dashboardMainY' });
+ 
 
-%><div class='studentList'  id='<%= displayParameters.kidSpace.divId %>'>
-student list 
-</div>
+
+
+%><div class='studentList'  id='<%= displayParameters.myId.divId %>'></div>

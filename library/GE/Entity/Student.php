@@ -83,12 +83,13 @@ class Student /*extends Base*/{
 	private $gradeLevel;
 
 
-
-    /**
+	/**
+	 *
 	 * @param \Doctrine\Common\Collections\Collection $property
-	 * @OneToMany(targetEntity="Order", mappedBy="students", cascade={"persist", "remove"});
-     */
-    private $orders;
+	 * @OneToMany(targetEntity="StudentOrderNode", mappedBy="student", cascade={"persist", "remove"});
+	 **/
+
+	private $orderNodes;
 
 
 

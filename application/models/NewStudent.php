@@ -53,48 +53,7 @@ class Application_Model_Student extends Application_Model_Base
 		return $errorList;
 	}
 
-	static function formatDetail($inData, $outputType){
-
-		if ($inData->refId){
-		switch ($outputType){
-			default:
-				$outArray=array(
-					'firstName'=>$inData->firstName,
-					'lastName'=>$inData->lastName,
-					'isActiveFlag'=>$inData->isActiveFlag,
-					'refId'=>$inData->refId,
-					'vegetarianFlag'=>$inData->vegetarianFlag,
-					'isTeacherFlag'=>$inData->isTeacherFlag,
-					'allergyFlag'=>$inData->allergyFlag,
-					'schoolRefId'=>$inData->school->refId,
-					'accountRefId'=>$inData->account->refId,
-					'gradeLevelRefId'=>$inData->gradeLevel->refId
-				);
-				break;
-		case 'export':
-			$outArray=array(
-				'refId'=>$inData->refId,
-				'firstName'=>$inData->firstName,
-				'lastName'=>$inData->lastName,
-				'isTeacherFlag'=>$inData->isTeacherFlag,
-				'vegetarianFlag'=>$inData->vegetarianFlag,
-					'allergyFlag'=>$inData->allergyFlag,
-				'schoolRefId'=>$inData->school->refId,
-				'accountRefId'=>$inData->account->refId,
-				'gradeLevelRefId'=>$inData->gradeLevel->refId,
-				'created'=>$inData->created
-			);
-			break;
-
-			}
-		}
-		else{
-			$outArray=array();
-		}
-
-		return $outArray;
-
-	}
+	static function formatDetail($inData, $outputType){}
 
 	public function getList($hydrationMode){
 

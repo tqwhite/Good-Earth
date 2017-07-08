@@ -25,10 +25,6 @@ init: function(el, options) {
 		propList:[],
 		source:this.constructor._fullName
  	});
- 	
-console.clear();
-console.log('console.clear() happens in school_admin/dashboard.js');
-
  	this.startupOptions=options?options:{};
 
 	this.startProgressIndicator({styleString:'margin-left:300px;margin-top:200px;'});
@@ -52,7 +48,7 @@ initDisplayProperties:function(){
 	name='accountSpace'; nameArray.push({name:name});
 	name='studentList'; nameArray.push({name:name});
 	name='lunchEditor'; nameArray.push({name:name});
-	name='saveButton'; nameArray.push({name:name});
+	name='studentEditor'; nameArray.push({name:name});
 
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -62,7 +58,6 @@ initControlProperties:function(){
 	this.viewHelper=new viewHelper2();
 	this.loginUser=GoodEarthStore.Models.Session.get('user');
 	this.purchases=this.newPurchaseObj();
-this.studentsToSaveList=[];
 
 },
 
@@ -89,49 +84,61 @@ initDomElements:function(){
 	this.displayParameters.accountSpace.domObj=$('#'+this.displayParameters.accountSpace.divId);
 	this.displayParameters.studentList.domObj=$('#'+this.displayParameters.studentList.divId);
 	this.displayParameters.lunchEditor.domObj=$('#'+this.displayParameters.lunchEditor.divId);
-	this.displayParameters.status.domObj=$('#'+this.displayParameters.status.divId);
-	this.displayParameters.saveButton.domObj=$('#'+this.displayParameters.saveButton.divId);
+	this.displayParameters.studentEditor.domObj=$('#'+this.displayParameters.studentEditor.divId);
 
 	this.displayParameters.accountSpace.domObj.good_earth_store_customer_parent({
 		'loginUser':this.loginUser,
 		templateName:'schoolAdmin'
 		});
 	this.displayParameters.studentList.domObj.good_earth_store_school_admin_student_list({
-		'loginUser':this.loginUser,
 		account:this.account,
 		schools:this.schools,
 		gradeLevels:this.gradeLevels,
-		statusDomObj:this.displayParameters.status.domObj,
-		studentsToSaveList:this.studentsToSaveList
+		editButtonHandler:this.callback('editButtonHandler')
 		});
+		
+	this.displayParameters.lunchEditor.domObj.good_earth_store_school_admin_lunch_editor({
+		account:this.account,
+		schools:this.schools,
+		gradeLevels:this.gradeLevels,
+		lunchButtonHandler:this.callback('lunchButtonHandler')
+		});
+		
+	this.displayParameters.lunchEditor.domObj.good_earth_store_school_admin_lunch_editor({
+		account:this.account,
+		schools:this.schools,
+		gradeLevels:this.gradeLevels,
+		lunchButtonHandler:this.callback('lunchButtonHandler')
+		});
+		
+		
+		
+// 	this.displayParameters.purchaseSpace.domObj.good_earth_store_customer_purchases({
+// 		dashboardContainer:this.element,
+// 		returnClassName:this.constructor._fullName,
+// 		returnClassOptions:this.startupOptions,
+// 		account:this.account,
+// 		purchases:this.purchases
+// 	});
+	
 
-	this.displayParameters.saveButton.domObj.good_earth_store_tools_ui_button2({
-		ready:{classs:'basicReady'},
-		hover:{classs:'basicHover'},
-		clicked:{classs:'basicActive'},
-		unavailable:{classs:'basicUnavailable'},
-		accessFunction:this.callback('saveButtonHandler'),
-		initialControl:'setToReady', //initialControl:'setUnavailable'
-		label:"<div style='margin-top:1px;'>SAVE</div>"
-	});
 
 },
 
-saveButtonHandler:function(control, parameter){
+editButtonHandler:function(control, parameter){
 	var componentName='editButton';
 	switch(control){
 		case 'click':
 			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
 			else{return;}
-		this.displayParameters.status.domObj.html('Save is not yet implemented');
 
-
-	for (var i=0, len=this.studentsToSaveList.length; i<len; i++){
-		var student=this.studentsToSaveList[i];
-		
-			this.saveStudent(student)
-	}
-
+			var studentRefId=parameter.thisDomObj.attr('refId');
+			this.displayParameters.studentEditor.domObj.good_earth_store_school_admin_student_editor({
+				account:this.account,
+				schools:this.schools,
+				gradeLevels:this.gradeLevels,
+				studentRefId:studentRefId
+				});
 		break;
 		case 'setAccessFunction':
 			if (!this[componentName]){this[componentName]={};}
@@ -142,34 +149,34 @@ saveButtonHandler:function(control, parameter){
 	//focusin focusout keydown keyup keypress select
 },
 
-saveStudent:function(student){
-	if (!student.vegetarianFlag){student.vegetarianFlag=0;}
-	if (!student.isTeacherFlag){student.isTeacherFlag=0;}
-	if (!student.allergyFlag){student.allergyFlag=0;}
-	if (!student.isActiveFlag){student.isActiveFlag=1;}
-	this.toggleSpinner();
-	GoodEarthStore.Models.Student.add(student, this.callback('catchSave'));
-},
-catchSave:function(status){
 
-console.dir({"status":status});
-/*
- Current: saves students correctly.
- 
- next: 
- 
- 1) make the save endpoint detect a list and save all students.
- 2) finish the other fields of being a Student (teacher, etc)
- 2.1) make it so that Save button is disabled when there are errors
- 3) make it so that there is an empty student input row that generates a new student when typed
- 4) that generates a new empty row when you start typing in the current empty row
- 5) when a student is selected, show a lunch purchase editor for that student
- 6) make a behind the scenes auto-checkout, perhaps with a confirmation report
- 7) maybe, add apply to all button
- 8) figure out how to get already purchased orders (or at least days) to the UI
+lunchButtonHandler:function(control, parameter){
+	var componentName='lunchButton';
+	switch(control){
+		case 'click':
 
-*/
 
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+
+			var studentRefId=parameter.thisDomObj.attr('refId');
+			this.element.html('');
+			this.element.good_earth_store_customer_choose_menu({
+				returnClassName:this.constructor._fullName,
+				returnClassOptions:this.startupOptions,
+				studentRefId:studentRefId,
+				account:this.account,
+				offerings:this.offerings,
+				purchases:this.purchases
+			});
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
 },
 
 queueReferenceLookup:function(controlObj, name, modelName, argData){
@@ -229,6 +236,7 @@ referenceData=inData;
 },
 
 newPurchaseObj:function(){
+
 	var purchaseObj=GoodEarthStore.Models.Session.get('purchases');
 	if (!purchaseObj){
 		purchaseObj={

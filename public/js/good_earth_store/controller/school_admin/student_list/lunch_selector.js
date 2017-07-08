@@ -47,11 +47,6 @@ initDisplayProperties:function(){
 	name='accountSpace'; nameArray.push({name:name});
 	name='kidSpace'; nameArray.push({name:name});
 	name='purchaseSpace'; nameArray.push({name:name});
-	name = 'adminButton'; nameArray.push({
-		name: name,
-		handlerName: name + 'Handler',
-		targetDivId: name + 'Target'
-	});
 
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -67,12 +62,6 @@ initControlProperties:function(){
 },
 
 initDisplay:function(inData){
-		
-	var adminMode=GoodEarthStore.Models.LocalStorage.getCookieData(this.adminModeCookieName);
-	if (adminMode.data=='true'){
-		this.adminButtonHandler('click');
-		return;
-	}
 
 			
 	var html=$.View('//good_earth_store/controller/school_admin/'+this.toolName+'/views/main.ejs',
@@ -114,29 +103,7 @@ initDomElements:function(){
 		purchases:this.purchases
 	});
 	
-	this.displayParameters.adminButton.domObj = $('#' + this.displayParameters.adminButton.divId);
-	if (this.loginUser.role == 'admin') {
-		this.displayParameters.adminButton.domObj.good_earth_store_tools_ui_button2({
-			ready: {
-				classs: 'basicReady'
-			},
-			hover: {
-				classs: 'basicHover'
-			},
-			clicked: {
-				classs: 'basicActive'
-			},
-			unavailable: {
-				classs: 'basicUnavailable'
-			},
-			accessFunction: this.displayParameters.adminButton.handler,
-			initialControl: 'setToReady', //initialControl:'setUnavailable'
-			label: "Admin"
-		});
-	} else {
-		this.displayParameters.adminButton.domObj.remove();
-	}
-
+	
 },
 
 lunchButtonHandler:function(control, parameter){
@@ -238,40 +205,6 @@ newPurchaseObj:function(){
 	return purchaseObj;
 },
 
-adminButtonHandler: function(control, parameter) {
-	var componentName = 'adminButton';
-	switch (control) {
-		case 'click':
-			if (this.isAcceptingClicks()) {
-				this.turnOffClicksForAwhile();
-			}
-			else {
-				return;
-			}
-			
-			GoodEarthStore.Models.LocalStorage.setCookie(this.adminModeCookieName, 'true', { expires: 1, path: '/'});
-
-			this.element.good_earth_store_admin_admin({
-				'loginUser': this.loginUser,
-				'adminModeCookieName':this.adminModeCookieName,
-				'sessionActivationPackage':{
-					loginAccount:this.account,
-					schools:this.schools,
-					gradeLevels:this.gradeLevels,
-					lunchButtonHandler:this.callback('lunchButtonHandler')
-				}
-			});
-			break;
-		case 'setAccessFunction':
-			if (!this[componentName]) {
-				this[componentName] = {};
-			}
-			this[componentName].accessFunction = parameter;
-			break;
-	}
-	//change dblclick mousedown mouseover mouseout dblclick
-	//focusin focusout keydown keyup keypress select
-}
 
 
 })

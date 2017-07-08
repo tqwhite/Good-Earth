@@ -54,7 +54,14 @@ class Application_Model_Student extends Application_Model_Base
 	}
 
 	static function formatDetail($inData, $outputType){
-
+// 	if ($inData->refId=='827fad18-1bbe-4de7-87d1-1e6476fa5a0e'){
+// 		echo "\n\ninData->refId={$inData->refId}\n\n";
+// 		echo "\n\ninData->refId={$inData->firstName} {$inData->lastName}\n\n";
+// 		echo '1) '.get_class($inData)."\n\n";
+// 		echo '2) '.get_class($inData->orders)."\n\n";
+// 
+// 		\Doctrine\Common\Util\Debug::dump($inData->orders);
+// 	}
 		if ($inData->refId){
 		switch ($outputType){
 			default:
@@ -72,7 +79,8 @@ class Application_Model_Student extends Application_Model_Base
 					
 						'gradeLevel'=>\Application_Model_GradeLevel::formatOutput($inData->gradeLevel, $outputType),
 						
-						'school'=>\Application_Model_School::formatOutput($inData->school, $outputType)
+						'school'=>\Application_Model_School::formatOutput($inData->school, $outputType),
+						'orders'=>\Application_Model_Order::formatOutput($inData->offeringNodes)
 				);
 				break;
 		case 'export':

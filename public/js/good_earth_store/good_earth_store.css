@@ -328,8 +328,43 @@ body {
 	width: 140px;
 }
 
+.distributeHoriz{
+
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	}
+
+.schoolAdminDashboard{
+
+}
+
+.schoolAdminDashboard .infoRow{
+font-size:10pt;position:relative;color:gray;margin:10px 50px;height:30px;
+}
 
 
+.schoolAdminDashboard .noStatus{
+
+background:transparent;
+}
+
+.schoolAdminDashboard .badStatus{
+color:red;
+background:rgba(255,255,255,.7);
+}
+
+.badInput{
+border:1pt solid red;
+}
+
+
+.distributeHorz {
+	/* distribute horizontally */
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
 .schoolAdminActionRow {
 	/* distribute horizontally */
 	display: flex;
@@ -338,8 +373,8 @@ body {
 	padding-bottom:10px;
 }
 .schoolAdminActionRow .studentList {
-	min-height: 50vh;
-	width: 25vw;
+	min-height: 45vh;
+	width: 50vw;
 	padding: 10px 0px 10px 20px;
 	color: #426134;
 	background:rgba(255,255,255,.6);
@@ -352,10 +387,6 @@ body {
 	padding: 10px 0px 10px 20px;
 	color: #426134;
 	background:rgba(255,255,255,.6);
-}
-.schoolAdminActionRow .editColumn .studentEditor {
-min-height:20vh;
-}
 .schoolAdminActionRow .editColumn .lunchEditor {
 border-top:2pt solid rgb(160, 244, 247);
 min-height:40vh;}

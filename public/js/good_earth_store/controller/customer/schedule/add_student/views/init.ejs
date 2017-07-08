@@ -51,7 +51,7 @@ var schoolString=this.viewHelper.makeSelectTag({
 
 if (this.formData.gradeLevel && this.formData.gradeLevel.refId){
 
-//I don't think this ever gets called. Remove it at the earliest convenience.
+//This gets called when the kid already has a gradelevel. On a new kid, the select is created by an event handler on school select.
 
 var gradeLevelSelectString=this.viewHelper.makeSelectTag({
 	selectClassName:'gradeLevelSelect',

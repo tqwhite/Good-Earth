@@ -25,13 +25,12 @@ class Order /*extends Base*/{
 	**/
 	private $helixId;
 
-	/**
-	 *
-	 * @ManyToOne(targetEntity="Student", cascade={"all"}, fetch="EAGER")
-	 * @JoinColumn(name="studentRefId", referencedColumnName="refId")
-	 *
-	 **/
-	private $student;
+
+    /**
+	 * @param \Doctrine\Common\Collections\Collection $property
+	 * @OneToMany(targetEntity="StudentOrderNode", mappedBy="orders", cascade={"persist", "remove"});
+     */
+    private $studentOrderNodes;
 
 	/**
 	 *

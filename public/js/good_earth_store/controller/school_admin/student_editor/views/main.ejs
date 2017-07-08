@@ -1,22 +1,54 @@
 <%
 qtools.validateProperties({
-	targetObject:this,
-	propList:[
-		{name:'displayParameters'},
-		{name:'viewHelper'},
-		{name:'formData'}
+	targetObject: this,
+	propList: [
+		{ name: 'displayParameters' },
+		{ name: 'viewHelper' },
+		{ name: 'formData' }
 	],
- source:'session.dashboard.lunch_editor' });
+	source: 'session.dashboard.lunch_editor'
+});
 
 qtools.validateProperties({
-	targetObject:displayParameters,
-	propList:[
-		{name:'myId'}
+	targetObject: displayParameters,
+	propList: [{ name: 'myId' }],
+	source: 'session.dashboard.lunch_editor'
+});
 
-	],
- source:'session.dashboard.lunch_editor' });
+qtools.validateProperties({
+	targetObject: formData,
+	propList: [{ name: 'student' },{ name: 'loginUser' }],
+	source: 'session.dashboard.lunch_editor'
+});
 
-%><div class='editorContainer studentEditor' id='<%= displayParameters.myId.divId %>' style='width:auto;'>
-STUDENT_EDITOR
+//console.dir({ formData: formData });
 
+qtools.validateProperties({
+	targetObject: formData,
+	propList: [{ name: 'student' }],
+	source: 'session.dashboard.lunch_editor'
+});
+
+//console.dir({"this.formData":this.formData});
+
+
+var gradeLevelSelectString = this.viewHelper.makeSelectTag({
+	selectClassName: 'gradeLevelSelect',
+	selectedValue: this.formData.student.gradeLevel.refId,
+	selectVarName: 'gradeLevelRefId',
+	sourceObj: this.formData.loginUser.school.gradeLevels.sort(
+		qtools.byObjectProperty('seqNum')
+	),
+	valuePropertyName: 'refId',
+	labelPropertyName: 'title',
+	firstItemLabel: 'Select Grade Level',
+	firstItemValue: ''
+});
+
+
+%><div class='studentEditor distributeHorz' id='<%= displayParameters.myId.divId %>' style='width:auto;'>
+<input name='firstName' value='<%= formData.student.firstName %>'>
+<input name='lastName' value='<%= formData.student.lastName %>'>
+<%== gradeLevelSelectString %>
+<div id='<%= displayParameters.lunchButton.divId %>'>hello</div>
 </div>
