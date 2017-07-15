@@ -369,15 +369,23 @@ border:1pt solid red;
 	/* distribute horizontally */
 	display: flex;
 	flex-direction: row;
-	justify-content: space-around;
-	padding-bottom:10px;
+	justify-content: space-after;
+	padding:10px;
 }
 .schoolAdminActionRow .studentList {
 	min-height: 45vh;
-	width: 50vw;
 	padding: 10px 0px 10px 20px;
 	color: #426134;
 	background:rgba(255,255,255,.6);
+}
+.schoolAdminActionRow .studentList .studentEditor .firstName{
+width:80px;
+}
+.schoolAdminActionRow .studentList .studentEditor .lastName{
+width:100px;
+}
+.schoolAdminActionRow .studentList .studentEditor .gradeLevelSelect{
+width:50px;
 }
 .schoolAdminActionRow .editColumn {}
 .schoolAdminActionRow .editColumn .editorContainer {

@@ -47,8 +47,8 @@ var gradeLevelSelectString = this.viewHelper.makeSelectTag({
 
 
 %><div class='studentEditor distributeHorz' id='<%= displayParameters.myId.divId %>' style='width:auto;'>
-<input name='firstName' value='<%= formData.student.firstName %>'>
-<input name='lastName' value='<%= formData.student.lastName %>'>
+<input name='firstName' class='firstName' value='<%= formData.student.firstName %>'>
+<input name='lastName' class='lastName' value='<%= formData.student.lastName %>'>
 <%== gradeLevelSelectString %>
 <div id='<%= displayParameters.lunchButton.divId %>' class='smallButton' style='width:50px;'></div>
 </div>

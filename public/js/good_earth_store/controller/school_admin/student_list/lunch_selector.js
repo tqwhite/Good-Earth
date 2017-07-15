@@ -16,9 +16,6 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.SchoolAdmin.Lun
 init: function(el, options) {
 	this.baseInits();
 	this.toolName='lunch_selector'; //for view file path construction
-
-console.log("this.toolName="+this.toolName);
-
 	qtools.validateProperties({
 		targetObject:this,
 		propList:[],

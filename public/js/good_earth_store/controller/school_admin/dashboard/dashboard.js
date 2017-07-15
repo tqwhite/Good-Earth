@@ -26,9 +26,6 @@ init: function(el, options) {
 		source:this.constructor._fullName
  	});
  	
-console.clear();
-console.log('console.clear() happens in school_admin/dashboard.js');
-
  	this.startupOptions=options?options:{};
 
 	this.startProgressIndicator({styleString:'margin-left:300px;margin-top:200px;'});
@@ -53,6 +50,7 @@ initDisplayProperties:function(){
 	name='studentList'; nameArray.push({name:name});
 	name='lunchEditor'; nameArray.push({name:name});
 	name='saveButton'; nameArray.push({name:name});
+	name='checkoutButton'; nameArray.push({name:name});
 
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -113,7 +111,17 @@ initDomElements:function(){
 		unavailable:{classs:'basicUnavailable'},
 		accessFunction:this.callback('saveButtonHandler'),
 		initialControl:'setToReady', //initialControl:'setUnavailable'
-		label:"<div style='margin-top:1px;'>SAVE</div>"
+		label:"<div style='margin-top:1px;'>Save Students</div>"
+	});
+
+	$('#'+this.displayParameters.checkoutButton.divId).good_earth_store_tools_ui_button2({
+		ready:{classs:'basicReady'},
+		hover:{classs:'basicHover'},
+		clicked:{classs:'basicActive'},
+		unavailable:{classs:'basicUnavailableHidden'},
+		accessFunction:this.callback('checkoutButtonHandler'),
+		initialControl:'setToReady', //initialControl:'setUnavailable'
+		label:"Lunch Checkout"
 	});
 
 },
@@ -165,7 +173,7 @@ console.dir({"status":status});
  3) make it so that there is an empty student input row that generates a new student when typed
  4) that generates a new empty row when you start typing in the current empty row
  5) when a student is selected, show a lunch purchase editor for that student
- 6) make a behind the scenes auto-checkout, perhaps with a confirmation report
+ 6) make a behind the scenes auto-checkout, perhaps with a confirmation report NO! USE REGULAR CHECKOUT
  7) maybe, add apply to all button
  8) figure out how to get already purchased orders (or at least days) to the UI
 
@@ -258,6 +266,29 @@ lunchEditorHandler:function(control, parameter){
 				purchases:this.purchases
 			});
 
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
+},
+
+checkoutButtonHandler:function(control, parameter){
+	var componentName='checkoutButton';
+	switch(control){
+		case 'click':
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+			this.element.good_earth_store_customer_checkout({
+				dashboardContainer:this.element,
+				returnClassName:this.constructor._fullName,
+				returnClassOptions:this.startupOptions,
+				account:this.account,
+				purchases:this.purchases
+			});
 		break;
 		case 'setAccessFunction':
 			if (!this[componentName]){this[componentName]={};}
