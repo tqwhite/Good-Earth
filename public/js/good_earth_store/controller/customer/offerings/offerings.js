@@ -69,7 +69,6 @@ initDisplay:function(inData){
 		
 	}
 	this.offerings=outArray;
-
 	var html=$.View('//good_earth_store/controller/customer/offerings/views/init.ejs',
 		$.extend(inData, {
 			displayParameters:this.displayParameters,

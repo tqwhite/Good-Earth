@@ -26,7 +26,8 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 						{ name: 'schools', optional: false },
 						{ name: 'gradeLevels', optional: false },
 						{ name: 'statusDomObj', optional: false },
-						{name:'studentsToSaveList', optional:false}
+						{ name: 'studentsToSaveList', optional: false },
+						{ name: 'lunchEditorHandler', optional: false }
 					],
 					source: this.constructor._fullName
 				});
@@ -97,11 +98,12 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 					var newStudent = $('<div/>');
 
 					newStudent.good_earth_store_school_admin_student_editor({
-						'loginUser':this.loginUser,
+						loginUser: this.loginUser,
 						student: student,
 						gradeLevels: this.gradeLevels,
-						statusDomObj:this.statusDomObj,
-						studentsToSaveList:this.studentsToSaveList
+						statusDomObj: this.statusDomObj,
+						studentsToSaveList: this.studentsToSaveList,
+						lunchEditorHandler: this.callback('lunchEditorHandler')
 					});
 
 					this.displayParameters.myId.domObj.append(newStudent);

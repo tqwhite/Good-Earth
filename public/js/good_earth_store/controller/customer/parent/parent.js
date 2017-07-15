@@ -1,5 +1,5 @@
 steal('jquery/controller', 'jquery/view/ejs')
-	.then('./views/init.ejs', function($) {
+	.then('./views/init.ejs','./views/schoolAdmin.ejs', function($) {
 
 	/**
 	 * @class GoodEarthStore.Controller.Customer.Parent

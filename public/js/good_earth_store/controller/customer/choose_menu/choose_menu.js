@@ -21,8 +21,8 @@ init: function(el, options) {
 		targetObject:options,
 		targetScope: this, //will add listed items to targetScope
 		propList:[
-			{name:'returnClassName'},
-			{name:'returnClassOptions'},
+			{name:'returnClassName', priority:'optional'},
+			{name:'returnClassOptions', priority:'optional'},
 			{name:'account'},
 			{name:'studentRefId'},
 			{name:'offerings'},
@@ -120,8 +120,12 @@ doneButtonHandler:function(control, parameter){
 
 			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
 			else{return;}
-
-			this.element[this.returnClassName](this.returnClassOptions);
+			if (this.returnClassName){
+				this.element[this.returnClassName](this.returnClassOptions);
+			}
+			else{
+				this.element.html('this will eventually show a useful message');
+			}
 		break;
 		case 'setAccessFunction':
 			if (!this[componentName]){this[componentName]={};}

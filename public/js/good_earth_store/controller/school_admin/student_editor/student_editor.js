@@ -26,7 +26,8 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 						{ name: 'student' },
 						{ name: 'gradeLevels' },
 						{ name: 'statusDomObj' },
-						{ name: 'studentsToSaveList', optional: false }
+						{ name: 'studentsToSaveList', optional: false },
+						{name:'lunchEditorHandler', optional:false}
 					],
 					source: this.constructor._fullName
 				});
@@ -83,20 +84,25 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 					'#' + this.displayParameters.myId.divId
 				);
 
-				this.displayParameters.lunchButton.domObj=$('#'+this.displayParameters.lunchButton.divId);
-
-				this.displayParameters.lunchButton.domObj.good_earth_store_tools_ui_button2(
-					{
-						ready: { classs: 'basicReady' },
-						hover: { classs: 'basicHover' },
-						clicked: { classs: 'basicActive' },
-						unavailable: { classs: 'basicUnavailable' },
-						accessFunction: this.displayParameters.lunchButton.handler,
-						initialControl: 'setToReady', //initialControl:'setUnavailable'
-						label: "<div style='margin-top:1px;'>lunch</div>"
-					}
+				setTimeout(
+					function() {
+						this.displayParameters.lunchButton.domObj = $(
+							'#' + this.displayParameters.lunchButton.divId
+						);
+						this.displayParameters.lunchButton.domObj.good_earth_store_tools_ui_button2(
+							{
+								ready: { classs: 'basicReady' },
+								hover: { classs: 'basicHover' },
+								clicked: { classs: 'basicReady' } /* basicActive */,
+								unavailable: { classs: 'basicUnavailable' },
+								accessFunction: this.displayParameters.lunchButton.handler,
+								initialControl: 'setToReady', //initialControl:'setUnavailable'
+								label: "<div style='margin-top:1px;'>lunch</div>"
+							}
+						);
+					}.bind(this),
+					1000
 				);
-
 			},
 
 			change: function(thisDomObj, thisEvent) {
@@ -129,7 +135,6 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 
 			lunchButtonHandler: function(control, parameter) {
 				var componentName = 'lunchButton';
-				//if (control.which=='13'){control='click';}; //enter key
 				switch (control) {
 					case 'click':
 						if (this.isAcceptingClicks()) {
@@ -138,8 +143,9 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 							//turn off clicks for awhile and continue, default is 500ms
 							return;
 						}
+						this.statusDomObj.html('lunch button clicked');
+						this.lunchEditorHandler(control, this.student);
 
-						this.displayParameters.status.domObj.html('lunch button clicked');
 						break;
 					case 'setAccessFunction':
 						if (!this[componentName]) {
@@ -150,7 +156,7 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 				}
 				//change dblclick mousedown mouseover mouseout dblclick
 				//focusin focusout keydown keyup keypress select
-			}
+			},
 		}
 	);
 });

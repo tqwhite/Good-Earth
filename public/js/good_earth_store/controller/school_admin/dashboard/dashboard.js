@@ -97,12 +97,13 @@ initDomElements:function(){
 		templateName:'schoolAdmin'
 		});
 	this.displayParameters.studentList.domObj.good_earth_store_school_admin_student_list({
-		'loginUser':this.loginUser,
+		loginUser:this.loginUser,
 		account:this.account,
 		schools:this.schools,
 		gradeLevels:this.gradeLevels,
 		statusDomObj:this.displayParameters.status.domObj,
-		studentsToSaveList:this.studentsToSaveList
+		studentsToSaveList:this.studentsToSaveList,
+		lunchEditorHandler:this.callback('lunchEditorHandler')
 		});
 
 	this.displayParameters.saveButton.domObj.good_earth_store_tools_ui_button2({
@@ -240,6 +241,31 @@ newPurchaseObj:function(){
 
 	GoodEarthStore.Models.Session.keep('purchases', purchaseObj);
 	return purchaseObj;
+},
+
+lunchEditorHandler:function(control, parameter){
+	var componentName='lunchButton';
+	switch(control){
+		case 'click':
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+			this.displayParameters.status.domObj.html('lunchEditorHandler');
+			
+			this.displayParameters.lunchEditor.domObj.good_earth_store_school_admin_lunch_editor({
+				studentRefId:parameter.refId,
+				account:this.account,
+				offerings:this.offerings,
+				purchases:this.purchases
+			});
+
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
 },
 
 

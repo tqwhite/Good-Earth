@@ -145,6 +145,7 @@ lunchButtonHandler:function(control, parameter){
 
 			var studentRefId=parameter.thisDomObj.attr('refId');
 			this.element.html('');
+			
 			this.element.good_earth_store_customer_choose_menu({
 				returnClassName:this.constructor._fullName,
 				returnClassOptions:this.startupOptions,

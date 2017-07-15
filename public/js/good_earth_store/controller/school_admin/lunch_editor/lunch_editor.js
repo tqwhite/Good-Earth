@@ -77,7 +77,26 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 				this.displayParameters.myId.domObj = $(
 					'#' + this.displayParameters.myId.divId
 				);
-			}
+				
+				this.element.good_earth_store_customer_choose_menu(this.startupOptions);
+				
+				//eventually this function will add 'apply to all appropriate students' button
+			},
+
+
+
+
+addToPurchases:function(args){
+	var purchase={
+		offering:args.offering,
+		day:args.day,
+		student:args.student,
+		refId:qtools.newGuid()
+	};
+	this.purchases.orders.push(purchase);
+	return purchase;
+
+}
 		}
 	);
 });
