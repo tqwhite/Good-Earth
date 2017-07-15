@@ -135,9 +135,11 @@ saveButtonHandler:function(control, parameter){
 		this.displayParameters.status.domObj.html('Save is not yet implemented');
 
 
+console.dir({"this.studentsToSaveList":this.studentsToSaveList});
+
+
 	for (var i=0, len=this.studentsToSaveList.length; i<len; i++){
 		var student=this.studentsToSaveList[i];
-		
 			this.saveStudent(student)
 	}
 
@@ -157,6 +159,9 @@ saveStudent:function(student){
 	if (!student.allergyFlag){student.allergyFlag=0;}
 	if (!student.isActiveFlag){student.isActiveFlag=1;}
 	this.toggleSpinner();
+console.dir({"saveStudent()":student});
+
+
 	GoodEarthStore.Models.Student.add(student, this.callback('catchSave'));
 },
 catchSave:function(status){

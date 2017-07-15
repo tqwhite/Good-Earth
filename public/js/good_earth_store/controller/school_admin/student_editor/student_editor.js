@@ -111,6 +111,7 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 				var value = changedItem.val();
 				this.student[name] = value;
 
+
 				var errorList = GoodEarthStore.Models.Student.validate(this.student);
 
 				if (!errorList.length) {
@@ -123,6 +124,9 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 					});
 					this.needsAddingToSaveList ||
 						this.studentsToSaveList.push(this.student);
+						
+					this.needsAddingToSaveList ||console.dir({"this.studentsToSaveList.push()":this.studentsToSaveList});;
+						
 					this.needsAddingToSaveList = true;
 				} else {
 					changedItem.addClass('badInput');

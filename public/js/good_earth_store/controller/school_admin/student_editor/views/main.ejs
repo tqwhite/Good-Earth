@@ -31,10 +31,11 @@ qtools.validateProperties({
 
 //console.dir({"this.formData":this.formData});
 
+var gradeLevelRefId=this.formData.student.gradeLevel?this.formData.student.gradeLevel.refId:''
 
 var gradeLevelSelectString = this.viewHelper.makeSelectTag({
 	selectClassName: 'gradeLevelSelect',
-	selectedValue: this.formData.student.gradeLevel.refId,
+	selectedValue: gradeLevelRefId,
 	selectVarName: 'gradeLevelRefId',
 	sourceObj: this.formData.loginUser.school.gradeLevels.sort(
 		qtools.byObjectProperty('seqNum')

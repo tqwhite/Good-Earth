@@ -94,9 +94,18 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 
 				for (var i = 0, len = this.account.students.length; i < len; i++) {
 					var student = this.account.students[i];
-
+					this.addStudent(student);
+				}
+				
+				this.addStudent({});
+			},
+			
+			addStudent:function(student){
 					var newStudent = $('<div/>');
-
+					student.schoolRefId=student.schoolRefId?student.schoolRefId:this.loginUser.school.refId;
+					student.refId=student.refId?student.refId:qtools.newGuid();
+					student.accountRefId=student.accountRefId?student.accountRefId:this.loginUser.account.refId;
+					
 					newStudent.good_earth_store_school_admin_student_editor({
 						loginUser: this.loginUser,
 						student: student,
@@ -107,7 +116,6 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 					});
 
 					this.displayParameters.myId.domObj.append(newStudent);
-				}
 			},
 
 			queueReferenceLookup: function(controlObj, name, modelName, argData) {
