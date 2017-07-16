@@ -848,7 +848,7 @@ validateProperties:function(args){
 		}
 
 		if (targetScope){
-			targetScope[name]=inObj[name];
+			targetScope[name]=inObj[name]?inObj[name]:propList[i]['defaultValue'];
 		}
 	}
 
@@ -950,7 +950,8 @@ byObjectProperty:function(fieldName, transformer){
 				var aa=qtools.getDottedPath(a, fieldName),
 					bb=qtools.getDottedPath(b, fieldName);
 				}
-
+			aa=aa?aa:'';
+			bb=bb?bb:'';
 			if (typeof(transformer)=='function'){
 				aa=transformer(aa);
 				bb=transformer(bb);
@@ -975,6 +976,30 @@ byObjectProperty:function(fieldName, transformer){
 			if (aa<bb){ return -1;}
 			return 0;
 		}
+	},
+	
+	stringToType:function(item) {
+		let trial;
+
+		trial = +item;
+		if (!isNaN(trial)) {
+			return trial;
+		}
+
+		trial = new Date(item);
+		if (item.match(/\d+\D\d+\D\d+/) && trial != 'Invalid Date') {
+			return trial;
+		}
+
+		if (item && item.toLowerCase() == 'true') {
+			return true;
+		}
+
+		if (item && item.toLowerCase() == 'false') {
+			return false;
+		}
+
+		return item;
 	}
 
 }
