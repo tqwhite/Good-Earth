@@ -92,7 +92,6 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 				this.displayParameters.studentItemIdClass.domObj = $(
 					'.' + this.displayParameters.studentItemIdClass.divId
 				);
-				
 				this.account.students=this.account.students.sort(qtools.byObjectProperty('firstName', 'caseInsensitive'));
 				this.account.students=this.account.students.sort(qtools.byObjectProperty('lastName', 'caseInsensitive'));
 
@@ -112,9 +111,12 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 						student={
 							schoolRefId:this.loginUser.school.refId,
 							refId:qtools.newGuid(),
-							accountRefId:this.loginUser.account.refId
+							accountRefId:this.loginUser.account.refId,
+							newAddition:true
 						}
 						
+						AAA=student;
+						this.account.students.push(student);
 						addNewStudentCallback=this.callback('addStudent')
 					}
 					newStudent.good_earth_store_school_admin_student_editor({

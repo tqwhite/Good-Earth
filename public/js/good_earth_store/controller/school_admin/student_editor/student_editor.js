@@ -132,7 +132,7 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 					changedItem.parent().children().each(function(inx, item) {
 						$(item).removeClass('badInput');
 					});
-
+					this.student.doNotSave=false;
 					this.studentsToSaveList.push(this.student);
 					if (typeof this.addNewStudentFunction == 'function') {
 						this.addNewStudentFunction();
@@ -188,10 +188,12 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 						if (this.student.isActiveFlag===false){
 							this.student.isActiveFlag=true;
 							this.element.show();
+							this.student.doNotSave=false;
 						}
 						else{
 							this.student.isActiveFlag=false;
 							this.element.hide();
+							this.student.doNotSave=true;
 						}
 
 						isActiveElement.attr('value', this.student.isActiveFlag)

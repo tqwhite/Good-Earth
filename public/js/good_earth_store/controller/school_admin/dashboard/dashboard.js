@@ -171,6 +171,9 @@ saveButtonHandler:function(control, parameter){
 },
 
 saveStudent:function(student){
+	if (student.newAddition && student.doNotSave){
+		return;
+	}
 	if (!student.vegetarianFlag){student.vegetarianFlag=0;}
 	if (!student.isTeacherFlag){student.isTeacherFlag=0;}
 	if (!student.allergyFlag){student.allergyFlag=0;}
@@ -180,6 +183,7 @@ saveStudent:function(student){
 },
 catchSave:function(status){
 
+	this.toggleSpinner();
 console.dir({"status":status});
 /*
  Current: saves students correctly.

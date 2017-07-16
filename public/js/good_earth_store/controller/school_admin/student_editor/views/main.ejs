@@ -52,7 +52,7 @@ if (formData.student.isActiveFlag!==false){
 }
 
 %><div class='studentEditor distributeHorz' id='<%= displayParameters.myId.divId %>' style='width:auto;'>
-<span id='<%= displayParameters.isActiveButton.divId %>' class='isActiveFlagToggle' title='Click the X to toggle student inactive status'>&nbsp;x&nbsp;</span><input type='hidden' name='isActiveFlag' value='<%= formData.student.isActiveFlag %>'>
+<span id='<%= displayParameters.isActiveButton.divId %>' class='isActiveFlagToggle' title='Click the X to toggle student inactive status or prevent saving new, unsaved students'>&nbsp;x&nbsp;</span><input type='hidden' name='isActiveFlag' value='<%= formData.student.isActiveFlag %>'>
 <input name='firstName' class='firstName' value='<%= formData.student.firstName %>'>
 <input name='lastName' class='lastName' value='<%= formData.student.lastName %>'>
 <%== gradeLevelSelectString %>
