@@ -121,12 +121,8 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 				var name = changedItem.attr('name');
 				var value = changedItem.val();
 				this.student[name] = value;
-	
-console.log("this.student.isActiveFlag="+typeof(this.student.isActiveFlag));
 			
 				this.student.isActiveFlag=qtools.stringToType(this.student.isActiveFlag);
-console.log("this.student.isActiveFlag="+typeof(this.student.isActiveFlag));
-
 				var errorList = GoodEarthStore.Models.Student.validate(this.student);
 
 				if (!errorList.length) {
