@@ -51,6 +51,7 @@ initDisplayProperties:function(){
 	name='lunchEditor'; nameArray.push({name:name});
 	name='saveButton'; nameArray.push({name:name});
 	name='checkoutButton'; nameArray.push({name:name});
+	name='showInactiveButton'; nameArray.push({name:name});
 
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -89,20 +90,14 @@ initDomElements:function(){
 	this.displayParameters.lunchEditor.domObj=$('#'+this.displayParameters.lunchEditor.divId);
 	this.displayParameters.status.domObj=$('#'+this.displayParameters.status.divId);
 	this.displayParameters.saveButton.domObj=$('#'+this.displayParameters.saveButton.divId);
+	this.displayParameters.showInactiveButton.domObj=$('#'+this.displayParameters.showInactiveButton.divId);
 
 	this.displayParameters.accountSpace.domObj.good_earth_store_customer_parent({
 		'loginUser':this.loginUser,
 		templateName:'schoolAdmin'
 		});
-	this.displayParameters.studentList.domObj.good_earth_store_school_admin_student_list({
-		loginUser:this.loginUser,
-		account:this.account,
-		schools:this.schools,
-		gradeLevels:this.gradeLevels,
-		statusDomObj:this.displayParameters.status.domObj,
-		studentsToSaveList:this.studentsToSaveList,
-		lunchEditorHandler:this.callback('lunchEditorHandler')
-		});
+		
+		this.initStudentList();
 
 	this.displayParameters.saveButton.domObj.good_earth_store_tools_ui_button2({
 		ready:{classs:'basicReady'},
@@ -124,7 +119,33 @@ initDomElements:function(){
 		label:"Lunch Checkout"
 	});
 
+	$('#'+this.displayParameters.showInactiveButton.divId).good_earth_store_tools_ui_button2({
+		ready:{classs:'basicReady'},
+		hover:{classs:'basicHover'},
+		clicked:{classs:'basicActive'},
+		unavailable:{classs:'basicUnavailableHidden'},
+		accessFunction:this.callback('showInactiveButtonHandler'),
+		initialControl:'setToReady', //initialControl:'setUnavailable'
+		label:"Toggle Inactive Students"
+	});
+
 },
+
+initStudentList:function(showInactive){
+
+
+	this.displayParameters.studentList.domObj.good_earth_store_school_admin_student_list({
+		loginUser:this.loginUser,
+		account:this.account,
+		schools:this.schools,
+		gradeLevels:this.gradeLevels,
+		statusDomObj:this.displayParameters.status.domObj,
+		studentsToSaveList:this.studentsToSaveList,
+		lunchEditorHandler:this.callback('lunchEditorHandler'),
+		showInactive:showInactive
+		});
+		
+		},
 
 saveButtonHandler:function(control, parameter){
 	var componentName='editButton';
@@ -133,10 +154,6 @@ saveButtonHandler:function(control, parameter){
 			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
 			else{return;}
 		this.displayParameters.status.domObj.html('Save is not yet implemented');
-
-
-console.dir({"this.studentsToSaveList":this.studentsToSaveList});
-
 
 	for (var i=0, len=this.studentsToSaveList.length; i<len; i++){
 		var student=this.studentsToSaveList[i];
@@ -159,9 +176,6 @@ saveStudent:function(student){
 	if (!student.allergyFlag){student.allergyFlag=0;}
 	if (!student.isActiveFlag){student.isActiveFlag=1;}
 	this.toggleSpinner();
-console.dir({"saveStudent()":student});
-
-
 	GoodEarthStore.Models.Student.add(student, this.callback('catchSave'));
 },
 catchSave:function(status){
@@ -294,6 +308,26 @@ checkoutButtonHandler:function(control, parameter){
 				account:this.account,
 				purchases:this.purchases
 			});
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
+},
+
+showInactiveButtonHandler:function(control, parameter){
+	var componentName='showInactiveButton';
+	switch(control){
+		case 'click':
+			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+			else{return;}
+		
+		this.showingInactiveStudentsFlag=this.showingInactiveStudentsFlag?false:true;
+		this.initStudentList(this.showingInactiveStudentsFlag);
+		
 		break;
 		case 'setAccessFunction':
 			if (!this[componentName]){this[componentName]={};}

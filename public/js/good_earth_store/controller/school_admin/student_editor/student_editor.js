@@ -27,7 +27,8 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 						{ name: 'gradeLevels' },
 						{ name: 'statusDomObj' },
 						{ name: 'studentsToSaveList', optional: false },
-						{name:'lunchEditorHandler', optional:false}
+						{ name: 'lunchEditorHandler', optional: false },
+						{ name: 'addNewStudentFunction', optional: false }
 					],
 					source: this.constructor._fullName
 				});
@@ -49,6 +50,9 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 				nameArray.push({ name: name });
 
 				name = 'lunchButton';
+				nameArray.push({ name: name, handlerName: name + 'Handler' });
+
+				name = 'isActiveButton';
 				nameArray.push({ name: name, handlerName: name + 'Handler' });
 
 				this.displayParameters = $.extend(
@@ -100,6 +104,13 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 								label: "<div style='margin-top:1px;'>lunch</div>"
 							}
 						);
+
+						this.displayParameters.isActiveButton.domObj = $(
+							'#' + this.displayParameters.isActiveButton.divId
+						);
+						this.displayParameters.isActiveButton.domObj
+							.on('click', this.callback('isActiveButtonHandler'))
+							
 					}.bind(this),
 					1000
 				);
@@ -111,7 +122,6 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 				var value = changedItem.val();
 				this.student[name] = value;
 
-
 				var errorList = GoodEarthStore.Models.Student.validate(this.student);
 
 				if (!errorList.length) {
@@ -122,12 +132,11 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 					changedItem.parent().children().each(function(inx, item) {
 						$(item).removeClass('badInput');
 					});
-					this.needsAddingToSaveList ||
-						this.studentsToSaveList.push(this.student);
-						
-					this.needsAddingToSaveList ||console.dir({"this.studentsToSaveList.push()":this.studentsToSaveList});;
-						
-					this.needsAddingToSaveList = true;
+
+					this.studentsToSaveList.push(this.student);
+					if (typeof this.addNewStudentFunction == 'function') {
+						this.addNewStudentFunction();
+					}
 				} else {
 					changedItem.addClass('badInput');
 					this.statusDomObj
@@ -147,7 +156,6 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 							//turn off clicks for awhile and continue, default is 500ms
 							return;
 						}
-						this.statusDomObj.html('lunch button clicked');
 						this.lunchEditorHandler(control, this.student);
 
 						break;
@@ -161,6 +169,47 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 				//change dblclick mousedown mouseover mouseout dblclick
 				//focusin focusout keydown keyup keypress select
 			},
+
+			isActiveButtonHandler: function(event) {
+				var control=event.type;
+
+				var componentName = 'isActiveButton';
+				switch (control) {
+					case 'click':
+						if (this.isAcceptingClicks()) {
+							this.turnOffClicksForAwhile();
+						} else {
+							//turn off clicks for awhile and continue, default is 500ms
+							return;
+						}
+						this.statusDomObj.html('isActiveButton clicked');
+						var isActiveElement=this.element.find('[name="isActiveFlag"]');
+						
+						if (this.student.isActiveFlag===false){
+							this.student.isActiveFlag=true;
+							this.element.show();
+						}
+						else{
+							this.student.isActiveFlag=false;
+							this.element.hide();
+						}
+
+						isActiveElement.attr('value', this.student.isActiveFlag)
+						
+
+						this.change({}, {target:isActiveElement}); //this.change() wants a event/domObj-like object
+
+						break;
+					case 'setAccessFunction':
+						if (!this[componentName]) {
+							this[componentName] = {};
+						}
+						this[componentName].accessFunction = parameter;
+						break;
+				}
+				//change dblclick mousedown mouseover mouseout dblclick
+				//focusin focusout keydown keyup keypress select
+			}
 		}
 	);
 });

@@ -46,10 +46,15 @@ var gradeLevelSelectString = this.viewHelper.makeSelectTag({
 	firstItemValue: ''
 });
 
+var lunchButtonString="<div style='width:60px;font-size:10pt;margin-left:7px;'>inactive</div>";
+if (formData.student.isActiveFlag!==false){
+	lunchButtonString="<div id='"+displayParameters.lunchButton.divId+"' class='smallButton' style='width:50px;'></div>";
+}
 
 %><div class='studentEditor distributeHorz' id='<%= displayParameters.myId.divId %>' style='width:auto;'>
+<span id='<%= displayParameters.isActiveButton.divId %>' class='isActiveFlagToggle' title='Click the X to toggle student inactive status'>&nbsp;x&nbsp;</span><input type='hidden' name='isActiveFlag' value='<%= formData.student.isActiveFlag %>'>
 <input name='firstName' class='firstName' value='<%= formData.student.firstName %>'>
 <input name='lastName' class='lastName' value='<%= formData.student.lastName %>'>
 <%== gradeLevelSelectString %>
-<div id='<%= displayParameters.lunchButton.divId %>' class='smallButton' style='width:50px;'></div>
+<%== lunchButtonString %>
 </div>

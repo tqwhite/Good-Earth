@@ -27,7 +27,8 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 						{ name: 'gradeLevels', optional: false },
 						{ name: 'statusDomObj', optional: false },
 						{ name: 'studentsToSaveList', optional: false },
-						{ name: 'lunchEditorHandler', optional: false }
+						{ name: 'lunchEditorHandler', optional: false },
+						{ name: 'showInactive', optional: false }
 					],
 					source: this.constructor._fullName
 				});
@@ -91,28 +92,39 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 				this.displayParameters.studentItemIdClass.domObj = $(
 					'.' + this.displayParameters.studentItemIdClass.divId
 				);
+				
+				this.account.students=this.account.students.sort(qtools.byObjectProperty('firstName', 'caseInsensitive'));
+				this.account.students=this.account.students.sort(qtools.byObjectProperty('lastName', 'caseInsensitive'));
 
 				for (var i = 0, len = this.account.students.length; i < len; i++) {
 					var student = this.account.students[i];
+					if (!this.showInactive && student.isActiveFlag===false){ continue; }
 					this.addStudent(student);
 				}
 				
-				this.addStudent({});
+				this.addStudent();
 			},
 			
 			addStudent:function(student){
 					var newStudent = $('<div/>');
-					student.schoolRefId=student.schoolRefId?student.schoolRefId:this.loginUser.school.refId;
-					student.refId=student.refId?student.refId:qtools.newGuid();
-					student.accountRefId=student.accountRefId?student.accountRefId:this.loginUser.account.refId;
-					
+					var addNewStudentCallback='';
+					if (!student){
+						student={
+							schoolRefId:this.loginUser.school.refId,
+							refId:qtools.newGuid(),
+							accountRefId:this.loginUser.account.refId
+						}
+						
+						addNewStudentCallback=this.callback('addStudent')
+					}
 					newStudent.good_earth_store_school_admin_student_editor({
 						loginUser: this.loginUser,
 						student: student,
 						gradeLevels: this.gradeLevels,
 						statusDomObj: this.statusDomObj,
 						studentsToSaveList: this.studentsToSaveList,
-						lunchEditorHandler: this.callback('lunchEditorHandler')
+						lunchEditorHandler: this.callback('lunchEditorHandler'),
+						addNewStudentFunction:addNewStudentCallback
 					});
 
 					this.displayParameters.myId.domObj.append(newStudent);
