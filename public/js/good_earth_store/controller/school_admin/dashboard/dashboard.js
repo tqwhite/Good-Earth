@@ -126,7 +126,7 @@ initDomElements:function(){
 		unavailable:{classs:'basicUnavailableHidden'},
 		accessFunction:this.callback('showInactiveButtonHandler'),
 		initialControl:'setToReady', //initialControl:'setUnavailable'
-		label:"Toggle Inactive Students"
+		label:"Show/Hide Inactive"
 	});
 
 },

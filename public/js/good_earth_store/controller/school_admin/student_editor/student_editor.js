@@ -121,6 +121,11 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 				var name = changedItem.attr('name');
 				var value = changedItem.val();
 				this.student[name] = value;
+	
+console.log("this.student.isActiveFlag="+typeof(this.student.isActiveFlag));
+			
+				this.student.isActiveFlag=qtools.stringToType(this.student.isActiveFlag);
+console.log("this.student.isActiveFlag="+typeof(this.student.isActiveFlag));
 
 				var errorList = GoodEarthStore.Models.Student.validate(this.student);
 
@@ -184,7 +189,7 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 						}
 						this.statusDomObj.html('isActiveButton clicked');
 						var isActiveElement=this.element.find('[name="isActiveFlag"]');
-						
+	AAA=this.student;					
 						if (this.student.isActiveFlag===false){
 							this.student.isActiveFlag=true;
 							this.element.show();
