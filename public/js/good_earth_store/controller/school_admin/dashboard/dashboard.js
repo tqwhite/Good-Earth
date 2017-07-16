@@ -148,7 +148,7 @@ steal(
 					ready: { classs: 'basicReady' },
 					hover: { classs: 'basicHover' },
 					clicked: { classs: 'basicActive' },
-					unavailable: { classs: 'basicUnavailableHidden' },
+					unavailable: { classs: 'basicUnavailable' },
 					accessFunction: this.callback('checkoutButtonHandler'),
 					initialControl: 'setToReady', //initialControl:'setUnavailable'
 					label: 'Lunch Checkout'
@@ -192,10 +192,7 @@ steal(
 							//turn off clicks for awhile and continue, default is 500ms
 							return;
 						}
-						this.displayParameters.status.domObj.html(
-							'Save is not yet implemented'
-						);
-
+						this.savedStudentCounter=0;
 						for (
 							var i = 0, len = this.studentsToSaveList.length;
 							i < len;
@@ -221,6 +218,7 @@ steal(
 				if (student.newAddition && student.doNotSave) {
 					return;
 				}
+				this.savedStudentCounter++;
 				if (!student.vegetarianFlag) {
 					student.vegetarianFlag = 0;
 				}
@@ -246,23 +244,15 @@ steal(
 			},
 			catchSave: function(status) {
 				this.toggleSpinner();
-				console.dir({ status: status });
-				/*
- Current: saves students correctly.
-
- next: 
-
- 1) make the save endpoint detect a list and save all students.
- 2) finish the other fields of being a Student (teacher, etc)
- 2.1) make it so that Save button is disabled when there are errors
- 3) make it so that there is an empty student input row that generates a new student when typed
- 4) that generates a new empty row when you start typing in the current empty row
- 5) when a student is selected, show a lunch purchase editor for that student
- 6) make a behind the scenes auto-checkout, perhaps with a confirmation report NO! USE REGULAR CHECKOUT
- 7) maybe, add apply to all button
- 8) figure out how to get already purchased orders (or at least days) to the UI
-
-*/
+				$(window).unbind('beforeunload.student');
+				if (status.status==1){
+					this.displayParameters.status.domObj.html("Successfully saved "+this.savedStudentCounter+" students");
+					
+				for (var i=0, len=this.studentsToSaveList.length; i<len; i++){
+					this.studentsToSaveList.pop(); //this allows the array to stay in existence so it can be used again elsewhere
+				}
+				this.lunchEditorHandler('setLunchButtonStatus', 'setToReady');
+				}
 			},
 
 			queueReferenceLookup: function(controlObj, name, modelName, argData) {
@@ -334,6 +324,12 @@ steal(
 			lunchEditorHandler: function(control, parameter) {
 				var componentName = 'lunchButton';
 				switch (control) {
+					case 'setLunchButtonStatus':
+						this['checkoutButton'].accessFunction(parameter);
+						if(parameter=='setUnavailable'){
+						this.displayParameters.status.domObj.html('Save Students to reactivate Lunch Checkout button');
+						}
+						break;
 					case 'click':
 						if (this.isAcceptingClicks()) {
 							this.turnOffClicksForAwhile();
@@ -351,6 +347,10 @@ steal(
 								purchases: this.purchases
 							}
 						);
+						
+						if (!this.studentsToSaveList.length){
+							this['checkoutButton'].accessFunction('setToReady');
+						}
 
 						break;
 					case 'setAccessFunction':

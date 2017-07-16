@@ -136,6 +136,8 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 					this.student.doNotSave=false;
 					if (!qtools.getByProperty(this.studentsToSaveList, 'refId', this.student.refId)){
 						this.studentsToSaveList.push(this.student);
+						$(window).bind('beforeunload.student', function(){ console.log("bind('beforeunload.student'"); return 'LUNCHES WERE SELECTED AND NOT ORDERED. ARE YOU SURE YOU WANT TO LEAVE THE STORE?';});
+						this.lunchEditorHandler('setLunchButtonStatus', 'setUnavailable');
 					}
 					if (typeof this.addNewStudentFunction == 'function') {
 						this.addNewStudentFunction();

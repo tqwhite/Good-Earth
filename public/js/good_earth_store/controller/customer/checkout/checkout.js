@@ -200,7 +200,7 @@ catchProcessResult:function(inData){
 		}
 	}
 	else{
-		$(window).unbind('beforeunload');
+		$(window).unbind('beforeunload.lunch');
 		if (true){ //this can go away as soon as debugging is well into the past. 'false' makes it so that the payment process can run repeatedly.
 
 			$('#'+this.displayParameters.submitButton.divId).html('Approved');
