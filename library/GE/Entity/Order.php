@@ -9,7 +9,6 @@ namespace GE\Entity;
 *
 **/
 class Order /*extends Base*/{
-
 	const tableName='orders';
 	
 	/**
@@ -24,14 +23,13 @@ class Order /*extends Base*/{
 	* @column(name="helixId", type="string", length=36, nullable=true)
 	**/
 	private $helixId;
-
-
-    /**
-	 * @param \Doctrine\Common\Collections\Collection $property
-	 * @OneToMany(targetEntity="StudentOrderNode", mappedBy="orders", cascade={"persist", "remove"});
-     */
-    private $studentOrderNodes;
-
+	/**
+	 *
+	 * @ManyToOne(targetEntity="Student", cascade={"all"}, fetch="EAGER")
+	 * @JoinColumn(name="studentRefId", referencedColumnName="refId")
+	 *
+	 **/
+	private $student;
 	/**
 	 *
 	 * @ManyToOne(targetEntity="Day", cascade={"all"}, fetch="EAGER")
@@ -39,7 +37,6 @@ class Order /*extends Base*/{
 	 *
 	 **/
 	private $day;
-
 	/**
 	 *
 	 * @ManyToOne(targetEntity="Offering", cascade={"all"}, fetch="EAGER")
@@ -47,63 +44,42 @@ class Order /*extends Base*/{
 	 *
 	 **/
 	private $offering;
-
-
-
     /**
 	 * @param \Doctrine\Common\Collections\Collection $property
 	 * @OneToMany(targetEntity="PurchaseOrderNode", mappedBy="order", cascade={"persist", "remove"});
      */
     private $purchaseOrderNodes;
-
-
-
 	/**
 	 * @column(type="string", nullable=true)
 	 * @var string
 	 **/
-
 	private $currPeriodFull;
-
-
 	/**
 	 * @column(type="datetime", nullable=false)
 	 * @var datetime
 	 **/
-
 	private $created;
-
-
 	/**
 	 * @column(type="datetime", nullable=false)
 	 * @var datetime
 	 **/
-
 	private $modified;
-
 	/**
 	 * @column(type="boolean", nullable=true)
 	 * @var integer
 	 **/
-
 	private $alreadyInHelix;
-
-
 	/**
 	 * @column(type="boolean", nullable=true)
 	 * @var integer
 	 **/
-
 	private $isActiveFlag;
-
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}
 	$this->created=new \DateTime(date("Y-m-d H:i:s"));
 	$this->modified=new \DateTime(date("Y-m-d H:i:s"));
-
 	$this->purchaseOrderNodes = new \Doctrine\Common\Collections\ArrayCollection();
 }
-
 public function __get($property){
 	switch($property){
 		case 'created':
@@ -114,12 +90,9 @@ public function __get($property){
 			break;
 	}
 }
-
 public function __set($property, $value){
 	
 	$this->$property=$value;
-
 	$this->modified=new \DateTime(date("Y-m-d H:i:s"));
 }
-
 }

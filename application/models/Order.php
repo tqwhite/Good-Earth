@@ -54,9 +54,6 @@ class Application_Model_Order extends Application_Model_Base
 		if (get_class($inData)=='GE\Entity\PurchaseOrderNode'){
 			$inData=$inData->order;
 		}
-		if (get_class($inData)=='GE\Entity\StudentOrderNode'){
-			$inData=$inData->order;
-		}
 
 		if ($inData->refId){
 			switch ($outputType){
@@ -108,20 +105,6 @@ class Application_Model_Order extends Application_Model_Base
 		$data['helixId']=$data['helix id']; unset($data['helix id']);
 
 		return $data;
-	}
-
-
-
-	public function getByStudentRefId($studentRefId){
-
-		$query = $this->entityManager->createQuery("SELECT u from GE\\Entity\\{$this->entityName} u WHERE u.studentRefId = :studentRefId");
-		$query->setParameters(array(
-			'studentRefId' => $studentRefId
-		));
-		$list = $query->getResult();
-		$this->entity=$list[0];
-		return $this->entity;
-
 	}
 
 } //end of class
