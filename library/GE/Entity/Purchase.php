@@ -194,6 +194,12 @@ class Purchase /*extends Base*/{
 	 * @var string
 	 **/
 	private $lastFour;
+	
+	/**
+	* @var string
+	* @column(type="string", length=36, nullable=true)
+	**/
+	private $merchantAccountId;
 
 public function __construct(){
 	if (!$this->refId){$this->refId =  \Q\Utils::newGuid();}

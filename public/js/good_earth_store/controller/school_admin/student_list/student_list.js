@@ -107,8 +107,9 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 					}
 					this.addStudent(student);
 				}
-
+				if (!qtools.getByProperty(this.account.students, 'newAddition', true)){
 				this.addStudent();
+				}
 			},
 
 			addStudent: function(student) {
@@ -119,10 +120,10 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 						schoolRefId: this.loginUser.school.refId,
 						refId: qtools.newGuid(),
 						accountRefId: this.loginUser.account.refId,
-						newAddition: true
+						newAddition: true,
+						school:this.loginUser.school
 					};
 
-					AAA = student;
 					this.account.students.push(student);
 					addNewStudentCallback = this.callback('addStudent');
 				}

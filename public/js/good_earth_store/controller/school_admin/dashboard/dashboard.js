@@ -322,7 +322,7 @@ steal(
 			},
 
 			lunchEditorHandler: function(control, parameter) {
-				var componentName = 'lunchButton';
+				var componentName = 'lunchEditor';
 				switch (control) {
 					case 'setLunchButtonStatus':
 						this['checkoutButton'].accessFunction(parameter);
@@ -337,14 +337,15 @@ steal(
 							//turn off clicks for awhile and continue, default is 500ms
 							return;
 						}
-						this.displayParameters.status.domObj.html('lunchEditorHandler');
+						this.displayParameters.status.domObj.html('Choose a tasty lunch');
 
 						this.displayParameters.lunchEditor.domObj.good_earth_store_school_admin_lunch_editor(
 							{
 								studentRefId: parameter.refId,
 								account: this.account,
 								offerings: this.offerings,
-								purchases: this.purchases
+								purchases: this.purchases,
+								statusDomObj:this.displayParameters.status.domObj
 							}
 						);
 						

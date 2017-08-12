@@ -46,7 +46,7 @@ class Application_Model_Student extends Application_Model_Base
 		$name='emailAdr';
 		$datum=$inData[$name];
 		$pattern='/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/';
-		if (!ereg($pattern, $datum)){
+		if (!preg_match($pattern, $datum)){
 			$errorList[]=array($name, "Invalid email address");
 		}
 */

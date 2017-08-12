@@ -28,20 +28,20 @@ private function initHelix(){
 public function setBatchId(){
 	$batchId=time();
 	
-	error_log("OutputManager::setBatchId() - STARTING - batchId=$batchId");	
+	error_log("OutputManager::setBatchId() - STARTING - batchId=$batchId [OutputManager.php]");	
 
 	$this->connection->store(
 		'  inert process',
 		'exportBatchTimestampNew',
 		array('exportBatchTimestamp'=>$batchId, 'blank2'=>'goodbye')
 	);
-	error_log("OutputManager::setBatchId() - ENDING - batchId=$batchId");	
+	error_log("OutputManager::setBatchId() - ENDING - batchId=$batchId [OutputManager.php]");	
 	return $batchId;
 }
 
 public function writeAndValidate($tableName, $inData){
  		$recordsWrittenReport="<div style='color:gray;margin:5px 0px;' tqdebug><b>$tableName</b> records processed:</div>";  
-
+		
 		$writeResult=$this->write($tableName, $inData);
 		$validationList=$this->getValidationList($tableName);
 
@@ -59,6 +59,7 @@ public function writeAndValidate($tableName, $inData){
 			
 
 			if (!in_array($data['recordData']['refId'], $validationList)){
+				error_log("FAILED TWICE for\[{$data['recordData']['refId']}] (purchaseRefId={$data['purchaseRefId']}) [OutputManager.php]");
  				$recordsWrittenReport.="<div style='color:red;margin-left:15px;font-size:80%;'>FAILED TWICE for\[{$data['recordData']['refId']}] (purchaseRefId={$data['purchaseRefId']})</div>";
 				$failedTwiceRecordList[$data['recordData']['purchaseRefId']]=$data;
 			}

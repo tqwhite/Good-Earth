@@ -308,7 +308,10 @@ private function updateDb($recList){
 
 			}
 			
-		//	$data['created']=new \DateTime(date("Y-m-d H:i:s"));
+			error_log("HACK: overwriting incoming 'created' data");
+			$tmp=new \DateTime(date("Y-m-d H:i:s"));
+			$data['created']=$tmp->format("Y-m-d H:i:s");
+			
 			
 			$tmp=new \DateTime(date("Y-m-d H:i:s"));
 			$data['modified']=$tmp->format("Y-m-d H:i:s");
@@ -402,6 +405,11 @@ private function getDbConnection(){
 }//end of method
 
 protected function helixToDate($value){
+	if (!$value){
+		error_log("HACK: empty date value for helix object, forced to 2000-01-01");
+		//this should be revised to something that makes sense
+		return '2000-01-01';
+	}
 	$valueBits=explode('/', $value);
 	
 	$year=$valueBits[2];
@@ -411,6 +419,7 @@ protected function helixToDate($value){
 	$month=str_pad($valueBits[0], 2, '0', STR_PAD_LEFT);
 	$day=str_pad($valueBits[1], 2, '0', STR_PAD_LEFT);
 	$dateString="$year-$month-$day";
+
 	return $dateString;
 }
 

@@ -209,6 +209,7 @@ private function executeWriteAndValidate($inData){
 	$batchId=$outputManager->setBatchId();
 	$failedTwiceRecordList=array();
 	foreach ($inData as $tableName=>$data){
+		error_log("tableName={$tableName}");
 		$result=$outputManager->writeAndValidate($tableName, $data);
 		$recordsWrittenReport.=$result['recordsWrittenReport'];
 		if (is_array($result['failedTwiceRecordList'])){
@@ -225,10 +226,17 @@ private function generateListings($tableArray, $categoryName){
 			$outString.="account records sent: ".count($tableArray['accounts'])."<BR>";
 			$outString.="user records sent: ".count($tableArray['users'])."<BR>";
 			$outString.="student records sent: ".count($tableArray['students'])."<BR>";
+			
+			error_log("account records sent: ".count($tableArray['accounts']));
+			error_log("user records sent: ".count($tableArray['users']));
+			error_log("student records sent: ".count($tableArray['students']));
 		break;
 		case 'purchases':
 			$outString.="purchase records sent: ".count($tableArray['purchases'])."<BR>";
 			$outString.="order records sent: ".count($tableArray['orders'])."<BR>";
+			
+			error_log("purchase records sent: ".count($tableArray['purchases']));
+			error_log("order records sent: ".count($tableArray['orders']));
 		break;
 	}
 		$outString.="</div>";

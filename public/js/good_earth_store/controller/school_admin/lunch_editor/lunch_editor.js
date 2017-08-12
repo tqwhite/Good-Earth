@@ -20,7 +20,9 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 
 				qtools.validateProperties({
 					targetObject: this,
-					propList: [],
+					propList: [
+					{name:'statusDomObj', importance:'optional'}
+					],
 					source: this.constructor._fullName
 				});
 				this.startupOptions = options ? options : {};

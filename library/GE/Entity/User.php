@@ -166,7 +166,7 @@ class User /*extends Base*/{
 
 
 	/**
-	 * @column(type="string", length=10, nullable=true)
+	 * @column(type="string", length=20, nullable=true)
 	 * @var string
 	 **/
 

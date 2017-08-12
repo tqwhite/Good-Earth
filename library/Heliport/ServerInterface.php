@@ -182,8 +182,6 @@ class ServerInterface
 private $className;
 
 public function __construct(){
-
-
 		$this->className=get_class($this);
 
 		$helixConfiguration=\Zend_Registry::get('helixConfiguration');
@@ -197,6 +195,7 @@ public function __construct(){
 		$ihr190Relation=$helixConfiguration['test_rel'];
 		$ihr190View=$helixConfiguration['test_view'];
 		$userPool=$helixConfiguration['userpool'];
+		error_log("helix: ipAddress=$ipAddress, collection_name=$collection_name [ServerInterface.php]");
 
 /*debug*/ //  error_log("ENTERING ServerInterface ===== ");
 
@@ -252,6 +251,7 @@ protected function setOverrideUserToDispatcher()
                     $this->userPoolConfig['dispatcher']['password']
                 ));
             } else {
+            	error_log("HELIX USER POOL ERROR");
                 throw new User_Exception(DataBright_Helix_HeliPort::USER_POOL_CONFIG_ERROR_DISPATCHER);
             }
         }
@@ -675,7 +675,7 @@ private function rgc100()
 /*debug*/ //  error_log("<div style=background:black;color:white;>hc.initHelixhc (100). says: read from fileSocket: $output</div>");
 
                 if (strpos($output, 'ERR RGC100') === 0) {
-                    ereg('ERR RGC100' . $this->commandDelimiter . '([0-9]*)',
+                    preg_match('/ERR RGC100/' . $this->commandDelimiter . '([0-9]*)',
                       $output, $regs);
                     $error = $this->handleHError($regs[1],
                         $user->getUserName(),
@@ -724,7 +724,7 @@ private function rgc120()
 /*debug*/ //  error_log("<div style=background:black;color:white;>hc.initView says: wrote to fileSocket, said=$rgc120</div>");
             $output = $this->read_socket();
             if (substr($output, 0, 10) == 'ERR RGC120') {
-                ereg('ERR RGC120' . $this->commandDelimiter . '([0-9]*)',
+                preg_match('/ERR RGC120/' . $this->commandDelimiter . '([0-9]*)',
                   $output, $regs);
                 $this->set_error('retrieve',
                   ($func_name . '-' . $regs[1] . ': ' .
@@ -781,7 +781,7 @@ private function rgc130()
 /*debug*/ //  "<div style=background:black;color:white;>hc.terminateHelixProcess says: read from fileSocket, output=$output</div>";
 /*debug*/ //  error_log("<div style=background:black;color:white;>hc.terminateHelixProcess says: read from fileSocket, output=$output</div>");
             if (substr($output, 0, 10) == 'ERR RGC130') {
-                ereg('ERR RGC130' . $this->commandDelimiter . '([0-9]*)',
+                preg_match('/ERR RGC130/' . $this->commandDelimiter . '([0-9]*)',
                   $output, $regs);
                 $this->set_error('retrieve',
                   ($func_name . '-' . $regs[1] . ': ' .
@@ -847,7 +847,7 @@ private function rgc140()
 /*debug*/ //  "<div style=background:black;color:white;>hc.getRecords(140) says: read from fileSocket: $output</div>";
 /*debug*/ //  error_log("<div style=background:black;color:white;>hc.getRecords(140) says: read from fileSocket: $output</div>");
                 if (substr($output, 0, 10) == 'ERR RGC140') {
-                    ereg('ERR RGC140' . $this->commandDelimiter . '([0-9]*)',
+                    preg_match('/ERR RGC140/' . $this->commandDelimiter . '([0-9]*)',
                       $output, $regs);
                     $this->set_error('retrieve',
                       ($func_name . '-' . $regs[1] . ': ' .
@@ -924,7 +924,7 @@ private function rgc141()
 
 
             if (substr($output, 0, 10) == 'ERR RGC141') {
-                ereg('ERR RGC141' . $this->commandDelimiter . '([0-9]*)', $output, $regs);
+                preg_match('/ERR RGC141/' . $this->commandDelimiter . '([0-9]*)', $output, $regs);
                 $this->set_error('retrieve',
                   ($func_name . '-' . $regs[1] . ': ' .
                   (isset($this->aeeaErrors[$regs[1]]) ? $this->aeeaErrors[$regs[1]] : 'Unknown')));
@@ -975,7 +975,7 @@ private function rgc142()
             fwrite($this->fileSocket, $rgc141, strlen($rgc141));
             $output = $this->read_socket();
             if (substr($output, 0, 10) == 'ERR RGC142') {
-                ereg('ERR RGC142' . $this->commandDelimiter . '([0-9]*)',
+                preg_match('/ERR RGC142/' . $this->commandDelimiter . '([0-9]*)',
                   $output, $regs);
                 $this->set_error('retrieve',
                   ($func_name . '-' . $regs[1] . ': ' .
@@ -1210,7 +1210,7 @@ public function getver()
             fwrite($this->fileSocket, $getver, strlen($getver));
             $output = $this->read_socket();
             if (substr($output, 0, 10) == 'ERR GETVER') {
-                ereg('ERR GETVER' . $this->commandDelimiter . '([0-9]*)',
+                preg_match('/ERR GETVER/' . $this->commandDelimiter . '([0-9]*)',
                   $output, $regs);
                 $this->set_error('util',
                   ($func_name . '-' . $regs[1] . ': ' .
@@ -1327,7 +1327,7 @@ public function encode()
 public function ihr190()
     {
 /*debug*/ //  "ihr190<br/>";
-/*debug*/ //  error_log("ihr190<br/>");
+error_log("ihr190 [ServerInterface.php]");
         $func_name = 'ihr190';
 
         $retVal = true;
@@ -1371,7 +1371,7 @@ $this->set_error(
             $output = $this->read_socket();
 
 /*debug*/ //  "190 READ RESULT=$output<br>";
-/*debug*/ //  error_log("190 READ RESULT=$output<br>");
+			error_log("190 READ RESULT=$output<br> [ServerInterface.php]");
 
             if ($this->isDebug('msg')) {
                 $tmp = $output;

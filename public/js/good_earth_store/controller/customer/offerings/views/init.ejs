@@ -1,76 +1,104 @@
 <%
 qtools.validateProperties({
-	targetObject:this,
-	propList:[
-		{name:'displayParameters'},
-		{name:'viewHelper'},
-		{name:'formData'},
-		{name:'daysIdClassLookup'}
+	targetObject: this,
+	propList: [
+		{ name: 'displayParameters' },
+		{ name: 'viewHelper' },
+		{ name: 'formData' },
+		{ name: 'daysIdClassLookup' }
 	],
- source:'customer.offerings.ejs' });
+	source: 'customer.offerings.ejs'
+});
 
 qtools.validateProperties({
-	targetObject:formData,
-	propList:[
-		{name:'offerings'},
-		{name:'student'}
-	],
- source:'customer.offerings.ejs' });
+	targetObject: formData,
+	propList: [{ name: 'offerings' }, { name: 'student' }],
+	source: 'customer.offerings.ejs'
+});
 
 qtools.validateProperties({
-	targetObject:displayParameters,
-	propList:[
-		{name:'chooseOfferingButtonClassId'}
-	],
- source:'customer.offerings.ejs' });
+	targetObject: displayParameters,
+	propList: [{ name: 'chooseOfferingButtonClassId' }],
+	source: 'customer.offerings.ejs'
+});
 
- var offeringString='',
- 	offerings=this.formData.offerings.sort(qtools.byObjectProperty(function(item){return item.days[0].seqNum;})),
- 	studentSchoolRefId=this.formData.student.schoolRefId
- 	studentGradeLevelRefId=this.formData.student.gradeLevelRefId;
- for (var i=0, len=offerings.length; i<len; i++){
+var offeringString = '',
+	offerings = this.formData.offerings.sort(
+		qtools.byObjectProperty(function(item) {
+			return item.days[0].seqNum;
+		})
+	),
+	studentSchoolRefId = this.formData.student.schoolRefId;
+	
+studentGradeLevelRefId = this.formData.student.gradeLevelRefId;
 
- 		days=offerings[i].days;
+for (var i = 0, len = offerings.length; i < len; i++) {
+	days = offerings[i].days;
 
-	var offeringGradeLevel=qtools.getByProperty(offerings[i].gradeLevels, 'refId', studentGradeLevelRefId);
-	var offeringSchool=qtools.getByProperty(offerings[i].schools, 'refId', studentSchoolRefId);
+	var offeringGradeLevel = qtools.getByProperty(
+		offerings[i].gradeLevels,
+		'refId',
+		studentGradeLevelRefId
+	);
+	var offeringSchool = qtools.getByProperty(
+		offerings[i].schools,
+		'refId',
+		studentSchoolRefId
+	);
 
-	if(
-		!qtools.getByProperty(offerings[i].gradeLevels, 'refId', studentGradeLevelRefId) ||
+	if (
+		!qtools.getByProperty(
+			offerings[i].gradeLevels,
+			'refId',
+			studentGradeLevelRefId
+		) ||
 		!qtools.getByProperty(offerings[i].schools, 'refId', studentSchoolRefId)
-	){
- 		continue;
- 	}
-
-	var dayString='',
-	offeringRefId=offerings[i].refId,
-	days=offerings[i].days.sort(qtools.byObjectProperty('seqNum'));
-
-	for (var j=days.length, len2=0; j>len2; j=j-1){
-
-		var dayRefId=days[j-1].refId;
-		dayString+="<div offeringRefId='"+offeringRefId+"' dayRefId='"+dayRefId+
-			"' class='"+this.displayParameters.chooseOfferingButtonClassId.divId+
-			" "+this.daysIdClassLookup[days[j-1].refId]+
-			" tinyButton' style='float:right;' dayIdClass='"+
-			this.daysIdClassLookup[days[j-1].refId]+
-			"'> "+days[j-1].title+" </div>";
+	) {
+		continue;
 	}
 
-	var titleString=offerings[i].meal.description+"<br/>"+offerings[i].refId;
- //	offeringString+="<div><div class='offeringTitle' style='border:1pt solid transparent;width:60%;' title='"+titleString+"'>"+offerings[i].name+" <span style='color:gray;'>($"+offerings[i].price.toFixed(2)+")</span> </div>"+dayString+"</div>";
+	var dayString = '',
+		offeringRefId = offerings[i].refId,
+		days = offerings[i].days.sort(qtools.byObjectProperty('seqNum'));
 
- 	offeringString+="<div style='border-bottom:1pt solid gray;height:30px;margin-top:4px;'>";
-		offeringString+="<div class='offeringTitle' style='width:80%;float:left;' title='"+titleString+"'>";
-			offeringString+=offerings[i].name;
-			offeringString+=" <span style='color:gray;'>($"+offerings[i].price.toFixed(2)+")</span>";
-		offeringString+="</div>";
-		offeringString+="<div style='float:right;'>";
-			offeringString+=dayString;
-		offeringString+="</div>";
- 	offeringString+="</div>";
+	for (var j = days.length, len2 = 0; j > len2; j = j - 1) {
+		var dayRefId = days[j - 1].refId;
+		dayString +=
+			"<div offeringRefId='" +
+			offeringRefId +
+			"' dayRefId='" +
+			dayRefId +
+			"' class='" +
+			this.displayParameters.chooseOfferingButtonClassId.divId +
+			' ' +
+			this.daysIdClassLookup[days[j - 1].refId] +
+			" tinyButton' style='float:right;' dayIdClass='" +
+			this.daysIdClassLookup[days[j - 1].refId] +
+			"'> " +
+			days[j - 1].title +
+			' </div>';
+	}
 
+	var titleString =
+		offerings[i].meal.description + '<br/>' + offerings[i].refId;
+	//	offeringString+="<div><div class='offeringTitle' style='border:1pt solid transparent;width:60%;' title='"+titleString+"'>"+offerings[i].name+" <span style='color:gray;'>($"+offerings[i].price.toFixed(2)+")</span> </div>"+dayString+"</div>";
 
+	offeringString +=
+		"<div style='border-bottom:1pt solid gray;height:30px;margin-top:4px;'>";
+	offeringString +=
+		"<div class='offeringTitle' style='width:80%;float:left;' title='" +
+		titleString +
+		"'>";
+	offeringString += offerings[i].name;
+	offeringString +=
+		" <span style='color:gray;'>($" +
+		offerings[i].price.toFixed(2) +
+		')</span>';
+	offeringString += '</div>';
+	offeringString += "<div style='float:right;'>";
+	offeringString += dayString;
+	offeringString += '</div>';
+	offeringString += '</div>';
 }
 
 %>

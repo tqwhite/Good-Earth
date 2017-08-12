@@ -85,7 +85,8 @@ class Application_Model_Purchase extends Application_Model_Base
 					'accounts'=>\Application_Model_Account::formatOutput($inData->accountPurchaseNodes, 'export', 'accounts'),
 					'orders'=>\Application_Model_Order::formatOutput($inData->purchaseOrderNodes, 'export', 'orders'),
 					'purchaseOrderNodes'=>\Application_Model_Export::formatOutput($inData->purchaseOrderNodes, 'export', 'pon'),
-					'accountPurchaseNodes'=>\Application_Model_Export::formatOutput($inData->accountPurchaseNodes, 'export', 'apn')
+					'accountPurchaseNodes'=>\Application_Model_Export::formatOutput($inData->accountPurchaseNodes, 'export', 'apn'),
+					'merchantAccountId'=>$inData->merchantAccountId
 //web data manager, lunchie
 				);
 				break;

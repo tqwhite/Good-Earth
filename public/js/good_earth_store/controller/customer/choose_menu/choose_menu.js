@@ -26,7 +26,8 @@ init: function(el, options) {
 			{name:'account'},
 			{name:'studentRefId'},
 			{name:'offerings'},
-			{name:'purchases'}
+			{name:'purchases'},
+					{name:'statusDomObj', importance:'optional'}
 		],
 		source:this.constructor._fullName
  	});
@@ -93,7 +94,6 @@ initDomElements:function(){
 		purchases:this.purchases
 	});
 
-
 	this.displayParameters.offeringSpace.domObj.good_earth_store_customer_offerings({
 		offerings:this.offerings,
 		parentAccessFunction:this.displayParameters.offeringSpace.handler,
@@ -124,7 +124,15 @@ doneButtonHandler:function(control, parameter){
 				this.element[this.returnClassName](this.returnClassOptions);
 			}
 			else{
-				this.element.html('this will eventually show a useful message');
+				if (this.purchases.orders.length){
+				this.element.html("<div class='lunchesNotification'>Lunches await checkout</div>");
+				}
+				else{
+				this.element.html("<div class='lunchesNotification'>No lunches chosen</div>");
+				}
+				if(this.statusDomObj){
+					this.statusDomObj.text('');
+				}
 			}
 		break;
 		case 'setAccessFunction':

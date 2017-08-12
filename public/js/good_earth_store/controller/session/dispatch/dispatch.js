@@ -92,7 +92,7 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 			GoodEarthStore.Models.Session.keep('user', inData.data);
 			this.element.html('');
 			
-		if (inData.data.role=='schoolRep'){
+		if (inData.data.role=='schoolAdmin'){
 			this.element.good_earth_store_school_admin_dashboard();
 		}
 		else{

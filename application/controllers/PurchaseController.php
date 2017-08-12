@@ -90,6 +90,10 @@ class PurchaseController extends Q_Controller_Base
 		$outList=array();
 		$this->initEmailSender(); //gets stuff from registry, etc
 		for ($i = 0, $len = count($addressList); $i < $len; $i++) {
+		
+// 			error_log("DEBUG: FORCE NO EMAIL SENDING");
+// 			continue;
+		
 			$recipient = $addressList[$i];
 			$mail      = new Zend_Mail();
 			$mail->setSubject($emailSubject);
@@ -239,18 +243,18 @@ class PurchaseController extends Q_Controller_Base
 	private function addPaymentResultToPurchase($purchase, $inData, $paymentProcessResult)
 	{
 		
-		$purchase->deferredPaymentPreference = $paymentProcessResult['deferredPaymentPreference'];
+		$purchase->entity->deferredPaymentPreference = $paymentProcessResult['deferredPaymentPreference'];
 		
-		$purchase->fdProcessorResponseMessage = $paymentProcessResult['approved'] ? 'APPROVED' : 'REJECTED';
+		$purchase->entity->fdProcessorResponseMessage = $paymentProcessResult['approved'] ? 'APPROVED' : 'REJECTED';
 		
-		$purchase->fdProcessorReferenceNumber = $paymentProcessResult['transaction_id'];
-		$purchase->fdErrorMessage             = $paymentProcessResult['response_reason_text'];
-		$purchase->fdApprovalCode             = $paymentProcessResult['authorization_code'];
+		$purchase->entity->fdProcessorReferenceNumber = $paymentProcessResult['transaction_id'];
+		$purchase->entity->fdErrorMessage             = $paymentProcessResult['response_reason_text'];
+		$purchase->entity->fdApprovalCode             = $paymentProcessResult['authorization_code'];
 		
 		$date                        = new \DateTime(date("Y-m-d H:i:s"));
 		$date                        = $date->format('Y-m-d H:i:s');
-		$purchase->fdTransactionTime = $date;
-		$purchase->fdOrderId         = $inData['purchase']['refId'];
+		$purchase->entity->fdTransactionTime = $date;
+		$purchase->entity->fdOrderId         = $inData['purchase']['refId'];
 	}
 	
 	private function organizeIntoPaymentGroups($orders)
@@ -274,7 +278,6 @@ class PurchaseController extends Q_Controller_Base
 	
 	private function assemblePurchases($merchantAccountOrders, $account, $inData)
 	{
-	error_log("B: merchantAccountOrders['default'][0]->student->firstName={$merchantAccountOrders['default'][0]->student->firstName}");
 		$purchaseModelList = array();
 		foreach ($merchantAccountOrders as $merchantAccountId => $orderList) {
 			$purchaseModel     = new \Application_Model_Purchase();
@@ -354,9 +357,7 @@ class PurchaseController extends Q_Controller_Base
 			
 			for ($i = 0, $len = count($purchaseModelList); $i < $len; $i++) {
 				$purchaseModel = $purchaseModelList[$i];
-				$this->addPaymentResultToPurchase($purchaseGenerated, $inData, $paymentProcessResult[$i]['result']);
-					error_log("B: order->student={$purchaseModel->student->firstName}");
-
+				$this->addPaymentResultToPurchase($purchaseModel, $inData, $paymentProcessResult[$i]['result']);
 				$purchaseModel->persist(Application_Model_Base::yesFlush);
 			}
 			

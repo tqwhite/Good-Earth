@@ -385,7 +385,7 @@ width:80px;
 width:100px;
 }
 .schoolAdminActionRow .studentList .studentEditor .gradeLevelSelect{
-width:50px;
+width:100px;
 }
 .schoolAdminActionRow .editColumn {}
 .schoolAdminActionRow .editColumn .editorContainer {
@@ -409,4 +409,10 @@ min-height:40vh;}
 .isActiveFlagToggle:hover{
 	background:gray;
 	color:white;
+}
+
+.lunchesNotification{
+	margin:50px;
+	color:gray;
+	
 }

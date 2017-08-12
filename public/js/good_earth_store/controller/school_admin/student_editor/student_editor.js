@@ -118,11 +118,19 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 
 			change: function(thisDomObj, thisEvent) {
 				var changedItem = $(thisEvent.target);
+				
 				var name = changedItem.attr('name');
 				var value = changedItem.val();
+				
 				this.student[name] = value;
 				
-				this.student.isActiveFlag=qtools.stringToType(this.student.isActiveFlag);
+				this.student.newAddition = false; //stops being new when it gets typed on
+				this.student.isActiveFlag=this.student.isActiveFlag?qtools.stringToType(this.student.isActiveFlag):true; //become involved when typed on
+				
+				if (name=='gradeLevelRefId'){
+					this.student.gradeLevel=qtools.getByProperty(this.gradeLevels, 'refId', value);
+				}
+				
 				var errorList = GoodEarthStore.Models.Student.validate(this.student);
 
 				if (!errorList.length) {
@@ -161,7 +169,7 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 							//turn off clicks for awhile and continue, default is 500ms
 							return;
 						}
-						this.lunchEditorHandler(control, this.student);
+						this.lunchEditorHandler(control, this.student); //note: this is in school_admin/dashboard.js
 
 						break;
 					case 'setAccessFunction':

@@ -10,23 +10,26 @@ static function process($purchaseModelList, $inData, $fake=false){
 				case '10':
 					$paymentObj=new \Payment\Authorize();
 				break;
-				case '11':
+				case 'larkspur':
 					$paymentObj=new \Payment\Authorize();
 				break;
 				default:
 					$paymentObj=new \Payment\Authorize();
 				break;
 			}
-// 			$paymentData->entity->chargeTotal=1.03+$i/100; //DEBUG
-// 			error_log("FORCING PRICE TO A DOLLAR");
+//  			$paymentData->entity->chargeTotal=1.03+$i/100; //DEBUG
+//  			error_log("FORCING PRICE TO A DOLLAR");
 // 			if ($i>0){
 // 				$inData['cardData']['cardNumber']='force second trans to faile';
 // 			}
 			$transactionId=$inData['account']['refId'].'-'.$i.'-'.rand(0,100);
+			
 			$paymentObj->setPurchaseData($paymentData->entity, $inData['cardData'], $inData['account'], $transactionId);
+			
 			//$result=$paymentObj->executeCharge(array('approval'=>($i==0)?true:false));
-			//$result=$paymentObj->authorizeOnly(array('approval'=>($i==0)?true:true));
+			//$result=$paymentObj->authorizeOnly(array('approval'=>true));
 			$result=$paymentObj->authorizeOnly();
+			
 			$workingList[]=array(
 				result=>$result,
 				paymentObj=>$paymentObj,
