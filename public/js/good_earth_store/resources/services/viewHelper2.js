@@ -40,7 +40,7 @@ this.makeSelectTag=function(args){
 
 	if (args.firstItemLabel){
 		if (typeof(args.firstItemValue)=='undefined'){args.firstItemValue='';}
-		firstItemString="<option value="+args.firstItemValue+">"+args.firstItemLabel+"</option>";
+		firstItemString="\n<option value="+args.firstItemValue+">"+args.firstItemLabel+"</option>";
 	}
 
 	var userString="<select "+divIdString+" name='"+args.selectVarName+"'"+classString+">"+firstItemString;
@@ -52,9 +52,9 @@ this.makeSelectTag=function(args){
 		else{
 			selectedAttrString='';
 		}
-		userString+="<option "+optionClassString+" value='"+sourceObj[i][args.valuePropertyName]+"' "+selectedAttrString+">"+sourceObj[i][args.labelPropertyName]+"</option>";
+		userString+="<option "+optionClassString+" value='"+sourceObj[i][args.valuePropertyName]+"' "+selectedAttrString+">"+sourceObj[i][args.labelPropertyName]+"</option>\n";
 	}
-	userString+="</select>";
+	userString+="\n</select>";
 
 	return userString;
 };
