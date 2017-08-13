@@ -7,14 +7,11 @@ static function process($purchaseModelList, $inData, $fake=false){
 		for ($i=0, $len=count($purchaseModelList); $i<$len; $i++){
 			$paymentData=$purchaseModelList[$i];
 			switch ($paymentData->entity->merchantAccountId){
-				case '10':
-					$paymentObj=new \Payment\Authorize();
-				break;
 				case 'larkspur':
-					$paymentObj=new \Payment\Authorize();
+					$paymentObj=new \Payment\Authorize('larkspur');
 				break;
 				default:
-					$paymentObj=new \Payment\Authorize();
+					$paymentObj=new \Payment\Authorize('default');
 				break;
 			}
 //  			$paymentData->entity->chargeTotal=1.03+$i/100; //DEBUG

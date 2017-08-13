@@ -9,10 +9,24 @@ var $sale;
 private $toAuthorize;
 public $fake; //useful for debugging separate steps from payment.php
 
-public function __construct(){
+public function __construct($merchantAccountId){
 
-$authorizeSpecs=\Zend_Registry::get('authorize');
+$authorizeSpecs=\Zend_Registry::get('payment');
+$authorizeSpecs=$authorizeSpecs[$merchantAccountId];
 
+if (!$authorizeSpecs['AUTHORIZENET_API_LOGIN_ID'] || !$authorizeSpecs['AUTHORIZENET_TRANSACTION_KEY']){
+	$name='approved'; $outArray[$name]=$result->$name;
+	$name='transaction_id'; $outArray[$name]=$result->$name;
+	$name='response_reason_text'; $outArray[$name]=$result->$name;
+	$name='authorization_code'; $outArray[$name]=$result->$name;
+	$name='fake'; $outArray[$name]=$this->$name;
+	return array(
+		approved=>'SYSTEM ERROR',
+		response_reason_text=>'missing credentials for merchant account',
+		authorization_code=>'',
+		transaction_id=>''
+	);
+}
 
 $this->sale = new \AuthorizeNetAIM($authorizeSpecs['AUTHORIZENET_API_LOGIN_ID'], $authorizeSpecs['AUTHORIZENET_TRANSACTION_KEY']);
 
