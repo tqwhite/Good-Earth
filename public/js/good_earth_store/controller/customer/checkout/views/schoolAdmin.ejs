@@ -1,0 +1,168 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'},
+		{name:'formData'}
+	],
+ source:'customer.checkout.ejs' });
+
+qtools.validateProperties({
+	targetObject:formData,
+	propList:[
+		{name:'purchases'},
+		{name:'loginUser'}
+	],
+ source:'customer.checkout.ejs' });
+
+qtools.validateProperties({
+	targetObject:displayParameters,
+	propList:[
+		{name:'myId'},
+		{name:'submitButton'},
+		{name:'cancelButton'},
+		{name:'status'},
+		{name:'entryContainer'}
+
+	],
+ source:'customer.checkout.ejs' });
+ 
+var newOrders = {};
+var schoolNameMap={};
+
+for (var i = 0, merchAccountCount = this.formData.purchases.orders.length; i < merchAccountCount; i++) {
+	var order = this.formData.purchases.orders[i];
+	var merchantAccountId = order.student.school.merchantAccountId
+		? order.student.school.merchantAccountId
+		: 'default';
+	
+	if (merchantAccountId!='default'){
+		var schoolName = order.student.school.merchantIdOwnerName;
+		schoolName=schoolName?schoolName:order.student.school.name
+	}
+	else{
+		var schoolName = 'Good Earth Organic Lunch Program';
+	}
+		
+	if (!newOrders[merchantAccountId]) {
+		newOrders[merchantAccountId] = [];
+	}
+	newOrders[merchantAccountId].push(order);
+	
+	if (!schoolNameMap[merchantAccountId]) {
+		schoolNameMap[merchantAccountId] = schoolName;
+	}
+}
+
+if (merchAccountCount>1){
+var multipleDistrictNote="<div style='font-size:8pt;color:#666;margin-top:10px;padding:5px;'>You have ordered lunches for students in separate schools some of which collect lunch money directly. Your credit card will have a separate charge for each.</div>";
+}
+else{
+var multipleDistrictNote="";
+}
+var outString = '';
+var total = 0.0;
+for (var acctId in newOrders) {
+	var schoolOrderList = newOrders[acctId];
+	var orders = schoolOrderList;
+	var subTotal=0;
+	var padding='';
+
+	for (var i = 0, len = orders.length; i < len; i++) {
+		if (merchAccountCount>1 && i<1){
+			padding="padding-top:15px;";
+		}
+		else{
+			padding='';
+		}
+		subTotal+=orders[i].offering.price;
+		outString +=
+			"<tr style='border-bottom:1pt solid #aaa;'><td style='"+padding+"width:300px;vertical-align:top;'><b>";
+		outString += orders[i].student.firstName + ': ';
+		outString += orders[i].offering.name;
+		outString +=
+			"</b></td><td style='"+padding+"vertical-align:top;'>";
+		outString += orders[i].day.title;
+		outString +=
+			"</td><td style='"+padding+"width:100px;text-align:right;vertical-align:top;'>";
+		outString += '$' + orders[i].offering.price.toFixed(2);
+		outString += '</td></tr>';
+		total = total + orders[i].offering.price;
+	}
+		outString+="<tr><td colspan=3 style='text-align:right;border-bottom:2pt solid #666;vertical-align:top;font-style:italic;'>Payment due to "+schoolNameMap[acctId]+": $"+subTotal.toFixed(2)+"</td></tr>";
+
+}
+	total = total.toFixed(2);
+
+	var titleString='';
+ 	titleString+="<tr style='border-bottom:1pt solid #aaa;'><td colspan='3' style='font-size:12pt;width:100%;padding-left:5px;border-bottom:2pt solid #aaa;'><b>";
+ 	titleString+="Your Student Lunches"
+ 	titleString+="</b></td>";
+
+
+	outString="<table style='font-size:8pt;'>"+titleString+outString+"</table>";
+
+
+if (window.location.host=='store.goodearth.local'){
+		var cardName='TQ White II',
+			street='5004 Three Points Blvd',
+			city='Fairfax',
+			zip='55364',
+			phoneNumber='708-763-0100',
+			cardNumber='8888 0000 0000 0000',
+			expMonth='08',
+			expYear='19';
+	}
+	else{
+		var cardName=this.formData.loginUser.firstName+' '+this.formData.loginUser.lastName,
+			street=this.formData.loginUser.street,
+			city=this.formData.loginUser.city,
+			zip=this.formData.loginUser.zip,
+			phoneNumber=this.formData.loginUser.phoneNumber,
+			cardNumber='',
+			expMonth='',
+			expYear='';
+
+	}
+
+%><div class='mainContainer' style='color:#426134;' id='<%= displayParameters.myId.divId %>'>
+<div style='position:relative;height:360px;'>
+
+<div id='entryContainer' style='width:48%;height:350px;border:1pt solid gray;float:left;padding-top:2px;'>
+	<%==outString%>
+</div>
+
+
+
+<div id='<%=this.displayParameters.entryContainer.divId%>' style='width:48%;height:335px;border:1pt solid gray;float:right;padding-top:15px;'>
+
+
+<div style='margin:10px 15px;'>
+Good Earth Organic School Lunches<br/>
+Deferred Payment Checkout.
+</div>
+<div style='margin:10px 15px;font-size:80%;'>
+Please click Submit if order is correct.
+</div>
+
+<input type='hidden' name='cardNumber' value='9012000000000000' prompt='visa/mc/amex/discover/diners/jcb'>
+<input type='hidden' style='width:20%;' name='expMonth' value='12'  prompt='35'>
+
+<input type='hidden' name='phoneNumber' value='<%=phoneNumber%>' prompt='000-000-0000'>
+<input type='hidden' name='expYear' value='<%=expYear%>' value='' prompt='YY'>
+<input type='hidden' name='chargeTotal' value='<%=total%>'>
+<input type='hidden' name='cardName' value='<%=cardName%>'>
+<input type='hidden' name='street' value='<%=street%>'>
+<input type='hidden' style='width:20%;' name='state' value='CA'>
+<input type='hidden' style='width:30%;' name='city' value='<%=city%>'> 
+<input type='hidden' style='width:30%;' name='zip' value='<%=zip%>' prompt='00000'>
+<div id='<%=this.displayParameters.status.divId%>' style='font-size:10pt;'></div>
+<%==multipleDistrictNote%>
+</div>
+
+</div>
+<div class='basicButton' style='float:right;margin-right:40px;' id='<%= displayParameters.submitButton.divId %>'></div>
+<div class='smallButton' style='float:right;margin-right:40px;margin-top:7px;' id='<%= displayParameters.cancelButton.divId %>'></div>
+<div class='checkoutTotal' style='float:left;margin-left:20px;'>Total Charges: $<%=total%></div>
+</div>

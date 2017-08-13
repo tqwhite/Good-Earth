@@ -23,7 +23,11 @@ init: function(el, options) {
 			{name:'returnClassName'},
 			{name:'returnClassOptions'},
 			{name:'account'},
-			{name:'purchases'}
+			{name:'purchases'},
+			{
+				name: 'templateName',
+				importance:'optional'
+			}
 		],
 		source:this.constructor._fullName
  	});
@@ -68,7 +72,12 @@ initControlProperties:function(){
 
 initDisplay:function(inData){
 
-	var html=$.View("//good_earth_store/controller/customer/checkout/views/init.ejs",
+	this.templateName=this.templateName?this.templateName:'init';
+console.log("this.templateName="+this.templateName+" [checkout.js.initDisplay]");
+
+	var templatePath="//good_earth_store/controller/customer/checkout/views/"+this.templateName+".ejs";
+
+	var html=$.View(templatePath,
 		$.extend(inData, {
 			displayParameters:this.displayParameters,
 			viewHelper:this.viewHelper,

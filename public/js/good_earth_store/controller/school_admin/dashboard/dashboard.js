@@ -380,7 +380,8 @@ steal(
 							returnClassName: this.constructor._fullName,
 							returnClassOptions: this.startupOptions,
 							account: this.account,
-							purchases: this.purchases
+							purchases: this.purchases,
+							templateName: 'schoolAdmin'
 						});
 						break;
 					case 'setAccessFunction':
