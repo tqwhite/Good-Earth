@@ -134,6 +134,7 @@ class Application_Model_User extends Application_Model_Base
 						'state' => $inData->state,
 						'zip' => $inData->zip,
 						'role' => $inData->role,
+						'schoolRefId' => $inData->school->refId,
 						'phoneNumber' => $inData->phoneNumber,
 						'refId' => $inData->refId,
 						'account' => \Application_Model_Account::formatOutput($inData->account, $outputType),

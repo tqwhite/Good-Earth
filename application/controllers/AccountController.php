@@ -32,6 +32,13 @@ class AccountController extends Q_Controller_Base {
 					$errorList[] = array('adminFlag', "Unauthorized post as admin not allowed");
 				}
 			}
+			
+
+				if ($inData['role']=='schoolAdmin'){
+					if (!$inData['schoolRefId']){
+					$errorList[] = array('role', "A school selection is required if the role is schoolAdmin.");
+					}
+				}
 			}
 
 			if ($errorList) {
@@ -71,11 +78,24 @@ class AccountController extends Q_Controller_Base {
 				$user->city = $inData['city'];
 				$user->state = $inData['state'];
 				$user->zip = $inData['zip'];
+				
+				
+				$user->role = $inData['role'];
+				
+				if ($user->role=='schoolAdmin'){
+					$schoolObj=new \Application_Model_School();
+					$school=$schoolObj->getByRefId($inData['schoolRefId']);
+				}
+				
+				$user->school=$school;
 
 				$user->phoneNumber = $inData['phoneNumber'];
 				$user->confirmationCode = md5($user->refId);
 
-				if ($inData['emailOverride']) {
+				if (!$inData['emailOverride'] && $inData['previousEmailAddress']!=$inData['emailAdr']) {
+					$user->emailStatus = 0;
+				}
+				else{
 					$user->emailStatus = 1;
 				}
 

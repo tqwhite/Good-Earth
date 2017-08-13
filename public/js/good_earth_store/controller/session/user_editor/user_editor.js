@@ -23,8 +23,10 @@ init: function(el, options) {
 			{name:'statusDomObject'},
 			{name:'subjectUser'},
 			{name:'accessFunction', optional:true},
+			{name:'instantiationCallback', optional:true},
+			
 			{name:'adminFlag', optional:true},
-			{name:'instantiationCallback', optional:true}
+			{name:'schools', optional:true}
 		],
 		source:this.constructor._fullName
  	});
@@ -47,6 +49,9 @@ initDisplayProperties:function(){
 
 	name='status'; nameArray.push({name:name});
 	name='saveButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+	
+	name='schoolSelect'; nameArray.push({name:name});
+	name='roleSelect'; nameArray.push({name:name, handlerName:name+'Handler'});
 
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -64,7 +69,8 @@ initDisplay:function(inData){
 			displayParameters:this.displayParameters,
 			viewHelper:this.viewHelper,
 			subjectUser:this.subjectUser,
-			adminFlag:this.adminFlag
+			adminFlag:this.adminFlag,
+			schools:this.schools
 		})
 		);
 	this.element.html(html);
@@ -113,6 +119,12 @@ initDomElements:function(){
 	if (typeof(this.instantiationCallback)=='function'){
 		this.instantiationCallback(this.element);
 	}
+	
+	
+	this.displayParameters.schoolSelect.domObj=$('#'+this.displayParameters.schoolSelect.divId);
+	
+	this.displayParameters.roleSelect.domObj=$('#'+this.displayParameters.roleSelect.divId);
+	this.displayParameters.roleSelect.domObj.bind('change', this.callback('roleSelectHandler'));
 },
 
 //BUTTON HANDLERS =========================================================================================================
@@ -129,7 +141,6 @@ saveButtonHandler:function(control, parameter){
 		var formParams=this.element.formParams();
 		formParams.adminFlag=this.adminFlag;
 		formParams=this.manageConfirmationEmail(formParams);
-		
 		GoodEarthStore.Models.User.register(formParams, this.callback('resetAfterSave'));
 		this.toggleSpinner();
 		break;
@@ -140,6 +151,22 @@ saveButtonHandler:function(control, parameter){
 	}
 	//change dblclick mousedown mouseover mouseout dblclick
 	//focusin focusout keydown keyup keypress select
+},
+
+
+roleSelectHandler:function(event){
+
+var target=$(event.target);
+var value=target.val();
+
+if (value=='schoolAdmin'){
+this.displayParameters.schoolSelect.domObj.show();
+}
+else{
+this.displayParameters.schoolSelect.domObj.hide();
+}
+
+
 },
 
 resetAfterSave:function(inData){

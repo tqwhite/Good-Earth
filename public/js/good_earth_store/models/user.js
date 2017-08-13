@@ -209,8 +209,6 @@ validate:function(inData){
 		{errors.push([name, "Zip must be five digits (00000)"]);}
 
 
-
-
 	return errors;
 },
 

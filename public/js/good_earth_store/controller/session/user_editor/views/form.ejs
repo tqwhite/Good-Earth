@@ -1,82 +1,155 @@
 <%
 qtools.validateProperties({
-	targetObject:this,
-	propList:[
-		{name:'displayParameters'},
-		{name:'viewHelper'},
-		{name:'subjectUser', optional:true},
-		{name:'adminFlag'}
+	targetObject: this,
+	propList: [
+		{ name: 'displayParameters' },
+		{ name: 'viewHelper' },
+		{ name: 'subjectUser', optional: true },
+		{ name: 'adminFlag' },
+		{ name: 'schools' }
 	],
- source:'session.userEditor.mainPanel' });
+	source: 'session.userEditor.mainPanel'
+});
 
 qtools.validateProperties({
-	targetObject:displayParameters,
-	propList:[
-		{name:'saveButton'}
-	],
- source:'session.userEditor.mainPanel' });
+	targetObject: displayParameters,
+	propList: [{ name: 'saveButton' }],
+	source: 'session.userEditor.mainPanel'
+});
 
-if (!this.subjectUser && window.location.host=='store.goodearth.local' || (!this.subjectUser && window.location.hash=='#tq')){
-	var firstName='tq',
-		lastName='white',
-		userName='tqwhite'+Math.floor((Math.random()*1000)+1),
-		password='123123',
-		emailAdr='tq@justkidding.com',
-		confirmEmail='tq@justkidding.com',
-		phoneNumber='999-999-9999',
-		street='5004 Three Points Blvd',
-		city='Mound',
-		state='MN',
-		zip='55364',
-		refId=qtools.newGuid();
-}
-else if (this.subjectUser && this.subjectUser.refId){
-var 
- 		firstName=this.subjectUser.firstName,
- 		lastName=this.subjectUser.lastName,
- 		userName=this.subjectUser.userName,
- 		password=this.subjectUser.password,
- 		emailAdr=this.subjectUser.emailAdr,
- 		confirmEmail=this.subjectUser.confirmEmail,
- 		phoneNumber=this.subjectUser.phoneNumber,
- 		street=this.subjectUser.street,
- 		city=this.subjectUser.city,
- 		state=this.subjectUser.state,
- 		zip=this.subjectUser.zip,
- 		refId=this.subjectUser.refId;
-}
-else{
-	var firstName='',
-		lastName='',
-		userName='',
-		password='',
-		emailAdr='',
-		confirmEmail='',
-		phoneNumber='',
-		street='',
-		city='',
-		state='',
-		zip='',
-		refId=qtools.newGuid();
+if (
+	(!this.subjectUser && window.location.host == 'store.goodearth.local') ||
+	(!this.subjectUser && window.location.hash == '#tq')
+) {
+	var firstName = 'tq',
+		lastName = 'white',
+		userName = 'tqwhite' + Math.floor(Math.random() * 1000 + 1),
+		password = '123123',
+		emailAdr = 'tq@justkidding.com',
+		confirmEmail = 'tq@justkidding.com',
+		phoneNumber = '999-999-9999',
+		street = '5004 Three Points Blvd',
+		city = 'Mound',
+		state = 'MN',
+		zip = '55364',
+		refId = qtools.newGuid();
+} else if (this.subjectUser && this.subjectUser.refId) {
+	var firstName = this.subjectUser.firstName,
+		lastName = this.subjectUser.lastName,
+		userName = this.subjectUser.userName,
+		password = this.subjectUser.password,
+		emailAdr = this.subjectUser.emailAdr,
+		confirmEmail = this.subjectUser.confirmEmail,
+		phoneNumber = this.subjectUser.phoneNumber,
+		street = this.subjectUser.street,
+		city = this.subjectUser.city,
+		state = this.subjectUser.state,
+		zip = this.subjectUser.zip,
+		refId = this.subjectUser.refId;
+	role = this.subjectUser.role;
+	schoolRefId = this.subjectUser.schoolRefId;
+} else {
+	var firstName = '',
+		lastName = '',
+		userName = '',
+		password = '',
+		emailAdr = '',
+		confirmEmail = '',
+		phoneNumber = '',
+		street = '',
+		city = '',
+		state = '',
+		zip = '',
+		refId = qtools.newGuid();
 }
 
+if (this.adminFlag) {
+	var checkString = '';
+	var emailOverrideCheckbox =
+		"Suppress Confirmation Email <input type='checkbox' name='emailOverride' " +
+		checkString +
+		'>';
 
-if (this.adminFlag){
-	var checkString='';
-	var emailOverrideCheckbox="Suppress Confirmation Email <input type='checkbox' name='emailOverride' "+checkString+">";
-	
-	var passwordTypeString='text';
+	var passwordTypeString = 'text';
+} else {
+	var emailOverrideCheckbox = '';
+	var passwordTypeString = 'password';
 }
-else{
-	var emailOverrideCheckbox="";
-	var passwordTypeString='password';
-}
-if (this.subjectUser && this.subjectUser.emailAdr){
-var previousEmailAddress="<input type='hidden' name='previousEmailAddress' value='"+this.subjectUser.emailAdr+"'>";
-}
-else{
 
-var previousEmailAddress="<input type='hidden' name='previousEmailAddress' value=''>";
+if (this.subjectUser && this.subjectUser.emailAdr) {
+	var previousEmailAddress =
+		"<input type='hidden' name='previousEmailAddress' value='" +
+		this.subjectUser.emailAdr +
+		"'>";
+} else {
+	var previousEmailAddress =
+		"<input type='hidden' name='previousEmailAddress' value=''>";
+}
+
+var students=qtools.getDottedPath(this, 'subjectUser.account.students');
+students=students?students:[];
+
+if (this.subjectUser) {
+	var roles = [
+		{ name: 'customer role', refId: 'customer' },
+		{ name: 'admin role', refId: 'admin' },
+		{ name: 'schoolAdmin role', refId: 'schoolAdmin' }
+	];
+	this.subjectUser.role=this.subjectUser.role?this.subjectUser.role:'customer';
+
+	if (this.subjectUser.role != 'schoolAdmin' || students.length==0) {
+		var roleString = this.viewHelper.makeSelectTag({
+			divId: this.displayParameters.roleSelect.divId,
+			selectedValue: this.subjectUser.role,
+			selectVarName: 'role',
+			sourceObj: roles,
+			filterFunction: function(inData) {
+				return true;
+			},
+			valuePropertyName: 'refId',
+			labelPropertyName: 'name',
+			firstItemLabel: 'Select Role',
+			firstItemValue: '',
+			selectClassName: 'smallSelect' //schoolIdClassString is for debug purposes only, see register.initDomObjects()
+		});
+		
+
+
+		if (this.subjectUser.role == 'schoolAdmin'){
+			var schoolClassString='smallSelect'; //purely for #tq's convenience
+		}
+		else{
+			var schoolClassString='smallSelect hidden';
+		}
+
+		var schoolString = this.viewHelper.makeSelectTag({
+			divId: this.displayParameters.schoolSelect.divId,
+			selectedValue: this.subjectUser.schoolRefId,
+			selectVarName: 'schoolRefId',
+			sourceObj: this.schools.sort(qtools.byObjectProperty('name')),
+			filterFunction: function(inData) {
+				return inData.isActiveFlag;
+			},
+			valuePropertyName: 'refId',
+			labelPropertyName: 'name',
+			firstItemLabel: 'Select School',
+			firstItemValue: '',
+			selectClassName: schoolClassString //schoolIdClassString is for debug purposes only, see register.initDomObjects()
+		});
+	} else {
+		var roleString = this.subjectUser.role;
+		var schoolString = qtools.getByProperty(
+			this.schools,
+			'refId',
+			this.subjectUser.schoolRefId
+		).name;
+		
+		schoolString+=" (has "+students.length+" students)";
+	}
+
+	var roleAndSchoolString = roleString + ' ' + schoolString;
+} else {
+	var roleAndSchoolString = '';
 }
 
 %>
@@ -120,7 +193,7 @@ var previousEmailAddress="<input type='hidden' name='previousEmailAddress' value
 				<input prompt='required' title='city is required' style='width:170px;' name='city' value='<%=city%>'> <span style='font-size:200%;color:gray;'>,</span>
 				<input style='width:35px;' prompt='CA' title='two character state code' name='state' value='<%=state%>'>
 				<input style='width:75px;' prompt='00000' title='five digit zip 00000' name='zip' value='<%=zip%>'>
-
+				<input type='hidden' name='refId'  value='<%=refId%>'> <%== emailOverrideCheckbox %>
 			</td>
 	</tr>
 
@@ -128,7 +201,7 @@ var previousEmailAddress="<input type='hidden' name='previousEmailAddress' value
 
 	<tr  style='height:25px;'>
 		<td>Phone:</td><td><input name='phoneNumber'  value='<%=phoneNumber%>' prompt='000-000-0000' title='format with hyphens 000-000-0000'></td>
-		<td><input type='hidden' name='refId'  value='<%=refId%>'></td><td colspan='4'><%== emailOverrideCheckbox %></td></tr>
+		<td colspan='5'><%== roleAndSchoolString %></td></tr>
 </table>
 
 

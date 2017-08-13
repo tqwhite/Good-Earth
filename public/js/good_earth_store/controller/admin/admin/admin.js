@@ -146,7 +146,8 @@ var reviseUserEditor=function(editorDomObj){
 				accessFunction:this.displayParameters[name].handler,
 				adminFlag:true,
 		statusDomObject:this.statusDomObject,
-		instantiationCallback:reviseUserEditor
+		instantiationCallback:reviseUserEditor,
+		schools:this.schools
 	});
 	
 	this.displayParameters.studentEditor.domObj=$('#'+this.displayParameters.studentEditor.divId);
