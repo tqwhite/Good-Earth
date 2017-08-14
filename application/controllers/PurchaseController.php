@@ -160,8 +160,8 @@ class PurchaseController extends Q_Controller_Base
 		$noCollectionFirstFour = array(
 			'9999' => array(
 				'tqOnly' => true,
-				'description'=>"TQ debugging normal template, only sent to him (9999)",
-				'templateName' => "email-receipt.phtml",
+				'description'=>"TQ debugging deferred template, only sent to him (9999)",
+				'templateName' => "deferred-email-receipt.phtml",
 				'code' => 3,
 				'emailSubject' => "Good Earth Lunch Program Receipt",
 				'processingRequired' => false
@@ -175,8 +175,8 @@ class PurchaseController extends Q_Controller_Base
 			),
 			'8888' => array(
 				'tqOnly' => true,
-				'description'=>"TQ debugging deferred template, only sent to him (8888)",
-				'templateName' => "deferred-email-receipt.phtml",
+				'description'=>"TQ debugging normal template, only sent to him (8888)",
+				'templateName' => "email-receipt.phtml",
 				'code' => 3,
 				'emailSubject' => "Good Earth Lunch Program Invoice",
 				'processingRequired' => false

@@ -40,7 +40,7 @@ for ($i = 0, $purchaseCount = count($purchasesViewData); $i < $purchaseCount; $i
 			'offeringRefId' => $element->offering->refId
 		);
 	}
-	$orderString = "<table style='margin:15px 0px 15px 20px;color:#385B2B;'>$orderString</table>\n\n";
+	$orderString = "<table style='margin:15px 0px 15px 20px;color:black;'>$orderString</table>\n\n";
 	
 	
 	
@@ -105,7 +105,7 @@ if ($purchaseCount > 1) {
 }
 
 echo "
-	<body style='background:#F5E4C6;'><div style='color:#385B2B;font-size:12pt;margin:20px 0px 20px 10px;'>
+	<body style='background:white;'><div style='color:black;font-size:12pt;margin:20px 0px 20px 10px;'>
 		<div>
 			Dear {$user->firstName} {$user->lastName},<p/>
 				Thank you for participation in the Good Earth School Lunch Program. {$multipleDealNotice}<p/>

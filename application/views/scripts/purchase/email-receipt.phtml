@@ -4,6 +4,16 @@ $user = $this->user;
 $purchasesViewData  = $this->purchasesViewData;
 $orderDisplayString = "";
 
+$introPhrases=array(
+'A',
+'A second',
+'Another',
+'A fourth',
+'The fifth',
+'Payment six'
+
+);
+
 for ($i = 0, $purchaseCount = count($purchasesViewData); $i < $purchaseCount; $i++) {
 	$element = $purchasesViewData[$i];
 	
@@ -30,16 +40,16 @@ for ($i = 0, $purchaseCount = count($purchasesViewData); $i < $purchaseCount; $i
 			'periodEnd' => $element->student->school->datePeriodEnd
 		);
 		$merchantIdOwnerName                  = $element->student->school->merchantIdOwnerName; //by definition, all purchases in this group have the same merchantIdOwnerName
-		$merchantIdOwnerName=$merchantIdOwnerName?$merchantIdOwnerName:"Good Earth";
-
-		$orderObject[]                        = array(
+		$merchantIdOwnerName                  = $merchantIdOwnerName ? $merchantIdOwnerName : "Good Earth";
+		
+		$orderObject[] = array(
 			'firstName' => $element->student->firstName,
 			'lastName' => $element->student->lastName,
 			'offering' => $element->offering->name,
 			'offeringRefId' => $element->offering->refId
 		);
 	}
-	$orderString = "<table style='margin:15px 0px 15px 20px;color:#385B2B;'>$orderString</table>\n\n";
+	$orderString = "<table style='margin:15px 0px 15px 20px;color:black;'>$orderString</table>\n\n";
 	
 	
 	
@@ -50,26 +60,24 @@ for ($i = 0, $purchaseCount = count($purchasesViewData); $i < $purchaseCount; $i
 	
 	$shortRefId   = substr($purchaseEntity->refId, 0, 8);
 	$showTotal    = number_format($purchaseEntity->chargeTotal, 2);
-	$shortRefId = substr($purchaseEntity->refId, 0, 8);
+	$shortRefId   = substr($purchaseEntity->refId, 0, 8);
 	$schoolString = '';
 	foreach ($schoolList as $element) {
 		$schoolString .= "<div>{$element['firstName']} {$element['lastName']} at {$element['school']} school (session: {$element['periodStart']} to {$element['periodEnd']})</div>";
 	}
 	
-	$dealSubjectString="
-		<b>A payment was made to {$merchantIdOwnerName} for <span style='font-size:85%'>&dollar;{$showTotal}</span> on your credit card <span style='font-size:85%'>(...{$purchaseEntity->lastFour})</span>
-		for the following lunches:</b>
+	$dealSubjectString = "
+		{$introPhrases[$i]} payment was made to {$merchantIdOwnerName} for <span style='font-size:85%'>${$showTotal}</span> on your credit card 
+		<span style='font-size:85%'>(...{$purchaseEntity->lastFour})</span>. 
+		The transaction reference number is <span style='font-size:80%'>{$purchaseEntity->fdOrderId}.
+		</span> and covers the following lunches:
 	";
-	
-// 	$dealSubjectString="
-// 		Following is a recap of your order:
-// 	";
 	
 	$orderDisplayString .= "
 		{$dealSubjectString}
 				{$orderString}
 		<div>
-			The lunches were for ...
+			The lunches are for ...
 			<div style='margin:15px 0px 15px 20px;font-size:10pt;'>
 				{$schoolString}
 			</div>
@@ -77,45 +85,42 @@ for ($i = 0, $purchaseCount = count($purchasesViewData); $i < $purchaseCount; $i
 	";
 }
 
-	
-	
-// 	$extraMessage="
-// 		You elected to pay for this purchase by check:
-// 		<div style='margin:15px 0px 15px 20px;font-size:10pt;'>
-// 				Please make check payable to<p/>
-// 				<b>Good Earth</b> for {$showTotal}<br/>
-// 				with the invoice #{$shortRefId} in the memo line<p/>
-// 				and mail it to:<p/>
-// 				Good Earth School Lunches<br/>
-// 				11 Digital Drive<br/>
-// 				Suite C<br/>
-// 				Novato, CA 94949<br/><p/>
-// 				If you have questions, please call Customer Service at 415/382-1334
-// 		</div>
-// 	";
-	
-	$extraMessage="";
+$extraMessage = "";
 
 
 if ($purchaseCount > 1) {
 	$multipleDealNotice = "
-		<br/><br/>You have ordered lunches for students in separate schools some of which collect lunch money directly. The sections below reflect separate payments that will appear on your credit card statement.
+		<br/><br/>You have ordered lunches for students in separate schools, some of which collect lunch money directly. The sections below reflect separate payments that will appear on your credit card statement.
 	";
 }
 
 echo "
-	<body style='background:#F5E4C6;'><div style='color:#385B2B;font-size:12pt;margin:20px 0px 20px 10px;'>
+	<body style='background:white;'><div style='color:black;font-size:12pt;margin:20px 0px 20px 10px;'>
 		<div>
 			Dear {$user->firstName} {$user->lastName},<p/>
-				Thank you for participation in the Good Earth School Lunch Program. {$multipleDealNotice}<p/>
-			{$orderDisplayString}
+				Thank you for choosing Good Earth for your child's organic school lunches! 
+				We appreciate your recent purchase and the opportunity to serve you. 
+
+				{$multipleDealNotice}<p/>
+				{$orderDisplayString}
+				{$extraMessage}
 			
-			{$extraMessage}
+			<div style='margin:20px 0px 20px 0px;'>
+				If we can be of further assistance, please let us know,
+				<div style=font-weight:bold;font-style:italic;font-size:110%;'>The Good Earth Organic School Lunch Crew</div>
+			</div>
 			
-			<b>Thank You,</b><br/>
-				Your Friends at Good Earth Natural Foods
-			<div style='font-size:10pt;color:#e2be83;margin-top:20px;'>PS, The order process reference ID is: {$purchaseEntity->fdOrderId}</div>
-			<div style='font-size:10pt;color:#e2be83;margin-top:20px;'>The email address on this order is: {$user->emailAdr}, Login Name: {$user->userName}</div>
+			<div style='font-size:10pt;color:#666;margin-top:20px;'>
+				The email address on this order is {$user->emailAdr}, login name is {$user->userName}
+			</div>
+			
+			<div style='font-size:10pt;color:#008000;margin-top:20px;text-align:center;'>
+				
+				Good Earth School Lunch Program, 415-382-1334, school@genatural.com<br/>
+				http://www.genatural.com/organic-school-lunch-program/
+				
+			</div>
+
 		</div>
 	</body>
 	";
