@@ -29,9 +29,12 @@ qtools.validateProperties({
 	],
  source:'customer.schedule.addStudent.views.init' });
 
-var vegetarianSelected=this.formData.student.vegetarianFlag?'checked':'';
-var isTeacherSelected=this.formData.student.isTeacherFlag?'checked':'';
-var allergySelected=this.formData.student.allergyFlag?'checked':'';
+console.dir({"this.formData.student [init.ejs.]":this.formData.student});
+
+
+var vegetarianSelected=(this.formData.student.vegetarianFlag=='1')?'checked':'';
+var isTeacherSelected=(this.formData.student.isTeacherFlag=='1')?'checked':'';
+var allergySelected=(this.formData.student.allergyFlag=='1')?'checked':'';
 
  var lastName=this.formData.student.lastName?this.formData.student.lastName:this.formData.account.familyName;
 
