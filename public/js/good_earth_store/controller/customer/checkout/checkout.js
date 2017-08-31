@@ -124,6 +124,7 @@ initDomElements:function(){
 submitButtonHandler:function(control, parameter){
 	var componentName='submitButton';
 	switch(control){
+		case 'dblclick':
 		case 'click':
 
 			if (this.displayParameters.submitButton.submitted){
@@ -131,28 +132,29 @@ submitButtonHandler:function(control, parameter){
 				}
 			
 			$('#'+this.displayParameters.submitButton.divId).html('Processing');
+			$('#'+this.displayParameters.cancelButton.divId).hide();
 			this.displayParameters.submitButton.submitted=true;
 
-// 			this.displayParameters.submitButton.timeoutId=setTimeout(
-// 				function(){
-// 					$('#'+this.displayParameters.entryContainer.divId).html($.View('//good_earth_store/controller/customer/checkout/views/timeout.ejs'));
-// 
-// 		$.ajax({
-// 				url: '/utility/timeout',
-// 				type: 'post',
-// 				dataType: 'json',
-// 				data: {
-// 					purchase:this.purchases,
-// 					account:this.account
-// 					},
-// 				success: function(){ return;},
-// 				error: function(){ return;}
-// 			});
-// 
-// 
-// 				}.bind(this),
-// 				45000
-// 			);
+			this.displayParameters.submitButton.timeoutId=setTimeout(
+				function(){
+					$('#'+this.displayParameters.entryContainer.divId).html($.View('//good_earth_store/controller/customer/checkout/views/timeout.ejs'));
+
+		$.ajax({
+				url: '/utility/timeout',
+				type: 'post',
+				dataType: 'json',
+				data: {
+					purchase:this.purchases,
+					account:this.account
+					},
+				success: function(){ return;},
+				error: function(){ return;}
+			});
+
+
+				}.bind(this),
+				45000
+			);
 
 			GoodEarthStore.Models.Purchase.process({
 					cardData:this.element.formParams(),

@@ -104,6 +104,9 @@ steal('jquery/model', function() {
 
 				name = 'cardNumber';
 				datum = inData[name];
+				if (datum.toLowerCase().replace(/ /g, '')=='paybycheck'){
+					//not an error
+				} else
 				if (!datum) {
 					errors.push([name, 'Card Number is required']);
 				} else if (datum.replace(/ /g, '', datum).length < 15) {

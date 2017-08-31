@@ -121,6 +121,9 @@ class Application_Model_Student extends Application_Model_Base
 	
 	protected function convertHelixData($data){
 		$data['isActiveFlag']=($data['active?']=='Yes')?1:0; unset($data['active?']);
+		$data['vegetarianFlag']=($data['vegetarianFlag?']=='Yes')?1:0; unset($data['vegetarianFlag?']);
+		$data['isTeacherFlag']=($data['isTeacherFlag?']=='Yes')?1:0; unset($data['isTeacherFlag?']);
+		$data['allergyFlag']=($data['allergyFlag?']=='Yes')?1:0; unset($data['allergyFlag?']);
 		$data['helixId']=$data['helix id']; unset($data['helix id']);
 
 		return $data;

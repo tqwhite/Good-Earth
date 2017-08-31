@@ -67,7 +67,7 @@ for ($i = 0, $purchaseCount = count($purchasesViewData); $i < $purchaseCount; $i
 	}
 	
 	$dealSubjectString = "
-		{$introPhrases[$i]} payment was made to {$merchantIdOwnerName} for <span style='font-size:85%'>${$showTotal}</span> on your credit card 
+		{$introPhrases[$i]} payment was made to {$merchantIdOwnerName} for <span style='font-size:85%'>"."$"."{$showTotal}</span> on your credit card 
 		<span style='font-size:85%'>(...{$purchaseEntity->lastFour})</span>. 
 		The transaction reference number is <span style='font-size:80%'>{$purchaseEntity->fdOrderId}.
 		</span> and covers the following lunches:

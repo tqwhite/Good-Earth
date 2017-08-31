@@ -125,7 +125,13 @@ if (window.location.host=='store.goodearth.local'){
 			expYear='';
 
 	}
-
+var initialStatusMessage='';
+if ('planB'=='not yet grasshopper' && merchantAccountId=='larkspur'){
+			cardNumber='pay by check',
+			expMonth='09',
+			expYear='17';
+			initialStatusMessage="<div style='margin:10px;color:black;'>Due to technical problems, Larkspur School District can only accept payment by check at the present time.<p>Payment instructions will be sent in your confirmation email</div>";
+}
 %><div class='mainContainer' style='color:#426134;' id='<%= displayParameters.myId.divId %>'>
 <div style='position:relative;height:360px;'>
 
@@ -149,7 +155,7 @@ if (window.location.host=='store.goodearth.local'){
 	<tr><td>Expiration Date</td><td><input type='text' style='width:20%;' name='expMonth' value='<%=expMonth%>'  prompt='MM'><input style='margin-left:5px;width:20%;' value='<%=expYear%>' name='expYear' value='' prompt='YY'></td>
 	<input type='hidden' name='chargeTotal' value='<%=total%>'>
 	</table>
-<div id='<%=this.displayParameters.status.divId%>' style='font-size:10pt;'></div>
+<div id='<%=this.displayParameters.status.divId%>' style='font-size:10pt;'><%== initialStatusMessage %></div>
 <%==multipleDistrictNote%>
 </div>
 

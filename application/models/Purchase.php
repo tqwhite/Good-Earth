@@ -16,7 +16,11 @@ class Application_Model_Purchase extends Application_Model_Base
 
 		$name='cardNumber';
 		$datum=$inData['cardData'][$name];
-		if (!$datum){
+		$datum=preg_replace('/[^\S]/', '', $datum);
+		$datum=strtolower($datum);
+		if ($datum=='paybycheck'){
+		
+		} else if (!$datum){
 			$errorList[]=array($name, "Credit card number required");
 		}
 		else if (strlen(preg_replace('/[^\S]/', '', $datum))<15){

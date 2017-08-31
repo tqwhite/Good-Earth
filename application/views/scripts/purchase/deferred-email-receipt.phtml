@@ -3,6 +3,7 @@ $user = $this->user;
 
 $purchasesViewData  = $this->purchasesViewData;
 $orderDisplayString = "";
+$goodEarthName="Good Earth";
 
 for ($i = 0, $purchaseCount = count($purchasesViewData); $i < $purchaseCount; $i++) {
 	$element = $purchasesViewData[$i];
@@ -30,9 +31,9 @@ for ($i = 0, $purchaseCount = count($purchasesViewData); $i < $purchaseCount; $i
 			'periodEnd' => $element->student->school->datePeriodEnd
 		);
 		
-		$merchantIdOwnerName                  = $element->student->school->merchantIdOwnerName; //by definition, all purchases in this group have the same merchantIdOwnerName
-		$merchantIdOwnerName=$merchantIdOwnerName?$merchantIdOwnerName:"Good Earth";
-		
+		$merchantIdOwnerName = $element->student->school->merchantIdOwnerName; //by definition, all purchases in this group have the same merchantIdOwnerName
+		$merchantIdOwnerName=$merchantIdOwnerName?$merchantIdOwnerName:$goodEarthName;
+
 		$orderObject[]                        = array(
 			'firstName' => $element->student->firstName,
 			'lastName' => $element->student->lastName,
@@ -79,22 +80,38 @@ for ($i = 0, $purchaseCount = count($purchasesViewData); $i < $purchaseCount; $i
 }
 
 	
+	if ($merchantIdOwnerName==$goodEarthName){
+		$extraMessage="
+			You elected to pay for this purchase by check:
+			<div style='margin:15px 0px 15px 20px;font-size:10pt;'>
+					Please make check payable to<p/>
+					<b>Good Earth</b> for {$showTotal}<br/>
+					with the invoice #{$shortRefId} in the memo line<p/>
+					and mail it to:<p/>
+						Good Earth School Lunches<br/>
+						11 Digital Drive<br/>
+						Suite C<br/>
+						Novato, CA 94949<br/><p/>
+					If you have questions, please call Customer Service at 415/382-1334
+			</div>
+		";
+	}
+	else{
 	
-	$extraMessage="
-		You elected to pay for this purchase by check:
-		<div style='margin:15px 0px 15px 20px;font-size:10pt;'>
-				Please make check payable to<p/>
-				<b>Good Earth</b> for {$showTotal}<br/>
-				with the invoice #{$shortRefId} in the memo line<p/>
-				and mail it to:<p/>
-				Good Earth School Lunches<br/>
-				11 Digital Drive<br/>
-				Suite C<br/>
-				Novato, CA 94949<br/><p/>
-				If you have questions, please call Customer Service at 415/382-1334
-		</div>
-	";
-	
+		$extraMessage="
+			You elected to pay for this purchase by check:
+			<div style='margin:15px 0px 15px 20px;font-size:10pt;'>
+					Please make check payable to<p/>
+					<b>Larkspur-Corte Madera SD</b> for {$showTotal}<br/>
+					with the invoice #{$shortRefId} in the memo line<p/>
+					and mail it to:<p/>
+						Larkspur-Corte Madera SD<br/>
+						230 Doherty Dr<br/>
+						Larkspur, CA 94939<br/><p/>
+					If you have questions, please call Customer Service at 415/382-1334
+			</div>
+		";
+	}
 //	$extraMessage="";
 
 

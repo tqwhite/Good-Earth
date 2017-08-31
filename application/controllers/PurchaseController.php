@@ -49,6 +49,11 @@ class PurchaseController extends Q_Controller_Base
 				'address' => 'school@genatural.com',
 				'type' => 'accounting'
 			);
+			
+			if (!$user->emailAdr){
+				error_log("setUpDestinationAddresses() says user->emailAdr is empty for user refId {$user->refId} [purchaseController.php]");
+			}
+			
 			$addressList[] = array(
 				'name' => $user->firstName . ' ' . $user->lastName,
 				'address' => $user->emailAdr,
@@ -99,10 +104,14 @@ class PurchaseController extends Q_Controller_Base
 			$mail->setSubject($emailSubject);
 			$mail->setBodyHtml($emailMessage);
 			$mail->addTo($recipient['address'], $recipient['name']);
-			$outList[] = $mail->send($tr);
-			error_log("queuing email: {$recipient['address']} [PurchaseController.php]");			
-			Zend_Mail::clearDefaultFrom();
-			Zend_Mail::clearDefaultReplyTo();
+			error_log("attempting email: {$recipient['address']} for ({$recipient['name']} [PurchaseController.php]");	
+			if (!$recipient['address']){
+				error_log("email address is missing [PurchaseController.php]");
+			}
+			else{
+				$outList[] = $mail->send($tr);
+				error_log("sent email: {$recipient['address']} [PurchaseController.php]");
+			}
 		}
 			
 		return $outList;
@@ -112,6 +121,8 @@ class PurchaseController extends Q_Controller_Base
 	{
 		$auth = \Zend_Auth::getInstance();
 		$user = $auth->getIdentity();
+		
+		error_log("sendCustomerEmail() says, starting email process for {$user->refId},  {$user->emailAdr} [purchaseController.php");
 		
 		$doctrineContainer = \Zend_Registry::get('doctrine');
 		$entityManager     = $doctrineContainer->getEntityManager();
@@ -155,8 +166,9 @@ class PurchaseController extends Q_Controller_Base
 	
 	// payment processing functions =======================
 	
-	private function processingParameters($selector)
+	private function processingParameters($cardData)
 	{
+		
 		$noCollectionFirstFour = array(
 			'9999' => array(
 				'tqOnly' => true,
@@ -164,6 +176,13 @@ class PurchaseController extends Q_Controller_Base
 				'templateName' => "deferred-email-receipt.phtml",
 				'code' => 3,
 				'emailSubject' => "Good Earth Lunch Program Receipt",
+				'processingRequired' => false
+			),
+			'paybycheck' => array(
+				'description'=>"deferred payment (9012)",
+				'templateName' => "deferred-email-receipt.phtml",
+				'code' => 2,
+				'emailSubject' => "Good Earth Lunch Program Invoice",
 				'processingRequired' => false
 			),
 			'9012' => array(
@@ -189,10 +208,18 @@ class PurchaseController extends Q_Controller_Base
 				'processingRequired' => false
 			)
 		);
-		
+		$selector=strtolower($cardData); //try long version first
+		$selector=preg_replace('/[^\S]/', '', $selector);
+
 		if (isset($noCollectionFirstFour[$selector])) {
 			return $noCollectionFirstFour[$selector];
 		}
+		
+		$selector = substr($selector, 0, 4);
+		if (isset($noCollectionFirstFour[$selector])) {
+			return $noCollectionFirstFour[$selector];
+		}
+		
 		return array(
 			'templateName' => "email-receipt.phtml",
 			'code' => '1',
@@ -329,11 +356,12 @@ class PurchaseController extends Q_Controller_Base
 			
 			$purchaseModelList = $this->assemblePurchases($merchantAccountOrders, $account, $inData);
 			
-			$specialInstruction = substr($inData['cardData']['cardNumber'], 0, 4);
-			$processControl     = $this->processingParameters($specialInstruction);
+			$processControl     = $this->processingParameters($inData['cardData']['cardNumber']);
 			if ($processControl['processingRequired']) {
-				
+			
+				error_log("initiating Application_Model_Payment::process() for {$inData['account']['refId']} [purchaseController.php]");
 				$paymentProcessResult = \Application_Model_Payment::process($purchaseModelList, $inData);
+				error_log("returned from Application_Model_Payment::process() for {$inData['account']['refId']} [purchaseController.php]");
 				
 				$summaryResult = $this->summarizeProcessResults($paymentProcessResult);
 				
@@ -345,7 +373,7 @@ class PurchaseController extends Q_Controller_Base
 				}
 			} else {
 				$paymentProcessResult['deferredPaymentPreference'] = "DEFERRED by {$processControl['description']}";
-				error_log("DEFERRED by {$processControl['description']} [PurcaseController.php]");
+				error_log("DEFERRED by {$processControl['description']} [PurchaseController.php]");
 			}
 		}
 		
@@ -358,7 +386,9 @@ class PurchaseController extends Q_Controller_Base
 			for ($i = 0, $len = count($purchaseModelList); $i < $len; $i++) {
 				$purchaseModel = $purchaseModelList[$i];
 				$this->addPaymentResultToPurchase($purchaseModel, $inData, $paymentProcessResult[$i]['result']);
+				error_log("init purchaseModel->persist(Application_Model_Base::yesFlush) for {$inData['account']['refId']} [purchaseController.php]");
 				$purchaseModel->persist(Application_Model_Base::yesFlush);
+				error_log("returned from purchaseModel->persist(Application_Model_Base::yesFlush) for {$inData['account']['refId']} [purchaseController.php]");
 			}
 			
 			$emailMessage = $this->sendCustomerEmail($purchaseObj->entity->refId, $processControl, $purchaseModelList);

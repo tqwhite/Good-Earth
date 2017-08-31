@@ -72,16 +72,8 @@ GoodEarthStore.Controller.Base.extend('GoodEarthStore.Controller.Session.Dispatc
 					
 					message+="<div style='color:#436235;margin-top:10px;'>";
 
-					message+="We are busy in the kitchen preparing delicious lunches and the store is closed for online ordering.";
-					message+="<br/><br/>";
-					message+="Session 2:  November 14 - March 3 is closed for new orders.";
-					message+="<br/><br/>";
-					message+="Session 3:  Starts March 6 and we will open again on February 17.";
-					message+="<br/><br/>";
-					message+="We deeply appreciate your business and look forward to serving your students.";
-					message+="<br/><br/>";
-					message+="If you have questions or would like to learn more about the program please call 415-382-1334 or email us at school@genatural.com";
-
+					message+="We will be back shortly.";
+					
 					message+="</div>";
 
 					this.element.html("<div style='width:400px;margin-left:150px;margin-top:0px;'><img style='width:200px;' src='/media/business_closed_sign_page.png'>"+message+"</div>").show();
