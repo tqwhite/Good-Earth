@@ -14,7 +14,8 @@ class UserController extends Q_Controller_Base {
 	}
 
 	public function resetpwAction() {
-error_log("PW RESET EXECUTION START: identifier: {$inData['identifier']}");
+		error_log("PW RESET EXECUTION START: identifier: {$inData['identifier']} [UserController.php]");
+		
 		$inData = $this->getRequest()->getPost('data');
 		$messages = array();
 		$userObj = new \Application_Model_User();
@@ -46,14 +47,14 @@ error_log("PW RESET EXECUTION START: identifier: {$inData['identifier']}");
 				$messages[] = array('registration', 'Reset email sent');
 			}
 
-error_log("PW RESET EXECUTION COMPLETE: identifier: {$inData['identifier']}");
+			error_log("PW RESET EXECUTION COMPLETE: identifier: {$inData['identifier']} [UserController.php]");
 			$this->_helper->json(array(status => $status, messages => $messages, data => array('firstName' => $user->firstName, 'lastName' => $user->lastName, 'emailAdr' => $user->emailAdr, 'userName' => $user->userName, 'expirationDate' => $resetDateDb)));
 
 		}
 	}
 
 	private function sendResetEmail($userObj) {
-error_log("PW RESET EMAIL START: email server: user: {$userObj->userName}, dest email: {$userObj->emailAdr}");
+		error_log("PW RESET EMAIL START: email server: user: {$userObj->userName}, dest email: {$userObj->emailAdr} [UserController.php]");
 
 		$showResetDate = $this->resetDate->format('h:i');
 		$mail = new Zend_Mail();
