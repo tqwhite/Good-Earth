@@ -101,9 +101,9 @@ class UserController extends Q_Controller_Base {
 
 		$mail->addTo($userObj->emailAdr, $userObj->firstName . ' ' . $userObj->lastName);
 
-		error_log($mail->send($tr));
-error_log("PW RESET EMAIL COMPLETE: user: {$userObj->userName}, dest email: {$userObj->emailAdr}, email server: {$emailSender['hostName']}");
+		$mail->send($tr);
 
+		error_log("PW RESET EMAIL COMPLETE: user: {$userObj->userName}, dest email: {$userObj->emailAdr}, email server: {$emailSender['hostName']} [UserController.php]");
 		return true;
 	}
 
