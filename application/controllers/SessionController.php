@@ -78,10 +78,25 @@ class SessionController extends  Q_Controller_Base
         	$identity='';
         }
 
+	$userDataPackage=\Application_Model_User::formatOutput($identity);
+	
+// 	$accountRefId=$userDataPackage['account']['refId'];
+// 	
+// 	$purchaseObj=new \Application_Model_Purchase();
+// 	
+// 	$purchaseList=$purchaseObj->getByAccountRefIdForJson($accountRefId);
+// 	$purchaseOutList=array();
+// 	
+// // 			for ($i=0, $len=count($purchaseList); $i<$len; $i++){
+// // 			$element=$purchaseList[$i];
+// // 			$purchaseOutList[]=\Application_Model_Purchase::formatOutput($element);
+// // 		}
+// 	
+// 	$userDataPackage['purchases']=$purchaseList;
 
 		$this->_helper->json(array(
 			status=>$status,
-			data=>\Application_Model_User::formatOutput($identity)
+			data=>$userDataPackage
 		));
 
     }

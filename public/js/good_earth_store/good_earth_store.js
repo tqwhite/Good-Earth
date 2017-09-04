@@ -9,11 +9,8 @@ steal(
 	'./resources/jqueryPlugins/jquery.qprompt.js',
 	'./resources/jqueryPlugins/spin.js',
 	
-	
-	'./resources/jqueryPlugins/html5tooltipsjs/html5tooltips.css',
-	'./resources/jqueryPlugins/html5tooltipsjs/html5tooltips.animation.css',
-	'./resources/jqueryPlugins/html5tooltipsjs/html5tooltips.js',
-	'./resources/jqueryPlugins/jquery.html5tooltips.js',
+	'./resources/jqueryPlugins/qtip2/jquery.qtip.min.css',
+	'./resources/jqueryPlugins/qtip2/jquery.qtip.min.js',
 
 	'./resources/other/json2.js',
 	'./resources/other/mousetrap.js',

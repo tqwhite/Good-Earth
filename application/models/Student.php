@@ -54,6 +54,7 @@ class Application_Model_Student extends Application_Model_Base
 	}
 
 	static function formatDetail($inData, $outputType){
+	
 
 		if ($inData->refId){
 		switch ($outputType){
@@ -70,10 +71,8 @@ class Application_Model_Student extends Application_Model_Base
 					'accountRefId'=>$inData->account->refId,
 					'gradeLevelRefId'=>$inData->gradeLevel->refId,
 					
-						'gradeLevel'=>\Application_Model_GradeLevel::formatOutput($inData->gradeLevel, $outputType),
-						
-						'school'=>\Application_Model_School::formatOutput($inData->school, $outputType),
-						'orders'=>\Application_Model_Order::formatOutput($inData->offeringNodes)
+					'gradeLevel'=>\Application_Model_GradeLevel::formatOutput($inData->gradeLevel, $outputType),
+					'school'=>\Application_Model_School::formatOutput($inData->school, $outputType)
 				);
 				break;
 		case 'export':

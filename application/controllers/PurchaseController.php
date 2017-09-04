@@ -122,7 +122,8 @@ class PurchaseController extends Q_Controller_Base
 		$auth = \Zend_Auth::getInstance();
 		$user = $auth->getIdentity();
 		
-		error_log("sendCustomerEmail() says, starting email process for {$user->refId},  {$user->emailAdr} [purchaseController.php");
+		error_log("sendCustomerEmail() says, starting email process for userRefId:{$user->refId},  {$user->emailAdr} [purchaseController.php");
+
 		
 		$doctrineContainer = \Zend_Registry::get('doctrine');
 		$entityManager     = $doctrineContainer->getEntityManager();
@@ -153,6 +154,12 @@ class PurchaseController extends Q_Controller_Base
 		$renderedMessage .= $view->render($processControl['templateName']);
 		
 		$emailSubject    = $processControl['emailSubject'];
+		
+		if (!$user->refId){
+			$renderedMessage="<div style='color:red;margin:15px 0px;'>'Dear ,' situation detected.</div>$renderedMessage";
+			$emailSubject="$emailSubject*";
+		}
+		
 		$addressList     = $this->setUpDestinationAddresses($processControl, $orderEntityList, $user);
 		$emailSendStatus = $this->transmitEmail($addressList, $emailSubject, $renderedMessage);
 		
@@ -341,7 +348,7 @@ class PurchaseController extends Q_Controller_Base
 	public function payAction()
 	{
 		$inData = $this->getRequest()->getPost('data');
-		error_log("START payment process {$inData['account']['refId']} [purchaseController.php]");
+		error_log("START payment process {$inData['account']['refId']} [purchaseController.php (090317.1008)]");
 		
 		$errorList = \Application_Model_Purchase::validate($inData);
 		
@@ -362,9 +369,9 @@ class PurchaseController extends Q_Controller_Base
 				error_log("initiating Application_Model_Payment::process() for {$inData['account']['refId']} [purchaseController.php]");
 				$paymentProcessResult = \Application_Model_Payment::process($purchaseModelList, $inData);
 				error_log("returned from Application_Model_Payment::process() for {$inData['account']['refId']} [purchaseController.php]");
-				
+error_log("process track: AA");
 				$summaryResult = $this->summarizeProcessResults($paymentProcessResult);
-				
+error_log("process track: BB");				
 				if (!$summaryResult['approved']) {
 					$errorList[] = array(
 						'response_reason_text',
@@ -376,19 +383,24 @@ class PurchaseController extends Q_Controller_Base
 				error_log("DEFERRED by {$processControl['description']} [PurchaseController.php]");
 			}
 		}
-		
+error_log("process track: CC");
+error_log("count(purchaseModelList=".count($purchaseModelList)." [PurchaseController.php.payAction]");
+
 		if (count($errorList) > 0) {
+error_log("process track: DD");
 			$status       = -1;
 			$messages     = $errorList;
 			$emailMessage = "no email message sent";
 		} else {
 			
+error_log("process track: EE");
 			for ($i = 0, $len = count($purchaseModelList); $i < $len; $i++) {
+error_log("process track: FF");
 				$purchaseModel = $purchaseModelList[$i];
 				$this->addPaymentResultToPurchase($purchaseModel, $inData, $paymentProcessResult[$i]['result']);
-				error_log("init purchaseModel->persist(Application_Model_Base::yesFlush) for {$inData['account']['refId']} [purchaseController.php]");
+error_log("init purchaseModel->persist(Application_Model_Base::yesFlush) for {$inData['account']['refId']} [purchaseController.php]");
 				$purchaseModel->persist(Application_Model_Base::yesFlush);
-				error_log("returned from purchaseModel->persist(Application_Model_Base::yesFlush) for {$inData['account']['refId']} [purchaseController.php]");
+error_log("returned from purchaseModel->persist(Application_Model_Base::yesFlush) for {$inData['account']['refId']} [purchaseController.php]");
 			}
 			
 			$emailMessage = $this->sendCustomerEmail($purchaseObj->entity->refId, $processControl, $purchaseModelList);

@@ -36,7 +36,8 @@ class UtilityController extends Zend_Controller_Action
 
 		}
 
-		$emailMessage = \Q\Utils::dumpWebString($_POST, "timeoutData");
+		$emailMessage = \Q\Utils::dumpWebString($_POST, "$"."timeoutData");
+		$emailMessage = "&lt;?php<br> $emailMessage";
 		$mail->setBodyHtml($emailMessage);
 		$mail->setFrom($emailSender['fromAddress'], $emailSender['fromName']);
 		$mail->setSubject("Good Earth: TIMEOUT Error Report");

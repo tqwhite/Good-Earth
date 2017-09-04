@@ -17,7 +17,7 @@ qtools.validateProperties({
 
 qtools.validateProperties({
 	targetObject: formData,
-	propList: [{ name: 'student' },{ name: 'loginUser' }],
+	propList: [{ name: 'student' }, { name: 'loginUser' }],
 	source: 'session.dashboard.lunch_editor'
 });
 
@@ -31,7 +31,9 @@ qtools.validateProperties({
 
 //console.dir({"this.formData":this.formData});
 
-var gradeLevelRefId=this.formData.student.gradeLevel?this.formData.student.gradeLevel.refId:''
+var gradeLevelRefId = this.formData.student.gradeLevel
+	? this.formData.student.gradeLevel.refId
+	: '';
 
 var gradeLevelSelectString = this.viewHelper.makeSelectTag({
 	selectClassName: 'gradeLevelSelect',
@@ -46,9 +48,63 @@ var gradeLevelSelectString = this.viewHelper.makeSelectTag({
 	firstItemValue: ''
 });
 
-var lunchButtonString="<div style='width:60px;font-size:10pt;margin-left:7px;'>inactive</div>";
-if (formData.student.isActiveFlag!==false){
-	lunchButtonString="<div id='"+displayParameters.lunchButton.divId+"' class='smallButton' style='width:50px;'></div>";
+var lunchButtonString =
+	"<div style='width:60px;font-size:10pt;margin-left:7px;'>inactive</div>";
+if (formData.student.isActiveFlag !== false) {
+	lunchButtonString =
+		"<div id='" +
+		displayParameters.lunchButton.divId +
+		"' class='smallButton' style='width:50px;'></div>";
+}
+
+var orders = formData.student.orders ? formData.student.orders : [];
+orders = orders.sort(qtools.byObjectProperty('day.refId'));
+
+var daysPurchaseString = '';
+var lunchCount = 0;
+var tooltipContentString =
+	'<div style="font-weight:bold;margin-bottom:5px;">'+formData.student.firstName + ' ' + formData.student.lastName + '</div>';
+
+for (var i2 = 0, len2 = orders.length; i2 < len2; i2++) {
+	var element = orders[i2];
+	lunchCount++;
+	daysPurchaseString += element.day.title + ', ';
+	tooltipContentString += element.day.title + ' ' + element.offering.name + '<br>';
+}
+
+if (daysPurchaseString) {
+	daysPurchaseString =
+		"<span class='daysPurchased' style='font-size:80%;color:black;'>Already: " +
+		daysPurchaseString.replace(/, $/, '') +
+		'</span>';
+}
+
+if (lunchCount > 0) {
+	var tooltipAttributeString = "title='" + tooltipContentString + "'";
+	var lunchCountString =
+		"<div id='" +
+		formData.student.refId +
+		"' class='lunchCount' style='color:green;' " +
+		tooltipAttributeString +
+		'>' +
+		lunchCount +
+		'</div>';
+} else {
+	var tooltipAttributeString = "title='" + tooltipContentString + "No Lunches Yet'";
+
+	var lunchCountString =
+		"<div id='" +
+		formData.student.refId +
+		"' class='lunchCount' style='color:red;' " +
+		tooltipAttributeString +
+		'>' +
+		lunchCount +
+		'</div>';
+}
+
+if (!formData.student.lastName) {
+	var lunchCountString =
+		"<div id='" + formData.student.refId + "' class='lunchCount' ' ></div>";
 }
 
 %><div class='studentEditor distributeHorz' id='<%= displayParameters.myId.divId %>' style='width:auto;'>
@@ -57,4 +113,5 @@ if (formData.student.isActiveFlag!==false){
 <input name='lastName' class='lastName' value='<%= formData.student.lastName %>'>
 <%== gradeLevelSelectString %>
 <%== lunchButtonString %>
+<%== lunchCountString %>
 </div>

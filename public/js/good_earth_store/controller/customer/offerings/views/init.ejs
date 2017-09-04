@@ -28,8 +28,9 @@ var offeringString = '',
 			return item.days[0].seqNum;
 		})
 	),
-	studentSchoolRefId = this.formData.student.schoolRefId;
-	
+	studentSchoolRefId = this.formData.student.schoolRefId,
+	orders = this.formData.student.orders?this.formData.student.orders:[];
+
 studentGradeLevelRefId = this.formData.student.gradeLevelRefId;
 
 for (var i = 0, len = offerings.length; i < len; i++) {
@@ -63,18 +64,30 @@ for (var i = 0, len = offerings.length; i < len; i++) {
 
 	for (var j = days.length, len2 = 0; j > len2; j = j - 1) {
 		var dayRefId = days[j - 1].refId;
+		var alreadyHasThis = qtools.getByProperty(orders, 'day.refId', dayRefId);
+
+		if (alreadyHasThis) {
+			var toolTip = " title='Already purchased a lunch for this day'";
+			var idClass = 'noPointer';
+		} else {
+			var idClass = this.displayParameters.chooseOfferingButtonClassId.divId;
+			var toolTip = '';
+		}
+
 		dayString +=
 			"<div offeringRefId='" +
 			offeringRefId +
 			"' dayRefId='" +
 			dayRefId +
-			"' class='" +
-			this.displayParameters.chooseOfferingButtonClassId.divId +
+			"' class='tinyButton " +
+			idClass +
 			' ' +
 			this.daysIdClassLookup[days[j - 1].refId] +
-			" tinyButton' style='float:right;' dayIdClass='" +
+			" ' style='float:right;' dayIdClass='" +
 			this.daysIdClassLookup[days[j - 1].refId] +
-			"'> " +
+			"'" +
+			toolTip +
+			'> ' +
 			days[j - 1].title +
 			' </div>';
 	}
@@ -100,6 +113,7 @@ for (var i = 0, len = offerings.length; i < len; i++) {
 	offeringString += '</div>';
 	offeringString += '</div>';
 }
+
 
 %>
 <%==offeringString%>

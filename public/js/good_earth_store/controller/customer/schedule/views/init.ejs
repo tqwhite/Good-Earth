@@ -54,10 +54,36 @@ qtools.validateProperties({
 
 var students=this.formData.account.students || {};
 
+
 var rowString='';
 for (var i=0, len=students.length; i<len; i++){
 
 	if (students[i].isActiveFlag===false){continue;}
+	
+	var orders=students[i].orders?students[i].orders:[];
+	
+	var orders=orders.sort(qtools.byObjectProperty('day.refId'));
+
+
+	var daysPurchaseString='';
+	var whatLunchesString='<div style="font-weight:bold;margin-bottom:5px;">'+students[i].firstName+"</div>";
+	
+	for (var i2=0, len2=orders.length; i2<len2; i2++){
+		var element=orders[i2];
+		daysPurchaseString+=element.day.title+', ';
+		whatLunchesString+=element.day.title+" "+element.offering.name+"<br>";
+	}
+	
+	if (whatLunchesString){
+		whatLunchesString="title='"+whatLunchesString+"'";
+	}
+	
+	if (daysPurchaseString) {
+		daysPurchaseString =
+			"<span "+whatLunchesString+" class='daysPurchased' style='font-size:80%;color:black;'>Already: " +
+			daysPurchaseString.replace(/, $/, '') +
+			'</span>';
+	}
 
 	if (!this.adminFlag && this.displayParameters.lunchButton){
 	var lunchButtonString="<div style='float:right;' class='smallButton "+this.displayParameters.lunchButton.divId+"'  refId='"+students[i].refId+"'>"+students[i].refId+"</div>";
@@ -71,10 +97,10 @@ for (var i=0, len=students.length; i<len; i++){
 	var studentInfoString=students[i].school.name+", grade "+students[i].gradeLevel.title;
 
 	if (!suppressObject[students[i].schoolRefId]){
-	rowString+="<tr style='vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' title='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+"</td><td style='font-size:80%;color:#666;text-align:left;width:70%;'>&nbsp;&nbsp;&nbsp;"+studentInfoString+"</td><td>"+lunchButtonString+"</td></tr>";
+	rowString+="<tr style='vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' titleUNUSED='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+"</td><td style='font-size:80%;color:#666;text-align:left;width:70%;'>&nbsp;&nbsp;&nbsp;"+studentInfoString+" "+daysPurchaseString+"</td><td>"+lunchButtonString+"</td></tr>";
 	}
 	else{
-		rowString+="<tr style='vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' title='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+"</td><td style='font-size:80%;color:#666;text-align:left;width:70%;'>&nbsp;&nbsp;&nbsp;"+studentInfoString+"</td><td>"+closedButtonString+"</td></tr>";
+		rowString+="<tr style='vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' titleUNUSED='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+"</td><td style='font-size:80%;color:#666;text-align:left;width:70%;'>&nbsp;&nbsp;&nbsp;"+studentInfoString+"</td><td>"+closedButtonString+"</td></tr>";
 	}
 }
 

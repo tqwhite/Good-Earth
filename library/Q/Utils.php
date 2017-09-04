@@ -143,7 +143,10 @@ static function callStack($stringFlag){
 	}
 }
 
-static function isList($inData){
+static function isList($inData, $debug=false){
+if ($debug){
+error_log("$debug is a ".get_class($inData)." [library/Q/Utils.php]");
+}
 	if (get_class($inData)=='Doctrine\ORM\PersistentCollection'){
 		$isList=true;
 	}

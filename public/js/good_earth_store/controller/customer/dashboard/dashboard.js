@@ -49,6 +49,8 @@ initDisplayProperties:function(){
 		handlerName: name + 'Handler',
 		targetDivId: name + 'Target'
 	});
+				name = 'instructions';
+				nameArray.push({ name: name });
 
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -92,6 +94,7 @@ initDomElements:function(){
 	this.displayParameters.accountSpace.domObj=$('#'+this.displayParameters.accountSpace.divId);
 	this.displayParameters.kidSpace.domObj=$('#'+this.displayParameters.kidSpace.divId);
 	this.displayParameters.purchaseSpace.domObj=$('#'+this.displayParameters.purchaseSpace.divId);
+	this.displayParameters.instructions.domObj=$('#'+this.displayParameters.instructions.divId);
 
 	this.displayParameters.accountSpace.domObj.good_earth_store_customer_parent({
 		'loginUser':this.loginUser
@@ -133,6 +136,22 @@ initDomElements:function(){
 		this.displayParameters.adminButton.domObj.remove();
 	}
 
+
+				$('[tooltip!=""]').qtip({
+					style: {
+						classes: 'qtip-dark',
+						tip: {
+							corner: 'bottom center',
+							mimic: 'bottom left',
+							border: 2,
+							width: 88,
+							height: 66
+						}
+					}
+				});
+				
+				this.displayParameters.instructions.domObj.css('color', 'red');
+	
 },
 
 lunchButtonHandler:function(control, parameter){
@@ -205,12 +224,13 @@ getReferenceData:function(callback){
 },
 
 referenceCallback:function(callback, inData){
-referenceData=inData;
+
 		this.account=inData.account;
 		this.schools=inData.schools;
 		this.gradeLevels=inData.gradeLevels;
 		this.offerings=inData.offerings;
-
+		
+		this.account=this.addOrdersToStudents(this.account);
 
 		GoodEarthStore.Models.Session.keep('account', this.account);
 		GoodEarthStore.Models.Session.keep('schools', this.schools);
@@ -218,6 +238,38 @@ referenceData=inData;
 		GoodEarthStore.Models.Session.keep('offerings', this.offerings);
 
 		callback(); //initDisplay()
+},
+
+addOrdersToStudents:function(accountObject){
+
+	var outObj=qtools.clone(accountObject);
+
+	var students=outObj.students;
+	var orderList=this.extractOrders(outObj.purchases);
+	
+	for (var i=0, len=students.length; i<len; i++){
+		var student=students[i];
+		student.orders=orderList[student.refId]?orderList[student.refId]:[];
+	}
+	return outObj;
+},
+
+extractOrders:function(purchases){
+	var outObj={};
+
+
+	for (var i=0, len=purchases.length; i<len; i++){
+		var orderList=purchases[i].orders;
+		
+		for (var j=0, len2=orderList.length; j<len2; j++){
+			var studentRefId=orderList[j].student.refId;
+			if (typeof(outObj[studentRefId])=='undefined'){
+				outObj[studentRefId]=[];
+			}
+			outObj[studentRefId].push(orderList[j]);
+		}
+	}
+	return outObj;
 },
 
 newPurchaseObj:function(){

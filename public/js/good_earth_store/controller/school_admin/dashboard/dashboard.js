@@ -165,6 +165,19 @@ steal(
 					initialControl: 'setToReady', //initialControl:'setUnavailable'
 					label: 'Show/Hide Inactive'
 				});
+
+				$('[tooltip!=""]').qtip({
+					style: {
+						classes: 'qtip-dark',
+						tip: {
+							corner: 'bottom center',
+							mimic: 'bottom left',
+							border: 2,
+							width: 88,
+							height: 66
+						}
+					}
+				});
 			},
 
 			initStudentList: function(showInactive) {
@@ -192,7 +205,7 @@ steal(
 							//turn off clicks for awhile and continue, default is 500ms
 							return;
 						}
-						this.savedStudentCounter=0;
+						this.savedStudentCounter = 0;
 						for (
 							var i = 0, len = this.studentsToSaveList.length;
 							i < len;
@@ -245,13 +258,15 @@ steal(
 			catchSave: function(status) {
 				this.toggleSpinner();
 				$(window).unbind('beforeunload.student');
-				if (status.status==1){
-					this.displayParameters.status.domObj.html("Successfully saved "+this.savedStudentCounter+" students");
-					
-				for (var i=0, len=this.studentsToSaveList.length; i<len; i++){
-					this.studentsToSaveList.pop(); //this allows the array to stay in existence so it can be used again elsewhere
-				}
-				this.lunchEditorHandler('setLunchButtonStatus', 'setToReady');
+				if (status.status == 1) {
+					this.displayParameters.status.domObj.html(
+						'Successfully saved ' + this.savedStudentCounter + ' students'
+					);
+
+					for (var i = 0, len = this.studentsToSaveList.length; i < len; i++) {
+						this.studentsToSaveList.pop(); //this allows the array to stay in existence so it can be used again elsewhere
+					}
+					this.lunchEditorHandler('setLunchButtonStatus', 'setToReady');
 				}
 			},
 
@@ -300,12 +315,46 @@ steal(
 				this.gradeLevels = inData.gradeLevels;
 				this.offerings = inData.offerings;
 
+				this.account = this.addOrdersToStudents(this.account);
+
 				GoodEarthStore.Models.Session.keep('account', this.account);
 				GoodEarthStore.Models.Session.keep('schools', this.schools);
 				GoodEarthStore.Models.Session.keep('gradeLevels', this.gradeLevels);
 				GoodEarthStore.Models.Session.keep('offerings', this.offerings);
 
 				callback(); //initDisplay()
+			},
+
+			addOrdersToStudents: function(accountObject) {
+				var outObj = qtools.clone(accountObject);
+
+				var students = outObj.students;
+				var orderList = this.extractOrders(outObj.purchases);
+
+				for (var i = 0, len = students.length; i < len; i++) {
+					var student = students[i];
+					student.orders = orderList[student.refId]
+						? orderList[student.refId]
+						: [];
+				}
+				return outObj;
+			},
+
+			extractOrders: function(purchases) {
+				var outObj = {};
+
+				for (var i = 0, len = purchases.length; i < len; i++) {
+					var orderList = purchases[i].orders;
+
+					for (var j = 0, len2 = orderList.length; j < len2; j++) {
+						var studentRefId = orderList[j].student.refId;
+						if (typeof outObj[studentRefId] == 'undefined') {
+							outObj[studentRefId] = [];
+						}
+						outObj[studentRefId].push(orderList[j]);
+					}
+				}
+				return outObj;
 			},
 
 			newPurchaseObj: function() {
@@ -326,8 +375,10 @@ steal(
 				switch (control) {
 					case 'setLunchButtonStatus':
 						this['checkoutButton'].accessFunction(parameter);
-						if(parameter=='setUnavailable'){
-						this.displayParameters.status.domObj.html('Save Students to reactivate Lunch Checkout button');
+						if (parameter == 'setUnavailable') {
+							this.displayParameters.status.domObj.html(
+								'Save Students to reactivate Lunch Checkout button'
+							);
 						}
 						break;
 					case 'click':
@@ -345,11 +396,11 @@ steal(
 								account: this.account,
 								offerings: this.offerings,
 								purchases: this.purchases,
-								statusDomObj:this.displayParameters.status.domObj
+								statusDomObj: this.displayParameters.status.domObj
 							}
 						);
-						
-						if (!this.studentsToSaveList.length){
+
+						if (!this.studentsToSaveList.length) {
 							this['checkoutButton'].accessFunction('setToReady');
 						}
 

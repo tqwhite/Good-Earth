@@ -100,6 +100,19 @@ initDomElements:function(){
 
 	this.disableDaysAlreadyBought();
 
+
+				$('[tooltip!=""]').qtip({
+					style: {
+						classes: 'qtip-dark',
+						tip: {
+							corner: 'bottom center',
+							mimic: 'bottom left',
+							border: 2,
+							width: 88,
+							height: 66
+						}
+					}
+				});
 },
 
 

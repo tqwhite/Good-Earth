@@ -52,14 +52,18 @@ class Application_Model_Purchase extends Application_Model_Base
 
 		if ($inData->refId){
 
+
+
 		switch ($outputType){
 			default:
 				$outArray=array(
-					'refId'=>$inData->refId,
-					'created'=>$inData->created,
-					'fdOrderId'=>$inData->fdOrderId,
-					'deferredPaymentPreference'=>$inData->deferredPaymentPreference,
-					'orders'=>\Application_Model_Order::formatOutput($inData->purchaseOrderNodes)
+					'refId'=>$inData->purchase->refId,
+					'created'=>$inData->purchase->created,
+					'fdOrderId'=>$inData->purchase->fdOrderId,
+					'chargeTotal'=>$inData->purchase->chargeTotal,
+					'lastFour'=>$inData->purchase->lastFour,
+					'deferredPaymentPreference'=>$inData->purchase->deferredPaymentPreference,
+					'orders'=>\Application_Model_Order::formatOutput($inData->purchase->purchaseOrderNodes)
 			);
 				break;
 			case 'export':
@@ -125,6 +129,30 @@ class Application_Model_Purchase extends Application_Model_Base
 		$data['helixId']=$data['helix id']; unset($data['helix id']);
 
 		return $data;
+	}
+	
+	
+
+	public function getByAccountRefIdForJson($accountRefId){
+
+		$query = $this->entityManager->createQuery("SELECT u from GE\\Entity\\{$this->entityName} u 
+		LEFT JOIN u.accountPurchaseNodes apn
+		LEFT JOIN apn.account a
+		WHERE a.refId = :accountRefId");
+		$query->setParameters(array(
+			'accountRefId' => $accountRefId
+		));
+		$list = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_OBJECT);
+
+		$outList=array();
+		for ($i=0, $len=count($list); $i<$len; $i++){
+			$element=$list[$i];
+			echo "getByAccountRefIdForJson\n";
+			$outList[]=\Application_Model_Order::formatDetail($element);
+		}
+
+		return $outList;
+
 	}
 }
 

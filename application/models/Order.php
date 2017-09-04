@@ -51,15 +51,31 @@ class Application_Model_Order extends Application_Model_Base
 	}
 
 	static function formatDetail($inData, $outputType){
+
 		if (get_class($inData)=='GE\Entity\PurchaseOrderNode'){
 			$inData=$inData->order;
 		}
+
 
 		if ($inData->refId){
 			switch ($outputType){
 				default:
 					$outArray=array(
 						'refId'=>$inData->refId,
+						'created'=>$inData->created,
+						'day'=>array(
+							'refId'=>$inData->day->refId,
+							'title'=>$inData->day->title
+						),
+						'student'=>array(
+							'refId'=>$inData->student->refId,
+							'firstName'=>$inData->student->firstName,
+							'lastName'=>$inData->student->lastName
+						),
+						'offering'=>array(
+							'refId'=>$inData->offering->refId,
+							'name'=>$inData->offering->name
+						)
 					);
 					break;
 				case 'export':

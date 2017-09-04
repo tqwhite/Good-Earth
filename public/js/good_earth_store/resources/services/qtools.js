@@ -400,13 +400,6 @@ try {
 return outDate;
 },
 
-getByProperty:function(inArray, propertyName, propertyValue){
-	var len=inArray.length, inx=0;
-	for (inx=0; inx<len; inx++){
-		if (inArray[inx][propertyName]==propertyValue){ return inArray[inx];	}
-	}
-	return null;
-},
 
 notifyRestore:function(message, domObj, delay){
 	delay=delay?delay:5000;
@@ -1000,6 +993,83 @@ byObjectProperty:function(fieldName, transformer){
 		}
 
 		return item;
+	},
+	
+	
+	clone:function(inObj, func) {
+		let convertFunction = typeof func == 'function'
+			? func
+			: function(inData) {
+					return inData;
+				};
+
+		if (
+			['string', 'number', 'boolean', 'undefined'].indexOf(typeof inObj) > -1 ||
+			inObj === null
+		) {
+			return convertFunction(inObj);
+		}
+
+		if (qtools.toType(inObj) == 'null') {
+			return convertFunction(inObj);
+		}
+
+		if (!newObj) {
+			if (qtools.toType(inObj) == 'array') {
+				var newObj = [];
+			} else {
+				var newObj = {};
+			}
+		}
+
+		if (qtools.toType(inObj) != 'array') {
+			for (var i in inObj) {
+				if (inObj[i] !== null && typeof inObj[i] == 'object') {
+					switch (inObj[i].constructor) {
+						case Date:
+							newObj[i] = convertFunction(new Date(inObj[i].toString()));
+							break;
+						default:
+							newObj[i] = qtools.clone(inObj[i], func);
+							break;
+					}
+				} else {
+					newObj[i] = convertFunction(inObj[i]);
+					//console.log("OO inObj[i]="+inObj[i]);
+				}
+			}
+		} else {
+			for (var i = 0, len = inObj.length; i < len; i++) {
+				if (qtools.toType(inObj[i]) == 'object') {
+					newObj[i] = qtools.clone(inObj[i], func);
+				} else {
+					newObj[i] = convertFunction(inObj[i]);
+					//console.log("AA inObj[i]="+inObj[i]);
+				}
+			}
+		}
+
+		return newObj;
+	},
+	
+	getByProperty:function(inData, propertyName, propertyValue) {
+		if (inData.length) {
+			var len = inData.length;
+			var inx = 0;
+			for (inx = 0; inx < len; inx++) {
+				if (this.getDottedPath(inData[inx], propertyName) == propertyValue) {
+					return inData[inx];
+				}
+			}
+		} else if (typeof inData == 'object') {
+			for (var inx in inData) {
+				if (this.getDottedPath(inData[inx], propertyName) == propertyValue) {
+					return inData[inx];
+				}
+			}
+		}
+		return null;
 	}
+
 
 }

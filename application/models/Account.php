@@ -53,7 +53,8 @@ class Application_Model_Account extends Application_Model_Base
 						'refId'=>$inData->refId,
 						'familyName'=>$inData->familyName,
 						'users'=>\Application_Model_User::formatOutput($inData->users, 'limited'),
-						'students'=>\Application_Model_Student::formatOutput($inData->students, $outputType)
+						'students'=>\Application_Model_Student::formatOutput($inData->students, $outputType),
+						'purchases'=>\Application_Model_Purchase::formatOutput($inData->accountPurchaseNodes, $outputType)
 					);
 				break;
 			case 'export':
