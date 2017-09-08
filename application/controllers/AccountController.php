@@ -245,7 +245,7 @@ error_log("CONFIRMATION REDEEM START: {$_SERVER['REQUEST_URI']}");
 
 				}
 			} else {
-				$message = "Sorry, your code is incorrect";
+				$message = "Sorry, that confirmation code is incorrect or not found.<br/>(Please note that last year&apos;s codes are not valid. You will need to re-register.)";
 				$serverComm[] = array("fieldName" => "assert_initial_controller", "value" => 'register');
 			}
 
