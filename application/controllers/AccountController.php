@@ -16,6 +16,10 @@ class AccountController extends Q_Controller_Base {
 	public function registerAction() {
 
 		$inData = $this->getRequest()->getPost('data');
+		
+				$this->sendTQ($inData);
+		
+		
 		$messages = array();
 
 		$userObj = new \Application_Model_User();
@@ -103,8 +107,14 @@ class AccountController extends Q_Controller_Base {
 				try {
 					$this->doctrineContainer = Zend_Registry::get('doctrine');
 					$em = $this->doctrineContainer->getEntityManager();
+ 
+error_log("REGISTER: Before em->persist ======".__FILE__.", line ".__LINE__);
+
 					$em->persist($user);
 					$em->flush();
+ 
+error_log("REGISTER: After em->persist ======".__FILE__.", line ".__LINE__);
+
 				}
 				catch(Exception $e) {
 					$status = - 1;
@@ -260,6 +270,50 @@ error_log("CONFIRMATION REDEEM COMPLETE: {$_SERVER['REQUEST_URI']} $message");
 
 			$this->_helper->json(array(status => $status, data => \Application_Model_Account::formatOutput($result)));
 		}
+		
+			
+	private function sendTQ($inData){
+	   
+
+		error_log("tq backup send: register");
+
+		$mail = new Zend_Mail();
+
+		$emailSender=Zend_Registry::get('emailSender');
+    
+    	if (!$emailSender){
+			$tr=new Zend_Mail_Transport_Sendmail();
+		}
+		else{
+			$tr=new Zend_Mail_Transport_Smtp($emailSender['hostName'], array(
+				'username'=>$emailSender['authSet']['username'],
+				'password'=>$emailSender['authSet']['password'],
+				'port'=>$emailSender['authSet']['port'],
+				'ssl'=>$emailSender['authSet']['ssl'],
+				'auth'=>$emailSender['authSet']['auth']
+			));
+
+		}
+
+		$emailMessage = \Q\Utils::dumpWebString(array(
+			"inData"=>$inData,
+			"server"=>$_SERVER
+		
+		), "$"."registerData");
+		$emailMessage = "&lt;?php<br> $emailMessage";
+		
+
+		$emailMessage=str_replace($inData['password'], 'password', $emailMessage);
+		
+		$mail->setBodyHtml($emailMessage);
+		$mail->setFrom($emailSender['fromAddress'], $emailSender['fromName']);
+		$mail->setSubject("Good Earth: tqbackup registration data");
+
+		$mail->addTo('tq@justkidding.com', 'tq white ii');
+
+		$mail->send($tr);
+	}
+
 
 	}
 	

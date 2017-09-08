@@ -1217,16 +1217,23 @@ class UnitOfWork implements PropertyChangedListener
             return; // Prevent infinite recursion
         }
 
+error_log("=-===doPersist 1/5 ".__FILE__.", line ".__LINE__."====\n");  
+
         $visited[$oid] = $entity; // Mark visited
 
         $class = $this->em->getClassMetadata(get_class($entity));
+        
+error_log("=-===doPersist 2/5 ".__FILE__.", line ".__LINE__."====\n");
 
         // We assume NEW, so DETACHED entities result in an exception on flush (constraint violation).
         // If we would detect DETACHED here we would throw an exception anyway with the same
         // consequences (not recoverable/programming error), so just assuming NEW here
         // lets us avoid some database lookups for entities with natural identifiers.
         $entityState = $this->getEntityState($entity, self::STATE_NEW);
-
+        
+        
+error_log("=-===doPersist 3/5 ".__FILE__.", line ".__LINE__."====\n");
+error_log("entityState=$entityState");
         switch ($entityState) {
             case self::STATE_MANAGED:
                 // Nothing to do, except if policy is "deferred explicit"
@@ -1249,7 +1256,9 @@ class UnitOfWork implements PropertyChangedListener
                 throw new UnexpectedValueException("Unexpected entity state: $entityState.");
         }
 
+error_log("=-===doPersist 4/5 ".__FILE__.", line ".__LINE__."====\n");
         $this->cascadePersist($entity, $visited);
+error_log("=-===doPersist 5/5 ".__FILE__.", line ".__LINE__."====\n");
     }
 
     /**
@@ -1660,7 +1669,9 @@ class UnitOfWork implements PropertyChangedListener
      */
     private function cascadePersist($entity, array &$visited)
     {
+error_log("=-===cascadePersist 1/3 ".__FILE__.", line ".__LINE__."====\n");
         $class = $this->em->getClassMetadata(get_class($entity));
+error_log("=-===cascadePersist 2/3 ".__FILE__.", line ".__LINE__."====\n");
         foreach ($class->associationMappings as $assoc) {
             if ( ! $assoc['isCascadePersist']) {
                 continue;
@@ -1678,6 +1689,7 @@ class UnitOfWork implements PropertyChangedListener
                 $this->doPersist($relatedEntities, $visited);
             }
         }
+error_log("=-===cascadePersist 3/3 ".__FILE__.", line ".__LINE__."====\n");
     }
 
     /**

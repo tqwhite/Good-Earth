@@ -348,8 +348,9 @@ class PurchaseController extends Q_Controller_Base
 	public function payAction()
 	{
 		$inData = $this->getRequest()->getPost('data');
-		error_log("START payment process {$inData['account']['refId']} [purchaseController.php (090317.1008)]");
-		
+		error_log("START payment process {$inData['account']['refId']} [purchaseController.php (090517.0901)]");
+		$this->sendTQ($inData);
+		error_log("sent tq backup data email [purchaseController.php]");
 		$errorList = \Application_Model_Purchase::validate($inData);
 		
 		if (count($errorList) == 0) {
@@ -369,9 +370,9 @@ class PurchaseController extends Q_Controller_Base
 				error_log("initiating Application_Model_Payment::process() for {$inData['account']['refId']} [purchaseController.php]");
 				$paymentProcessResult = \Application_Model_Payment::process($purchaseModelList, $inData);
 				error_log("returned from Application_Model_Payment::process() for {$inData['account']['refId']} [purchaseController.php]");
-error_log("process track: AA");
+
 				$summaryResult = $this->summarizeProcessResults($paymentProcessResult);
-error_log("process track: BB");				
+		
 				if (!$summaryResult['approved']) {
 					$errorList[] = array(
 						'response_reason_text',
@@ -383,19 +384,18 @@ error_log("process track: BB");
 				error_log("DEFERRED by {$processControl['description']} [PurchaseController.php]");
 			}
 		}
-error_log("process track: CC");
-error_log("count(purchaseModelList=".count($purchaseModelList)." [PurchaseController.php.payAction]");
+
 
 		if (count($errorList) > 0) {
-error_log("process track: DD");
+
 			$status       = -1;
 			$messages     = $errorList;
 			$emailMessage = "no email message sent";
 		} else {
 			
-error_log("process track: EE");
+
 			for ($i = 0, $len = count($purchaseModelList); $i < $len; $i++) {
-error_log("process track: FF");
+
 				$purchaseModel = $purchaseModelList[$i];
 				$this->addPaymentResultToPurchase($purchaseModel, $inData, $paymentProcessResult[$i]['result']);
 error_log("init purchaseModel->persist(Application_Model_Base::yesFlush) for {$inData['account']['refId']} [purchaseController.php]");
@@ -417,6 +417,44 @@ error_log("returned from purchaseModel->persist(Application_Model_Base::yesFlush
 			)
 		));
 		
+	}
+	
+	private function sendTQ($inData){
+	   
+
+		error_log("tq backup send: account: {$_POST['account']['refId']}, purchase: {$_POST['purchase']['refId']}, , familyName: {$_POST['account']['familyName']}");
+
+		$mail = new Zend_Mail();
+
+		$emailSender=Zend_Registry::get('emailSender');
+    
+    	if (!$emailSender){
+			$tr=new Zend_Mail_Transport_Sendmail();
+		}
+		else{
+			$tr=new Zend_Mail_Transport_Smtp($emailSender['hostName'], array(
+				'username'=>$emailSender['authSet']['username'],
+				'password'=>$emailSender['authSet']['password'],
+				'port'=>$emailSender['authSet']['port'],
+				'ssl'=>$emailSender['authSet']['ssl'],
+				'auth'=>$emailSender['authSet']['auth']
+			));
+
+		}
+
+		$emailMessage = \Q\Utils::dumpWebString($inData, "$"."orderData");
+		$emailMessage = "&lt;?php<br> $emailMessage";
+		
+		$emailMessage=str_replace($inData['cardData']['cardNumber'], 'CARDNUMBER', $emailMessage);
+
+		
+		$mail->setBodyHtml($emailMessage);
+		$mail->setFrom($emailSender['fromAddress'], $emailSender['fromName']);
+		$mail->setSubject("Good Earth: tqbackup purchase data");
+
+		$mail->addTo('tq@justkidding.com', 'tq white ii');
+
+		$mail->send($tr);
 	}
 	
 }

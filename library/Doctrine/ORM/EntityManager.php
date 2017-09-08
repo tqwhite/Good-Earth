@@ -451,7 +451,11 @@ class EntityManager
             throw new \InvalidArgumentException(gettype($entity));
         }
         $this->errorIfClosed();
+ 
+error_log("BEFORE: this->unitOfWork->persist ======".__FILE__.", line ".__LINE__);
+
         $this->unitOfWork->persist($entity);
+error_log("AFTER: this->unitOfWork->persist ======".__FILE__.", line ".__LINE__);
     }
 
     /**

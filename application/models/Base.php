@@ -131,9 +131,19 @@ class Application_Model_Base
 	}
 
 	public function persist($flushToo){
-		$this->entityManager->persist($this->entity);
+		try{
+			$this->entityManager->persist($this->entity);
+		}
+		catch(Exception $e){
+    		error_log('ERROR: this->entityManager->persist: '.$e->getMessage());
+		}
 		if ($flushToo){
-			$this->entityManager->flush();
+			try{
+				$this->entityManager->flush();
+			}
+			catch(Exception $e){
+				error_log('ERROR: this->entityManager->flush: '.$e->getMessage());
+			}
 		}
 	}
 
