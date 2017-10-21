@@ -21,18 +21,18 @@ GoodEarthStore.Models.Base.extend('GoodEarthStore.Models.Student',
 			success({status:-1, messages:errors, data:{}});
 			return;
 		}
-
+	var outData=qtools.clone(data);
 	for (var i in data){
 		var element=data[i];
-		if (typeof(element)=='object'){
-			delete data[i];
+		if (typeof(element)!='object'){
+			outData[i]=data[i];
 		}
 	}
 		$.ajax({
 				url: '/student/add',
 				type: 'post',
 				dataType: 'json',
-				data: {data:data},
+				data: {data:outData},
 				success: success,
 				error: error,
 				fixture: false
