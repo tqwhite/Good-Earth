@@ -26,14 +26,14 @@ class Purchase /*extends Base*/{
 	private $helixId;
 
 	/**
-	 * @column(type="string", length=20)
+	 * @column(type="string", length=100)
 	 * @var string
 	 **/
 
 	private $phoneNumber;
 
 	/**
-	 * @column(type="string", length=20)
+	 * @column(type="string", length=100)
 	 * @var string
 	 **/
 
@@ -47,21 +47,21 @@ class Purchase /*extends Base*/{
 	private $street;
 
 	/**
-	 * @column(type="string", length=20)
+	 * @column(type="string", length=100)
 	 * @var string
 	 **/
 
 	private $city;
 
 	/**
-	 * @column(type="string", length=20)
+	 * @column(type="string", length=100)
 	 * @var string
 	 **/
 
 	private $state;
 
 	/**
-	 * @column(type="string", length=20)
+	 * @column(type="string", length=100)
 	 * @var string
 	 **/
 

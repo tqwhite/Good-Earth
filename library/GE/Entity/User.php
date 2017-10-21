@@ -26,33 +26,33 @@ class User /*extends Base*/{
 	private $helixId;
 
 	/**
-	 * @column(type="string", length=60, nullable=false)
+	 * @column(type="string", length=100, nullable=false)
 	 * @var string
 	 **/
 	private $firstName;
 
 	/**
-	 * @column(type="string", length=60, nullable=false)
+	 * @column(type="string", length=100, nullable=false)
 	 * @var string
 	 **/
 	private $emailAdr;
 
 	/**
-	 * @column(type="string", length=60, nullable=false)
+	 * @column(type="string", length=100, nullable=false)
 	 * @var string
 	 **/
 
 	private $lastName;
 
 	/**
-	 * @column(type="string", length=60, nullable=false, unique="true")
+	 * @column(type="string", length=100, nullable=false, unique="true")
 	 * @var string
 	 **/
 
 	private $userName;
 
 	/**
-	 * @column(type="string", length=60, nullable=false)
+	 * @column(type="string", length=100, nullable=false)
 	 * @var string
 	 **/
 
@@ -66,7 +66,7 @@ class User /*extends Base*/{
 	private $emailStatus;
 
 	/**
-	 * @column(type="string", length=60)
+	 * @column(type="string", length=100)
 	 * @var string
 	 **/
 
@@ -80,14 +80,14 @@ class User /*extends Base*/{
 	private $phoneNumber;
 
 	/**
-	 * @column(type="string", length=60)
+	 * @column(type="string", length=100)
 	 * @var string
 	 **/
 
 	private $street;
 
 	/**
-	 * @column(type="string", length=60)
+	 * @column(type="string", length=100)
 	 * @var string
 	 **/
 
@@ -119,7 +119,7 @@ class User /*extends Base*/{
 
 
 	/**
-	 * @column(type="string", length=60, nullable=true)
+	 * @column(type="string", length=100, nullable=true)
 	 * @var string
 	 **/
 
