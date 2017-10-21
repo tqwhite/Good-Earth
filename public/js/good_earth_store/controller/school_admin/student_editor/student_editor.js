@@ -169,7 +169,8 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 							//turn off clicks for awhile and continue, default is 500ms
 							return;
 						}
-						this.lunchEditorHandler(control, this.student); //note: this is in school_admin/dashboard.js
+						
+						this.lunchEditorHandler(control, {student:this.student, studentDomObject:this.element}); //note: this is in school_admin/dashboard.js
 
 						break;
 					case 'setAccessFunction':

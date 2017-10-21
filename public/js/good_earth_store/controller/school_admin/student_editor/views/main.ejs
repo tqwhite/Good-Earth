@@ -60,6 +60,7 @@ if (formData.student.isActiveFlag !== false) {
 var orders = formData.student.orders ? formData.student.orders : [];
 orders = orders.sort(qtools.byObjectProperty('day.refId'));
 
+//note: this code is duplicated in school_admin/dashboard.js
 var daysPurchaseString = '';
 var lunchCount = 0;
 var tooltipContentString =

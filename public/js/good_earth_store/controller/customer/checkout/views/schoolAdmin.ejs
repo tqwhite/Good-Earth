@@ -55,12 +55,8 @@ for (var i = 0, merchAccountCount = this.formData.purchases.orders.length; i < m
 	}
 }
 
-if (merchAccountCount>1){
-var multipleDistrictNote="<div style='font-size:8pt;color:#666;margin-top:10px;padding:5px;'>You have ordered lunches for students in separate schools some of which collect lunch money directly. Your credit card will have a separate charge for each.</div>";
-}
-else{
 var multipleDistrictNote="";
-}
+
 var outString = '';
 var total = 0.0;
 for (var acctId in newOrders) {

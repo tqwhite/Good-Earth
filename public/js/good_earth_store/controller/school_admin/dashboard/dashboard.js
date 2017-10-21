@@ -370,6 +370,65 @@ steal(
 				return purchaseObj;
 			},
 
+			doneButtonCallback: function(studentDomObject) {
+				return function(orders, studentRefId) {
+					var lunchCountObj = studentDomObject.find('.lunchCount');
+
+					var originalTitle = lunchCountObj.attr('originalTitle');
+
+					if (!originalTitle) {
+						var tmp=lunchCountObj.attr('title');
+						
+						if (!tmp){
+						tmp="<div>Pending Lunches</div>";
+						}
+
+						lunchCountObj.attr('originalTitle', tmp);
+					}
+
+					var originalCount = lunchCountObj.attr('originalCount');
+					if (!originalCount) {
+						lunchTextCount = lunchCountObj.text();
+						lunchTextCount = lunchTextCount ? lunchTextCount : 0;
+						lunchCountObj.attr('originalCount', +lunchTextCount);
+					}
+
+					var tooltipContentString = lunchCountObj.attr('originalTitle').replace(/no Lunches Yet/i, '');
+					var originalCount = lunchCountObj.attr('originalCount');
+
+					var daysPurchaseString = '';
+					var lunchCount = 0;
+					for (var i2 = 0, len2 = orders.length; i2 < len2; i2++) {
+						var element = orders[i2];
+						if (element.student.refId!=studentRefId){ continue;}
+						lunchCount++;
+
+						daysPurchaseString += element.day.title + ', ';
+						tooltipContentString +=
+							element.day.title + ' ' + element.offering.name + '<br>';
+					}
+
+					var prevCount = lunchCountObj.text();
+
+					lunchCountObj
+						.html(+originalCount + lunchCount)
+						.css({ color: '#DD4C2B' })
+						.attr('title', tooltipContentString)
+						.qtip({
+					style: {
+						classes: 'qtip-dark',
+						tip: {
+							corner: 'bottom center',
+							mimic: 'bottom left',
+							border: 2,
+							width: 88,
+							height: 66
+						}
+					}
+				});
+				}.bind(this);
+			},
+
 			lunchEditorHandler: function(control, parameter) {
 				var componentName = 'lunchEditor';
 				switch (control) {
@@ -392,11 +451,14 @@ steal(
 
 						this.displayParameters.lunchEditor.domObj.good_earth_store_school_admin_lunch_editor(
 							{
-								studentRefId: parameter.refId,
+								studentRefId: parameter.student.refId,
 								account: this.account,
 								offerings: this.offerings,
 								purchases: this.purchases,
-								statusDomObj: this.displayParameters.status.domObj
+								statusDomObj: this.displayParameters.status.domObj,
+								doneButtonCallback: this.doneButtonCallback(
+									parameter.studentDomObject
+								)
 							}
 						);
 

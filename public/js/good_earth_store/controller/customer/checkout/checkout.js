@@ -73,8 +73,6 @@ initControlProperties:function(){
 initDisplay:function(inData){
 
 	this.templateName=this.templateName?this.templateName:'init';
-console.log("this.templateName="+this.templateName+" [checkout.js.initDisplay]");
-
 	var templatePath="//good_earth_store/controller/customer/checkout/views/"+this.templateName+".ejs";
 
 	var html=$.View(templatePath,

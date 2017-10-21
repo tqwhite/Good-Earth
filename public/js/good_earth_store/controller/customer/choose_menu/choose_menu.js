@@ -27,7 +27,8 @@ init: function(el, options) {
 			{name:'studentRefId'},
 			{name:'offerings'},
 			{name:'purchases'},
-					{name:'statusDomObj', importance:'optional'}
+					{name:'statusDomObj', importance:'optional'},
+					{name:'doneButtonCallback', importance:'optional'}
 		],
 		source:this.constructor._fullName
  	});
@@ -133,6 +134,7 @@ doneButtonHandler:function(control, parameter){
 				if(this.statusDomObj){
 					this.statusDomObj.text('');
 				}
+				if (typeof(this.doneButtonCallback)=='function'){this.doneButtonCallback(this.purchases.orders, this.studentRefId);}
 			}
 		break;
 		case 'setAccessFunction':
