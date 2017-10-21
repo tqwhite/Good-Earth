@@ -82,6 +82,25 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 				this.element.html(html);
 				this.initDomElements();
 			},
+			
+			schoolIsOpen:function(){
+					var nowDate=new Date(),
+					beginThreshold, endThreshold, suppressFlag,
+					twentyFourHours = (24*60*60*1000)
+					
+					var element=this.student.school;
+					begin=element.dateOrderingBegin.replace(/-/g, '/');
+					end=element.dateOrderingEnd.replace(/-/g, '/');
+					;
+					
+					beginThreshold=new Date(begin); //this represents midnight of that day
+					
+					endThreshold=new Date(end);
+					endThreshold.setTime(endThreshold.getTime() + (twentyFourHours-1000)); //one second before midnight
+					
+					openFlag=!(beginThreshold<nowDate && nowDate<endThreshold);
+					return openFlag;
+			},
 
 			initDomElements: function() {
 				this.displayParameters.myId.domObj = $(
@@ -93,6 +112,18 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 						this.displayParameters.lunchButton.domObj = $(
 							'#' + this.displayParameters.lunchButton.divId
 						);
+						
+						
+						if (this.schoolIsOpen()){
+							var initialControl='setUnavailable';
+							var label="<div style='margin-top:1px;'>CLOSED</div>"
+						}
+						else{
+							var initialControl='setToReady';
+							var label="<div style='margin-top:1px;'>lunch</div>"
+						}
+						
+						
 						this.displayParameters.lunchButton.domObj.good_earth_store_tools_ui_button2(
 							{
 								ready: { classs: 'basicReady' },
@@ -100,8 +131,8 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 								clicked: { classs: 'basicReady' } /* basicActive */,
 								unavailable: { classs: 'basicUnavailable' },
 								accessFunction: this.displayParameters.lunchButton.handler,
-								initialControl: 'setToReady', //initialControl:'setUnavailable'
-								label: "<div style='margin-top:1px;'>lunch</div>"
+								initialControl: initialControl, //initialControl:'setUnavailable'
+								label: label
 							}
 						);
 
