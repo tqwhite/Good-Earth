@@ -117,12 +117,28 @@ class PurchaseController extends Q_Controller_Base
 		return $outList;
 	}
 	
-	private function sendCustomerEmail($purchaseRefId, $processControl, $purchaseModelList)
+	private function sendCustomerEmail($purchaseRefId, $processControl, $purchaseModelList, $inDataUser)
 	{
 		$auth = \Zend_Auth::getInstance();
 		$user = $auth->getIdentity();
 		
+		
 		error_log("sendCustomerEmail() says, starting email process for userRefId:{$user->refId},  {$user->emailAdr} [purchaseController.php");
+
+		
+		if (!$user->refId){
+		
+			
+			$user = new \Application_Model_User();
+			$user->firstName=$inDataUser['firstName'];
+			$user->lastName=$inDataUser['lastName'];
+			$user->emailAdr=$inDataUser['emailAdr'];
+			$user->userName=$inDataUser['userName'];
+			$user->refId=$inDataUser['refId'];
+		
+			error_log("WARNING: sendCustomerEmail(), Zend_Auth did not return value. Using inDataUser ======".__FILE__.", line ".__LINE__);
+		}
+		
 
 		
 		$doctrineContainer = \Zend_Registry::get('doctrine');
@@ -348,9 +364,11 @@ class PurchaseController extends Q_Controller_Base
 	public function payAction()
 	{
 		$inData = $this->getRequest()->getPost('data');
-		error_log("START payment process {$inData['account']['refId']} [purchaseController.php (090517.0901)]");
+		
+		error_log("START payment process {$inData['account']['refId']} [purchaseController.php (090917.0117)]");
 		$this->sendTQ($inData);
 		error_log("sent tq backup data email [purchaseController.php]");
+		
 		$errorList = \Application_Model_Purchase::validate($inData);
 		
 		if (count($errorList) == 0) {
@@ -403,7 +421,7 @@ error_log("init purchaseModel->persist(Application_Model_Base::yesFlush) for {$i
 error_log("returned from purchaseModel->persist(Application_Model_Base::yesFlush) for {$inData['account']['refId']} [purchaseController.php]");
 			}
 			
-			$emailMessage = $this->sendCustomerEmail($purchaseObj->entity->refId, $processControl, $purchaseModelList);
+			$emailMessage = $this->sendCustomerEmail($purchaseObj->entity->refId, $processControl, $purchaseModelList, $inData['user']);
 			
 			$status   = $processControl['code'] ? $processControl['code'] : 1;
 			$messages = 'Q\Utils::flattenToList($paymentProcessResult)??'; //; //mainly for debugging ease, maybe should be removed later

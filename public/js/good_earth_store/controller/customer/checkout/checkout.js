@@ -159,7 +159,8 @@ submitButtonHandler:function(control, parameter){
 			GoodEarthStore.Models.Purchase.process({
 					cardData:this.element.formParams(),
 					purchase:this.purchases,
-					account:this.account
+					account:this.account,
+					user:this.user
 				},
 				this.callback('catchProcessResult'));
 		break;
