@@ -64,7 +64,7 @@ class StudentController extends Q_Controller_Base
 		
 			catch(Exception $e){
 				$status=-1;
-				$messages[]=array('server_error', $e->errorInfo);
+				$messages[]=array('server_error', $e->getMessage());
 			}
 			
 		$student=$studentObj->getByRefId($inData['refId']);
