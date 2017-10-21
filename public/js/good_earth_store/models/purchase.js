@@ -38,12 +38,17 @@ steal('jquery/model', function() {
 				}
 				
 				delete data.cardData.chargeTotal; //don't care what the hackers change it to
+				
+				var tmpUser=qtools.clone(data.user);
+				delete tmpUser.account;
+				delete tmpUser.school;
 
 				var outObj = {};
 				outObj.refId = data.purchase.refId;
 				outObj.account = { refId: data.account.refId };
 				outObj.cardData = data.cardData;
 				outObj.orders = outOrders;
+				outObj.user = tmpUser;
 
 				$.ajax({
 					url: '/purchase/pay',
