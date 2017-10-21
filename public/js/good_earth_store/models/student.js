@@ -22,6 +22,12 @@ GoodEarthStore.Models.Base.extend('GoodEarthStore.Models.Student',
 			return;
 		}
 
+	for (var i in data){
+		var element=data[i];
+		if (typeof(element)=='object'){
+			delete data[i];
+		}
+	}
 		$.ajax({
 				url: '/student/add',
 				type: 'post',
