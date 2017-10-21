@@ -98,7 +98,7 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 					endThreshold=new Date(end);
 					endThreshold.setTime(endThreshold.getTime() + (twentyFourHours-1000)); //one second before midnight
 					
-					openFlag=!(beginThreshold<nowDate && nowDate<endThreshold);
+					openFlag=(beginThreshold<nowDate && nowDate<endThreshold);
 					return openFlag;
 			},
 
@@ -115,12 +115,12 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 						
 						
 						if (this.schoolIsOpen()){
-							var initialControl='setUnavailable';
-							var label="<div style='margin-top:1px;'>CLOSED</div>"
-						}
-						else{
 							var initialControl='setToReady';
 							var label="<div style='margin-top:1px;'>lunch</div>"
+						}
+						else{
+							var initialControl='setUnavailable';
+							var label="<div style='margin-top:1px;'>CLOSED</div>"
 						}
 						
 						
