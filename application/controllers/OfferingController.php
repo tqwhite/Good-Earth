@@ -26,7 +26,7 @@ class OfferingController extends Zend_Controller_Action
 		$this->_helper->json(array(
 			status=>$status,
 			messages=>$messageList,
-			data=>\Application_Model_Offering::formatOutput($list, 'limited')
+			data=>\Application_Model_Offering::formatFilteredOutput($list, 'limited', $periodList)
 			)
 		);
 
@@ -41,7 +41,7 @@ class OfferingController extends Zend_Controller_Action
 
 		for ($i=0, $len=count($list); $i<$len; $i++){
 			$element=$list[$i];
-				$outArray[$element->currPeriod]=$element->currPeriod;
+				$outArray[$element->refId]=$element->currPeriod;
 		}
 		
 		return $outArray;

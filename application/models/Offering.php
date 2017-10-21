@@ -41,6 +41,34 @@ class Application_Model_Offering extends Application_Model_Base
 				);
 	}
 
+	static function formatFilteredOutput($inData, $outputType, $periodList){
+
+		$isList=Q\Utils::isList($inData);
+		$oneItemList=($isList && count($inData)==1);
+		if (get_class($inData)!='Doctrine\ORM\PersistentCollection'
+			&& ($oneItemList || !$isList)){
+					return static::formatScalar($inData, $outputType);
+				}
+				else{
+
+					$list=$inData;
+					$outList=array();
+
+					for ($i=0, $len=count($list); $i<$len; $i++){
+						$offering=$list[$i];
+						
+						$schools=\Application_Model_School::formatOutput($offering->schoolNodes);
+	
+						if ($periodList[$schools[0]['refId']]==$offering->perYearFull){
+							$outList[]=static::formatScalar($offering, $outputType);
+						}
+						
+					}
+					return $outList;
+				}
+
+	}
+
 	static function formatScalar($inData, $originsArray){
 
 	return array(
