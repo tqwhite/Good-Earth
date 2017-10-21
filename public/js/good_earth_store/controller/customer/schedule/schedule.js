@@ -29,10 +29,6 @@ init: function(el, options) {
 		],
 		source:this.constructor._fullName
  	});
- 	
- 	if (!this.lunchButtonHandler && !this.adminFlag){
- 		qtools.consoleMessage("schedule/schedule.js says, '!this.lunchButtonHandler && !this.adminFlag'");
- 	}
 
 	qtools.validateProperties({
 		targetObject:this.account,
@@ -65,10 +61,8 @@ initDisplayProperties:function(){
 
 	name='newButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 	name='editButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
-
-	if (!this.adminFlag){
 	name='lunchButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
-	}
+
 
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -90,7 +84,8 @@ initDisplay:function(inData){
 			formData:{
 				account:this.account,
 				schools:this.schools
-			}
+			},
+			adminFlag:this.adminFlag
 		})
 		);
 	this.element.html(html);
@@ -165,7 +160,7 @@ We have had some trouble with our database  having incorrect grade levels for st
 	});
 
 
-if (!this.adminFlag && this.lunchButtonHandler){
+if (this.lunchButtonHandler){
 	$('.'+this.displayParameters.lunchButton.divId).good_earth_store_tools_ui_button2({
 		ready:{classs:'basicReady'},
 		hover:{classs:'basicHover'},
@@ -173,7 +168,7 @@ if (!this.adminFlag && this.lunchButtonHandler){
 		unavailable:{classs:'basicUnavailable'},
 		accessFunction:this.displayParameters.lunchButton.handler, //NOTE: this handler is passed from the parent controller (dashboard)
 		initialControl:'setToReady', //initialControl:'setUnavailable'
-		label:"Buy Lunches"
+		label:this.adminFlag?'Test Lunches':'Buy Lunches'
 	});
 	}
 	

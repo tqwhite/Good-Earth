@@ -4,7 +4,8 @@ qtools.validateProperties({
 	propList:[
 		{name:'displayParameters'},
 		{name:'viewHelper'},
-		{name:'formData'}
+		{name:'formData'},
+		{name:'adminFlag'}
 	],
  source:'session.dashboard.dashboardMainX' });
 
@@ -18,14 +19,19 @@ qtools.validateProperties({
 
 	],
  source:'session.dashboard.dashboardMainY' });
-
+ if (this.adminFlag){
+ var message = "<div id='"+ displayParameters.instructions.divId+"' style='font-size:10pt;position:relative;color:red;font-weight:bold;margin:10px 50px;'>Schools are always open for Admin testing.</div>"
+}
+else{
+ var message = "<div id='"+ displayParameters.instructions.divId+"' style='font-size:10pt;position:relative;color:red;margin:10px 50px;'>Click on the Student's name to change information.</div>"
+}
 %><div class='mainContainer' id='<%= displayParameters.myId.divId %>'>
 
 
 	<div class='smallButton' style='position:absolute;top:14px;right:140px;width:40px;' id='<%=this.displayParameters.adminButton.divId%>'></div>
 	<div class='accountSpace' id='<%= displayParameters.accountSpace.divId %>'></div>
 	
-	<div id='<%= displayParameters.instructions.divId %>' style='font-size:10pt;position:relative;color:red;margin:10px 50px;'>Click on the Student's name to change information.</div>
+	<%== message %>
 	<div class='kidSpace' id='<%= displayParameters.kidSpace.divId %>'>
 	</div>
 	<div class='purchaseSpace' id='<%= displayParameters.purchaseSpace.divId %>'></div>

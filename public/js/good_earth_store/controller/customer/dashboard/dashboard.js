@@ -80,7 +80,8 @@ initDisplay:function(inData){
 			viewHelper:this.viewHelper,
 			formData:{
 				userName:GoodEarthStore.Models.LocalStorage.getCookieData(GoodEarthStore.Models.LocalStorage.getConstant('loginCookieName')).data
-			}
+			},
+			adminFlag:(this.loginUser.role == 'admin')
 		})
 		);
 	this.element.html(html);
@@ -103,7 +104,8 @@ initDomElements:function(){
 		account:this.account,
 		schools:this.schools,
 		gradeLevels:this.gradeLevels,
-		lunchButtonHandler:this.callback('lunchButtonHandler')
+		lunchButtonHandler:this.callback('lunchButtonHandler'),
+		adminFlag:(this.loginUser.role == 'admin')
 		});
 	this.displayParameters.purchaseSpace.domObj.good_earth_store_customer_purchases({
 		dashboardContainer:this.element,

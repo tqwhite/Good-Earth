@@ -4,7 +4,8 @@ qtools.validateProperties({
 	propList:[
 		{name:'displayParameters'},
 		{name:'viewHelper'},
-		{name:'formData'}
+		{name:'formData'},
+		{name:'adminFlag'}
 	],
  source:'customer.schedule.views.init' });
 
@@ -64,6 +65,8 @@ for (var i=0, len=students.length; i<len; i++){
 	
 	var orders=orders.sort(qtools.byObjectProperty('day.refId'));
 
+	var schoolNotClosed=!suppressObject[students[i].schoolRefId];
+
 
 	var daysPurchaseString='';
 	var whatLunchesString='<div style="font-weight:bold;margin-bottom:5px;">'+students[i].firstName+"</div>";
@@ -85,7 +88,7 @@ for (var i=0, len=students.length; i<len; i++){
 			'</span>';
 	}
 
-	if (!this.adminFlag && this.displayParameters.lunchButton){
+	if (this.displayParameters.lunchButton){
 	var lunchButtonString="<div style='float:right;' class='smallButton "+this.displayParameters.lunchButton.divId+"'  refId='"+students[i].refId+"'>"+students[i].refId+"</div>";
 	var closedButtonString="<div style='float:right;' class='smallButton   refId='"+students[i].refId+"' title='For this term, new lunch sales for this school are closed'>Closed</div>";
 	}
@@ -94,9 +97,14 @@ for (var i=0, len=students.length; i<len; i++){
 	var closedButtonString="";
 	}
 
+	if (schoolNotClosed || !this.adminFlag){
 	var studentInfoString=students[i].school.name+", grade "+students[i].gradeLevel.title;
-
-	if (!suppressObject[students[i].schoolRefId]){
+	}
+	else{
+	var studentInfoString=students[i].school.name+" <span style='color:red;'>(closed)</span>, grade "+students[i].gradeLevel.title;
+	}
+	
+	if (schoolNotClosed || this.adminFlag){
 	rowString+="<tr style='vertical-align:top;padding-top:5px;'><td style='text-align:left;padding-left:5px;' class='textButton "+this.displayParameters.editButton.divId+"' refId='"+students[i].refId+"' titleUNUSED='Click to edit "+students[i].firstName+" details'>"+students[i].firstName+"</td><td style='font-size:80%;color:#666;text-align:left;width:70%;'>&nbsp;&nbsp;&nbsp;"+studentInfoString+" "+daysPurchaseString+"</td><td>"+lunchButtonString+"</td></tr>";
 	}
 	else{
