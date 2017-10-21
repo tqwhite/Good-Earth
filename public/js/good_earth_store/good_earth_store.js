@@ -49,7 +49,7 @@ steal(
 	'./controller/tools/ui/button2/button2.js',
 	'./controller/tools/ui/modal_screen/modal_screen.js',
 
-	'./resources/services/qtools.js',
+	'./resources/services/qtoolsGe.js',
 	'./resources/services/viewHelper2.js',
 	'./resources/services/controllerHelper2.js',
 	'./resources/services/static.js',
