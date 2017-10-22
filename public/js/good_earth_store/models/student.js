@@ -21,13 +21,16 @@ GoodEarthStore.Models.Base.extend('GoodEarthStore.Models.Student',
 			success({status:-1, messages:errors, data:{}});
 			return;
 		}
-	var outData=qtools.clone(data);
+		
+	var outData={};
 	for (var i in data){
 		var element=data[i];
 		if (typeof(element)!='object'){
 			outData[i]=data[i];
 		}
 	}
+
+
 		$.ajax({
 				url: '/student/add',
 				type: 'post',

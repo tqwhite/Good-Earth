@@ -28,6 +28,7 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 						{ name: 'statusDomObj' },
 						{ name: 'studentsToSaveList' },
 						{ name: 'lunchEditorHandler' },
+						{ name: 'purchases' },
 						{ name: 'showInactive', defaultValue:false }
 					],
 					source: this.constructor._fullName
@@ -134,7 +135,8 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 					statusDomObj: this.statusDomObj,
 					studentsToSaveList: this.studentsToSaveList,
 					lunchEditorHandler: this.callback('lunchEditorHandler'),
-					addNewStudentFunction: addNewStudentCallback
+					addNewStudentFunction: addNewStudentCallback,
+					purchases:this.purchases
 				});
 
 				this.displayParameters.myId.domObj.append(newStudent);

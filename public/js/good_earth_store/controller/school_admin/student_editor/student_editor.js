@@ -28,10 +28,13 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 						{ name: 'statusDomObj' },
 						{ name: 'studentsToSaveList', optional: false },
 						{ name: 'lunchEditorHandler', optional: false },
-						{ name: 'addNewStudentFunction', optional: false }
+						{ name: 'addNewStudentFunction', optional: false },
+						{ name: 'purchases', optional: false }
 					],
 					source: this.constructor._fullName
 				});
+
+
 				this.startupOptions = options ? options : {};
 				this.initControlProperties();
 				this.initDisplayProperties();
@@ -66,6 +69,7 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 			},
 
 			initDisplay: function(inData) {
+
 				var html = $.View(
 					'//good_earth_store/controller/school_admin/' +
 						this.toolName +
@@ -76,7 +80,8 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 						formData: {
 							student: this.student,
 							loginUser: this.loginUser
-						}
+						},
+						newOrders:this.purchases.orders
 					})
 				);
 				this.element.html(html);
@@ -234,6 +239,7 @@ steal('jquery/controller', 'jquery/view/ejs').then('./views/main.ejs', function(
 							this.student.isActiveFlag=true;
 							this.element.show();
 							this.student.doNotSave=false;
+							this.update(this.startupOptions);
 						}
 						else{
 							this.student.isActiveFlag=false;

@@ -72,7 +72,7 @@ steal(
 			initControlProperties: function() {
 				this.viewHelper = new viewHelper2();
 				this.loginUser = GoodEarthStore.Models.Session.get('user');
-				this.purchases = this.newPurchaseObj();
+				this.purchases = this.purchases?this.purchases:this.newPurchaseObj();
 				this.studentsToSaveList = [];
 			},
 
@@ -190,7 +190,8 @@ steal(
 						statusDomObj: this.displayParameters.status.domObj,
 						studentsToSaveList: this.studentsToSaveList,
 						lunchEditorHandler: this.callback('lunchEditorHandler'),
-						showInactive: showInactive
+						showInactive: showInactive,
+						purchases: this.purchases
 					}
 				);
 			},

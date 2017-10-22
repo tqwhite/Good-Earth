@@ -4,10 +4,13 @@ qtools.validateProperties({
 	propList: [
 		{ name: 'displayParameters' },
 		{ name: 'viewHelper' },
-		{ name: 'formData' }
+		{ name: 'formData' },
+		{ name: 'newOrders' }
 	],
 	source: 'session.dashboard.lunch_editor'
 });
+
+
 
 qtools.validateProperties({
 	targetObject: displayParameters,
@@ -79,13 +82,27 @@ if (daysPurchaseString) {
 		daysPurchaseString.replace(/, $/, '') +
 		'</span>';
 }
+var newOrderCount=0;
+var thisStudentOrderCount=0
 
+for (var i=0, len=this.newOrders.length; i<len; i++){
+	var element=this.newOrders[i];
+	
+	if (formData.student.refId==element.student.refId){
+	lunchCount++;
+	thisStudentOrderCount++
+	}
+}
+
+
+
+var indicatorColor=thisStudentOrderCount?'#DD4C2B':'green';
 if (lunchCount > 0) {
 	var tooltipAttributeString = "title='" + tooltipContentString + "'";
 	var lunchCountString =
 		"<div id='" +
 		formData.student.refId +
-		"' class='lunchCount' style='color:green;' " +
+		"' class='lunchCount' style='color:"+indicatorColor+";' " +
 		tooltipAttributeString +
 		'>' +
 		lunchCount +
