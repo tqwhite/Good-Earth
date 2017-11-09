@@ -199,21 +199,24 @@ class PurchaseController extends Q_Controller_Base
 				'templateName' => "deferred-email-receipt.phtml",
 				'code' => 3,
 				'emailSubject' => "Good Earth Lunch Program Receipt",
-				'processingRequired' => false
+				'processingRequired' => false,
+				'deferredPaymentPreference'=>'DEFERRED by 9999'
 			),
 			'paybycheck' => array(
 				'description'=>"deferred payment (9012)",
 				'templateName' => "deferred-email-receipt.phtml",
 				'code' => 2,
 				'emailSubject' => "Good Earth Lunch Program Invoice",
-				'processingRequired' => false
+				'processingRequired' => false,
+				'deferredPaymentPreference'=>'DEFERRED by 9012'
 			),
 			'9012' => array(
 				'description'=>"deferred payment (9012)",
 				'templateName' => "deferred-email-receipt.phtml",
 				'code' => 2,
 				'emailSubject' => "Good Earth Lunch Program Invoice",
-				'processingRequired' => false
+				'processingRequired' => false,
+				'deferredPaymentPreference'=>'DEFERRED by 9012'
 			),
 			'8888' => array(
 				'tqOnly' => true,
@@ -221,14 +224,16 @@ class PurchaseController extends Q_Controller_Base
 				'templateName' => "email-receipt.phtml",
 				'code' => 3,
 				'emailSubject' => "Good Earth Lunch Program Invoice",
-				'processingRequired' => false
+				'processingRequired' => false,
+				'deferredPaymentPreference'=>'DEFERRED by 8888'
 			),
 			'9100' => array(
 				'description'=>"free and reduced (9100)",
 				'templateName' => "fr-email-receipt.phtml",
 				'code' => 4,
 				'emailSubject' => "Good Earth Lunch Program Notification",
-				'processingRequired' => false
+				'processingRequired' => false,
+				'deferredPaymentPreference'=>'DEFERRED by 9100'
 			)
 		);
 		$selector=strtolower($cardData); //try long version first
@@ -292,14 +297,15 @@ class PurchaseController extends Q_Controller_Base
 	
 	private function addPaymentResultToPurchase($purchase, $inData, $paymentProcessResult)
 	{
+		$result=$paymentProcessResult['result'];
 		
 		$purchase->entity->deferredPaymentPreference = $paymentProcessResult['deferredPaymentPreference'];
 		
-		$purchase->entity->fdProcessorResponseMessage = $paymentProcessResult['approved'] ? 'APPROVED' : 'REJECTED';
+		$purchase->entity->fdProcessorResponseMessage = $result['approved'];
 		
-		$purchase->entity->fdProcessorReferenceNumber = $paymentProcessResult['transaction_id'];
-		$purchase->entity->fdErrorMessage             = $paymentProcessResult['response_reason_text'];
-		$purchase->entity->fdApprovalCode             = $paymentProcessResult['authorization_code'];
+		$purchase->entity->fdProcessorReferenceNumber = $result['transaction_id'];
+		$purchase->entity->fdErrorMessage             = $result['response_reason_text'];
+		$purchase->entity->fdApprovalCode             = $result['authorization_code'];
 		
 		$date                        = new \DateTime(date("Y-m-d H:i:s"));
 		$date                        = $date->format('Y-m-d H:i:s');
@@ -385,9 +391,7 @@ class PurchaseController extends Q_Controller_Base
 			$processControl     = $this->processingParameters($inData['cardData']['cardNumber']);
 			if ($processControl['processingRequired']) {
 			
-				error_log("initiating Application_Model_Payment::process() for {$inData['account']['refId']} [purchaseController.php]");
 				$paymentProcessResult = \Application_Model_Payment::process($purchaseModelList, $inData);
-				error_log("returned from Application_Model_Payment::process() for {$inData['account']['refId']} [purchaseController.php]");
 
 				$summaryResult = $this->summarizeProcessResults($paymentProcessResult);
 		
@@ -398,8 +402,16 @@ class PurchaseController extends Q_Controller_Base
 					);
 				}
 			} else {
-				$paymentProcessResult['deferredPaymentPreference'] = "DEFERRED by {$processControl['description']}";
-				error_log("DEFERRED by {$processControl['description']} [PurchaseController.php]");
+			
+				$paymentProcessResult=array();
+		for ($i=0, $len=count($purchaseModelList); $i<$len; $i++){
+			$element=$purchaseModelList[$i];
+				$paymentProcessResult[]=array(
+					"deferredPaymentPreference"=>$processControl['deferredPaymentPreference'],
+					"approved"=>"DEFERRED"
+				);
+		}
+				error_log("{$processControl['deferredPaymentPreference']} [PurchaseController.php]");
 			}
 		}
 
@@ -415,10 +427,8 @@ class PurchaseController extends Q_Controller_Base
 			for ($i = 0, $len = count($purchaseModelList); $i < $len; $i++) {
 
 				$purchaseModel = $purchaseModelList[$i];
-				$this->addPaymentResultToPurchase($purchaseModel, $inData, $paymentProcessResult[$i]['result']);
-error_log("init purchaseModel->persist(Application_Model_Base::yesFlush) for {$inData['account']['refId']} [purchaseController.php]");
+				$this->addPaymentResultToPurchase($purchaseModel, $inData, $paymentProcessResult[$i]);
 				$purchaseModel->persist(Application_Model_Base::yesFlush);
-error_log("returned from purchaseModel->persist(Application_Model_Base::yesFlush) for {$inData['account']['refId']} [purchaseController.php]");
 			}
 			
 			$emailMessage = $this->sendCustomerEmail($purchaseObj->entity->refId, $processControl, $purchaseModelList, $inData['user']);
