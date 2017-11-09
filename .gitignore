@@ -7,23 +7,23 @@ extras/documentation
 application/configs/application.ini
 /nbproject/private/
 
-.DS_Store
-._.DS_Store
+**/.DS_Store
+**/._.DS_Store
 ._*
 Icon?
 ._Icon\r
 /tmp/*
 
 /configs/*
-*/configs/*
+**/configs/*
 /config/*
-*/config/*
+**/config/*
 /tmp/*
-*/tmp/*
+**/tmp/*
 /tmp/*
-*/tmp/*
+**/tmp/*
 
-.~lock*
+**/.~lock*
 
 
 *.log
