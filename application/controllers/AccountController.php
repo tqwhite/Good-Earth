@@ -83,6 +83,8 @@ class AccountController extends Q_Controller_Base {
 				$user->state = $inData['state'];
 				$user->zip = $inData['zip'];
 				
+				$user->isActiveFlag = $inData['isActiveFlag'];
+				
 				
 				$user->role = $inData['role'];
 				
@@ -107,13 +109,9 @@ class AccountController extends Q_Controller_Base {
 				try {
 					$this->doctrineContainer = Zend_Registry::get('doctrine');
 					$em = $this->doctrineContainer->getEntityManager();
- 
-error_log("REGISTER: Before em->persist ======".__FILE__.", line ".__LINE__);
 
 					$em->persist($user);
 					$em->flush();
- 
-error_log("REGISTER: After em->persist ======".__FILE__.", line ".__LINE__);
 
 				}
 				catch(Exception $e) {
@@ -178,11 +176,11 @@ error_log("REGISTER: After em->persist ======".__FILE__.", line ".__LINE__);
 				{$userObj->emailAdr}
 			<div style='margin-top:15px;'>Please click this link:</div>
 			<div style='margin:25px 0px 30px 50px;font-size:14pt;color:#E26437;'>
-			<A href='http://{$_SERVER['SERVER_NAME']}/account/confirm/{$userObj->confirmationCode}' style='color:#E26437;text-decoration:none;'>CONFIRM</a>
+			<A href='https://{$_SERVER['SERVER_NAME']}/account/confirm/{$userObj->confirmationCode}' style='color:#E26437;text-decoration:none;'>CONFIRM</a>
 			</div>
 			Or, copy and paste this link:
 			<div style='font-size:10pt;margin:20px 0px 30px 50px;color:#E26437;'>
-			<A href='http://{$_SERVER['SERVER_NAME']}/account/confirm/{$userObj->confirmationCode}' style='color:#E26437;text-decoration:none;'>{$_SERVER['SERVER_NAME']}/account/confirm/{$userObj->confirmationCode}</a>
+			<A href='https://{$_SERVER['SERVER_NAME']}/account/confirm/{$userObj->confirmationCode}' style='color:#E26437;text-decoration:none;'>{$_SERVER['SERVER_NAME']}/account/confirm/{$userObj->confirmationCode}</a>
 			</div>
 
 		Thank You,<br/>

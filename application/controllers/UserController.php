@@ -75,19 +75,20 @@ class UserController extends Q_Controller_Base {
 
 		}
 
-		$emailMessage = "<body style='background:#F5E4C6;'><div style='color:#385B2B;font-size:12pt;margin:20px 0px 20px 10px;'>
+		$emailMessage = "<body style='background:#F5E4C6;'><div style='color:#385B2B;font-size:12pt;margin:20px 0px 20px 10px;width:500px;'>
 			<div>Dear {$userObj->firstName}, <p/>
 				This link will take you to a form where you can specify a new password for your user account. After that, you can login with the new password immediately.<p/>
 				Please note that, for security reasons, this code will expire in about {$this->expirationInterval} minutes at $showResetDate today.
 			<div style='margin-top:15px;'>Please click this link:</div>
 			<div style='margin:25px 0px 30px 50px;font-size:14pt;color:#E26437;'>
-			<A href='http://{$_SERVER['SERVER_NAME']}/user/changepw/{$userObj->resetCode}' style='color:#E26437;text-decoration:none;'>RESET</a>
+			<A href='https://{$_SERVER['SERVER_NAME']}/user/changepw/{$userObj->resetCode}' style='color:#E26437;text-decoration:none;'>RESET</a>
 			</div>
 			Or, copy and paste this link:
 			<div style='font-size:10pt;margin:20px 0px 30px 50px;color:#E26437;'>
-			<A href='http://{$_SERVER['SERVER_NAME']}/user/changepw/{$userObj->resetCode}' style='color:#E26437;text-decoration:none;'>
-				http://{$_SERVER['SERVER_NAME']}/user/changepw/{$userObj->resetCode}
+			<A href='https://{$_SERVER['SERVER_NAME']}/user/changepw/{$userObj->resetCode}' style='color:#E26437;text-decoration:none;'>
+				https://{$_SERVER['SERVER_NAME']}/user/changepw/{$userObj->resetCode}
 			</a>
+			
 			</div>
 
 		Thank You,<br/>
