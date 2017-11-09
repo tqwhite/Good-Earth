@@ -14,7 +14,14 @@ public function _initConfigAndRegistry(){
 	
 	Zend_Registry::set('emailSender', '');
 	}
-
+	
+	if (isset($config['specialOverrideList'])){
+	Zend_Registry::set('specialOverrideList', $config['specialOverrideList']);
+	}
+	else{
+	
+	Zend_Registry::set('specialOverrideList', array());
+	}
 }
 
 public function _initSession(){
