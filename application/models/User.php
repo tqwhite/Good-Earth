@@ -136,6 +136,7 @@ class Application_Model_User extends Application_Model_Base
 						'role' => $inData->role,
 						'schoolRefId' => $inData->school->refId,
 						'phoneNumber' => $inData->phoneNumber,
+						'isActiveFlag' => $inData->isActiveFlag,
 						'refId' => $inData->refId,
 						'account' => \Application_Model_Account::formatOutput($inData->account, $outputType),
 						'school' => \Application_Model_School::formatOutput($inData->school, $outputType)
@@ -156,6 +157,7 @@ class Application_Model_User extends Application_Model_Base
 						'emailStatus' => $inData->emailStatus,
 						'confirmationCode' => $inData->confirmationCode,
 						'phoneNumber' => $inData->phoneNumber,
+						'isActiveFlag' => $inData->isActiveFlag,
 						'accountRefId' => $inData->account->refId,
 						'schoolRefId' => $inData->school->refId,
 						'created' => $inData->created

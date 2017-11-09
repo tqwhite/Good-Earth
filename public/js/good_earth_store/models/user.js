@@ -20,6 +20,10 @@ GoodEarthStore.Models.Base.extend('GoodEarthStore.Models.User',
 		success=success?success:function(){alert('success');};
 		error=error?error:this.defaultError;
 
+		if (data.isActiveFlag=='on'){
+			data.isActiveFlag='1';
+		}
+
 		var errors=this.validate(data);
 		if (errors.length>0){
 			success({status:-1, messages:errors, data:{}});

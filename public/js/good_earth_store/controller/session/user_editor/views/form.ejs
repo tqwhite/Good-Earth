@@ -62,15 +62,24 @@ if (
 		zip = '',
 		refId = qtools.newGuid();
 }
-
+ var isActiveString='';
 if (this.adminFlag) {
-	var checkString = '';
+	var checkString = 'checked';
 	var emailOverrideCheckbox =
-		"Suppress Confirmation Email <input type='checkbox' name='emailOverride' " +
+		"<span  title='uncheck to send confirmation message to a new address'>Suppress Confirmation <input type='checkbox' name='emailOverride' " +
 		checkString +
-		'>';
+		'></span>';
 
 	var passwordTypeString = 'text';
+		
+	isActiveCheckedString='';
+	if (this.subjectUser.isActiveFlag){
+		isActiveCheckedString='checked';
+	}
+	isActiveString="Active <input type='checkbox' title='allow user to log into the store' name='isActiveFlag' "+isActiveCheckedString+">";
+
+
+
 } else {
 	var emailOverrideCheckbox = '';
 	var passwordTypeString = 'password';
@@ -112,7 +121,6 @@ if (this.subjectUser) {
 			firstItemValue: '',
 			selectClassName: 'smallSelect' //schoolIdClassString is for debug purposes only, see register.initDomObjects()
 		});
-		
 
 
 		if (this.subjectUser.role == 'schoolAdmin'){
@@ -166,15 +174,6 @@ if (this.subjectUser) {
 			<td><input type='<%== passwordTypeString %>' name='password' value='<%=password%>' title='password must be at least six characters'></td>
 	</tr>
 
-
-
-	<tr><td>Email Address:</td><td><input prompt='required' title='standard email, eg name@domain.com' name='emailAdr' value='<%=emailAdr%>'></td>
-		<td>&nbsp;</td>
-		<td>Confirm Email:</td><td><input prompt='required' title='must match email address' name='confirmEmail' value='<%=emailAdr%>'></td>
-	</tr>
-
-<tr><td style='height:15px;' colspan='5'>&nbsp;</td></tr>
-
 	<tr  style='height:25px;'>
 		<td>Parent First:</td>
 			<td><input prompt='required' title='first name is required' name='firstName' value='<%=firstName%>'></td>
@@ -193,7 +192,7 @@ if (this.subjectUser) {
 				<input prompt='required' title='city is required' style='width:170px;' name='city' value='<%=city%>'> <span style='font-size:200%;color:gray;'>,</span>
 				<input style='width:35px;' prompt='CA' title='two character state code' name='state' value='<%=state%>'>
 				<input style='width:75px;' prompt='00000' title='five digit zip 00000' name='zip' value='<%=zip%>'>
-				<input type='hidden' name='refId'  value='<%=refId%>'> <%== emailOverrideCheckbox %>
+				<input type='hidden' name='refId'  value='<%=refId%>'> 
 			</td>
 	</tr>
 
@@ -201,7 +200,13 @@ if (this.subjectUser) {
 
 	<tr  style='height:25px;'>
 		<td>Phone:</td><td><input name='phoneNumber'  value='<%=phoneNumber%>' prompt='000-000-0000' title='format with hyphens 000-000-0000'></td>
-		<td colspan='5'><%== roleAndSchoolString %></td></tr>
+		<td colspan='5'><%== isActiveString %> <%== roleAndSchoolString %></td></tr>
+		
+		
+
+	<tr><td colspan='6' style='border-top:1pt solid #aaa;padding:3px 0px;';'>Email Address: <input prompt='required' title='standard email, eg name@domain.com' name='emailAdr' value='<%=emailAdr%>'>
+	Confirm Email:<input prompt='required' title='must match email address' name='confirmEmail' value='<%=emailAdr%>'><%== emailOverrideCheckbox %></td>
+	</tr>
 </table>
 
 
