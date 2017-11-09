@@ -61,8 +61,10 @@ initDisplayProperties:function(){
 
 	name='newButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 	name='editButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
-	name='lunchButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
-
+	
+	if (this.lunchButtonHandler){
+		name='lunchButton'; nameArray.push({name:name});
+	}
 
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -166,7 +168,7 @@ if (this.lunchButtonHandler){
 		hover:{classs:'basicHover'},
 		clicked:{classs:'basicActive'},
 		unavailable:{classs:'basicUnavailable'},
-		accessFunction:this.displayParameters.lunchButton.handler, //NOTE: this handler is passed from the parent controller (dashboard)
+		accessFunction:this.lunchButtonHandler, //NOTE: this handler is passed from the parent controller (dashboard)
 		initialControl:'setToReady', //initialControl:'setUnavailable'
 		label:this.adminFlag?'Test Lunches':'Buy Lunches'
 	});
