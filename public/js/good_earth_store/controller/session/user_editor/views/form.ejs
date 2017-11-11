@@ -73,7 +73,7 @@ if (this.adminFlag) {
 	var passwordTypeString = 'text';
 		
 	isActiveCheckedString='';
-	if (this.subjectUser.isActiveFlag){
+	if (this.subjectUser && this.subjectUser.isActiveFlag){
 		isActiveCheckedString='checked';
 	}
 	isActiveString="Active <input type='checkbox' title='allow user to log into the store' name='isActiveFlag' "+isActiveCheckedString+">";

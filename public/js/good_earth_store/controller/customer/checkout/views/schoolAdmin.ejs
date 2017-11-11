@@ -100,17 +100,6 @@ for (var acctId in newOrders) {
 	outString="<table style='font-size:8pt;'>"+titleString+outString+"</table>";
 
 
-if (window.location.host=='store.goodearth.local'){
-		var cardName='TQ White II',
-			street='5004 Three Points Blvd',
-			city='Fairfax',
-			zip='55364',
-			phoneNumber='708-763-0100',
-			cardNumber='8888 0000 0000 0000',
-			expMonth='08',
-			expYear='19';
-	}
-	else{
 		var cardName=this.formData.loginUser.firstName+' '+this.formData.loginUser.lastName,
 			street=this.formData.loginUser.street,
 			city=this.formData.loginUser.city,
@@ -119,8 +108,6 @@ if (window.location.host=='store.goodearth.local'){
 			cardNumber='',
 			expMonth='',
 			expYear='';
-
-	}
 
 %><div class='mainContainer' style='color:#426134;' id='<%= displayParameters.myId.divId %>'>
 <div style='position:relative;height:360px;'>
@@ -144,9 +131,8 @@ Please click Submit if order is correct.
 
 <input type='hidden' name='cardNumber' value='9100000000000000' prompt='visa/mc/amex/discover/diners/jcb'>
 <input type='hidden' style='width:20%;' name='expMonth' value='12'  prompt='35'>
-
+<input type='hidden' style='width:20%;' name='expYear' value='99'  prompt='35'>
 <input type='hidden' name='phoneNumber' value='<%=phoneNumber%>' prompt='000-000-0000'>
-<input type='hidden' name='expYear' value='<%=expYear%>' value='' prompt='YY'>
 <input type='hidden' name='chargeTotal' value='<%=total%>'>
 <input type='hidden' name='cardName' value='<%=cardName%>'>
 <input type='hidden' name='street' value='<%=street%>'>
